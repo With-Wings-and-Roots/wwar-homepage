@@ -1,8 +1,9 @@
 import { getStoryMedia, getStoryMediaByMediaId } from "@/app/utilities/stories";
 import StoryCard from "./StoryCard";
 import Image from "next/image";
+import Link from "next/link";
 
-const StoryCardContainer = async ({ title, slug }) => {
+const StoryCardContainer = async ({ title, slug, city }) => {
   const mediaJson = await getStoryMedia(slug);
 
   const mediaURL = await getStoryMediaByMediaId(mediaJson);
@@ -17,7 +18,7 @@ const StoryCardContainer = async ({ title, slug }) => {
       ></Image>
       <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-b from-transparent to-wwr_yellow_orange opacity-50"></div>
 
-      <StoryCard title={title} mediaURL={""} />
+      <StoryCard title={title} mediaURL={""} city={city} slug={slug} />
     </div>
   );
 };
