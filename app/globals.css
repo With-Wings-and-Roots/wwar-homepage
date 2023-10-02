@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.highlight:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 0, 0.3);
+    animation-name: highlightAnimation;
+    animation-duration: 2s;
+}
+
+@keyframes highlightAnimation {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+
+    50% {
+        width: 100%;
+        opacity: 1;
+    }
+
+}

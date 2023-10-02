@@ -4,23 +4,25 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const slice = createSlice({
   name: "storiesList",
-  initialState: [],
+  initialState: {
+    allStories: [],
+    activeStories: [],
+  },
   reducers: {
     storiesAdded: (storiesList, action)=>{
-      
-      let combinedArray = storiesList.concat(action.payload.stories)
-      storiesList = combinedArray;
-      console.log("Stories Added ")
-      console.log(storiesList)
+      storiesList.allStories.push(action.payload.stories);
     },
-
+    activatedStories: (storiesList, action)=>{
+      
+    //  const activatedList = storiesList.filter(arrayItem=>{})
+    },
     deleteAllStories: (storiesList, action)=>{
-      storiesList = [];
+      storiesList.allStories = [];
     }
 
   },
 });
  
-export const { storiesAdded, deleteAllStories } = slice.actions;
+export const { storiesAdded, activatedStories, deleteAllStories } = slice.actions;
 
 export default slice.reducer; 

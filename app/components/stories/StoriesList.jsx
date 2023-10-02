@@ -1,11 +1,13 @@
-"use client";
-import { useDispatch, useSelector } from "react-redux";
-import { storiesAdded } from "@/app/store/stories";
+import StoryCards from "./storyCards/StoryCards";
+import Tabs from "./Tabs";
 
 export default function StoriesList({ stories }) {
-  const dispatch = useDispatch();
+  const allStoriesLength = stories?.length;
 
   return (
-    <div onClick={() => dispatch(storiesAdded({ stories }))}>StoriesList</div>
+    <>
+      <Tabs allStoriesLength={allStoriesLength} />
+      <StoryCards stories={stories} />
+    </>
   );
 }
