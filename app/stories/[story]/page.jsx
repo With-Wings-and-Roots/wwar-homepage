@@ -1,6 +1,8 @@
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
+import parse from "html-react-parser";
 import { getAllStories, findIndexBySlug } from "@/app/utilities/stories";
 import Link from "next/link";
+import React from "react";
 
 const Story = async ({ params }) => {
   const stories = await getAllStories();
@@ -19,7 +21,20 @@ const Story = async ({ params }) => {
 
   const story = stories?.filter((story) => story.slug === params.story)[0];
 
-  console.log(story._links["acf:term"]);
+  const terms = story?._links["acf:term"];
+
+  let topicsHref = [];
+
+  let categories = [];
+
+  terms?.map((term) => topicsHref.push(term.href));
+
+  for (let topic of topicsHref) {
+    const response = await fetch(topic);
+    const data = await response.json();
+
+    categories.push({ name: data.name, slug: data.slug });
+  }
 
   return (
     <div className="relative overflow-hidden">
@@ -49,8 +64,13 @@ const Story = async ({ params }) => {
                 ></iframe>
               </div>
               <div className="flex gap-4">
-                <div>Button1</div>
-                <div>Button2</div>
+                {categories.map((category, index) => (
+                  <React.Fragment key={index}>
+                    <Link href={`./${category.slug}`}>
+                      <div>{parse(category.name)}</div>
+                    </Link>
+                  </React.Fragment>
+                ))}
               </div>
             </div>
             <div className=" w-2/5">
@@ -63,7 +83,7 @@ const Story = async ({ params }) => {
                 </p>
                 <div className="flex">
                   <div>Name,</div>
-                  <div>Location</div>
+                  <div>{story?.acf?.city}</div>
                 </div>
               </div>
             </div>
