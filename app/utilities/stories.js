@@ -23,30 +23,28 @@ export async function getAllStories() {
 
   storiesList = [...storiesList, ...stories];
 
-  if (storiesList.length < counter) return storiesList;
-
   if (storiesList.length >= counter) await getAllStories();
+  if (storiesList.length < counter) return storiesList;
 }
 
-
 export async function getStoryMedia(slug) {
-
- const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&slug=" + slug, {
+  const res = await fetch(
+    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&slug=" +
+      slug,
+    {
       next: {
         revalidate: 600,
       },
     }
   );
 
-const data = await res.json()
+  const data = await res.json();
 
-return data[0].featured_media;
- 
+  return data[0].featured_media;
 }
 
 export async function getStoryMediaByMediaId(mediaId) {
-const mediaRes = await fetch(
+  const mediaRes = await fetch(
     "https://wwar2022.backslashseven.com/wp-json/wp/v2/media/" + mediaId,
     {
       next: {
@@ -56,5 +54,9 @@ const mediaRes = await fetch(
   );
 
   const data = await mediaRes.json();
-  return data.source_url
+  return data.source_url;
+}
+
+export function findIndexBySlug(array, slugTerm) {
+  return array.findIndex((item) => item.slug === slugTerm);
 }

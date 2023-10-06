@@ -12,7 +12,9 @@ module.exports = {
       wwr_yellow_orange_hovered: "#efaa23",
       wwr_white: '#ffffff',
       wwr_black: '#000000',
-      wwr_rich_black: '#030303'
+      wwr_rich_black: '#030303',
+      wwr_red_transparent: 'rgba(255,0,0,0.8)',
+      wwr_gray_storm: '#757580'
      }
     },
   },
