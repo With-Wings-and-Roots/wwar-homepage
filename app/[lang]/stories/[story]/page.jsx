@@ -95,9 +95,8 @@ const Story = async ({ params }) => {
                   <p className="text-2xl text-wwr_gray_storm leading-10 font-light">
                     {story?.acf?.excerpt}
                   </p>
-                  <div className="flex">
-                    <div>Name,</div>
-                    <div>{story?.acf?.city}</div>
+                  <div className="flex text-wwr_rich_black text-lg pt-8">
+                    <div>{`Name, ${story?.acf?.city}`} </div>
                   </div>
                 </div>
               </div>
