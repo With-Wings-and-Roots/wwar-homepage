@@ -44,7 +44,10 @@ const Story = async ({ params }) => {
       <div className="absolute z-10 top-0 left-0">
         <StoriesPageContainer />
       </div>
-      <div className="w-full h-screen fixed top-0 left-0 z-40  bg-wwr_red_transparent"></div>
+      <div
+        className="w-full h-screen fixed top-0 left-0 z-40 opacity-30"
+        style={{ background: story.acf.color }}
+      ></div>
       <div className="w-full min-h-[100vh] relative flex justify-center z-50">
         <div className="flex items-center min-w-[100px] p-4 text-6xl justify-center h-[100vh] text-wwr_white relative">
           <div className="fixed">
