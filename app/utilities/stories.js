@@ -60,3 +60,31 @@ export async function getStoryMediaByMediaId(mediaId) {
 export function findIndexBySlug(array, slugTerm) {
   return array.findIndex((item) => item.slug === slugTerm);
 }
+
+export async function fetchAllTopics() {
+  const res = await fetch(
+    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100"
+  );
+  const data = await res.json();
+  return data;
+}
+
+export async function getTopicId(topicSlug) {
+  const allTopics = await fetchAllTopics();
+
+  const selectedTopic = allTopics.filter(
+    (topic) => topic.slug === topicSlug
+  )[0];
+
+  return selectedTopic.id;
+}
+
+export async function getTopicStories(topicId) {
+  const res = await fetch(
+    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?story_topic=" +
+      topicId +
+      "&per_page=100"
+  );
+  const topicStories = await res.json();
+  return topicStories;
+}

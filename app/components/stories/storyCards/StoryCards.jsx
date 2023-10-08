@@ -2,7 +2,7 @@ import React from "react";
 
 import StoryCardContainer from "./StoryCardContainer";
 
-const StoryCards = ({ stories }) => {
+const StoryCards = ({ stories, lang }) => {
   return (
     <div className="grid grid-cols-4 gap-2">
       {stories?.map((story, index) => {
@@ -12,6 +12,7 @@ const StoryCards = ({ stories }) => {
               title={story.title.rendered}
               slug={story.slug}
               city={story.acf?.city}
+              lang={lang}
             />
           </React.Fragment>
         );

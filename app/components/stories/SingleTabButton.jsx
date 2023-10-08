@@ -1,34 +1,29 @@
-"use client";
+import Link from "next/link";
 
-import { useDispatch, useSelector } from "react-redux";
-import { storySelected } from "@/app/store/selectedStory";
-import { activatedStories } from "@/app/store/stories";
-
-const SingleTabButton = ({ buttonText = "" }) => {
-  const dispatch = useDispatch();
-
-  const tabTitle = buttonText;
-
-  const currentSelection = useSelector(
-    (state) => state.entities.selectedStory.selectedStory
-  );
-
-  const onClickHandler = () => {
-    dispatch(storySelected({ selection: tabTitle }));
-    dispatch(activatedStories({ selection: tabTitle }));
-  };
-
+const SingleTabButton = ({
+  buttonText = "",
+  slug,
+  selectedTopic = "All Stories",
+  lang = "en",
+}) => {
   return (
-    <div
-      onClick={onClickHandler}
-      className={`${
-        currentSelection === tabTitle
-          ? "bg-wwr_rich_black text-wwr_yellow_orange"
-          : "bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered text-wwr_rich_black hover:bg-wwr_yellow_orange_hovered hover:text-wwr_white"
-      } text-xl w-max p-3  hover:cursor-pointer transition-all duration-300`}
+    <Link
+      href={
+        slug === "all"
+          ? `/${lang}/stories`
+          : "/" + lang + "/stories/topic/" + slug
+      }
     >
-      {tabTitle}
-    </div>
+      <div
+        className={`${
+          selectedTopic === slug
+            ? "bg-wwr_rich_black text-wwr_yellow_orange"
+            : "bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered text-wwr_rich_black hover:bg-wwr_yellow_orange_hovered hover:text-wwr_white"
+        } text-xl w-max p-3  hover:cursor-pointer transition-all duration-300`}
+      >
+        {buttonText}
+      </div>
+    </Link>
   );
 };
 
