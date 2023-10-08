@@ -10,6 +10,7 @@ const StoryCard = ({
   city = "",
   slug,
   lang,
+  color,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -20,13 +21,15 @@ const StoryCard = ({
         onMouseLeave={() => setHovered(false)}
         className=" w-full h-full flex flex-col justify-between "
       >
-        <h2
-          className={`${
-            hovered && "highlight "
-          } text-[2vw] relative z-10 max-w-max leading-tight`}
-        >
-          {parse(title)}
-        </h2>
+        <div className={`text-[2vw] relative z-10 max-w-max leading-tight`}>
+          <div
+            className={`${
+              hovered ? "w-full" : "w-0 "
+            } absolute top-0 left-0 h-full opacity-50 transition-all duration-500 z-10`}
+            style={{ background: color }}
+          ></div>
+          <h2 className="relative z-20">{parse(title)}</h2>
+        </div>
         <p className="text-base relative">{city}</p>
 
         <Image

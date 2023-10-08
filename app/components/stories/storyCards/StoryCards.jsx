@@ -12,6 +12,7 @@ const StoryCards = ({ stories, lang }) => {
               title={story.title.rendered}
               slug={story.slug}
               city={story.acf?.city}
+              color={story.acf?.color}
               lang={lang}
             />
           </React.Fragment>

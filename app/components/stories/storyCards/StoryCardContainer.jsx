@@ -2,7 +2,7 @@ import { getStoryMedia, getStoryMediaByMediaId } from "@/app/utilities/stories";
 import StoryCard from "./StoryCard";
 import Image from "next/image";
 
-const StoryCardContainer = async ({ title, slug, city, lang }) => {
+const StoryCardContainer = async ({ title, slug, city, lang, color }) => {
   const mediaJson = await getStoryMedia(slug);
 
   const mediaURL = await getStoryMediaByMediaId(mediaJson);
@@ -23,6 +23,7 @@ const StoryCardContainer = async ({ title, slug, city, lang }) => {
         city={city}
         slug={slug}
         lang={lang}
+        color={color}
       />
     </div>
   );
