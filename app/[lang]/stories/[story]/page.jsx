@@ -7,7 +7,11 @@ import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 import StoryCards from "@/app/components/stories/storyCards/StoryCards";
-import { getAllStories, findIndexBySlug } from "@/app/utilities/stories";
+import {
+  getAllStories,
+  findIndexBySlug,
+  getPersonById,
+} from "@/app/utilities/stories";
 
 const Story = async ({ params }) => {
   const stories = await getAllStories(params.lang);
@@ -27,6 +31,8 @@ const Story = async ({ params }) => {
       : stories[storyIndex - 1].slug;
 
   const story = stories?.filter((story) => story.slug === params.story)[0];
+
+  const person = await getPersonById(story.person[0]);
 
   let relatedStories = [];
 
@@ -116,7 +122,8 @@ const Story = async ({ params }) => {
                     {story?.acf?.excerpt}
                   </p>
                   <div className="flex text-wwr_rich_black text-lg pt-8">
-                    <div>{`Name, ${story?.acf?.city}`} </div>
+                    <div className="font-semibold">{person.name} </div>
+                    <div>{story?.acf?.city ? ", " + story.acf.city : ""}</div>
                   </div>
                   {/* Social Share Buttons */}
                   <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pt-16 pb-4">

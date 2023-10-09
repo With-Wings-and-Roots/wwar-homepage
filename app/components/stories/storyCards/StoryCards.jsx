@@ -13,6 +13,7 @@ const StoryCards = ({ stories, lang }) => {
               slug={story.slug}
               city={story.acf?.city}
               color={story.acf?.color}
+              personId={story.person[0]}
               lang={lang}
             />
           </React.Fragment>

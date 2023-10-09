@@ -12,7 +12,7 @@ import {
 } from "next-share";
 
 const SocialShareIcons = ({ url = "https://wwar.backslashseven.com/" }) => {
-  //   if (window !== "undefined") url = window.location.href;
+  if (typeof window !== "undefined") url = window.location.href;
 
   return (
     <div className="flex gap-1">

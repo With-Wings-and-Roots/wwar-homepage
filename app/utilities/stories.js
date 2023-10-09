@@ -91,3 +91,16 @@ export async function getTopicStories(lang,topicId) {
   const topicStories = await res.json();
   return topicStories;
 }
+
+export async function getPersonById(personId) {
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/person?lang=en&per_page=100`,{
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  const allPersons = await res.json();
+  const person = allPersons.filter(person=>person.id===personId)[0];
+  return person;
+}

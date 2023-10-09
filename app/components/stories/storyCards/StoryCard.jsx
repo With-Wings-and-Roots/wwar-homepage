@@ -11,6 +11,7 @@ const StoryCard = ({
   slug,
   lang,
   color,
+  person,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -32,7 +33,10 @@ const StoryCard = ({
           ></div>
           <h2 className="relative z-20">{parse(title)}</h2>
         </div>
-        <p className="text-base relative">{city}</p>
+        <div className="text-base relative flex ">
+          <div className="font-semibold">{person} </div>
+          {city && <div>, {city}</div>}
+        </div>
 
         <Image
           className="hover:flex absolute z-30 w-full h-full left-0 top-0 opacity-0 hover:opacity-75 transition-all duration-500"
