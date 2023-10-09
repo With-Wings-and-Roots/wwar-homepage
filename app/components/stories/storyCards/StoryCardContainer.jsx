@@ -3,9 +3,9 @@ import StoryCard from "./StoryCard";
 import Image from "next/image";
 
 const StoryCardContainer = async ({ title, slug, city, lang, color }) => {
-  const mediaJson = await getStoryMedia(slug);
+  const mediaJson = await getStoryMedia(lang, slug);
 
-  const mediaURL = await getStoryMediaByMediaId(mediaJson);
+  const mediaURL = await getStoryMediaByMediaId(lang, mediaJson);
 
   return (
     <div className="relative hover:scale-105 cursor-pointer transition-all duration-500 w-full min-h-[170px] lg:min-h-[12vw] p-4 font-light text-wwr_white overflow-hidden">

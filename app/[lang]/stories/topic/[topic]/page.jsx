@@ -12,7 +12,7 @@ const Topic = async ({ params }) => {
   let topicStories = null;
 
   if (params.topic === "featured") {
-    const allStories = await getAllStories();
+    const allStories = await getAllStories(params.lang);
     topicStories = allStories.filter(
       (topic) => topic.acf?.featured_story === true
     );
@@ -21,14 +21,14 @@ const Topic = async ({ params }) => {
   }
 
   if (params.topic === "all") {
-    topicStories = await getAllStories();
+    topicStories = await getAllStories(params.lang);
     numberOfTopicStories = topicStories.length;
   }
 
   if (params.topic !== "featured" && params.topic !== "all") {
-    const topicId = await getTopicId(params.topic);
+    const topicId = await getTopicId(params.lang, params.topic);
 
-    topicStories = await getTopicStories(topicId);
+    topicStories = await getTopicStories(params.lang, topicId);
 
     numberOfTopicStories = topicStories.length;
   }

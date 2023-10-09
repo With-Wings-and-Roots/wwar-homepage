@@ -1,9 +1,6 @@
-async function getStories(numberOfStories, offset) {
+async function getStories(lang="en", numberOfStories, offset) {
   const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&per_page=" +
-      numberOfStories +
-      "&offset=" +
-      offset,
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&per_page=${numberOfStories}&offset=${offset}`,
     {
       next: {
         revalidate: 600,
@@ -16,10 +13,11 @@ async function getStories(numberOfStories, offset) {
 let storiesList = [];
 let counter = 0;
 
-export async function getAllStories() {
+export async function getAllStories(lang) {
+
   counter += 100;
 
-  const stories = await getStories(100, counter - 100);
+  const stories = await getStories(lang, 100, counter - 100);
 
   storiesList = [...storiesList, ...stories];
 
@@ -27,10 +25,9 @@ export async function getAllStories() {
   if (storiesList.length < counter) return storiesList;
 }
 
-export async function getStoryMedia(slug) {
+export async function getStoryMedia(lang, slug) {
   const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&slug=" +
-      slug,
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&slug=${slug}`,
     {
       next: {
         revalidate: 600,
@@ -40,12 +37,12 @@ export async function getStoryMedia(slug) {
 
   const data = await res.json();
 
-  return data[0].featured_media;
+  return data[0]?.featured_media;
 }
 
-export async function getStoryMediaByMediaId(mediaId) {
+export async function getStoryMediaByMediaId(lang, mediaId) {
   const mediaRes = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/media/" + mediaId,
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/media/${mediaId}?lang=${lang}`,
     {
       next: {
         revalidate: 600,
@@ -61,16 +58,20 @@ export function findIndexBySlug(array, slugTerm) {
   return array.findIndex((item) => item.slug === slugTerm);
 }
 
-export async function fetchAllTopics() {
+export async function fetchAllTopics(lang) {
   const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100"
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100&lang=${lang}`,{
+      next: {
+        revalidate: 600,
+      },
+    }
   );
   const data = await res.json();
   return data;
 }
 
-export async function getTopicId(topicSlug) {
-  const allTopics = await fetchAllTopics();
+export async function getTopicId(lang, topicSlug) {
+  const allTopics = await fetchAllTopics(lang);
 
   const selectedTopic = allTopics.filter(
     (topic) => topic.slug === topicSlug
@@ -79,11 +80,13 @@ export async function getTopicId(topicSlug) {
   return selectedTopic.id;
 }
 
-export async function getTopicStories(topicId) {
+export async function getTopicStories(lang,topicId) {
   const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/story?story_topic=" +
-      topicId +
-      "&per_page=100"
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?story_topic=${topicId}&lang=${lang}&per_page=100`,{
+      next: {
+        revalidate: 600,
+      },
+    }
   );
   const topicStories = await res.json();
   return topicStories;

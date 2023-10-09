@@ -4,7 +4,7 @@ import { getAllStories } from "../../utilities/stories";
 import Header from "../header/header";
 
 const StoriesPageContainer = async ({ lang }) => {
-  const stories = await getAllStories();
+  const stories = await getAllStories(lang);
   const allStoriesLength = stories.length;
 
   return (

@@ -6,7 +6,7 @@ import { fetchAllTopics } from "@/app/utilities/stories";
 import SingleTabButton from "./SingleTabButton";
 
 const Tabs = async ({ selectedTopic, numberOfTopicStories = 0, lang }) => {
-  const tabData = await fetchAllTopics();
+  const tabData = await fetchAllTopics(lang);
 
   return (
     <div className="flex flex-wrap gap-0.5 my-8">

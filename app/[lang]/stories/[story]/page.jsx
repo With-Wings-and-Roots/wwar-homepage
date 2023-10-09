@@ -10,7 +10,7 @@ import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import { getAllStories, findIndexBySlug } from "@/app/utilities/stories";
 
 const Story = async ({ params }) => {
-  const stories = await getAllStories();
+  const stories = await getAllStories(params.lang);
   const storiesLength = stories.length;
 
   const storyIndexData = await findIndexBySlug(stories, params.story);
@@ -120,7 +120,10 @@ const Story = async ({ params }) => {
                   </div>
                   {/* Social Share Buttons */}
                   <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pt-16 pb-4">
-                    <div className="w-max">SHARE STORY:</div>
+                    <div className="w-max">
+                      {params.lang === "en" && "SHARE STORY:"}
+                      {params.lang === "de" && "GESCHICHTE TEILEN:"}
+                    </div>
                     <SocialShareIcons />
                   </div>
                   <div className="h-px opacity-10 w-full bg-wwr_rich_black"></div>
@@ -130,7 +133,10 @@ const Story = async ({ params }) => {
               </div>
             </div>
             <div>
-              <h3 className="mb-8 mt-16 text-xl font-light">Related Stories</h3>
+              <h3 className="mb-8 mt-16 text-xl font-light">
+                {params.lang === "en" && "Related Stories"}
+                {params.lang === "de" && "Ähnliche Beiträge"}
+              </h3>
               <div className="">
                 <StoryCards stories={relatedStories} lang={params.lang} />
               </div>
