@@ -14,6 +14,7 @@ const StoryCardContainer = async ({ title, slug, city, lang, color }) => {
         src={mediaURL}
         width={200}
         height={100}
+        alt={"Cover " + slug}
       ></Image>
       <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-b from-transparent to-wwr_yellow_orange opacity-30"></div>
 

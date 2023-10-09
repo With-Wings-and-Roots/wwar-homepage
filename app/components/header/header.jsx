@@ -7,6 +7,7 @@ const Header = () => {
         <Image
           className="w-80 pt-4 pb-1"
           src="/wwr-logo.svg"
+          alt="logo"
           width={200}
           height={200}
         ></Image>

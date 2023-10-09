@@ -37,6 +37,7 @@ const StoryCard = ({
           src="/play-icon.svg"
           width={200}
           height={100}
+          alt="play-icon"
         />
       </div>
     </Link>

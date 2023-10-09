@@ -4,7 +4,7 @@ import Image from "next/image";
 import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
-
+import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import { getAllStories, findIndexBySlug } from "@/app/utilities/stories";
@@ -30,7 +30,7 @@ const Story = async ({ params }) => {
 
   let relatedStories = [];
 
-  const relatedStoriesIdList = story.acf.related_stories;
+  const relatedStoriesIdList = story.acf.related_stories || [];
 
   for (let id of relatedStoriesIdList) {
     const storyWithId = stories.filter((story) => story.id === id)[0];
@@ -105,7 +105,13 @@ const Story = async ({ params }) => {
               </div>
               <div className=" w-4/12">
                 <div className="w-20 pb-2">
-                  <img src="/quotation-mark.svg" />
+                  <Image
+                    className="w-full"
+                    src="/quotation-mark.svg"
+                    alt="quotation mark"
+                    width={100}
+                    height={100}
+                  />
                 </div>
                 <div>
                   <p className="text-2xl text-wwr_gray_storm leading-10 font-light">
@@ -114,9 +120,14 @@ const Story = async ({ params }) => {
                   <div className="flex text-wwr_rich_black text-lg pt-8">
                     <div>{`Name, ${story?.acf?.city}`} </div>
                   </div>
+                  {/* Social Share Buttons */}
+                  <div className="font-light text-xl flex gap-4 items-center text-wwr_gray_storm pt-16 pb-4">
+                    <div>SHARE STORY:</div>
+                    <SocialShareIcons />
+                  </div>
                   <div className="h-px opacity-10 w-full bg-wwr_rich_black"></div>
 
-                  <Image src="/closed-captions.svg" width={30} height={30} />
+                  {/* <Image src="/closed-captions.svg" width={30} height={30} alt="closed caption" /> */}
                 </div>
               </div>
             </div>
@@ -136,7 +147,6 @@ const Story = async ({ params }) => {
           </div>
         </div>
       </div>
-      {/* Related Stories */}
     </div>
   );
 };
