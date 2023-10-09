@@ -32,7 +32,7 @@ const Tabs = async ({ selectedTopic, numberOfTopicStories = 0, lang }) => {
         selectedTopic={selectedTopic}
         lang={lang}
       />
-      <div className="text-xl text-wwr_yellow_orange flex items-center p-2">
+      <div className="text-md px-2 py-1 lg:text-xl text-wwr_yellow_orange flex items-center lg:py-2">
         Stories: {numberOfTopicStories}
       </div>
     </div>
