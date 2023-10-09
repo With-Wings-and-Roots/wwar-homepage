@@ -142,7 +142,7 @@ export async function getAllStories(lang) {
 
   storiesList = [...storiesList, ...stories];
 
-  if (storiesList.length >= counter) await getAllStories();
+  if (storiesList.length >= counter) await getAllStories(lang);
   if (storiesList.length < counter) return storiesList;
 }
 

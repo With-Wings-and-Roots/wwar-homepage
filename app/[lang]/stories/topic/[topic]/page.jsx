@@ -6,6 +6,7 @@ import {
   getTopicStories,
 } from "@/app/utilities/stories";
 import Tabs from "@/app/components/stories/Tabs";
+import Header from "@/app/components/header/header";
 
 const Topic = async ({ params }) => {
   let numberOfTopicStories = 0;
@@ -34,14 +35,17 @@ const Topic = async ({ params }) => {
   }
 
   return (
-    <div className="w-4/5 m-auto">
-      <Tabs
-        lang={params.lang}
-        selectedTopic={params.topic}
-        numberOfTopicStories={numberOfTopicStories}
-      />
-      <StoryCards stories={topicStories} lang={params.lang} />
-    </div>
+    <>
+      <Header />
+      <div className="w-4/5 m-auto">
+        <Tabs
+          lang={params.lang}
+          selectedTopic={params.topic}
+          numberOfTopicStories={numberOfTopicStories}
+        />
+        <StoryCards stories={topicStories} lang={params.lang} />
+      </div>
+    </>
   );
 };
 

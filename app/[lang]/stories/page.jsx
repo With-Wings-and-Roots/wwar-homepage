@@ -1,9 +1,7 @@
-const {
-  default: StoriesPageContainer,
-} = require("../../components/stories/StoriesPageContainer");
+import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 
-const Stories = (props) => {
-  return <StoriesPageContainer lang={props.params.lang} />;
+const Stories = ({ params }) => {
+  return <StoriesPageContainer lang={params.lang} />;
 };
 
 export default Stories;

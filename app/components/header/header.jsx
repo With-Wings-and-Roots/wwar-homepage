@@ -1,6 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const pathname = usePathname();
@@ -21,16 +22,31 @@ const Header = () => {
           <li className="hover:text-wwr_white cursor-pointer">Education</li>
           <li className="hover:text-wwr_white cursor-pointer">Take Part</li>
           <li className="hover:text-wwr_white cursor-pointer">About</li>
+          {/* <li>
+            <Link
+              href={`/en/${pathnameWithoutLang}`}
+              className="hover:text-wwr_white cursor-pointer"
+            >
+              EN
+            </Link>
+            /
+            <Link
+              href={`/de/${pathnameWithoutLang}`}
+              className="hover:text-wwr_white cursor-pointer"
+            >
+              DE
+            </Link>
+          </li> */}
           <li>
             <a
-              href={`/en/${pathnameWithoutLang}`}
+              href={`/en/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               EN
             </a>
             /
             <a
-              href={`/de/${pathnameWithoutLang}`}
+              href={`/de/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               DE

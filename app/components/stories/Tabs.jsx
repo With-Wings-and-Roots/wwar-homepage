@@ -11,7 +11,7 @@ const Tabs = async ({ selectedTopic, numberOfTopicStories = 0, lang }) => {
   return (
     <div className="flex flex-wrap gap-0.5 my-8">
       <SingleTabButton
-        buttonText={"Featured"}
+        buttonText={lang === "de" ? "Ausgewählte Geschichten" : "Featured"}
         slug={"featured"}
         selectedTopic={selectedTopic}
         lang={lang}
@@ -27,7 +27,7 @@ const Tabs = async ({ selectedTopic, numberOfTopicStories = 0, lang }) => {
         </React.Fragment>
       ))}
       <SingleTabButton
-        buttonText={"All Stories"}
+        buttonText={lang === "en" ? "All Stories" : "Alle Geschichten"}
         slug={"all"}
         selectedTopic={selectedTopic}
         lang={lang}

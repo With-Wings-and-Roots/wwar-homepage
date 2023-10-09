@@ -4,15 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import parse from "html-react-parser";
 
-const StoryCard = ({
-  title = "Test Title",
-  name = "Test Name",
-  city = "",
-  slug,
-  lang,
-  color,
-  person,
-}) => {
+const StoryCard = ({ title, name, city, slug, lang, color, person }) => {
   const [hovered, setHovered] = useState(false);
 
   return (

@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
-import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
+import StoriesPageContainer from "@/app/components/stories/StoriesPageContainerEn";
 import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import {
   getAllStories,
@@ -32,7 +32,7 @@ const Story = async ({ params }) => {
 
   const story = stories?.filter((story) => story.slug === params.story)[0];
 
-  const person = await getPersonById(story.person[0]);
+  const person = await getPersonById(story?.person[0]);
 
   let relatedStories = [];
 
