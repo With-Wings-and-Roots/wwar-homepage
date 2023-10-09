@@ -1,17 +1,21 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
 
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
+import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import { getAllStories, findIndexBySlug } from "@/app/utilities/stories";
 
 const Story = async ({ params }) => {
   const stories = await getAllStories();
-  const storiesLength = await stories.length;
+  const storiesLength = stories.length;
 
-  const storyIndex = parseInt(await findIndexBySlug(stories, params.story));
+  const storyIndexData = await findIndexBySlug(stories, params.story);
+
+  const storyIndex = parseInt(storyIndexData);
 
   const nextSlug =
     storyIndex === storiesLength - 1
@@ -23,6 +27,15 @@ const Story = async ({ params }) => {
       : stories[storyIndex - 1].slug;
 
   const story = stories?.filter((story) => story.slug === params.story)[0];
+
+  let relatedStories = [];
+
+  const relatedStoriesIdList = story.acf.related_stories;
+
+  for (let id of relatedStoriesIdList) {
+    const storyWithId = stories.filter((story) => story.id === id)[0];
+    if (storyWithId) relatedStories.push(storyWithId);
+  }
 
   const terms = story?._links["acf:term"];
 
@@ -40,15 +53,15 @@ const Story = async ({ params }) => {
   }
 
   return (
-    <div className="relative overflow-hidden">
-      <div className="absolute z-10 top-0 left-0">
+    <div className="relative overflow-hidden pb-10">
+      <div className="fixed z-10 top-0 left-0">
         <StoriesPageContainer />
       </div>
       <div
-        className="w-full h-screen fixed top-0 left-0 z-40 opacity-30"
+        className="w-full h-screen fixed top-0 left-0 z-40 opacity-80"
         style={{ background: story.acf.color }}
       ></div>
-      <div className="w-full min-h-[100vh] relative flex justify-center z-50">
+      <div className="max-w-[1500px] min-h-[100vh] m-auto relative flex justify-center z-50 mt-16">
         <div className="flex items-center min-w-[100px] p-4 text-6xl justify-center h-[100vh] text-wwr_white relative">
           <div className="fixed">
             <Link href={`./${prevSlug}`}>
@@ -66,7 +79,7 @@ const Story = async ({ params }) => {
             </Link>
           </div>
 
-          <div className="px-20">
+          <div className="px-20 pb-10">
             <div className="text-4xl pb-6">{parse(story?.title?.rendered)}</div>
             <div className="flex gap-8">
               <div className=" w-8/12">
@@ -78,14 +91,14 @@ const Story = async ({ params }) => {
                     loading="lazy"
                   ></iframe>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-1 mt-10">
                   {categories.map((category, index) => (
                     <React.Fragment key={index}>
-                      <div className="bg-wwr_yellow_orange hover:bg-wwr_rich_black px-4 py-2 text-wwr_white hover:text-wwr_yellow_orange transition-all duration-500">
-                        <Link href={`./topic/${category.slug}`}>
+                      <Link href={`./topic/${category.slug}`}>
+                        <div className="bg-wwr_yellow_orange hover:bg-wwr_rich_black px-4 py-2 text-wwr_white hover:text-wwr_yellow_orange transition-all duration-500">
                           {parse(category.name)}
-                        </Link>
-                      </div>
+                        </div>
+                      </Link>
                     </React.Fragment>
                   ))}
                 </div>
@@ -101,7 +114,16 @@ const Story = async ({ params }) => {
                   <div className="flex text-wwr_rich_black text-lg pt-8">
                     <div>{`Name, ${story?.acf?.city}`} </div>
                   </div>
+                  <div className="h-px opacity-10 w-full bg-wwr_rich_black"></div>
+
+                  <Image src="/closed-captions.svg" width={30} height={30} />
                 </div>
+              </div>
+            </div>
+            <div>
+              <h3 className="mb-8 mt-16 text-xl font-light">Related Stories</h3>
+              <div>
+                <StoryCards stories={relatedStories} lang={params.lang} />
               </div>
             </div>
           </div>
@@ -114,6 +136,7 @@ const Story = async ({ params }) => {
           </div>
         </div>
       </div>
+      {/* Related Stories */}
     </div>
   );
 };
