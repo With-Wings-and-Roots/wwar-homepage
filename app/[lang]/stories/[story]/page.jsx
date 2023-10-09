@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
-import StoriesPageContainer from "@/app/components/stories/StoriesPageContainerEn";
+import Stories from "../page";
 import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import {
   getAllStories,
@@ -61,7 +61,7 @@ const Story = async ({ params }) => {
   return (
     <div className="relative overflow-hidden lg:py-10">
       <div className="hidden sm:block fixed z-10 top-0 left-0">
-        <StoriesPageContainer />
+        <Stories lang={params.lang} />
       </div>
       <div
         className="w-full h-screen fixed top-0 left-0 z-40 opacity-80"

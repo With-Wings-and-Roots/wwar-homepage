@@ -38,19 +38,19 @@ const Header = () => {
             </Link>
           </li> */}
           <li>
-            <a
+            <Link
               href={`/en/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               EN
-            </a>
+            </Link>
             /
-            <a
+            <Link
               href={`/de/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               DE
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
