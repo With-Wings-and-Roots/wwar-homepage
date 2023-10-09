@@ -21,7 +21,9 @@ const StoryCard = ({
         onMouseLeave={() => setHovered(false)}
         className=" w-full h-full flex flex-col justify-between "
       >
-        <div className={`text-[2vw] relative z-10 max-w-max leading-tight`}>
+        <div
+          className={`text-lg sm:text-[2vw] lg:text-2xl relative z-10 max-w-max leading-tight`}
+        >
           <div
             className={`${
               hovered ? "w-full" : "w-0 "

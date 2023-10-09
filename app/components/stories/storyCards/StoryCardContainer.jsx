@@ -8,7 +8,7 @@ const StoryCardContainer = async ({ title, slug, city, lang, color }) => {
   const mediaURL = await getStoryMediaByMediaId(mediaJson);
 
   return (
-    <div className="relative hover:scale-105 cursor-pointer transition-all duration-500 w-full min-h-[170px] lg:min-h-[200px] p-4 font-light text-wwr_white overflow-hidden">
+    <div className="relative hover:scale-105 cursor-pointer transition-all duration-500 w-full min-h-[170px] lg:min-h-[12vw] p-4 font-light text-wwr_white overflow-hidden">
       <Image
         className="absolute left-0 top-0 min-w-full min-h-full"
         src={mediaURL}
