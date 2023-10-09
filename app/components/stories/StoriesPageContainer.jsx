@@ -1,23 +1,15 @@
 import React from "react";
 import Tabs from "./Tabs";
-// import StoryCards from "./storyCards/StoryCards";
 import StoryCardContainer from "./storyCards/StoryCardContainer";
-// import { getAllStories } from "../../utilities/stories";
+import { getAllStories } from "../../utilities/stories";
 import Header from "../header/header";
 
 const StoriesPageContainer = async ({ lang }) => {
-  // const stories = await getAllStories(lang);
-  // const allStoriesLength = stories.length;
   let stories;
   let allStoriesLength = 0;
 
-  // stories = await getAllStories(lang);
+  stories = await getAllStories(lang);
 
-  if (lang === "en") {
-    stories = await getStoriesE();
-  } else {
-    stories = await getStoriesD();
-  }
   allStoriesLength = stories.length;
 
   return (
@@ -52,46 +44,3 @@ const StoriesPageContainer = async ({ lang }) => {
 };
 
 export default StoriesPageContainer;
-
-async function getStoriesE(offset) {
-  const res = await fetch(
-    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&per_page=100`,
-    {
-      next: {
-        revalidate: 600,
-      },
-    }
-  );
-  return res.json();
-}
-
-async function getStoriesD(offset) {
-  const res = await fetch(
-    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=de&per_page=100`,
-    {
-      next: {
-        revalidate: 600,
-      },
-    }
-  );
-  return res.json();
-}
-
-let storiesList = [];
-let counter = 0;
-let stories = [];
-
-async function getAllStories(lang) {
-  counter += 100;
-
-  if (lang === "de") {
-    stories = await getStoriesD(counter - 100);
-  } else {
-    stories = await getStoriesE(counter - 100);
-  }
-
-  storiesList = [...storiesList, ...stories];
-
-  if (storiesList.length >= counter) await getAllStories(lang);
-  if (storiesList.length < counter) return storiesList;
-}
