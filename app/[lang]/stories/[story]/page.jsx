@@ -122,7 +122,7 @@ const Story = async ({ params }) => {
                     {story?.acf?.excerpt}
                   </p>
                   <div className="flex text-wwr_rich_black text-lg pt-8">
-                    <div className="font-semibold">{person.name} </div>
+                    <div className="font-semibold">{person?.name} </div>
                     <div>{story?.acf?.city ? ", " + story.acf.city : ""}</div>
                   </div>
                   {/* Social Share Buttons */}

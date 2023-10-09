@@ -11,8 +11,6 @@ const StoriesPageContainer = async ({ lang }) => {
   let stories;
   let allStoriesLength = 0;
 
-  console.log(lang);
-
   // stories = await getAllStories(lang);
 
   if (lang === "en") {
