@@ -1,12 +1,6 @@
-"use client";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 
 const Header = () => {
-  const pathname = usePathname();
-  const pathnameWithoutLang = pathname.slice(4);
-
   return (
     <div className="bg-wwr_yellow_orange">
       <div className="w-4/5 m-auto flex justify-between items-end py-3">
@@ -22,35 +16,21 @@ const Header = () => {
           <li className="hover:text-wwr_white cursor-pointer">Education</li>
           <li className="hover:text-wwr_white cursor-pointer">Take Part</li>
           <li className="hover:text-wwr_white cursor-pointer">About</li>
-          {/* <li>
-            <Link
-              href={`/en/${pathnameWithoutLang}`}
-              className="hover:text-wwr_white cursor-pointer"
-            >
-              EN
-            </Link>
-            /
-            <Link
-              href={`/de/${pathnameWithoutLang}`}
-              className="hover:text-wwr_white cursor-pointer"
-            >
-              DE
-            </Link>
-          </li> */}
+
           <li>
-            <Link
+            <a
               href={`/en/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               EN
-            </Link>
+            </a>
             /
-            <Link
+            <a
               href={`/de/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               DE
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

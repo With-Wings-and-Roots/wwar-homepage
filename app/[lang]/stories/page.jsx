@@ -1,4 +1,3 @@
-"use client";
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 
 const Stories = ({ params, lang }) => {
