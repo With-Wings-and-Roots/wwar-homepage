@@ -92,7 +92,7 @@ const Story = async ({ params }) => {
                     className="w-full h-[52vw] sm:h-[44vw] md:h-[30vw] lg:h-96"
                     src={story?.acf?.video_embed}
                     sandbox="allow-scripts allow-modal"
-                    loading="lazy"
+                    // loading="lazy"
                   ></iframe>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-4 md:mt-10">
