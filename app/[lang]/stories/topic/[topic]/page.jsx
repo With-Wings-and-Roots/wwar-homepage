@@ -4,6 +4,7 @@ import {
   getAllStories,
   getTopicId,
   getTopicStories,
+  fetchAllTopics,
 } from "@/app/utilities/stories";
 import Tabs from "@/app/components/stories/Tabs";
 import Header from "@/app/components/header/header";
@@ -50,3 +51,21 @@ const Topic = async ({ params }) => {
 };
 
 export default Topic;
+
+export async function generateStaticParams({ params: { lang } }) {
+  const topics = await fetchAllTopics(lang);
+
+  const topicsSlug = topics.map((topic) => ({
+    topic: topic.slug,
+  }));
+
+  return [
+    ...topicsSlug,
+    {
+      topic: "all",
+    },
+    {
+      topic: "featured",
+    },
+  ];
+}

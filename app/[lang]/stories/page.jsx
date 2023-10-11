@@ -5,3 +5,12 @@ const Stories = ({ params, lang }) => {
 };
 
 export default Stories;
+
+export async function generateStaticParams() {
+  return [
+    {
+      lang: "en",
+    },
+    { lang: "de" },
+  ];
+}
