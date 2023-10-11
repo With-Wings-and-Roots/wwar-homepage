@@ -5,7 +5,7 @@ import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
-import Stories from "../page";
+import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import {
   getAllStories,
@@ -14,7 +14,7 @@ import {
 } from "@/app/utilities/stories";
 
 const Story = async ({ params }) => {
-  const stories = await getAllStories(params.lang);
+  const stories = [...(await getAllStories(params.lang))];
   const storiesLength = stories.length;
 
   const storyIndexData = await findIndexBySlug(stories, params.story);
@@ -23,24 +23,24 @@ const Story = async ({ params }) => {
 
   const nextSlug =
     storyIndex === storiesLength - 1
-      ? stories[0].slug
+      ? [...stories][0].slug
       : stories[storyIndex + 1].slug;
   const prevSlug =
     storyIndex < 1
       ? stories[storiesLength - 1].slug
       : stories[storyIndex - 1].slug;
 
-  const story = stories.filter((story) => story.slug === params.story)[0];
+  const story = [...stories.filter((story) => story.slug === params.story)][0];
 
-  const person = await getPersonById(story?.person[0]);
+  const person = await getPersonById([...story?.person][0]);
 
   let relatedStories = [];
 
   const relatedStoriesIdList = story?.acf?.related_stories || [];
 
   for (let id of relatedStoriesIdList) {
-    const storyWithId = stories.filter((story) => story.id === id)[0];
-    if (storyWithId) relatedStories.push(storyWithId);
+    const storyWithId = stories.filter((story) => story.id === id);
+    relatedStories = [...relatedStories, ...storyWithId];
   }
 
   const terms = story?._links["acf:term"];
@@ -61,7 +61,7 @@ const Story = async ({ params }) => {
   return (
     <div className="relative overflow-hidden lg:py-10">
       <div className="hidden sm:block fixed z-10 top-0 left-0">
-        <Stories lang={params.lang} />
+        <StoriesPageContainer lang={params.lang} />
       </div>
       <div
         className="w-full h-screen fixed top-0 left-0 z-40 opacity-80"
@@ -137,15 +137,20 @@ const Story = async ({ params }) => {
                 </div>
               </div>
             </div>
-            <div>
-              <h3 className="mb-8 mt-16 text-xl font-light">
-                {params.lang === "en" && "Related Stories"}
-                {params.lang === "de" && "Ähnliche Beiträge"}
-              </h3>
-              <div className="">
-                <StoryCards stories={relatedStories} lang={params.lang} />
+            {relatedStories.length > 1 && (
+              <div>
+                <h3 className="mb-8 mt-16 text-xl font-light">
+                  {params.lang === "en" && "Related Stories"}
+                  {params.lang === "de" && "Ähnliche Beiträge"}
+                </h3>
+                <div className="">
+                  <StoryCards
+                    stories={[...relatedStories]}
+                    lang={params.lang}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

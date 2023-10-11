@@ -1,7 +1,9 @@
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 
-const Stories = ({ params, lang }) => {
-  return <StoriesPageContainer lang={lang || params.lang} />;
+const Stories = ({ params }) => {
+  const lang = params.lang;
+
+  return <StoriesPageContainer lang={lang} />;
 };
 
 export default Stories;

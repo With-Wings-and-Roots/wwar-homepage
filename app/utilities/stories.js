@@ -40,8 +40,8 @@ async function getStoryMediaEn(slug) {
       },
     }
   );
-  const data = await res.json();
-  return data[0]?.featured_media;
+  const data = [...(await res.json())];
+  return data[0].featured_media;
 }
 
 async function getStoryMediaDe(slug) {
@@ -53,8 +53,8 @@ async function getStoryMediaDe(slug) {
       },
     }
   );
-  const data = await res.json();
-  return data[0]?.featured_media;
+  const data = [...(await res.json())];
+  return data[0].featured_media;
 }
 
 async function getStoryMediaByMediaIdEn(mediaId) {
@@ -179,9 +179,9 @@ export async function fetchAllTopics(lang) {
 export async function getTopicId(lang, topicSlug) {
   const allTopics = await fetchAllTopics(lang);
 
-  const selectedTopic = allTopics.filter(
-    (topic) => topic.slug === topicSlug
-  )[0];
+  const selectedTopic = [
+    ...allTopics.filter((topic) => topic.slug === topicSlug),
+  ][0];
 
   return selectedTopic?.id;
 }
@@ -204,6 +204,6 @@ export async function getPersonById(personId) {
     }
   );
   const allPersons = await res.json();
-  const person = allPersons.filter((person) => person.id === personId)[0];
-  return person;
+  const person = [...allPersons.filter((person) => person.id === personId)];
+  return person[0];
 }
