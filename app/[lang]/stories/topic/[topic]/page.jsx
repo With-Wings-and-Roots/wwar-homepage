@@ -52,20 +52,25 @@ const Topic = async ({ params }) => {
 
 export default Topic;
 
-export async function generateStaticParams({ params: { lang } }) {
-  const topics = await fetchAllTopics(lang);
+export async function generateStaticParams() {
+  const topicsEn = await fetchAllTopics("en");
+  const topicsDe = await fetchAllTopics("de");
 
-  const topicsSlug = topics.map((topic) => ({
+  const topicsSlugEn = topicsEn.map((topic) => ({
+    lang: "en",
+    topic: topic.slug,
+  }));
+  const topicsSlugDe = topicsDe.map((topic) => ({
+    lang: "de",
     topic: topic.slug,
   }));
 
   return [
-    ...topicsSlug,
-    {
-      topic: "all",
-    },
-    {
-      topic: "featured",
-    },
+    ...topicsSlugEn,
+    ...topicsSlugDe,
+    { lang: "en", topic: "all" },
+    { lang: "en", topic: "featured" },
+    { lang: "de", topic: "all" },
+    { lang: "de", topic: "featured" },
   ];
 }

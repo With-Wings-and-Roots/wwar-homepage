@@ -171,10 +171,18 @@ const NavigationCircle = ({ slug, children }) => (
 
 export default Story;
 
-export async function generateStaticParams({ params: { lang } }) {
-  const stories = await getAllStories(lang);
+export async function generateStaticParams() {
+  const storiesEn = await getAllStories("en");
+  const storiesDe = await getAllStories("de");
 
-  return stories.map((story) => ({
+  const enStories = storiesEn.map((story) => ({
+    lang: "en",
     story: story.slug,
   }));
+  const deStories = storiesDe.map((story) => ({
+    lang: "de",
+    story: story.slug,
+  }));
+
+  return [...enStories, ...deStories];
 }

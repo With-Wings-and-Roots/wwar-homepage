@@ -1,4 +1,4 @@
-export async function getAllStories(lang) {
+export async function getAllStories(lang = "en") {
   let counter = 100;
   let page = 1;
   let stories = [];
@@ -183,7 +183,7 @@ export async function getTopicId(lang, topicSlug) {
     (topic) => topic.slug === topicSlug
   )[0];
 
-  return selectedTopic.id;
+  return selectedTopic?.id;
 }
 
 export async function getTopicStories(lang, topicId) {
