@@ -30,7 +30,7 @@ const Story = async ({ params }) => {
       ? stories[storiesLength - 1].slug
       : stories[storyIndex - 1].slug;
 
-  const story = stories?.filter((story) => story.slug === params.story)[0];
+  const story = stories.filter((story) => story.slug === params.story)[0];
 
   const person = await getPersonById(story?.person[0]);
 

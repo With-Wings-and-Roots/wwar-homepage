@@ -5,7 +5,7 @@ import StoryCardContainer from "./StoryCardContainer";
 const StoryCards = ({ stories, lang }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-      {stories?.map((story, index) => {
+      {stories.map((story, index) => {
         return (
           <React.Fragment key={index}>
             <StoryCardContainer
