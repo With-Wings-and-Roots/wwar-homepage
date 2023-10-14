@@ -16,7 +16,8 @@ const slice = createSlice({
     },
 
     activatedStories: (storiesList, action) => {
-      //  const activatedList = storiesList.filter(arrayItem=>{})
+      storiesList.activeStories = [];
+      storiesList.activeStories.push(...action.payload.stories);
     },
     deleteAllStories: (storiesList, action) => {
       storiesList.allStories = [];
@@ -24,11 +25,7 @@ const slice = createSlice({
   },
 });
 
-export const {
-  storiesAdded,
-
-  activatedStories,
-  deleteAllStories,
-} = slice.actions;
+export const { storiesAdded, activatedStories, deleteAllStories } =
+  slice.actions;
 
 export default slice.reducer;

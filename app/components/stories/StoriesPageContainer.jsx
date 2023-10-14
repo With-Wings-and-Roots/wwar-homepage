@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { storiesAdded } from "@/app/store/stories";
+import { storiesAdded, activatedStories } from "@/app/store/stories";
 import { mediaAdded } from "@/app/store/media";
 import { personsAdded } from "@/app/store/persons";
 import StoriesContainer from "./StoriesContainer";
@@ -50,6 +50,8 @@ const StoriesPageContainer = ({
   useEffect(() => {
     dispatch(topicsAdded({ topics }), [topics, dispatch]);
   });
+
+  dispatch(activatedStories({ stories }));
 
   return (
     <>

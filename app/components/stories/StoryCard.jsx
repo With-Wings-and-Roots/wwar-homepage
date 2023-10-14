@@ -17,13 +17,17 @@ const StoryCard = ({ title, city, slug, lang, color, personName }) => {
         <div
           className={`text-lg sm:text-[2vw] lg:text-2xl relative z-10 max-w-max leading-tight`}
         >
-          <div
-            className={`${
-              hovered ? "w-full" : "w-0 "
-            } absolute top-0 left-0 h-full opacity-50 transition-all duration-500 z-10`}
-            style={{ background: color }}
-          ></div>
-          <h2 className="relative z-20">{parse(title)}</h2>
+          <span
+            className="relative opacity-50 z-20 text-transparent bg-no-repeat no-underline transition-all duration-500 ease-out bg-opacity-10"
+            style={{
+              backgroundSize: hovered ? "100% 100%" : "0% 100%",
+
+              backgroundImage: `linear-gradient(${color}, ${color})`,
+            }}
+          >
+            {parse(title)}
+          </span>
+          <span className="absolute top-0 left-0 z-20">{parse(title)}</span>
         </div>
         <div className="text-base relative flex ">
           <div className="font-semibold">{personName} </div>

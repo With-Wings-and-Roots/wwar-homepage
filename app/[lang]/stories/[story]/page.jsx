@@ -118,7 +118,7 @@ const Story = async ({ params }) => {
                   />
                 </div>
                 <div>
-                  <p className="text-xl lg:text-2xl text-wwr_gray_storm leading-10 font-light">
+                  <p className="text-xl lg:text-2xl text-wwr_gray_storm leading-10 font-light ">
                     {story?.acf?.excerpt}
                   </p>
                   <div className="flex text-wwr_rich_black text-lg pt-8">

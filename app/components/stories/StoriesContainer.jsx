@@ -6,66 +6,79 @@ import { BsSearch } from "react-icons/bs";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { storiesCounted } from "@/app/store/selectedStory";
-import { storySelected } from "@/app/store/selectedStory";
+import { storiesCounted, storySelected } from "@/app/store/selectedStory";
+
+import { activatedStories } from "@/app/store/stories";
 
 import StoryCard from "./StoryCard";
 
 const StoriesContainer = () => {
   const dispatch = useDispatch();
-  const [storiesToRender, setStoriesToRender] = useState([]);
 
-  const [searchValue, setSearchValue] = useState("");
-
+  // useSelectors
   const language = useSelector((state) => state.entities.language.language);
   const allStories = useSelector((state) => state.entities.stories.allStories);
-
-  let stories = allStories;
-
   const selectedTopic = useSelector(
     (state) => state.entities.selectedStory.selectedStory
   );
-
   const selectedTopicId = useSelector(
     (state) => state.entities.selectedStory.selectedStoryId
   );
-
   const allMedia = useSelector((state) => state.entities.media.allMedia);
-
   const allPersons = useSelector((state) => state.entities.persons.allPersons);
+  const storiesToRender = useSelector(
+    (state) => state.entities.stories.activeStories
+  );
 
-  if (selectedTopic !== "all" && selectedTopic !== "featured") {
-    stories = allStories.filter((story) =>
-      story.story_topic.includes(selectedTopicId)
-    );
-  }
-  if (selectedTopic === "featured") {
-    stories = allStories.filter((story) => story.acf.featured_story === true);
-  }
+  useEffect(() => {
+    if (selectedTopic === "all") {
+      dispatch(activatedStories({ stories: allStories }));
+    }
+
+    if (selectedTopic !== "all" && selectedTopic !== "featured") {
+      dispatch(
+        activatedStories({
+          stories: allStories.filter((story) =>
+            story.story_topic.includes(selectedTopicId)
+          ),
+        })
+      );
+    }
+    if (selectedTopic === "featured") {
+      dispatch(
+        activatedStories({
+          stories: allStories.filter(
+            (story) => story.acf.featured_story === true
+          ),
+        })
+      );
+    }
+  }, [selectedTopic, dispatch]);
 
   const handleInput = (e) => {
-    setSearchValue(e.target.value.toLowerCase());
     dispatch(
       storySelected({
         selection: "all",
         id: null,
       })
     );
+    const searchValue = e.target.value.toLowerCase();
+    if (searchValue.length > 0) {
+      dispatch(
+        activatedStories({
+          stories: allStories.filter((story) =>
+            story.title.rendered.toLowerCase().includes(searchValue)
+          ),
+        })
+      );
+    } else {
+      dispatch(activatedStories({ stories: allStories }));
+    }
   };
 
   useEffect(() => {
-    if (searchValue.length > 1) {
-      setStoriesToRender(
-        allStories.filter((story) =>
-          story.title.rendered.toLowerCase().includes(searchValue)
-        )
-      );
-    } else {
-      setStoriesToRender(stories);
-    }
-
     dispatch(storiesCounted({ count: storiesToRender.length }));
-  }, [searchValue, dispatch, stories, allStories, storiesToRender.length]);
+  }, [dispatch, storiesToRender]);
 
   return (
     <div>
@@ -76,12 +89,12 @@ const StoriesContainer = () => {
           type="text"
           onChange={handleInput}
         />
-        <div className="text-2xl text-wwr_white  h-full bg-wwr_rich_black px-2  flex items-center p-0">
+        <div className="text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-0">
           <BsSearch />
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-        {storiesToRender.length > 0 &&
+        {storiesToRender &&
           storiesToRender.map((story, index) => {
             const mediaUrl = allMedia.filter(
               (media) => media.id === story.featured_media
@@ -99,9 +112,16 @@ const StoriesContainer = () => {
                     src={mediaUrl}
                     width={200}
                     height={100}
-                    alt={"Cover "}
+                    alt={"Cover-" + story.slug}
+                    placeholder="blur"
+                    blurDataURL="/colors.png"
                   ></Image>
-                  <div className="absolute left-0 top-0 w-full h-full bg-gradient-to-b from-transparent to-wwr_yellow_orange opacity-30"></div>
+                  <div
+                    className="absolute left-0 top-0 w-full h-full opacity-30"
+                    style={{
+                      background: `linear-gradient(to bottom, transparent 0%, ${story.acf?.color} 100%)`,
+                    }}
+                  ></div>
 
                   <StoryCard
                     title={story.title.rendered}
