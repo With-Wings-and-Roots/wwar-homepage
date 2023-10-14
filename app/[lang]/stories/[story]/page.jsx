@@ -5,16 +5,17 @@ import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
-import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
-import StoryCards from "@/app/components/stories/storyCards/StoryCards";
 import {
   getAllStories,
   findIndexBySlug,
   getPersonById,
 } from "@/app/utilities/stories";
+// import StoriesPageWrapper from "@/app/components/stories/StoriesPageWrapper";
+import Header from "@/app/components/header/header";
 
 const Story = async ({ params }) => {
-  const stories = [...(await getAllStories(params.lang))];
+  const stories = await getAllStories(params.lang);
+
   const storiesLength = stories.length;
 
   const storyIndexData = await findIndexBySlug(stories, params.story);
@@ -32,7 +33,7 @@ const Story = async ({ params }) => {
 
   const story = [...stories.filter((story) => story.slug === params.story)][0];
 
-  const person = await getPersonById([...story?.person][0]);
+  const person = await getPersonById(story?.person[0]);
 
   let relatedStories = [];
 
@@ -61,7 +62,8 @@ const Story = async ({ params }) => {
   return (
     <div className="relative overflow-hidden lg:py-10">
       <div className="hidden sm:block fixed z-10 top-0 left-0">
-        <StoriesPageContainer lang={params.lang} />
+        {/* <StoriesPageWrapper lang={params.lang} /> */}
+        <Header />
       </div>
       <div
         className="w-full h-screen fixed top-0 left-0 z-40 opacity-80"
@@ -96,11 +98,11 @@ const Story = async ({ params }) => {
                 <div className="flex flex-wrap gap-1 mt-4 md:mt-10">
                   {categories.map((category, index) => (
                     <React.Fragment key={index}>
-                      <Link href={`./topic/${category.slug}`}>
-                        <div className="w-max bg-wwr_yellow_orange hover:bg-wwr_rich_black px-4 py-2 text-sm text-wwr_white hover:text-wwr_yellow_orange transition-all duration-500">
+                      <div>
+                        <div className="w-max bg-wwr_yellow_orange px-4 py-2 text-sm text-wwr_white transition-all duration-500">
                           {parse(category.name)}
                         </div>
-                      </Link>
+                      </div>
                     </React.Fragment>
                   ))}
                 </div>
@@ -144,10 +146,10 @@ const Story = async ({ params }) => {
                   {params.lang === "de" && "Ähnliche Beiträge"}
                 </h3>
                 <div className="">
-                  <StoryCards
+                  {/* <StoryCards
                     stories={[...relatedStories]}
                     lang={params.lang}
-                  />
+                  /> */}
                 </div>
               </div>
             )}

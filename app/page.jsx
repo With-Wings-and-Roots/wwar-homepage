@@ -1,5 +1,3 @@
-const index = () => {
-  return <div>index</div>;
-};
-
-export default index;
+export default function Home() {
+  return <main className="">START</main>;
+}

@@ -1,10 +1,10 @@
-export async function getAllStories(lang = "en") {
+async function getAllStoriesEn() {
   let counter = 100;
   let page = 1;
   let stories = [];
   let data;
   let res = await fetch(
-    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&per_page=100`,
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&per_page=100`,
     {
       next: {
         revalidate: 600,
@@ -14,10 +14,10 @@ export async function getAllStories(lang = "en") {
   data = await res.json();
   stories = [...stories, ...data];
 
-  while (data.length >= counter) {
+  while (data.length >= counter && page <= 4) {
     page++;
     res = await fetch(
-      `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&per_page=100&page=${page}`,
+      `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=en&per_page=100&page=${page}`,
       {
         next: {
           revalidate: 600,
@@ -29,6 +29,168 @@ export async function getAllStories(lang = "en") {
   }
 
   return stories;
+}
+async function getAllStoriesDe() {
+  let counter = 100;
+  let page = 1;
+  let stories = [];
+  let data;
+  let res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=de&per_page=100`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  data = await res.json();
+  stories = [...stories, ...data];
+
+  while (data.length >= counter && page <= 4) {
+    page++;
+    res = await fetch(
+      `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=de&per_page=100&page=${page}`,
+      {
+        next: {
+          revalidate: 600,
+        },
+      }
+    );
+    data = await res.json();
+    stories = [...stories, ...data];
+  }
+
+  return stories;
+}
+export async function getAllStories(lang = "en") {
+  if (lang === "de") {
+    return await getAllStoriesDe();
+  } else {
+    return await getAllStoriesEn();
+  }
+}
+
+// async function fetchAllTopicsEn() {
+//   const res = await fetch(
+//     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100&lang=en`,
+//     {
+//       next: {
+//         revalidate: 600,
+//       },
+//     }
+//   );
+//   const data = await res.json();
+//   return data;
+// }
+
+// async function fetchAllTopicsDe() {
+//   const res = await fetch(
+//     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100&lang=de`,
+//     {
+//       next: {
+//         revalidate: 600,
+//       },
+//     }
+//   );
+//   const data = await res.json();
+//   return data;
+// }
+
+export async function fetchAllTopics(lang = "en") {
+  if (lang === "de") {
+    return await fetchAllTopicsDe();
+  } else {
+    return await fetchAllTopicsEn();
+  }
+}
+
+async function getAllMediaEn() {
+  let counter = 100;
+  let page = 1;
+  let allMedia = [];
+  let data;
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/media?per_page=100&lang=en`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  data = await res.json();
+  allMedia = [...allMedia, ...data];
+
+  while (allMedia.length >= counter) {
+    counter += 100;
+    page++;
+    const tempRes = await fetch(
+      `https://wwar2022.backslashseven.com/wp-json/wp/v2/media?per_page=100&lang=en&page=${page}`,
+      {
+        next: {
+          revalidate: 600,
+        },
+      }
+    );
+    const tempData = await tempRes.json();
+    allMedia = [...allMedia, ...tempData];
+  }
+
+  return allMedia;
+}
+
+async function getAllMediaDe() {
+  let counter = 100;
+  let page = 1;
+  let allMedia = [];
+  let data;
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/media?per_page=100&lang=de`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  data = await res.json();
+  allMedia = [...allMedia, ...data];
+
+  while (allMedia.length >= counter) {
+    counter += 100;
+    page++;
+    const tempRes = await fetch(
+      `https://wwar2022.backslashseven.com/wp-json/wp/v2/media?per_page=100&lang=de&page=${page}`,
+      {
+        next: {
+          revalidate: 600,
+        },
+      }
+    );
+    const tempData = await tempRes.json();
+    allMedia = [...allMedia, ...tempData];
+  }
+
+  return allMedia;
+}
+
+export async function getAllMedia(lang = "en") {
+  if (lang === "de") {
+    return await getAllMediaDe();
+  } else {
+    return await getAllMediaEn();
+  }
+}
+
+export async function getAllPersons() {
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wp/v2/person?lang=en&per_page=100`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  const allPersons = await res.json();
+  return allPersons;
 }
 
 async function getStoryMediaEn(slug) {
@@ -166,14 +328,6 @@ export async function getStoryMediaByMediaId(lang, mediaId) {
 
 export function findIndexBySlug(array, slugTerm) {
   return array.findIndex((item) => item.slug === slugTerm);
-}
-
-export async function fetchAllTopics(lang) {
-  if (lang === "de") {
-    return await fetchAllTopicsDe();
-  } else {
-    return await fetchAllTopicsEn();
-  }
 }
 
 export async function getTopicId(lang, topicSlug) {

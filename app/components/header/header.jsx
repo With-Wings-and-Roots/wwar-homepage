@@ -1,9 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 
 const Header = () => {
   return (
-    <div className="bg-wwr_yellow_orange">
+    <div className="bg-wwr_yellow_orange w-screen max-w-full">
       <div className="w-4/5 m-auto flex justify-between items-end py-3">
         <Image
           className="w-80 pt-4 pb-1"
@@ -19,19 +18,19 @@ const Header = () => {
           <li className="hover:text-wwr_white cursor-pointer">About</li>
 
           <li>
-            <Link
+            <a
               href={`/en/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               EN
-            </Link>
+            </a>
             /
-            <Link
+            <a
               href={`/de/stories`}
               className="hover:text-wwr_white cursor-pointer"
             >
               DE
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

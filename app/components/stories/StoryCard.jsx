@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import parse from "html-react-parser";
 
-const StoryCard = ({ title, name, city, slug, lang, color, person }) => {
+const StoryCard = ({ title, city, slug, lang, color, personName }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -26,8 +26,9 @@ const StoryCard = ({ title, name, city, slug, lang, color, person }) => {
           <h2 className="relative z-20">{parse(title)}</h2>
         </div>
         <div className="text-base relative flex ">
-          <div className="font-semibold">{person} </div>
-          {city && <div>, {city}</div>}
+          <div className="font-semibold">{personName} </div>
+          {personName && city && <span>{`,\u00A0`}</span>}
+          <div>{city}</div>
         </div>
 
         <Image

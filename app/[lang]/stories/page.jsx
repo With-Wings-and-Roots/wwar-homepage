@@ -1,9 +1,8 @@
-import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
-
+import StoriesPageWrapper from "@/app/components/stories/StoriesPageWrapper";
 const Stories = ({ params }) => {
-  const lang = params.lang;
+  const language = params.lang;
 
-  return <StoriesPageContainer lang={lang} />;
+  return <StoriesPageWrapper lang={language.toLowerCase()} />;
 };
 
 export default Stories;
