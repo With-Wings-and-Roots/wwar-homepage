@@ -1,8 +1,6 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
-import { Providers } from "./store/provider";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Providers } from "./store/provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -13,7 +11,14 @@ export default function RootLayout({ children }) {
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <head>
+          <link rel="stylesheet" href="https://use.typekit.net/ufp0hxo.css" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C400%2C300%2C600%2C700"
+          />
+        </head>
+        <body className={`font-main`}>{children}</body>
       </html>
     </Providers>
   );
