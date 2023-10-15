@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import parse from "html-react-parser";
 import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
-import { SlClose } from "react-icons/sl";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
 import {
   getAllStories,
@@ -78,7 +77,12 @@ const Story = async ({ params }) => {
           <div className="flex w-full p-4 justify-end text-4xl opacity-50 ">
             <Link href="../stories">
               <div className="hover:rotate-90 transition-all duration-500">
-                <SlClose />
+                <Image
+                  src={"/close-icon.svg"}
+                  width={45}
+                  height={45}
+                  alt="Close"
+                />
               </div>
             </Link>
           </div>
@@ -126,13 +130,9 @@ const Story = async ({ params }) => {
                     <div>{story?.acf?.city ? ", " + story.acf.city : ""}</div>
                   </div>
                   {/* Social Share Buttons */}
-                  <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pt-16 pb-4">
-                    <div className="w-max">
-                      {params.lang === "en" && "SHARE STORY:"}
-                      {params.lang === "de" && "GESCHICHTE TEILEN:"}
-                    </div>
-                    <SocialShareIcons />
-                  </div>
+
+                  <SocialShareIcons lang={params.lang} />
+
                   <div className="h-px opacity-10 w-full bg-wwr_rich_black"></div>
 
                   {/* <Image src="/closed-captions.svg" width={30} height={30} alt="closed caption" /> */}

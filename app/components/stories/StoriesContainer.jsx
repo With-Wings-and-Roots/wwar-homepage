@@ -106,18 +106,23 @@ const StoriesContainer = () => {
 
             return (
               <React.Fragment key={index}>
-                <div className="relative hover:scale-105 cursor-pointer transition-all duration-500 w-full min-h-[170px] lg:min-h-[12vw] p-4 font-light text-wwr_white overflow-hidden">
-                  <Image
-                    className="absolute left-0 top-0 min-w-full min-h-full"
-                    src={mediaUrl}
-                    width={200}
-                    height={100}
-                    alt={"Cover-" + story.slug}
-                    placeholder="blur"
-                    blurDataURL="/colors.png"
-                  ></Image>
+                <div className="relative hover:scale-105 aspect-square cursor-pointer transition-all duration-500 w-full p-4 font-light text-wwr_white overflow-hidden">
                   <div
-                    className="absolute left-0 top-0 w-full h-full opacity-30"
+                    className={`absolute left-0 top-0 h-full min-w-full flex justify-start w-[136%]`}
+                  >
+                    <Image
+                      className="min-w-full min-h-full -ml-[18%]"
+                      src={mediaUrl}
+                      width={1024}
+                      height={768}
+                      alt={"Cover-" + story.slug}
+                      placeholder="blur"
+                      blurDataURL="/colors.png"
+                      quality={100}
+                    ></Image>
+                  </div>
+                  <div
+                    className="absolute left-0 top-0 w-full h-full opacity-40"
                     style={{
                       background: `linear-gradient(to bottom, transparent 0%, ${story.acf?.color} 100%)`,
                     }}
