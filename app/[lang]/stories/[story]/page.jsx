@@ -118,8 +118,8 @@ const Story = async ({ params }) => {
                   />
                 </div>
                 <div>
-                  <p className="text-xl lg:text-2xl text-wwr_gray_storm leading-10 font-light ">
-                    {story?.acf?.excerpt}
+                  <p className="text-xl lg:text-26px text-wwr_gray_storm font-light ">
+                    <span className="leading-10">{story?.acf?.excerpt}</span>
                   </p>
                   <div className="flex text-wwr_rich_black text-lg pt-8">
                     <div className="font-semibold">{person?.name} </div>

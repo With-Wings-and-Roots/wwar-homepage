@@ -12,6 +12,9 @@ module.exports = {
       special: ["Open Sans", "Helvetica", "sans-serif"],
     },
     extend: {
+      fontSize: {
+        "26px": "1.625rem",
+      },
       colors: {
         wwr_yellow_orange: "#faba3a",
         wwr_yellow_orange_hovered: "#efaa23",
