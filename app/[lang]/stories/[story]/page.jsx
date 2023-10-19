@@ -176,7 +176,7 @@ const Story = async ({ params }) => {
                     ? "Ähnliche Beiträge"
                     : "Related Stories"}
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   <StoryCardContainer
                     storiesToRender={relatedStories}
                     lang={params.lang}
