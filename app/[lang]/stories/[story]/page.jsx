@@ -8,12 +8,19 @@ import {
   getAllStories,
   findIndexBySlug,
   getPersonById,
+  fetchAllTopics,
+  getAllMedia,
+  getAllPersons,
 } from "@/app/utilities/stories";
-// import StoriesPageWrapper from "@/app/components/stories/StoriesPageWrapper";
 import Header from "@/app/components/header/header";
+import StoryCardContainer from "@/app/components/stories/StoryCardContainer";
 
 const Story = async ({ params }) => {
   const stories = await getAllStories(params.lang);
+  const topics = await fetchAllTopics(params.lang);
+  const allMedia = await getAllMedia(params.lang);
+
+  const allPersons = await getAllPersons();
 
   const storiesLength = stories.length;
 
@@ -55,7 +62,13 @@ const Story = async ({ params }) => {
     const response = await fetch(topic);
     const data = await response.json();
 
-    categories.push({ name: data.name, slug: data.slug });
+    let temp = topics.filter((topic) => {
+      return topic.slug === data.slug;
+    });
+
+    if (temp.length > 0) {
+      categories.push({ name: data.name, slug: data.slug });
+    }
   }
 
   return (
@@ -74,7 +87,7 @@ const Story = async ({ params }) => {
         </NavigationCircle>
 
         <div className="bg-white w-full sm:mt-10 md:mt-8 sm:w-10/12 md:w-11/12 lg:w-4/5">
-          <div className="flex w-full p-4 justify-end text-4xl opacity-50 ">
+          <div className="flex w-full p-4 justify-end text-4xl">
             <Link href="../stories">
               <div className="hover:rotate-90 transition-all duration-500">
                 <Image
@@ -139,17 +152,20 @@ const Story = async ({ params }) => {
                 </div>
               </div>
             </div>
-            {relatedStories.length > 1 && (
+            {relatedStories.length > 0 && (
               <div>
                 <h3 className="mb-8 mt-16 text-xl font-light">
-                  {params.lang === "en" && "Related Stories"}
-                  {params.lang === "de" && "Ähnliche Beiträge"}
+                  {params.lang === "de"
+                    ? "Ähnliche Beiträge"
+                    : "Related Stories"}
                 </h3>
-                <div className="">
-                  {/* <StoryCards
-                    stories={[...relatedStories]}
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                  <StoryCardContainer
+                    storiesToRender={relatedStories}
                     lang={params.lang}
-                  /> */}
+                    allMedia={allMedia}
+                    allPersons={allPersons}
+                  />
                 </div>
               </div>
             )}
@@ -166,7 +182,7 @@ const Story = async ({ params }) => {
 
 const NavigationCircle = ({ slug, children }) => (
   <div className="hidden sm:flex min-w-max grow justify-center text-2xl sm:text-3xl lg:text-6xl items-center h-[100vh] text-wwr_white">
-    <div className="relative w-7 h-7">
+    <div className="relative w-16 h-16">
       <div className="fixed">
         <Link href={`./${slug}`}>{children}</Link>
       </div>
