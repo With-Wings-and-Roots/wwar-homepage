@@ -24,10 +24,9 @@ const SocialShareIcons = ({
 
   return (
     <div className="max-w-max transition-all duration-500">
-      <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pt-16 pb-4">
+      <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pb-4">
         <div className="w-max">
-          {lang === "en" && "SHARE STORY:"}
-          {lang === "de" && "GESCHICHTE TEILEN:"}
+          {lang === "de" ? "GESCHICHTE TEILEN:" : "SHARE STORY:"}
         </div>
         <div className="flex gap-2">
           <FacebookShareButton url={url}>

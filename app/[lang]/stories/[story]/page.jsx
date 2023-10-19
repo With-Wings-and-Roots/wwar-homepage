@@ -142,13 +142,30 @@ const Story = async ({ params }) => {
                     <div className="font-semibold">{person?.name} </div>
                     <div>{story?.acf?.city ? ", " + story.acf.city : ""}</div>
                   </div>
+
+                  <div className="h-px opacity-10 w-full bg-wwr_rich_black mb-8 mt-10"></div>
+
+                  {story.acf?.closed_captions && (
+                    <div>
+                      <Image
+                        className="mb-3"
+                        src="/closed-captions.svg"
+                        width={30}
+                        height={30}
+                        alt="closed caption"
+                      />
+                      <div className="text-base font-bold">
+                        Closed Captions available
+                      </div>
+                      <div className="text-xs font-light text-wwr_gray_storm py-3">
+                        <div className="leading-[17px]">{`We have subtitles available for this video! Turn on
+                        subtitles by clicking the CC (closed captions) icon in
+                        the video player and enjoy the content in English.`}</div>
+                      </div>
+                    </div>
+                  )}
                   {/* Social Share Buttons */}
-
                   <SocialShareIcons lang={params.lang} />
-
-                  <div className="h-px opacity-10 w-full bg-wwr_rich_black"></div>
-
-                  {/* <Image src="/closed-captions.svg" width={30} height={30} alt="closed caption" /> */}
                 </div>
               </div>
             </div>

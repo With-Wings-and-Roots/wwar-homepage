@@ -97,7 +97,7 @@ const StoriesContainer = () => {
         {storiesToRender && (
           <StoryCardContainer
             storiesToRender={storiesToRender}
-            language={language}
+            lang={language}
             allMedia={allMedia}
             allPersons={allPersons}
           />
