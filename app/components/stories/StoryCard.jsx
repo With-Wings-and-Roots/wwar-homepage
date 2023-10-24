@@ -18,18 +18,16 @@ const StoryCard = ({
   return (
     <Link href={`/${lang}/stories/${slug}`}>
       <div className="relative hover:scale-105 aspect-square cursor-pointer transition-all duration-500 w-full p-4 font-light text-wwr_white overflow-hidden">
-        <div
-          className={`absolute left-0 top-0 h-full min-w-full flex justify-start w-[136%]`}
-        >
+        <div className={`absolute left-0 top-0 h-full w-full`}>
           <Image
-            className="min-w-full min-h-full -ml-[18%]"
+            className="min-w-full min-h-full"
             src={mediaUrl}
-            width={1024}
-            height={768}
+            fill={true}
+            style={{ objectFit: "cover" }}
             alt={"Cover-" + slug}
             placeholder="blur"
             blurDataURL="/colors.png"
-            quality={100}
+            quality={80}
           ></Image>
         </div>
         <div
