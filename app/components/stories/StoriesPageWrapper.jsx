@@ -21,7 +21,7 @@ const StoriesPageWrapper = async (props) => {
   return (
     <>
       <Header />
-      <div className="w-4/5 m-auto">
+      <div className="global_width">
         <StoriesPageContainer
           stories={stories}
           allMedia={allMedia}

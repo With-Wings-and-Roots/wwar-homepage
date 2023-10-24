@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import parse from "html-react-parser";
-import { CiCircleChevLeft, CiCircleChevRight } from "react-icons/ci";
 import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
 import {
   getAllStories,
@@ -81,12 +80,10 @@ const Story = async ({ params }) => {
         className="w-full h-screen fixed top-0 left-0 z-40 opacity-80"
         style={{ background: story?.acf?.color }}
       ></div>
-      <div className="max-w-[1500px] min-h-[100vh] m-auto relative flex justify-center z-50">
-        <NavigationCircle slug={prevSlug}>
-          <CiCircleChevLeft />
-        </NavigationCircle>
+      <div className="min-h-[100vh] m-auto relative flex justify-center z-50">
+        <NavigationCircle slug={prevSlug} direction={"left"}></NavigationCircle>
 
-        <div className="bg-white w-full sm:mt-10 md:mt-8 sm:w-10/12 md:w-11/12 lg:w-4/5">
+        <div className="bg-white w-full sm:mt-10 md:mt-8 sm:w-10/12 md:w-11/12 lg:w-4/5 max-w-[1200px] ">
           <div className="flex w-full p-4 justify-end text-4xl">
             <Link href="../stories">
               <div className="hover:rotate-90 transition-all duration-500">
@@ -189,19 +186,24 @@ const Story = async ({ params }) => {
           </div>
         </div>
 
-        <NavigationCircle slug={nextSlug}>
-          <CiCircleChevRight />
-        </NavigationCircle>
+        <NavigationCircle slug={nextSlug} direction={"right"} />
       </div>
     </div>
   );
 };
 
-const NavigationCircle = ({ slug, children }) => (
+const NavigationCircle = ({ slug, direction }) => (
   <div className="hidden sm:flex min-w-max grow justify-center text-2xl sm:text-3xl lg:text-6xl items-center h-[100vh] text-wwr_white">
-    <div className="relative w-16 h-16">
+    <div className="relative w-16 h-16 mb-16">
       <div className="fixed">
-        <Link href={`./${slug}`}>{children}</Link>
+        <Link href={`./${slug}`}>
+          <Image
+            src={direction === "left" ? "/arrow-left.svg" : "/arrow-right.svg"}
+            width={64}
+            height={64}
+            className="w-16 h-16"
+          />
+        </Link>
       </div>
     </div>
   </div>

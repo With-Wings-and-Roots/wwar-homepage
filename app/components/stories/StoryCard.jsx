@@ -42,7 +42,7 @@ const StoryCard = ({
           className=" w-full h-full flex flex-col justify-between "
         >
           <div
-            className={`text-lg sm:text-[2vw] lg:text-2xl relative z-10 max-w-max leading-tight`}
+            className={`text-2xl sm:text-[5vw] md:text-[2.2vw] relative z-10 max-w-max leading-tight`}
           >
             <span
               className="relative opacity-50 z-20 text-transparent bg-no-repeat no-underline transition-all duration-500 ease-out bg-opacity-10"

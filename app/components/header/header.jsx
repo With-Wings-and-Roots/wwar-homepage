@@ -3,7 +3,7 @@ import Image from "next/image";
 const Header = () => {
   return (
     <div className="bg-wwr_yellow_orange w-screen max-w-full">
-      <div className="w-4/5 m-auto flex justify-between items-end py-3">
+      <div className="global_width m-auto flex justify-between items-end py-3">
         <Image
           className="w-80 pt-4 pb-1"
           src="/wwr-logo.svg"
