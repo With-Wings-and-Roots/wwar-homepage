@@ -179,6 +179,7 @@ const Story = async ({ params }) => {
                     lang={params.lang}
                     allMedia={allMedia}
                     allPersons={allPersons}
+                    hoverZoom={false}
                   />
                 </div>
               </div>
@@ -202,6 +203,7 @@ const NavigationCircle = ({ slug, direction }) => (
             width={64}
             height={64}
             className="w-16 h-16"
+            alt="arrow"
           />
         </Link>
       </div>

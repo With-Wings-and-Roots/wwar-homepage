@@ -9,6 +9,7 @@ const StoryCardContainer = ({
   allMedia,
   allPersons,
   lang,
+  hoverZoom = true,
 }) => {
   return (
     <>
@@ -31,6 +32,7 @@ const StoryCardContainer = ({
               lang={lang}
               color={story.acf?.color}
               personName={person?.name}
+              hoverZoom={hoverZoom}
             />
           </React.Fragment>
         );

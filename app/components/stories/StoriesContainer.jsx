@@ -10,6 +10,7 @@ import { storiesCounted, storySelected } from "@/app/store/selectedStory";
 import { activatedStories } from "@/app/store/stories";
 
 import StoryCardContainer from "./StoryCardContainer";
+import Image from "next/image";
 
 const StoriesContainer = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const StoriesContainer = () => {
         })
       );
     }
-  }, [selectedTopic, dispatch]);
+  }, [selectedTopic, dispatch, allStories, selectedTopicId]);
 
   const handleInput = (e) => {
     dispatch(
@@ -89,8 +90,8 @@ const StoriesContainer = () => {
           type="text"
           onChange={handleInput}
         />
-        <div className="text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-0">
-          <BsSearch />
+        <div className="text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2">
+          <Image src="/search.svg" width={24} height={24} alt="Search icon" />
         </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">

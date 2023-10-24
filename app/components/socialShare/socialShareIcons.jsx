@@ -8,9 +8,8 @@ const SocialShareIcons = ({
   lang,
   url = "https://wwar.backslashseven.com/",
 }) => {
-  useEffect(() => {
-    if (typeof window !== "undefined") url = window.location.href;
-  });
+  if (typeof window !== "undefined") url = window.location.href;
+
   const [message, setMessage] = useState(false);
   const icon = { width: 30, height: 30 };
 
