@@ -29,14 +29,14 @@ const Story = async ({ params }) => {
 
   const nextSlug =
     storyIndex === storiesLength - 1
-      ? [...stories][0].slug
+      ? stories[0].slug
       : stories[storyIndex + 1].slug;
   const prevSlug =
     storyIndex < 1
       ? stories[storiesLength - 1].slug
       : stories[storyIndex - 1].slug;
 
-  const story = [...stories.filter((story) => story.slug === params.story)][0];
+  const story = stories.filter((story) => story.slug === params.story)[0];
 
   const person = await getPersonById(story?.person[0]);
 

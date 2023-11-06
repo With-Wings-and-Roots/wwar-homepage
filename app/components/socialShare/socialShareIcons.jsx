@@ -21,6 +21,9 @@ const SocialShareIcons = ({
     }, 3000);
   };
 
+  const imageClass =
+    "border border-transparent hover:border-wwr_yellow_orange border-solid rounded-full hover:opacity-70 transition-all duration-300 ease-in-out";
+
   return (
     <div className="max-w-max transition-all duration-500">
       <div className="font-light text-xl flex flex-wrap lg:flex-nowrap gap-4 items-center text-wwr_gray_storm pb-4">
@@ -34,6 +37,7 @@ const SocialShareIcons = ({
               width={icon.width}
               height={icon.height}
               alt={"Facebook icon"}
+              className={imageClass}
             />
           </FacebookShareButton>
           <TwitterShareButton url={url} title={"Story"}>
@@ -42,6 +46,7 @@ const SocialShareIcons = ({
               width={icon.width}
               height={icon.height}
               alt={"Twitter icon"}
+              className={imageClass}
             />
           </TwitterShareButton>
           <div onClick={copyLink} className="cursor-pointer">
@@ -50,6 +55,7 @@ const SocialShareIcons = ({
               width={icon.width}
               height={icon.height}
               alt={"Share icon"}
+              className={imageClass}
             />
           </div>
         </div>
