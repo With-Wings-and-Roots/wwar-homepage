@@ -1,3 +1,4 @@
+import Footer from "./components/footer/footer";
 import "./globals.css";
 
 import { Providers } from "./store/provider";
@@ -18,7 +19,10 @@ export default function RootLayout({ children }) {
             href="https://fonts.googleapis.com/css?family=Open+Sans%3A300italic%2C400italic%2C400%2C300%2C600%2C700"
           />
         </head>
-        <body className={`font-main`}>{children}</body>
+        <body className={`font-main`}>
+          {children}
+          <Footer />
+        </body>
       </html>
     </Providers>
   );
