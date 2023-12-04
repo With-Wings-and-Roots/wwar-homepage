@@ -25,7 +25,7 @@ const Footer = async () => {
   return (
     <div className="bg-wwr_rich_black w-full text-wwr_white p-10">
       <div className="w-10/12 m-auto">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {topLevelMenuItems.map((item, index) => {
             return (
               <div key={index}>

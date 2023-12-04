@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="26.919" height="26.918" viewBox="0 0 26.919 26.918">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rechteck_3" data-name="Rechteck 3" width="26.919" height="26.919" transform="translate(0 -0.001)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="instragram" transform="translate(0 0)">
+    <g id="Gruppe_6" data-name="Gruppe 6">
+      <g id="Gruppe_5" data-name="Gruppe 5" clip-path="url(#clip-path)">
+        <path id="Pfad_3" data-name="Pfad 3" d="M13.458,8.845a4.613,4.613,0,1,0,4.613,4.613,4.617,4.617,0,0,0-4.613-4.613m0,11.528a6.916,6.916,0,1,1,6.916-6.916,6.922,6.922,0,0,1-6.916,6.916" fill="#fff"/>
+        <path id="Pfad_4" data-name="Pfad 4" d="M7.026,2.3A4.729,4.729,0,0,0,2.3,7.028V19.893a4.728,4.728,0,0,0,4.723,4.723H19.891a4.73,4.73,0,0,0,4.725-4.723V7.028A4.731,4.731,0,0,0,19.891,2.3ZM19.891,26.919H7.026A7.034,7.034,0,0,1,0,19.893V7.028A7.036,7.036,0,0,1,7.026,0H19.891a7.036,7.036,0,0,1,7.026,7.028V19.893a7.034,7.034,0,0,1-7.026,7.026" fill="#fff"/>
+        <path id="Pfad_5" data-name="Pfad 5" d="M22.158,6.232a1.59,1.59,0,1,1-1.59-1.59,1.591,1.591,0,0,1,1.59,1.59" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

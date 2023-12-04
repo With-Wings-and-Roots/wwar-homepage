@@ -1,3 +1,29 @@
+async function getFooterEn() {
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/options?lang=en`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
+
+async function getFooterDe() {
+  const res = await fetch(
+    `https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/options?lang=de`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
+
 async function getAllStoriesEn() {
   let counter = 100;
   let page = 1;
@@ -360,4 +386,12 @@ export async function getPersonById(personId) {
   const allPersons = await res.json();
   const person = [...allPersons.filter((person) => person.id === personId)];
   return person[0];
+}
+
+export async function getFooter(lang = "en") {
+  if (lang === "de") {
+    return await getFooterDe();
+  } else {
+    return await getFooterEn();
+  }
 }
