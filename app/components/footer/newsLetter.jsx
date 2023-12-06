@@ -2,12 +2,20 @@
 
 import React from "react";
 import { useSelector } from "react-redux";
-import { getFooter } from "@/app/utilities/stories";
+import { useState, useEffect } from "react";
 
-const NewsLetter = async () => {
+const NewsLetter = ({ footerEn, footerDe }) => {
+  const [footer, setFooter] = useState(footerEn);
+
   const language = useSelector((state) => state.entities.language.language);
 
-  const footer = await getFooter(language);
+  useEffect(() => {
+    if (language === "de") {
+      setFooter(footerDe);
+    } else {
+      setFooter(footerEn);
+    }
+  });
 
   return (
     <div className="pt-10">
@@ -57,7 +65,7 @@ const NewsLetter = async () => {
                 value="Subscribe"
                 name="subscribe"
                 id="mc-embedded-subscribe"
-                className="button px-3 uppercase text-xl bg-wwr_gray_storm h-12 tracking-wide"
+                className="cursor-pointer button px-3 uppercase text-xl bg-wwr_gray_storm h-12 tracking-wide hover:bg-wwr_outer_space duration-300"
               />
             </div>
           </div>
@@ -66,7 +74,7 @@ const NewsLetter = async () => {
           {footer.socials.map((social, index) => {
             return (
               <a
-                className="w-10 flex items-center justify-center"
+                className="w-10 flex items-center justify-center hover:brightness-75 duration-300"
                 href={social.url}
                 key={index}
               >
@@ -78,8 +86,13 @@ const NewsLetter = async () => {
       </div>
 
       <div className="pt-10 text-wwr_gray_storm flex flex-wrap gap-2">
-        <div>{footer.copyright_text}</div>
-        <a href={footer.terms_page}>
+        <div>
+          {footer.copyright_text.replace("YEAR", new Date().getFullYear())}
+        </div>
+        <a
+          href={footer.terms_page}
+          className="hover:brightness-75 duration-300"
+        >
           {language === "de" ? "Impressum" : "Terms and Conditions"}
         </a>
       </div>

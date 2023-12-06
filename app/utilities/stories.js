@@ -395,3 +395,22 @@ export async function getFooter(lang = "en") {
     return await getFooterEn();
   }
 }
+
+export const getMenuId = async (_) => {
+  const res = await fetch(
+    "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu"
+  );
+
+  const data = await res.json();
+
+  return data.primary;
+};
+
+export const getMenuItems = async (id) => {
+  const res = await fetch(
+    "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu/" + id
+  );
+  const data = await res.json();
+
+  return data;
+};

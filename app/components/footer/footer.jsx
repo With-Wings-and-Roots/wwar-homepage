@@ -1,20 +1,23 @@
-"use client";
-
 import Link from "next/link";
 import React from "react";
 import NewsLetter from "./newsLetter";
+import { getMenuId, getMenuItems } from "@/app/utilities/stories";
+import { getFooter } from "@/app/utilities/stories";
 
 const Footer = async () => {
   const menuId = await getMenuId();
 
   const menuItems = await getMenuItems(menuId);
 
+  const footerEn = await getFooter("en");
+  const footerDe = await getFooter("de");
+
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
     return item.menu_item_parent === "0";
   });
 
-  const getSubMenuItems = (parentId) => {
+  const subMenuItems = (parentId) => {
     const subMenuItems = menuItems.filter((item) => {
       return item.menu_item_parent.localeCompare(parentId) === 0;
     });
@@ -33,7 +36,7 @@ const Footer = async () => {
                   {item.title}
                 </div>
                 <div className="grid grid-cols-1 gap-2">
-                  {getSubMenuItems(item.ID).map((subItem, index) => {
+                  {subMenuItems(item.ID).map((subItem, index) => {
                     return (
                       <div key={index} className="font-thin text-lg">
                         <Link href={subItem.url}>
@@ -50,29 +53,10 @@ const Footer = async () => {
           })}
         </div>
 
-        <NewsLetter />
+        <NewsLetter footerEn={footerEn} footerDe={footerDe} />
       </div>
     </div>
   );
 };
 
 export default Footer;
-
-const getMenuId = async (_) => {
-  const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu"
-  );
-
-  const data = await res.json();
-
-  return data.primary;
-};
-
-const getMenuItems = async (id) => {
-  const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu/" + id
-  );
-  const data = await res.json();
-
-  return data;
-};

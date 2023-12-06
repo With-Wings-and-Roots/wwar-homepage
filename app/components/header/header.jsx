@@ -1,36 +1,48 @@
+import React from "react";
 import Image from "next/image";
+import { getMenuId, getMenuItems } from "@/app/utilities/stories";
+import HeaderMenuItems from "./headerMenuItems";
+import LanguageSelector from "./languageSelector";
 
-const Header = () => {
+const Header = async () => {
+  const menuId = await getMenuId();
+
+  const menuItems = await getMenuItems(menuId);
+
+  // Media, Content, Education, Take part, About
+  const topLevelMenuItems = menuItems.filter((item) => {
+    return item.menu_item_parent === "0";
+  });
+
   return (
-    <div className="bg-wwr_yellow_orange w-screen max-w-full">
-      <div className="global_width m-auto flex justify-between items-end py-3">
-        <Image
-          className="w-80 pt-4 pb-1"
-          src="/wwr-logo.svg"
-          alt="logo"
-          width={200}
-          height={200}
-        ></Image>
-        <ul className="uppercase flex gap-4 min-w-max tracking-widest">
-          <li className="hover:text-wwr_white cursor-pointer">Media Content</li>
-          <li className="hover:text-wwr_white cursor-pointer">Education</li>
-          <li className="hover:text-wwr_white cursor-pointer">Take Part</li>
-          <li className="hover:text-wwr_white cursor-pointer">About</li>
+    <div className="bg-wwr_yellow_orange w-screen max-w-full text-base">
+      <div className="global_width m-auto flex justify-between items-stretch">
+        <div className="py-3">
+          <Image
+            className="w-80 pt-4 pb-1"
+            src="/wwr-logo.svg"
+            alt="logo"
+            width={200}
+            height={200}
+          ></Image>
+        </div>
 
-          <li>
-            <a
-              href={`/en/stories`}
-              className="hover:text-wwr_white cursor-pointer"
-            >
-              EN
-            </a>
-            /
-            <a
-              href={`/de/stories`}
-              className="hover:text-wwr_white cursor-pointer"
-            >
-              DE
-            </a>
+        <ul className="uppercase flex min-w-max tracking-widest min-h-full">
+          <li className="z-30 w-10 bg-wwr_yellow_orange relative"></li>
+          {topLevelMenuItems.map((item, index) => {
+            return (
+              <React.Fragment key={index}>
+                <HeaderMenuItems
+                  item={item}
+                  menuItems={menuItems}
+                  index={index}
+                />
+              </React.Fragment>
+            );
+          })}
+
+          <li className="py-3 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end">
+            <LanguageSelector />
           </li>
         </ul>
       </div>

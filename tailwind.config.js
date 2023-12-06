@@ -23,6 +23,7 @@ module.exports = {
         wwr_rich_black: "#030303",
         wwr_red_transparent: "rgba(255,0,0,0.8)",
         wwr_gray_storm: "#757580",
+        wwr_outer_space: "#46464d",
       },
     },
   },
