@@ -1,8 +1,10 @@
 import React from "react";
-import Image from "next/image";
 import { getMenuId, getMenuItems } from "@/app/utilities/stories";
 import HeaderMenuItems from "./headerMenuItems";
 import LanguageSelector from "./languageSelector";
+import MobileMenu from "./mobileMenu";
+import Logo from "./logo";
+import TopSpace from "./topSpace";
 
 const Header = async () => {
   const menuId = await getMenuId();
@@ -15,19 +17,20 @@ const Header = async () => {
   });
 
   return (
-    <div className="bg-wwr_yellow_orange w-screen max-w-full text-base">
-      <div className="global_width m-auto flex justify-between items-stretch">
-        <div className="py-3">
-          <Image
-            className="w-80 pt-4 pb-1"
-            src="/wwr-logo.svg"
-            alt="logo"
-            width={200}
-            height={200}
-          ></Image>
+    <div className="fixed top-0 left-0 z-[200] bg-wwr_yellow_orange w-screen max-w-full text-base">
+      <TopSpace />
+      <div className="global_header_width flex justify-between items-stretch relative">
+        <div className={`flex items-end min-h-full`}>
+          <Logo />
         </div>
 
-        <ul className="uppercase flex min-w-max tracking-widest min-h-full">
+        <div className="relative flex items-end justify-end min-h-full md:hidden z-[202]">
+          <MobileMenu
+            topLevelMenuItems={topLevelMenuItems}
+            menuItems={menuItems}
+          />
+        </div>
+        <ul className="hidden md:flex uppercase min-w-max md:tracking-tight lg:tracking-widest min-h-full">
           <li className="z-30 w-10 bg-wwr_yellow_orange relative"></li>
           {topLevelMenuItems.map((item, index) => {
             return (
@@ -41,7 +44,7 @@ const Header = async () => {
             );
           })}
 
-          <li className="py-3 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end">
+          <li className="pb-2 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end">
             <LanguageSelector />
           </li>
         </ul>

@@ -33,6 +33,7 @@ const StoryCard = ({
             placeholder="blur"
             blurDataURL="/colors.png"
             quality={80}
+            sizes="100%"
           ></Image>
         </div>
         <div

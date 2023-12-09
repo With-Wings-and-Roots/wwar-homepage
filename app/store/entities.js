@@ -8,6 +8,8 @@ import selectedStoryReducer from "./selectedStory";
 import topicsReducer from "./topics";
 import mediaReducer from "./media";
 import personsReducer from "./persons";
+import mobileMenuReducer from "./mobileMenu";
+import headerReducer from "./header";
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -17,4 +19,6 @@ export default combineReducers({
   topics: topicsReducer,
   media: mediaReducer,
   persons: personsReducer,
+  mobileMenu: mobileMenuReducer,
+  header: headerReducer,
 });

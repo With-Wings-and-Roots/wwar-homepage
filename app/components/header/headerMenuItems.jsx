@@ -21,7 +21,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
       className="hover:text-wwr_white cursor-pointer relative"
     >
       <div
-        className={`p-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
+        className={`px-2 py-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
       >
         {item.title}
       </div>
@@ -31,7 +31,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
           initial={{ y: -200 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.3 }}
-          className="relative z-10"
+          className="hidden md:block relative z-10"
         >
           <div className="absolute text-wwr_white left-1/2 -translate-x-1/2">
             <div className="flex flex-col gap-px bg-wwr_outer_space">
