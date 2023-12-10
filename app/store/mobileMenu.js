@@ -7,6 +7,8 @@ const slice = createSlice({
   initialState: {
     mobileMenuOpen: false,
     subMenuOpen: false,
+    activeSubMenuId: null,
+    activeSubMenuTitle: "",
   },
   reducers: {
     mobileMenuOpened: (mobileMenu, action) => {
@@ -21,6 +23,10 @@ const slice = createSlice({
     mobileSubMenuClosed: (mobileMenu, action) => {
       mobileMenu.subMenuOpen = false;
     },
+    subMenuActivated: (mobileMenu, action) => {
+      mobileMenu.activeSubMenuId = action.payload.id;
+      mobileMenu.activeSubMenuTitle = action.payload.title;
+    },
   },
 });
 
@@ -29,6 +35,7 @@ export const {
   mobileMenuClosed,
   mobileSubMenuOpened,
   mobileSubMenuClosed,
+  subMenuActivated,
 } = slice.actions;
 
 export default slice.reducer;

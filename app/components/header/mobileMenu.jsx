@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-import MobileSubMenu from "./mobileSubMenu";
+import MobileSubMenuContainer from "./mobileSubMenuContainer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   mobileMenuOpened,
@@ -63,6 +63,7 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
                 transition={{ duration: 0.1 }}
               >
                 <Image
+                  className="transition-all duration-300 hover:rotate-90"
                   width={30}
                   height={30}
                   src="/close-circle.svg"
@@ -83,10 +84,10 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
             transition={{ ease: "linear" }}
             className="fixed z-[201] w-screen h-screen bg-wwr_yellow_orange top-0 left-0 flex flex-col items-center justify-center uppercase gap-10 pt-14"
           >
-            {topLevelMenuItems.map((item, index) => {
+            {topLevelMenuItems.map((item) => {
               return (
-                <React.Fragment key={index}>
-                  <MobileSubMenu item={item} menuItems={menuItems} />
+                <React.Fragment key={item.ID}>
+                  <MobileSubMenuContainer item={item} menuItems={menuItems} />
                 </React.Fragment>
               );
             })}
