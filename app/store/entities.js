@@ -10,6 +10,7 @@ import mediaReducer from "./media";
 import personsReducer from "./persons";
 import mobileMenuReducer from "./mobileMenu";
 import headerReducer from "./header";
+import rangeSliderReducer from "./rangeSlider";
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
   persons: personsReducer,
   mobileMenu: mobileMenuReducer,
   header: headerReducer,
+  rangeSlider: rangeSliderReducer,
 });

@@ -22,6 +22,22 @@ export default function RootLayout({ children }) {
         <body className={`font-main pt-10`}>
           {children}
           <Footer />
+          <div>
+            <label
+              for="steps-range"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Range steps
+            </label>
+            <input
+              id="steps-range"
+              type="range"
+              min="0"
+              max="200"
+              step="1"
+              class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+          </div>
         </body>
       </html>
     </Providers>
