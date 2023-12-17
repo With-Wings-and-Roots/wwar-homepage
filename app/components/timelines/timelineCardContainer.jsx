@@ -10,7 +10,6 @@ const TimelineCardContainer = ({
   timeLineEventDatesArray,
 }) => {
   const [cardWidth, setCardWidth] = useState(0);
-  console.log(timeLineEventDatesArray);
 
   const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
 
