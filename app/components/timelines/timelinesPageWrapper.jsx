@@ -1,10 +1,10 @@
 import React from "react";
-import TimeLineCard from "./timelineCard";
+import { getTimelineEvents } from "@/app/utilities/timeline";
 import TimelineCardContainer from "./timelineCardContainer";
 import RangeSlider from "./rangeSlider";
 
 const TimelinesPageWrapper = async ({ lang, allMedia }) => {
-  const unsortedTimeLineEvents = await getTimelineEvents();
+  const unsortedTimeLineEvents = await getTimelineEvents(lang);
 
   const timeLineEvents = unsortedTimeLineEvents.sort((a, b) => {
     return (
@@ -35,12 +35,3 @@ const TimelinesPageWrapper = async ({ lang, allMedia }) => {
 };
 
 export default TimelinesPageWrapper;
-
-const getTimelineEvents = async () => {
-  const res = await fetch(
-    "https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline_event?lang=en"
-  );
-  const data = await res.json();
-
-  return data;
-};

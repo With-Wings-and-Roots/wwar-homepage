@@ -24,7 +24,7 @@ const TimelineCardContainer = ({
       <motion.div
         animate={{ x: leftPosition }}
         transition={{ duration: 0.8, ease: easeOut }}
-        // drag="x"
+        drag="x"
         className="flex"
       >
         {timeLineEvents.map((timeLineEvent, index) => {

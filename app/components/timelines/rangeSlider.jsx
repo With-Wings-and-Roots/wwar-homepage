@@ -33,8 +33,8 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
       <div className="flex w-9/12 m-auto items-center">
         <div className="">{timeLineEventDatesArray[0]}</div>
         {/* <label
-        for="small-range"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        htmlFor="small-range"
+        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
       >
         {rangeValue}
       </label> */}
@@ -48,7 +48,7 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
             onChange={(e) => setValue(e.target.value)}
             onMouseUpCapture={handleChange}
             onTouchEndCapture={handleChange}
-            class="w-full h-px  bg-wwr_black rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
+            className="w-full h-px  bg-wwr_black rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
           />
           <div
             className="absolute bottom-0 -translate-x-1/2"
