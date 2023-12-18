@@ -1,39 +1,47 @@
 import React from "react";
-import { getTimelineEvents } from "@/app/utilities/timeline";
+import {
+  getTimelineEvents,
+  getGermanTimeline,
+  getUsTimeline,
+} from "@/app/utilities/timeline";
 import TimelineCardContainer from "./timelineCardContainer";
 import RangeSlider from "./rangeSlider";
 import { getAllMedia } from "@/app/utilities/stories";
+import TimelineCountry from "./timelineCountrySelector";
 
 const TimelinesPageWrapper = async ({ lang }) => {
-  const unsortedTimeLineEvents = await getTimelineEvents(lang);
+  // const timeLineEvents = await getTimelineEvents(lang);
+
+  const timeLineEventsDe = await getGermanTimeline(lang);
+  const timeLineEventsEn = await getUsTimeline(lang);
+
   const allMedia = await getAllMedia("en");
 
-  const timeLineEvents = unsortedTimeLineEvents.sort((a, b) => {
-    // return (
-    //   new Date(a.acf.basic_info.start_date) -
-    //   new Date(b.acf.basic_info.start_date)
-    // );
-
-    return (
-      Number(a.acf.basic_info.start_date.slice(0, 4)) -
-      Number(b.acf.basic_info.start_date.slice(0, 4))
-    );
+  const timeLineEventDatesArrayDe = timeLineEventsDe.map((timeLineEvent) => {
+    return Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4));
   });
-
-  const timeLineEventDatesArray = timeLineEvents.map((timeLineEvent) => {
-    // return new Date(timeLineEvent.acf.basic_info.start_date).getFullYear();
+  const timeLineEventDatesArrayEn = timeLineEventsEn.map((timeLineEvent) => {
     return Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4));
   });
 
   return (
     <>
+      <TimelineCountry />
       <TimelineCardContainer
-        timeLineEvents={timeLineEvents}
+        timeLineEventsDe={timeLineEventsDe}
+        timeLineEventsEn={timeLineEventsEn}
         allMedia={allMedia}
-        timeLineEventDatesArray={timeLineEventDatesArray}
+        timeLineEventDatesArrayDe={timeLineEventDatesArrayDe}
+        timeLineEventDatesArrayEn={timeLineEventDatesArrayEn}
+        lang={lang}
       />
 
-      <RangeSlider timeLineEventDatesArray={timeLineEventDatesArray} />
+      <RangeSlider
+        timeLineEventDatesArrayObject={{
+          de: timeLineEventDatesArrayDe,
+          en: timeLineEventDatesArrayEn,
+        }}
+      />
     </>
   );
 };

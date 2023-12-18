@@ -30,14 +30,19 @@ const TimeLineCard = ({ mediaUrl, timeLineEvent, setCardWidth, cardWidth }) => {
         sizes="100%"
         priority={true}
       ></Image>
+      <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-wwr_rich_black"></div>
       <div
         className={`p-8 relative transition-all duration-500 text-wwr_white ${
           hovered ? "pb-16" : ""
         }`}
       >
-        <div>{timeLineEvent.acf.basic_info.start_date.slice(0, 4)}</div>
+        <div className="font-extralight tracking-wider pb-4 text-lg">
+          {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}
+        </div>
 
-        <div>{parse(timeLineEvent.title.rendered)}</div>
+        <div className="text-xl font-light">
+          {parse(timeLineEvent.title.rendered)}
+        </div>
       </div>
     </div>
   );

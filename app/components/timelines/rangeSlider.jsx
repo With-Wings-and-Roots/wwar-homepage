@@ -3,11 +3,24 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { rangeDateChanged } from "@/app/store/rangeSlider";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
-const RangeSlider = ({ timeLineEventDatesArray }) => {
+const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
+  let timeLineEventDatesArray;
   const dispatch = useDispatch();
+  const selectedCountry = useSelector(
+    (state) => state.entities.timeline.country
+  );
+  if (selectedCountry === "de") {
+    timeLineEventDatesArray = timeLineEventDatesArrayObject.de;
+  } else {
+    timeLineEventDatesArray = timeLineEventDatesArrayObject.en;
+  }
+
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
+  const [grab, setGrab] = useState(false);
+  const uniqueTimeLineEventDatesArray = [...new Set(timeLineEventDatesArray)];
 
   useEffect(() => {
     setValue(rangeValue);
@@ -33,19 +46,18 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
     if (direction === "left") {
       if (timeLineEventDatesArray.indexOf(rangeValue) > 0) {
         setRangeValue(
-          timeLineEventDatesArray[
-            timeLineEventDatesArray.indexOf(rangeValue) - 1
+          uniqueTimeLineEventDatesArray[
+            uniqueTimeLineEventDatesArray.indexOf(rangeValue) - 1
           ]
         );
       }
     } else {
       if (
-        timeLineEventDatesArray.indexOf(rangeValue) <
-        timeLineEventDatesArray.length - 1
+        rangeValue < timeLineEventDatesArray[timeLineEventDatesArray.length - 1]
       ) {
         setRangeValue(
-          timeLineEventDatesArray[
-            timeLineEventDatesArray.indexOf(rangeValue) + 1
+          uniqueTimeLineEventDatesArray[
+            uniqueTimeLineEventDatesArray.indexOf(rangeValue) + 1
           ]
         );
       }
@@ -77,7 +89,13 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
             onChange={(e) => setValue(e.target.value)}
             onMouseUpCapture={handleChange}
             onTouchEndCapture={handleChange}
-            className="w-full h-px  bg-wwr_black rounded-lg appearance-none cursor-pointer range-sm dark:bg-gray-700"
+            onMouseDown={() => setGrab(true)}
+            onMouseUp={() => setGrab(false)}
+            className={`w-full h-px bg-wwr_black accent-wwr_black rounded-lg appearance-none cursor-pointer dark:bg-gray-700 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[24px] [&::-webkit-slider-thumb]:w-[24px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-wwr_black hover:[&::-webkit-slider-thumb]:scale-125 [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-300 ${
+              grab
+                ? "[&::-webkit-slider-thumb]:cursor-grabbing"
+                : "[&::-webkit-slider-thumb]:cursor-grab"
+            }`}
           />
           <div
             className="absolute bottom-0 -translate-x-1/2"
@@ -112,19 +130,21 @@ const Arrow = ({ navArrowHandler, direction }) => {
   return (
     <div
       onClick={() => navArrowHandler(direction)}
-      className=" w-6 h-6 box-border bg-wwr_black  rounded-full hover:scale-125 cursor-pointer transition-transform duration-300"
+      className="relative w-6 h-6 overflow-hidden bg-wwr_black  rounded-full hover:scale-125 cursor-pointer transition-transform duration-300"
     >
-      <Image
-        className="box-border rounded-full w-full h-full"
-        src={
-          direction === "left"
-            ? "/arrow-left--circle-white.svg"
-            : "/arrow-right--circle-darkGray.svg"
-        }
-        alt={`arrow-${direction}`}
-        width={50}
-        height={50}
-      />
+      <div className="absolute top-0 left-0 w-8 h-8 -translate-y-1/2 -translate-x-1/2 mt-[50%] ml-[50%]">
+        <Image
+          className="min-w-full min-h-full"
+          src={
+            direction === "left"
+              ? "/arrow-left--circle-white.svg"
+              : "/arrow-right--circle-darkGray.svg"
+          }
+          alt={`arrow-${direction}`}
+          width={50}
+          height={50}
+        />
+      </div>
     </div>
   );
 };

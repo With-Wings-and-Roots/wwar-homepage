@@ -5,10 +5,26 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const TimelineCardContainer = ({
-  timeLineEvents,
+  timeLineEventsDe,
+  timeLineEventsEn,
   allMedia,
-  timeLineEventDatesArray,
+  timeLineEventDatesArrayDe,
+  timeLineEventDatesArrayEn,
 }) => {
+  let timeLineEvents, timeLineEventDatesArray;
+
+  const selectedCountry = useSelector(
+    (state) => state.entities.timeline.country
+  );
+
+  if (selectedCountry === "de") {
+    timeLineEvents = timeLineEventsDe;
+    timeLineEventDatesArray = timeLineEventDatesArrayDe;
+  } else {
+    timeLineEvents = timeLineEventsEn;
+    timeLineEventDatesArray = timeLineEventDatesArrayEn;
+  }
+
   const [cardWidth, setCardWidth] = useState(0);
 
   const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
