@@ -39,7 +39,10 @@ const TimelineCardContainer = ({
 
   const [leftPosition, setLeftPosition] = useState("0%");
 
-  const dateIndex = timeLineEventDatesArray.indexOf(selectedDate) || 0;
+  const dateIndex =
+    timeLineEventDatesArray.indexOf(selectedDate) < 0
+      ? 0
+      : timeLineEventDatesArray.indexOf(selectedDate);
 
   useEffect(() => {
     setLeftPosition(`${-cardWidthPercentage * dateIndex}%`);
