@@ -71,11 +71,11 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
   };
 
   return (
-    <div>
+    <div className="pb-20 pt-4">
       <div className="flex w-9/12 m-auto items-center">
         <div className="flex">
-          <div>{timeLineEventDatesArray[0]}</div>
-          <div className="pl-2">
+          <DateText date={timeLineEventDatesArray[0]} />
+          <div className="pl-2 flex items-center">
             <Arrow direction="left" navArrowHandler={navArrowHandler} />
           </div>
         </div>
@@ -104,7 +104,7 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
             }`}
           />
           <div
-            className="absolute bottom-0 -translate-x-1/2"
+            className="absolute sm:text-xl bottom-0 -translate-x-1/2"
             style={{
               left: `${
                 ((value - timeLineEventDatesArray[0]) * 100) /
@@ -113,17 +113,17 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
               }%`,
             }}
           >
-            {value}
+            <DateText date={value} />
           </div>
         </div>
         <div className="flex">
-          <div className="pr-2">
+          <div className="pr-2 flex items-center">
             <Arrow direction="right" navArrowHandler={navArrowHandler} />
           </div>
 
-          <div>
-            {timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}
-          </div>
+          <DateText
+            date={timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}
+          />
         </div>
       </div>
     </div>
@@ -153,4 +153,8 @@ const Arrow = ({ navArrowHandler, direction }) => {
       </div>
     </div>
   );
+};
+
+const DateText = ({ date }) => {
+  return <div className="font-light sm:text-xl lg:text-2xl">{date}</div>;
 };

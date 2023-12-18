@@ -5,17 +5,16 @@ import { germanySelected, usaSelected } from "@/app/store/timeline";
 import { useDispatch, useSelector } from "react-redux";
 import { rangeDateChanged } from "@/app/store/rangeSlider";
 
-const TimelineCountry = ({ firstDate }) => {
+const TimelineCountry = ({ firstDate, language }) => {
   const dispatch = useDispatch();
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
   );
-
   return (
-    <div className="flex gap-1">
+    <div className="flex flex-wrap gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight">
       <div
-        className={`${
-          selectedCountry === "us" ? "font-bold" : " cursor-pointer"
+        className={`min-w-max ${
+          selectedCountry === "us" ? "font-normal" : " cursor-pointer"
         }`}
         onClick={() => {
           if (selectedCountry !== "us") {
@@ -24,12 +23,13 @@ const TimelineCountry = ({ firstDate }) => {
           }
         }}
       >
-        UNITED STATES
+        {language === "de" && <>USA</>}
+        {language !== "de" && <>UNITED STATES</>}
       </div>
-      <div>/</div>
+      <div className="font-normal -mt-5 px-2">/</div>
       <div
-        className={`${
-          selectedCountry === "de" ? "font-bold" : " cursor-pointer"
+        className={`min-w-max ${
+          selectedCountry === "de" ? "font-normal" : " cursor-pointer"
         }`}
         onClick={() => {
           if (selectedCountry !== "de") {
@@ -38,7 +38,8 @@ const TimelineCountry = ({ firstDate }) => {
           }
         }}
       >
-        GERMANY
+        {language === "de" && <>DEUTSCHLAND</>}
+        {language !== "de" && <>GERMANY</>}
       </div>
     </div>
   );

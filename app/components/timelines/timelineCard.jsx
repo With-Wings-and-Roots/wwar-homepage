@@ -40,21 +40,19 @@ const TimeLineCard = ({
       ></Image>
       <div className="absolute w-full h-full bg-gradient-to-b from-transparent to-wwr_rich_black"></div>
       <div
-        className={`p-8 relative transition-all duration-500 text-wwr_white ${
-          hovered ? "pb-16" : ""
+        className={`px-[10%] sm:px-8 cursor-pointer relative transition-all text-[4.4vw] leading-snug sm:text-xl duration-500 text-wwr_white ${
+          hovered ? "pb-[20%] sm:pb-16" : "pb-[10%]"
         }`}
       >
         <div
-          className={`font-extralight tracking-wider mb-4 text-lg w-max px-2 py-1 transition-all duration-300 ${
+          className={`scale-90 font-extralight tracking-wider mb-2  w-max px-2 py-1 transition-all duration-300 ${
             language === "en" && selectedCountry === "de" && "bg-wwr_turquoise"
           }`}
         >
           {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}
         </div>
 
-        <div className="text-xl font-light">
-          {parse(timeLineEvent.title.rendered)}
-        </div>
+        <div className="font-light">{parse(timeLineEvent.title.rendered)}</div>
       </div>
     </div>
   );
