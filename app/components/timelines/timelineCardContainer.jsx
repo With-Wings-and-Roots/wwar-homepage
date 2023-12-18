@@ -13,6 +13,8 @@ const TimelineCardContainer = ({
 }) => {
   let timeLineEvents, timeLineEventDatesArray;
 
+  const language = useSelector((state) => state.entities.language.language);
+
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
   );
@@ -68,11 +70,21 @@ const TimelineCardContainer = ({
                 timeLineEvent={timeLineEvent}
                 setCardWidth={setCardWidth}
                 cardWidth={cardWidth}
+                language={language}
+                selectedCountry={selectedCountry}
               />
             </React.Fragment>
           );
         })}
       </motion.div>
+      {language === "en" && selectedCountry === "de" && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="bg-wwr_turquoise w-full h-5"
+        ></motion.div>
+      )}
     </div>
   );
 };

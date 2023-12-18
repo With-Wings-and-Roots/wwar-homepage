@@ -2,8 +2,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import parse from "html-react-parser";
+import { useSelector } from "react-redux";
 
-const TimeLineCard = ({ mediaUrl, timeLineEvent, setCardWidth, cardWidth }) => {
+const TimeLineCard = ({
+  mediaUrl,
+  timeLineEvent,
+  setCardWidth,
+  cardWidth,
+  language,
+  selectedCountry,
+}) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -36,7 +44,11 @@ const TimeLineCard = ({ mediaUrl, timeLineEvent, setCardWidth, cardWidth }) => {
           hovered ? "pb-16" : ""
         }`}
       >
-        <div className="font-extralight tracking-wider pb-4 text-lg">
+        <div
+          className={`font-extralight tracking-wider mb-4 text-lg w-max px-2 py-1 transition-all duration-300 ${
+            language === "en" && selectedCountry === "de" && "bg-wwr_turquoise"
+          }`}
+        >
           {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}
         </div>
 
