@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { rangeDateChanged } from "@/app/store/rangeSlider";
+import Image from "next/image";
 
 const RangeSlider = ({ timeLineEventDatesArray }) => {
   const dispatch = useDispatch();
@@ -28,10 +29,38 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
     }
   };
 
+  const navArrowHandler = (direction) => {
+    if (direction === "left") {
+      if (timeLineEventDatesArray.indexOf(rangeValue) > 0) {
+        setRangeValue(
+          timeLineEventDatesArray[
+            timeLineEventDatesArray.indexOf(rangeValue) - 1
+          ]
+        );
+      }
+    } else {
+      if (
+        timeLineEventDatesArray.indexOf(rangeValue) <
+        timeLineEventDatesArray.length - 1
+      ) {
+        setRangeValue(
+          timeLineEventDatesArray[
+            timeLineEventDatesArray.indexOf(rangeValue) + 1
+          ]
+        );
+      }
+    }
+  };
+
   return (
     <div>
       <div className="flex w-9/12 m-auto items-center">
-        <div className="">{timeLineEventDatesArray[0]}</div>
+        <div className="flex">
+          <div>{timeLineEventDatesArray[0]}</div>
+          <div className="pl-2">
+            <Arrow direction="left" navArrowHandler={navArrowHandler} />
+          </div>
+        </div>
         {/* <label
         htmlFor="small-range"
         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -63,10 +92,39 @@ const RangeSlider = ({ timeLineEventDatesArray }) => {
             {value}
           </div>
         </div>
-        <div>{timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}</div>
+        <div className="flex">
+          <div className="pr-2">
+            <Arrow direction="right" navArrowHandler={navArrowHandler} />
+          </div>
+
+          <div>
+            {timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default RangeSlider;
+
+const Arrow = ({ navArrowHandler, direction }) => {
+  return (
+    <div
+      onClick={() => navArrowHandler(direction)}
+      className=" w-6 h-6 box-border bg-wwr_black  rounded-full hover:scale-125 cursor-pointer transition-transform duration-300"
+    >
+      <Image
+        className="box-border rounded-full w-full h-full"
+        src={
+          direction === "left"
+            ? "/arrow-left--circle-white.svg"
+            : "/arrow-right--circle-darkGray.svg"
+        }
+        alt={`arrow-${direction}`}
+        width={50}
+        height={50}
+      />
+    </div>
+  );
+};

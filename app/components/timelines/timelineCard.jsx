@@ -28,6 +28,7 @@ const TimeLineCard = ({ mediaUrl, timeLineEvent, setCardWidth, cardWidth }) => {
         alt={timeLineEvent.title.rendered}
         quality={80}
         sizes="100%"
+        priority={true}
       ></Image>
       <div
         className={`p-8 relative transition-all duration-500 text-wwr_white ${
