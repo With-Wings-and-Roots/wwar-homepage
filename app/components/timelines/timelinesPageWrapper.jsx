@@ -26,7 +26,12 @@ const TimelinesPageWrapper = async ({ lang }) => {
 
   return (
     <>
-      <TimelineCountry />
+      <TimelineCountry
+        firstDate={{
+          de: timeLineEventDatesArrayDe[0],
+          en: timeLineEventDatesArrayEn[0],
+        }}
+      />
       <TimelineCardContainer
         timeLineEventsDe={timeLineEventsDe}
         timeLineEventsEn={timeLineEventsEn}

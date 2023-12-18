@@ -16,11 +16,17 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
   } else {
     timeLineEventDatesArray = timeLineEventDatesArrayObject.en;
   }
-
+  const selectedDate = useSelector((state) => state.entities.rangeSlider.date);
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
   const uniqueTimeLineEventDatesArray = [...new Set(timeLineEventDatesArray)];
+
+  useEffect(() => {
+    if (selectedDate != rangeValue) {
+      setRangeValue(selectedDate);
+    }
+  }, [selectedDate]);
 
   useEffect(() => {
     setValue(rangeValue);

@@ -37,7 +37,7 @@ const TimelineCardContainer = ({
 
   const selectedDate = useSelector((state) => state.entities.rangeSlider.date);
 
-  const [leftPosition, setLeftPosition] = useState(null);
+  const [leftPosition, setLeftPosition] = useState("0%");
 
   const dateIndex = timeLineEventDatesArray.indexOf(selectedDate) || 0;
 
@@ -48,7 +48,7 @@ const TimelineCardContainer = ({
   return (
     <div className="w-screen overflow-hidden">
       <motion.div
-        animate={{ x: leftPosition ? leftPosition : 0 }}
+        animate={{ x: leftPosition }}
         transition={{ duration: 0.8, ease: easeOut }}
         drag="x"
         className="flex"
