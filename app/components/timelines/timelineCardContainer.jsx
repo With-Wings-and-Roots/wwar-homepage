@@ -11,12 +11,6 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
 }) => {
-  // const cardContainerRef = useRef(null);
-
-  // useEffect(() => {
-  //   console.log(cardContainerRef.current.offsetWidth);
-  // });
-
   let timeLineEvents, timeLineEventDatesArray;
 
   const language = useSelector((state) => state.entities.language.language);

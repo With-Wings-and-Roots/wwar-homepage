@@ -26,7 +26,7 @@ const TimelineCountry = ({ firstDate, language }) => {
         {language === "de" && <>USA</>}
         {language !== "de" && <>UNITED STATES</>}
       </div>
-      <div className="font-normal -mt-5 px-2">/</div>
+      <div className="font-normal px-4">/</div>
       <div
         className={`min-w-max ${
           selectedCountry === "de" ? "font-normal" : " cursor-pointer"
