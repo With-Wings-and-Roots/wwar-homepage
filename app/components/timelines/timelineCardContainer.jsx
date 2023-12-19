@@ -1,7 +1,7 @@
 "use client";
 import TimeLineCard from "./timelineCard";
 import { easeOut, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 const TimelineCardContainer = ({
@@ -11,6 +11,12 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
 }) => {
+  // const cardContainerRef = useRef(null);
+
+  // useEffect(() => {
+  //   console.log(cardContainerRef.current.offsetWidth);
+  // });
+
   let timeLineEvents, timeLineEventDatesArray;
 
   const language = useSelector((state) => state.entities.language.language);
@@ -47,7 +53,12 @@ const TimelineCardContainer = ({
       : timeLineEventDatesArray.indexOf(selectedDate);
 
   useEffect(() => {
-    setLeftPosition(`${-cardWidthPercentage * dateIndex}%`);
+    setLeftPosition(
+      `${-Math.min(
+        cardWidthPercentage * dateIndex,
+        cardWidthPercentage * timeLineEventDatesArray.length - 100
+      )}%`
+    );
   }, [cardWidthPercentage, dateIndex]);
 
   return (
@@ -57,6 +68,7 @@ const TimelineCardContainer = ({
         transition={{ duration: 0.8, ease: easeOut }}
         drag="x"
         className="flex"
+        // ref={cardContainerRef}
       >
         {timeLineEvents.map((timeLineEvent, index) => {
           const mediaUrl = allMedia.filter(

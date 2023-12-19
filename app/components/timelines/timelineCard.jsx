@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import parse from "html-react-parser";
-import { useSelector } from "react-redux";
 
 const TimeLineCard = ({
   mediaUrl,
