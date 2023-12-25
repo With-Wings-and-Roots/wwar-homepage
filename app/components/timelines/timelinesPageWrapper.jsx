@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  getTimelineEvents,
-  getGermanTimeline,
-  getUsTimeline,
-} from "@/app/utilities/timeline";
+import { getTimeline } from "@/app/utilities/timeline";
 import TimelineCardContainer from "./timelineCardContainer";
 import RangeSlider from "./rangeSlider";
 import { getAllMedia } from "@/app/utilities/stories";
@@ -12,8 +8,8 @@ import TimelineCountry from "./timelineCountrySelector";
 const TimelinesPageWrapper = async ({ lang }) => {
   // const timeLineEvents = await getTimelineEvents(lang);
 
-  const timeLineEventsDe = await getGermanTimeline(lang);
-  const timeLineEventsEn = await getUsTimeline(lang);
+  const timeLineEventsDe = await getTimeline("de", lang);
+  const timeLineEventsEn = await getTimeline("us", lang);
 
   const allMedia = await getAllMedia("en");
 
