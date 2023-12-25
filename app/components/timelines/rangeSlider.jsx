@@ -79,15 +79,9 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
             <Arrow direction="left" navArrowHandler={navArrowHandler} />
           </div>
         </div>
-        {/* <label
-        htmlFor="small-range"
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-      >
-        {rangeValue}
-      </label> */}
-        <div className="w-full relative h-20 flex items-center ">
+
+        <div className="w-full relative h-20 flex flex-col gap-y-4 justify-center ">
           <input
-            id="small-range"
             type="range"
             min={timeLineEventDatesArray[0]}
             max={timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}
@@ -101,19 +95,26 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
               grab
                 ? "[&::-webkit-slider-thumb]:cursor-grabbing"
                 : "[&::-webkit-slider-thumb]:cursor-grab"
-            }`}
+            } `}
           />
-          <div
-            className="absolute sm:text-xl bottom-0 -translate-x-1/2"
-            style={{
-              left: `${
-                ((value - timeLineEventDatesArray[0]) * 100) /
-                (timeLineEventDatesArray[timeLineEventDatesArray.length - 1] -
-                  timeLineEventDatesArray[0])
-              }%`,
-            }}
-          >
-            <DateText date={value} />
+
+          <div className="absolute w-full bottom-0 left-0 font-light sm:text-xl lg:text-2xl px-3">
+            <div className="relative w-full">
+              <div
+                className="absolute top-0 -translate-x-1/2 -translate-y-1/2"
+                style={{
+                  left: `${
+                    ((value - timeLineEventDatesArray[0]) * 100) /
+                    (timeLineEventDatesArray[
+                      timeLineEventDatesArray.length - 1
+                    ] -
+                      timeLineEventDatesArray[0])
+                  }%`,
+                }}
+              >
+                <DateText date={value} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex">
