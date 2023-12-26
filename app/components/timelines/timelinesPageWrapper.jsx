@@ -6,20 +6,19 @@ import { getAllMedia } from "@/app/utilities/stories";
 import TimelineCountry from "./timelineCountrySelector";
 
 const TimelinesPageWrapper = async ({ lang }) => {
-  // const timeLineEvents = await getTimelineEvents(lang);
+  const [timeLineEventsDe, timeLineEventsEn, allMedia] = await Promise.all([
+    getTimeline("de", lang),
+    getTimeline("us", lang),
+    getAllMedia("en"),
+  ]);
 
-  const timeLineEventsDe = await getTimeline("de", lang);
-  const timeLineEventsEn = await getTimeline("us", lang);
+  const extractYearFromTimeline = (timeLineEvents) =>
+    timeLineEvents.map((timeLineEvent) =>
+      Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4))
+    );
 
-  const allMedia = await getAllMedia("en");
-
-  const timeLineEventDatesArrayDe = timeLineEventsDe.map((timeLineEvent) => {
-    return Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4));
-  });
-  const timeLineEventDatesArrayEn = timeLineEventsEn.map((timeLineEvent) => {
-    return Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4));
-  });
-
+  const timeLineEventDatesArrayDe = extractYearFromTimeline(timeLineEventsDe);
+  const timeLineEventDatesArrayEn = extractYearFromTimeline(timeLineEventsEn);
   return (
     <>
       <TimelineCountry

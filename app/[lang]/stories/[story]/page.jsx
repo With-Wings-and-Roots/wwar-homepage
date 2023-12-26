@@ -15,11 +15,12 @@ import Header from "@/app/components/header/header";
 import StoryCardContainer from "@/app/components/stories/StoryCardContainer";
 
 const Story = async ({ params }) => {
-  const stories = await getAllStories(params.lang);
-  const topics = await fetchAllTopics(params.lang);
-  const allMedia = await getAllMedia(params.lang);
-
-  const allPersons = await getAllPersons();
+  const [stories, topics, allMedia, allPersons] = await Promise.all([
+    getAllStories(params.lang),
+    fetchAllTopics(params.lang),
+    getAllMedia(params.lang),
+    getAllPersons(),
+  ]);
 
   const storiesLength = stories.length;
 
@@ -40,40 +41,28 @@ const Story = async ({ params }) => {
 
   const person = await getPersonById(story?.person[0]);
 
-  let relatedStories = [];
+  const relatedStories = (story?.acf?.related_stories || []).map((id) =>
+    stories.find((s) => s.id === id)
+  );
 
-  const relatedStoriesIdList = story?.acf?.related_stories || [];
+  const topicsHref = story?._links["acf:term"]?.map((term) => term.href) || [];
 
-  for (let id of relatedStoriesIdList) {
-    const storyWithId = stories.filter((story) => story.id === id);
-    relatedStories = [...relatedStories, ...storyWithId];
-  }
+  const categoriesArray = await Promise.all(
+    topicsHref.map(async (topic) => {
+      const response = await fetch(topic);
+      const data = await response.json();
 
-  const terms = story?._links["acf:term"];
+      const temp = topics.find((t) => t.slug === data.slug);
 
-  let topicsHref = [];
+      return temp ? { name: data.name, slug: data.slug } : null;
+    })
+  );
 
-  let categories = [];
-
-  terms?.map((term) => topicsHref.push(term.href));
-
-  for (let topic of topicsHref) {
-    const response = await fetch(topic);
-    const data = await response.json();
-
-    let temp = topics.filter((topic) => {
-      return topic.slug === data.slug;
-    });
-
-    if (temp.length > 0) {
-      categories.push({ name: data.name, slug: data.slug });
-    }
-  }
+  const categories = categoriesArray.filter(Boolean);
 
   return (
     <div className="relative overflow-hidden lg:py-10">
       <div className="hidden sm:block fixed z-10 top-0 left-0">
-        {/* <StoriesPageWrapper lang={params.lang} /> */}
         <Header />
       </div>
       <div
@@ -110,15 +99,17 @@ const Story = async ({ params }) => {
                   ></iframe>
                 </div>
                 <div className="flex flex-wrap gap-1 mt-4 md:mt-10">
-                  {categories.map((category, index) => (
-                    <React.Fragment key={index}>
-                      <div>
-                        <div className="w-max bg-wwr_yellow_orange px-4 py-2 text-sm text-wwr_white transition-all duration-500">
-                          {parse(category.name)}
+                  {categories.map((category, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <div>
+                          <div className="w-max bg-wwr_yellow_orange px-4 py-2 text-sm text-wwr_white transition-all duration-500">
+                            {parse(category.name)}
+                          </div>
                         </div>
-                      </div>
-                    </React.Fragment>
-                  ))}
+                      </React.Fragment>
+                    );
+                  })}
                 </div>
               </div>
               <div className="w-full md:w-4/12">
@@ -214,8 +205,10 @@ const NavigationCircle = ({ slug, direction }) => (
 export default Story;
 
 export async function generateStaticParams() {
-  const storiesEn = await getAllStories("en");
-  const storiesDe = await getAllStories("de");
+  const [storiesEn, storiesDe] = await Promise.all([
+    getAllStories("en"),
+    getAllStories("de"),
+  ]);
 
   const enStories = storiesEn.map((story) => ({
     lang: "en",

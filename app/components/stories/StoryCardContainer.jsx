@@ -13,30 +13,31 @@ const StoryCardContainer = ({
 }) => {
   return (
     <>
-      {storiesToRender.map((story, index) => {
-        const mediaUrl = allMedia.filter(
-          (media) => media.id === story.featured_media
-        )[0]?.source_url;
+      {storiesToRender &&
+        storiesToRender.map((story, index) => {
+          const mediaUrl = allMedia.filter(
+            (media) => media.id === story.featured_media
+          )[0]?.source_url;
 
-        const person = allPersons.filter(
-          (person) => person.id === story.acf.person
-        )[0];
+          const person = allPersons.filter(
+            (person) => person.id === story.acf.person
+          )[0];
 
-        return (
-          <React.Fragment key={index}>
-            <StoryCard
-              title={story.title.rendered}
-              mediaUrl={mediaUrl}
-              city={story.acf?.city}
-              slug={story.slug}
-              lang={lang}
-              color={story.acf?.color}
-              personName={person?.name}
-              hoverZoom={hoverZoom}
-            />
-          </React.Fragment>
-        );
-      })}
+          return (
+            <React.Fragment key={index}>
+              <StoryCard
+                title={story.title?.rendered}
+                mediaUrl={mediaUrl}
+                city={story.acf?.city}
+                slug={story.slug}
+                lang={lang}
+                color={story.acf?.color}
+                personName={person?.name}
+                hoverZoom={hoverZoom}
+              />
+            </React.Fragment>
+          );
+        })}
     </>
   );
 };

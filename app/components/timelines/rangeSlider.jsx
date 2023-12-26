@@ -98,7 +98,7 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
             } `}
           />
 
-          <div className="absolute w-full bottom-0 left-0 font-light sm:text-xl lg:text-2xl px-3">
+          <div className="absolute w-full bottom-0 left-0 font-normal sm:text-xl lg:text-2xl px-3">
             <div className="relative w-full">
               <div
                 className="absolute top-0 -translate-x-1/2 -translate-y-1/2"
@@ -112,7 +112,7 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
                   }%`,
                 }}
               >
-                <DateText date={value} />
+                {value}
               </div>
             </div>
           </div>

@@ -10,13 +10,12 @@ import Header from "@/app/components/header/header";
 const StoriesPageWrapper = async (props) => {
   const language = props.lang || "en";
 
-  const stories = await getAllStories(language);
-
-  const allMedia = await getAllMedia(language);
-
-  const allPersons = await getAllPersons();
-
-  const topics = await fetchAllTopics(language);
+  const [stories, allMedia, allPersons, topics] = await Promise.all([
+    getAllStories(language),
+    getAllMedia(language),
+    getAllPersons(),
+    fetchAllTopics(language),
+  ]);
 
   return (
     <>

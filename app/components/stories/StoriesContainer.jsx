@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { BsSearch } from "react-icons/bs";
+import React, { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
