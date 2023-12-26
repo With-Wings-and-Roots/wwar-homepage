@@ -210,14 +210,11 @@ export async function generateStaticParams() {
     getAllStories("de"),
   ]);
 
-  const enStories = storiesEn.map((story) => ({
-    lang: "en",
-    story: story.slug,
-  }));
-  const deStories = storiesDe.map((story) => ({
-    lang: "de",
-    story: story.slug,
-  }));
+  const mapStories = (stories, lang) =>
+    stories.map((story) => ({ lang, story: story.slug }));
 
-  return [...enStories, ...deStories];
+  const enStories = mapStories(storiesEn, "en");
+  const deStories = mapStories(storiesDe, "de");
+
+  return enStories.concat(deStories);
 }

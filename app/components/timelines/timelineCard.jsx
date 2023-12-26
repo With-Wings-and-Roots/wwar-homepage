@@ -45,7 +45,9 @@ const TimeLineCard = ({
       >
         <div
           className={`scale-90 font-extralight tracking-wider mb-2  w-max px-2 py-1 transition-all duration-300 ${
-            language === "en" && selectedCountry === "de" && "bg-wwr_turquoise"
+            selectedCountry === "de"
+              ? "bg-wwr_turquoise"
+              : "bg-wwr_yellow_orange"
           }`}
         >
           {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}

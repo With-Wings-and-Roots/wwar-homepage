@@ -83,14 +83,15 @@ const TimelineCardContainer = ({
           );
         })}
       </motion.div>
-      {language === "en" && selectedCountry === "de" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="bg-wwr_turquoise w-full h-5"
-        ></motion.div>
-      )}
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className={`${
+          selectedCountry === "de" ? "bg-wwr_turquoise" : "bg-wwr_yellow_orange"
+        } w-full h-5`}
+      ></motion.div>
     </div>
   );
 };
