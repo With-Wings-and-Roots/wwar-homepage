@@ -10,7 +10,7 @@ const LanguageSelector = () => {
 
   useEffect(() => {
     setLang(language);
-  });
+  }, [language]);
 
   return (
     <>

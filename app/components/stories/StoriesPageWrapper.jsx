@@ -1,21 +1,14 @@
-import {
-  fetchAllTopics,
-  getAllStories,
-  getAllMedia,
-  getAllPersons,
-} from "@/app/utilities/stories";
 import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
 import Header from "@/app/components/header/header";
 
-const StoriesPageWrapper = async (props) => {
-  const language = props.lang || "en";
-
-  const [stories, allMedia, allPersons, topics] = await Promise.all([
-    getAllStories(language),
-    getAllMedia(language),
-    getAllPersons(),
-    fetchAllTopics(language),
-  ]);
+const StoriesPageWrapper = async ({
+  lang,
+  stories,
+  allMedia,
+  allPersons,
+  topics,
+}) => {
+  const language = lang || "en";
 
   return (
     <>

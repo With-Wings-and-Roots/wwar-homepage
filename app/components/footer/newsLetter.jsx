@@ -3,6 +3,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const NewsLetter = ({ footerEn, footerDe }) => {
   const [footer, setFooter] = useState(footerEn);
@@ -15,7 +16,7 @@ const NewsLetter = ({ footerEn, footerDe }) => {
     } else {
       setFooter(footerEn);
     }
-  });
+  }, [language, footerDe, footerEn]);
 
   return (
     <div className="pt-10">
@@ -78,7 +79,13 @@ const NewsLetter = ({ footerEn, footerDe }) => {
                 href={social.url}
                 key={index}
               >
-                <img src={social.icon} alt={social.name} />
+                <Image
+                  className="w-full h-full"
+                  height={100}
+                  width={100}
+                  src={social.icon}
+                  alt={social.name}
+                />
               </a>
             );
           })}

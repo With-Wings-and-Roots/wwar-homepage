@@ -1,7 +1,7 @@
 "use client";
 import TimeLineCard from "./timelineCard";
 import { easeOut, motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
 const TimelineCardContainer = ({
@@ -11,40 +11,35 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
 }) => {
-  let timeLineEvents, timeLineEventDatesArray;
+  const {
+    language,
+    timeline: { country },
+    rangeSlider: { date: selectedDate },
+  } = useSelector((state) => state.entities);
 
-  const language = useSelector((state) => state.entities.language.language);
+  const countryTimelineData = {
+    de: { events: timeLineEventsDe, datesArray: timeLineEventDatesArrayDe },
+    en: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
+  };
 
-  const selectedCountry = useSelector(
-    (state) => state.entities.timeline.country
-  );
-
-  if (selectedCountry === "de") {
-    timeLineEvents = timeLineEventsDe;
-    timeLineEventDatesArray = timeLineEventDatesArrayDe;
-  } else {
-    timeLineEvents = timeLineEventsEn;
-    timeLineEventDatesArray = timeLineEventDatesArrayEn;
-  }
+  const { events: timeLineEvents, datesArray: timeLineEventDatesArray } =
+    countryTimelineData[country] || countryTimelineData["en"];
 
   const [cardWidth, setCardWidth] = useState(0);
-
   const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
 
+  const [leftPosition, setLeftPosition] = useState("0%");
+
   useEffect(() => {
-    if (cardWidth && typeof window != "undefined") {
+    if (cardWidth && window?.innerWidth) {
       setCardWidthPercentage(100 / Math.round(window.innerWidth / cardWidth));
     }
   }, [cardWidth]);
 
-  const selectedDate = useSelector((state) => state.entities.rangeSlider.date);
-
-  const [leftPosition, setLeftPosition] = useState("0%");
-
-  const dateIndex =
-    timeLineEventDatesArray.indexOf(selectedDate) < 0
-      ? 0
-      : timeLineEventDatesArray.indexOf(selectedDate);
+  const dateIndex = useMemo(
+    () => Math.max(0, timeLineEventDatesArray.indexOf(selectedDate) ?? 0),
+    [selectedDate, timeLineEventDatesArray]
+  );
 
   useEffect(() => {
     setLeftPosition(
@@ -53,7 +48,7 @@ const TimelineCardContainer = ({
         cardWidthPercentage * timeLineEventDatesArray.length - 100
       )}%`
     );
-  }, [cardWidthPercentage, dateIndex]);
+  }, [cardWidthPercentage, dateIndex, timeLineEventDatesArray.length]);
 
   return (
     <div className="w-screen overflow-hidden">
@@ -62,12 +57,12 @@ const TimelineCardContainer = ({
         transition={{ duration: 0.8, ease: easeOut }}
         drag="x"
         className="flex"
-        // ref={cardContainerRef}
       >
         {timeLineEvents.map((timeLineEvent, index) => {
-          const mediaUrl = allMedia.filter(
+          const mediaUrl = allMedia.find(
             (media) => media.id === timeLineEvent.featured_media
-          )[0]?.source_url;
+          )?.source_url;
+
           return (
             <React.Fragment key={index}>
               <TimeLineCard
@@ -77,7 +72,7 @@ const TimelineCardContainer = ({
                 setCardWidth={setCardWidth}
                 cardWidth={cardWidth}
                 language={language}
-                selectedCountry={selectedCountry}
+                selectedCountry={country}
               />
             </React.Fragment>
           );
@@ -89,7 +84,7 @@ const TimelineCardContainer = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
         className={`${
-          selectedCountry === "de" ? "bg-wwr_turquoise" : "bg-wwr_yellow_orange"
+          country === "de" ? "bg-wwr_turquoise" : "bg-wwr_yellow_orange"
         } w-full h-5`}
       ></motion.div>
     </div>

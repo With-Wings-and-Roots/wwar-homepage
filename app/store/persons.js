@@ -9,10 +9,10 @@ const slice = createSlice({
   },
   reducers: {
     personsAdded: (persons, action) => {
-      persons.allPersons.push(...action.payload.allPersons);
+      persons.allPersons = [...action.payload.allPersons];
     },
 
-    deleteAllPersons: (persons, action) => {
+    deleteAllPersons: (persons) => {
       persons.allPersons = [];
     },
   },

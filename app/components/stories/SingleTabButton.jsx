@@ -13,11 +13,8 @@ const SingleTabButton = ({ buttonText = "", slug = "all" }) => {
   const allTopics = useSelector((state) => state.entities.topics);
 
   const selectTopic = () => {
-    let selectedTopicId = null;
-
-    selectedTopicId = allTopics.allTopics.filter(
-      (topic) => topic.slug === slug
-    )[0]?.id;
+    const selectedTopicId =
+      allTopics.allTopics.find((topic) => topic.slug === slug)?.id || null;
 
     dispatch(
       storySelected({

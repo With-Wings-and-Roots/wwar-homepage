@@ -19,34 +19,33 @@ const getTimelineCountryIds = async (lang = "en") => {
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline?lang=${lang}`
   );
 
-  const usData = allCountriesData.filter(
-    (country) => country.slug === "united-states" || country.slug === "usa"
-  )[0];
+  const usData = allCountriesData.find((country) =>
+    ["united-states", "usa"].includes(country.slug)
+  );
 
-  const deData = allCountriesData.filter(
-    (country) => country.slug === "germany" || country.slug === "deutschland"
-  )[0];
+  const deData = allCountriesData.find((country) =>
+    ["germany", "deutschland"].includes(country.slug)
+  );
 
-  return { usId: usData.id, deId: deData.id };
+  const result = {
+    usId: usData ? usData.id : null,
+    deId: deData ? deData.id : null,
+  };
+
+  return result;
 };
 
 export const getTimeline = async (country = "us", lang = "en") => {
-  let res, data;
   const timelineCountryIds = await getTimelineCountryIds(lang);
 
-  if (lang === "de") {
-    data = await fetchAllData(
-      `https://wwar2022.backslashseven.com/de/wp-json/wp/v2/timeline_event?timeline=${
-        timelineCountryIds[`${country}Id`]
-      }`
-    );
-  } else {
-    data = await fetchAllData(
-      `https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline_event?timeline=${
-        timelineCountryIds[`${country}Id`]
-      }`
-    );
-  }
+  const baseUrl =
+    lang === "de"
+      ? "https://wwar2022.backslashseven.com/de/wp-json/wp/v2/timeline_event"
+      : "https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline_event";
+
+  const data = await fetchAllData(
+    `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}`
+  );
 
   return data.sort(
     (a, b) =>

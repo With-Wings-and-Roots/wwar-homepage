@@ -1,13 +1,34 @@
 import StoriesPageWrapper from "@/app/components/stories/StoriesPageWrapper";
-const Stories = ({ params }) => {
-  const language = params.lang;
+import {
+  fetchAllTopics,
+  getAllStories,
+  getAllMedia,
+  getAllPersons,
+} from "@/app/utilities/stories";
 
-  return <StoriesPageWrapper lang={language.toLowerCase()} />;
+const Stories = async ({ params }) => {
+  const language = params.lang;
+  const [stories, allMedia, allPersons, topics] = await Promise.all([
+    getAllStories(language),
+    getAllMedia(language),
+    getAllPersons(),
+    fetchAllTopics(language),
+  ]);
+
+  return (
+    <StoriesPageWrapper
+      lang={language.toLowerCase()}
+      stories={stories}
+      allMedia={allMedia}
+      allPersons={allPersons}
+      topics={topics}
+    />
+  );
 };
 
 export default Stories;
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return [
     {
       lang: "en",

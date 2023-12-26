@@ -19,7 +19,12 @@ const MobileSubMenu = ({ menuItems }) => {
         className="absolute left-[4%] top-5 cursor-pointer"
         onClick={() => dispatch(mobileSubMenuClosed({}))}
       >
-        <Image src={`/arrow-left-circle.svg`} height={30} width={30} />
+        <Image
+          src={`/arrow-left-circle.svg`}
+          height={30}
+          width={30}
+          alt="arrow-left-circle"
+        />
       </div>
       <div className="text-2xl pb-4">{activeSubMenuTitle}</div>
       {menuItems

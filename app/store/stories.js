@@ -11,15 +11,13 @@ const slice = createSlice({
   },
   reducers: {
     storiesAdded: (storiesList, action) => {
-      storiesList.allStories = [];
-      storiesList.allStories.push(...action.payload.stories);
+      storiesList.allStories = [...action.payload.stories];
     },
 
     activatedStories: (storiesList, action) => {
-      storiesList.activeStories = [];
-      storiesList.activeStories.push(...action.payload.stories);
+      storiesList.activeStories = [...action.payload.stories];
     },
-    deleteAllStories: (storiesList, action) => {
+    deleteAllStories: (storiesList) => {
       storiesList.allStories = [];
     },
   },

@@ -11,8 +11,7 @@ const slice = createSlice({
   },
   reducers: {
     topicsAdded: (topicsList, action) => {
-      topicsList.allTopics = [];
-      topicsList.allTopics.push(...action.payload.topics);
+      topicsList.allTopics = [...action.payload.topics];
     },
 
     activatedTopic: (topicsList, action) => {

@@ -1,11 +1,12 @@
 export async function fetchAllData(url) {
+  let allData = [];
   const res = await fetch(url, {
     next: {
       revalidate: 600,
     },
   });
   const data = await res.json();
-  let allData = [...data];
+  allData = allData.concat(data);
 
   const totalPages = res.headers.get("X-WP-TotalPages") || 1;
 

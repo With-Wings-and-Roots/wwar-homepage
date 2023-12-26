@@ -2,13 +2,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import parse from "html-react-parser";
+import Link from "next/link";
 
 const TimeLineCard = ({
   mediaUrl,
   timeLineEvent,
   setCardWidth,
   cardWidth,
-  language,
   selectedCountry,
 }) => {
   const cardRef = useRef(null);
@@ -21,7 +21,8 @@ const TimeLineCard = ({
 
   const [hovered, setHovered] = useState(false);
   return (
-    <div
+    <Link
+      href={`./timelines/${timeLineEvent.slug}`}
       ref={cardRef}
       className="relative aspect-square w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 2xl:w-1/6 shrink-0 flex flex-col justify-end cursor-pointer"
       onMouseEnter={() => setHovered(true)}
@@ -55,7 +56,7 @@ const TimeLineCard = ({
 
         <div className="font-light">{parse(timeLineEvent.title.rendered)}</div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -1,17 +1,15 @@
 import React from "react";
-import { getTimeline } from "@/app/utilities/timeline";
+
 import TimelineCardContainer from "./timelineCardContainer";
 import RangeSlider from "./rangeSlider";
-import { getAllMedia } from "@/app/utilities/stories";
 import TimelineCountry from "./timelineCountrySelector";
 
-const TimelinesPageWrapper = async ({ lang }) => {
-  const [timeLineEventsDe, timeLineEventsEn, allMedia] = await Promise.all([
-    getTimeline("de", lang),
-    getTimeline("us", lang),
-    getAllMedia("en"),
-  ]);
-
+const TimelinesPageWrapper = ({
+  lang,
+  timeLineEventsDe,
+  timeLineEventsEn,
+  allMedia,
+}) => {
   const extractYearFromTimeline = (timeLineEvents) =>
     timeLineEvents.map((timeLineEvent) =>
       Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4))

@@ -1,15 +1,9 @@
 import { fetchAllData } from "./general";
 
 export async function getFooter(lang = "en") {
-  const res = await fetch(
-    `https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/options?lang=${lang}`,
-    {
-      next: {
-        revalidate: 600,
-      },
-    }
+  const [data] = await fetchAllData(
+    `https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/options?lang=${lang}`
   );
-  const data = await res.json();
   return data;
 }
 
@@ -38,10 +32,10 @@ export async function getAllPersons() {
 }
 
 export async function getStoryMedia(lang = "en", slug) {
-  const data = fetchAllData(
+  const [data] = fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&slug=${slug}`
   );
-  return data[0].featured_media;
+  return data.featured_media;
 }
 
 export async function getStoryMediaByMediaId(lang, mediaId) {
@@ -63,27 +57,21 @@ export function findIndexBySlug(array, slugTerm) {
 
 export async function getTopicId(lang, topicSlug) {
   const allTopics = await fetchAllTopics(lang);
-
-  const selectedTopic = [
-    ...allTopics.filter((topic) => topic.slug === topicSlug),
-  ][0];
-
-  return selectedTopic?.id;
+  const selectedTopic = allTopics.find((topic) => topic.slug === topicSlug);
+  return selectedTopic?.id || null;
 }
 
 export async function getPersonById(personId) {
   const allPersons = await fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/person?lang=en&per_page=100`
   );
-  const person = [...allPersons.filter((person) => person.id === personId)];
-  return person[0];
+  return allPersons.find((person) => person.id === personId) || null;
 }
+
 export const getMenuId = async (_) => {
-  const res = await fetch(
+  const [data] = await fetchAllData(
     "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu"
   );
-
-  const data = await res.json();
 
   return data.primary;
 };

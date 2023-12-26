@@ -15,13 +15,13 @@ const StoryCardContainer = ({
     <>
       {storiesToRender &&
         storiesToRender.map((story, index) => {
-          const mediaUrl = allMedia.filter(
+          const mediaUrl = allMedia.find(
             (media) => media.id === story.featured_media
-          )[0]?.source_url;
+          )?.source_url;
 
-          const person = allPersons.filter(
+          const person = allPersons.find(
             (person) => person.id === story.acf.person
-          )[0];
+          );
 
           return (
             <React.Fragment key={index}>

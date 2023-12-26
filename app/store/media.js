@@ -9,11 +9,10 @@ const slice = createSlice({
   },
   reducers: {
     mediaAdded: (media, action) => {
-      media.allMedia = [];
-      media.allMedia.push(...action.payload.allMedia);
+      media.allMedia = [...action.payload.allMedia];
     },
 
-    deleteAllMedia: (media, action) => {
+    deleteAllMedia: (media) => {
       media.allMedia = [];
     },
   },

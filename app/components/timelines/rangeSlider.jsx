@@ -1,72 +1,53 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { rangeDateChanged } from "@/app/store/rangeSlider";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
-  let timeLineEventDatesArray;
   const dispatch = useDispatch();
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
   );
-  if (selectedCountry === "de") {
-    timeLineEventDatesArray = timeLineEventDatesArrayObject.de;
-  } else {
-    timeLineEventDatesArray = timeLineEventDatesArrayObject.en;
-  }
-  const selectedDate = useSelector((state) => state.entities.rangeSlider.date);
+  const timeLineEventDatesArray =
+    timeLineEventDatesArrayObject[selectedCountry] ||
+    timeLineEventDatesArrayObject.en;
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
   const uniqueTimeLineEventDatesArray = [...new Set(timeLineEventDatesArray)];
 
   useEffect(() => {
-    if (selectedDate != rangeValue) {
-      setRangeValue(selectedDate);
-    }
-  }, [selectedDate]);
-
-  useEffect(() => {
-    setValue(rangeValue);
-    dispatch(rangeDateChanged({ date: rangeValue }));
-  }, [rangeValue]);
+    setRangeValue((prevRangeValue) => {
+      dispatch(rangeDateChanged({ date: prevRangeValue }));
+      return prevRangeValue;
+    });
+  }, [rangeValue, dispatch]);
 
   const handleChange = (e) => {
-    if (timeLineEventDatesArray.indexOf(e.target.value) > -1) {
-      setRangeValue(e.target.value);
+    setGrab(false);
+    const targetValue = e.target.value;
+    if (timeLineEventDatesArray.includes(targetValue)) {
+      setRangeValue(targetValue);
+      setValue(targetValue);
     } else {
-      setRangeValue(
-        timeLineEventDatesArray.reduce((a, b) => {
-          return Math.abs(b - e.target.value) < Math.abs(a - e.target.value)
-            ? b
-            : a;
-        })
+      const closestDate = timeLineEventDatesArray.reduce((a, b) =>
+        Math.abs(b - targetValue) < Math.abs(a - targetValue) ? b : a
       );
-      setValue(rangeValue);
+      setRangeValue(closestDate);
+      setValue(closestDate);
     }
   };
 
   const navArrowHandler = (direction) => {
-    if (direction === "left") {
-      if (timeLineEventDatesArray.indexOf(rangeValue) > 0) {
-        setRangeValue(
-          uniqueTimeLineEventDatesArray[
-            uniqueTimeLineEventDatesArray.indexOf(rangeValue) - 1
-          ]
-        );
-      }
-    } else {
-      if (
-        rangeValue < timeLineEventDatesArray[timeLineEventDatesArray.length - 1]
-      ) {
-        setRangeValue(
-          uniqueTimeLineEventDatesArray[
-            uniqueTimeLineEventDatesArray.indexOf(rangeValue) + 1
-          ]
-        );
-      }
+    const currentIndex = uniqueTimeLineEventDatesArray.indexOf(rangeValue);
+    if (direction === "left" && currentIndex > 0) {
+      setRangeValue(uniqueTimeLineEventDatesArray[currentIndex - 1]);
+    } else if (
+      direction === "right" &&
+      currentIndex < uniqueTimeLineEventDatesArray.length - 1
+    ) {
+      setRangeValue(uniqueTimeLineEventDatesArray[currentIndex + 1]);
     }
   };
 
@@ -86,11 +67,18 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
             min={timeLineEventDatesArray[0]}
             max={timeLineEventDatesArray[timeLineEventDatesArray.length - 1]}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onInput={(e) => {
+              setValue(e.target.value);
+              setGrab(true);
+            }}
+            onChange={(e) => {
+              setValue(e.target.value);
+              setGrab(true);
+            }}
+            onChangeCapture={handleChange}
             onMouseUpCapture={handleChange}
             onTouchEndCapture={handleChange}
             onMouseDown={() => setGrab(true)}
-            onMouseUp={() => setGrab(false)}
             className={`w-full h-px bg-wwr_black accent-wwr_black rounded-lg appearance-none cursor-pointer dark:bg-gray-700 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[24px] [&::-webkit-slider-thumb]:w-[24px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-wwr_black hover:[&::-webkit-slider-thumb]:scale-125 [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-300 ${
               grab
                 ? "[&::-webkit-slider-thumb]:cursor-grabbing"
