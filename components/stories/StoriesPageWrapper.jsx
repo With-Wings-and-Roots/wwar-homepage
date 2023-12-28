@@ -1,4 +1,4 @@
-import StoriesPageContainer from "@/components/stories/StoriesPageContainer";
+import StoriesPageContainer from '@/components/stories/StoriesPageContainer';
 
 const StoriesPageWrapper = async ({
   lang,
@@ -7,11 +7,11 @@ const StoriesPageWrapper = async ({
   allPersons,
   topics,
 }) => {
-  const language = lang || "en";
+  const language = lang || 'en';
 
   return (
     <>
-      <div className="global_width">
+      <div className='global_width'>
         <StoriesPageContainer
           stories={stories}
           allMedia={allMedia}

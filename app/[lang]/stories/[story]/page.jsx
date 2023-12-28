@@ -1,11 +1,11 @@
-import React from "react";
-import PageComponent from "@/components/page/storyPageComponent";
+import React from 'react';
+import PageComponent from '@/components/page/storyPageComponent';
 import {
   getAllStories,
   fetchAllTopics,
   getAllMedia,
   getAllPersons,
-} from "@/utilities/stories";
+} from '@/utilities/stories';
 
 const Story = async ({ params }) => {
   const { lang, story } = params;

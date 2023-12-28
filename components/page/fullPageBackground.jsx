@@ -1,5 +1,5 @@
-"use client";
-import { motion } from "framer-motion";
+'use client';
+import { motion } from 'framer-motion';
 
 const FullPageBackground = ({ color }) => {
   return (
@@ -8,7 +8,7 @@ const FullPageBackground = ({ color }) => {
       animate={{ opacity: 0.8 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 2 }}
-      className="w-full h-screen fixed top-0 left-0 z-40 "
+      className='w-full h-screen fixed top-0 left-0 z-40 '
       style={{ background: color }}
     ></motion.div>
   );

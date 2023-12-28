@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { combineReducers } from "redux";
-import darkModeReducer from "./darkMode";
-import languageReducer from "./language";
-import storiesReducer from "./stories";
-import selectedStoryReducer from "./selectedStory";
-import topicsReducer from "./topics";
-import mediaReducer from "./media";
-import personsReducer from "./persons";
-import mobileMenuReducer from "./mobileMenu";
-import headerReducer from "./header";
-import rangeSliderReducer from "./rangeSlider";
-import timelineReducer from "./timeline";
+import { combineReducers } from 'redux';
+import darkModeReducer from './darkMode';
+import languageReducer from './language';
+import storiesReducer from './stories';
+import selectedStoryReducer from './selectedStory';
+import topicsReducer from './topics';
+import mediaReducer from './media';
+import personsReducer from './persons';
+import mobileMenuReducer from './mobileMenu';
+import headerReducer from './header';
+import rangeSliderReducer from './rangeSlider';
+import timelineReducer from './timeline';
 
 export default combineReducers({
   darkMode: darkModeReducer,

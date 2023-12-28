@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
-import { storiesCounted, storySelected } from "@/store/selectedStory";
+import { storiesCounted, storySelected } from '@/store/selectedStory';
 
-import { activatedStories } from "@/store/stories";
+import { activatedStories } from '@/store/stories';
 
-import StoryCardContainer from "./StoryCardContainer";
-import Image from "next/image";
+import StoryCardContainer from './StoryCardContainer';
+import Image from 'next/image';
 
 const StoriesContainer = () => {
   const dispatch = useDispatch();
@@ -31,11 +31,11 @@ const StoriesContainer = () => {
   );
 
   useEffect(() => {
-    if (selectedTopic === "all") {
+    if (selectedTopic === 'all') {
       dispatch(activatedStories({ stories: allStories }));
     }
 
-    if (selectedTopic !== "all" && selectedTopic !== "featured") {
+    if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
       dispatch(
         activatedStories({
           stories: allStories.filter((story) =>
@@ -44,7 +44,7 @@ const StoriesContainer = () => {
         })
       );
     }
-    if (selectedTopic === "featured") {
+    if (selectedTopic === 'featured') {
       dispatch(
         activatedStories({
           stories: allStories.filter(
@@ -58,7 +58,7 @@ const StoriesContainer = () => {
   const handleInput = (e) => {
     dispatch(
       storySelected({
-        selection: "all",
+        selection: 'all',
         id: null,
       })
     );
@@ -81,19 +81,19 @@ const StoriesContainer = () => {
   }, [dispatch, storiesToRender]);
 
   return (
-    <div className="pb-20">
-      <div className="flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8">
+    <div className='pb-20'>
+      <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8'>
         <input
-          className="my-4 p-1  h-full border-0 focus:outline-none"
-          placeholder="Search all stories"
-          type="text"
+          className='my-4 p-1  h-full border-0 focus:outline-none'
+          placeholder='Search all stories'
+          type='text'
           onChange={handleInput}
         />
-        <div className="text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2">
-          <Image src="/search.svg" width={24} height={24} alt="Search icon" />
+        <div className='text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2'>
+          <Image src='/search.svg' width={24} height={24} alt='Search icon' />
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
         {storiesToRender && (
           <StoryCardContainer
             storiesToRender={storiesToRender}

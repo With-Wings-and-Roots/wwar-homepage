@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "timeline",
+  name: 'timeline',
   initialState: {
-    country: "us",
+    country: 'us',
   },
   reducers: {
     usaSelected: (timeline, action) => {
-      timeline.country = "us";
+      timeline.country = 'us';
     },
     germanySelected: (timeline, action) => {
-      timeline.country = "de";
+      timeline.country = 'de';
     },
   },
 });

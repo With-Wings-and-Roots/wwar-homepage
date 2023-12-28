@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const LanguageSelector = () => {
   const language = useSelector((state) => state.entities.language.language);
@@ -17,15 +17,15 @@ const LanguageSelector = () => {
       <a
         href={`/de/stories`}
         className={`${
-          lang === "de" ? "font-bold " : ""
+          lang === 'de' ? 'font-bold ' : ''
         } hover:text-wwr_white cursor-pointer`}
       >
         DE
       </a>
-      <div className="px-2">/</div>
+      <div className='px-2'>/</div>
       <a
         className={`${
-          lang === "en" ? "font-bold " : ""
+          lang === 'en' ? 'font-bold ' : ''
         } hover:text-wwr_white cursor-pointer`}
         href={`/en/stories`}
       >

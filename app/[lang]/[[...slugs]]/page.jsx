@@ -1,13 +1,12 @@
-import {getAllPages, getFrontpageId, getPage} from "@/utilities/pages";
-import { notFound } from 'next/navigation'
-import {getMenuItems, getPrimaryMenuId} from "@/utilities/menu";
-import Footer from "@/components/footer/footer";
-import Header from "@/components/header/header";
-import DefaultTemplate from "@/components/templates/DefaultTemplate";
-import StoriesTemplate from "@/components/templates/StoriesTemplate";
+import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
+import { notFound } from 'next/navigation';
+import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
+import Footer from '@/components/footer/footer';
+import Header from '@/components/header/header';
+import DefaultTemplate from '@/components/templates/DefaultTemplate';
+import StoriesTemplate from '@/components/templates/StoriesTemplate';
 
-
-const Page = async ({params}) => {
+const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
 
   // find page by slugs
@@ -18,9 +17,13 @@ const Page = async ({params}) => {
     while (pageSlugs.length > 0) {
       pageObj = pages.find((page) => {
         const url = new URL(page.link);
-        const urlPageSlug = url.toString().substring(url.origin.length).replace(/^\/|\/$/g, '').replace(/^(de\/|en\/)/, '')
+        const urlPageSlug = url
+          .toString()
+          .substring(url.origin.length)
+          .replace(/^\/|\/$/g, '')
+          .replace(/^(de\/|en\/)/, '');
         return urlPageSlug === pageSlugs?.join('/');
-      })
+      });
       if (pageObj) break;
       subSlugs = [...subSlugs, pageSlugs.pop()];
     }
@@ -35,11 +38,11 @@ const Page = async ({params}) => {
     const pageData = getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
-        template = <StoriesTemplate data={pageData} params={params}/>
-        break
+        template = <StoriesTemplate data={pageData} params={params} />;
+        break;
       default:
-        template = <DefaultTemplate data={pageData}/>
-        break
+        template = <DefaultTemplate data={pageData} />;
+        break;
     }
     console.log('result', pageObj.template, subSlugs, pageObj.title?.rendered);
   } else {
@@ -48,18 +51,15 @@ const Page = async ({params}) => {
 
   return (
     <>
-      <Header lang={params.lang}/>
+      <Header lang={params.lang} />
       {template}
-      <Footer lang={params.lang}/>
+      <Footer lang={params.lang} />
     </>
-  )
-}
+  );
+};
 
 export async function generateStaticParams() {
-  return [
-    { lang: "en" },
-    { lang: "de" },
-  ];
+  return [{ lang: 'en' }, { lang: 'de' }];
 }
 
 export default Page;

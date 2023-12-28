@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "language",
+  name: 'language',
   initialState: {
-    language: "en",
+    language: 'en',
   },
   reducers: {
     englishLanguageActivated: (language, action) => {
-      language.language = "en";
+      language.language = 'en';
     },
     germanLanguageActivated: (language, action) => {
-      language.language = "de";
+      language.language = 'de';
     },
   },
 });

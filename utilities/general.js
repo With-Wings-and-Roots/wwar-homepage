@@ -8,7 +8,7 @@ export async function fetchAllData(url) {
   const data = await res.json();
   allData = allData.concat(data);
 
-  const totalPages = res.headers.get("X-WP-TotalPages") || 1;
+  const totalPages = res.headers.get('X-WP-TotalPages') || 1;
 
   const fetchPage = async (page) => {
     const pageRes = await fetch(`${url}&page=${page}`, {

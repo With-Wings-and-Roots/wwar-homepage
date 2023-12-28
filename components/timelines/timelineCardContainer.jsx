@@ -1,8 +1,8 @@
-"use client";
-import TimeLineCard from "./timelineCard";
-import { easeOut, motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+'use client';
+import TimeLineCard from './timelineCard';
+import { easeOut, motion } from 'framer-motion';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const TimelineCardContainer = ({
   timeLineEventsDe,
@@ -23,12 +23,12 @@ const TimelineCardContainer = ({
   };
 
   const { events: timeLineEvents, datesArray: timeLineEventDatesArray } =
-    countryTimelineData[country] || countryTimelineData["en"];
+    countryTimelineData[country] || countryTimelineData['en'];
 
   const [cardWidth, setCardWidth] = useState(0);
   const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
 
-  const [leftPosition, setLeftPosition] = useState("0%");
+  const [leftPosition, setLeftPosition] = useState('0%');
 
   useEffect(() => {
     if (cardWidth && window?.innerWidth) {
@@ -51,12 +51,12 @@ const TimelineCardContainer = ({
   }, [cardWidthPercentage, dateIndex, timeLineEventDatesArray.length]);
 
   return (
-    <div className="w-screen overflow-hidden">
+    <div className='w-screen overflow-hidden'>
       <motion.div
         animate={{ x: leftPosition }}
         transition={{ duration: 0.8, ease: easeOut }}
-        drag="x"
-        className="flex"
+        drag='x'
+        className='flex'
       >
         {timeLineEvents.map((timeLineEvent, index) => {
           const mediaUrl = allMedia.find(
@@ -84,7 +84,7 @@ const TimelineCardContainer = ({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
         className={`${
-          country === "de" ? "bg-wwr_turquoise" : "bg-wwr_yellow_orange"
+          country === 'de' ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
         } w-full h-5`}
       ></motion.div>
     </div>

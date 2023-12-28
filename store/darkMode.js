@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "darkMode",
+  name: 'darkMode',
   initialState: {
     darkMode: true,
   },
@@ -13,7 +13,7 @@ const slice = createSlice({
     },
   },
 });
- 
+
 export const { darkModeToggled } = slice.actions;
 
-export default slice.reducer; 
+export default slice.reducer;

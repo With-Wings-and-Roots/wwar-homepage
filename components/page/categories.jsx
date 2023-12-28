@@ -1,5 +1,5 @@
-import React from "react";
-import parse from "html-react-parser";
+import React from 'react';
+import parse from 'html-react-parser';
 
 const Categories = ({ categories }) => {
   return (
@@ -8,7 +8,7 @@ const Categories = ({ categories }) => {
         return (
           <React.Fragment key={index}>
             <div>
-              <div className="w-max bg-wwr_yellow_orange px-4 py-2 text-sm text-wwr_white transition-all duration-500">
+              <div className='w-max bg-wwr_yellow_orange px-4 py-2 text-sm text-wwr_white transition-all duration-500'>
                 {parse(category.name)}
               </div>
             </div>

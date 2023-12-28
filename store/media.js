@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "media",
+  name: 'media',
   initialState: {
     allMedia: [],
   },

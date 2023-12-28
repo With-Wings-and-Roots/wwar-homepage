@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "selected_story",
+  name: 'selected_story',
   initialState: {
-    selectedStory: "all",
+    selectedStory: 'all',
     selectedStoryId: null,
     numberOfSelectedStories: 0,
   },

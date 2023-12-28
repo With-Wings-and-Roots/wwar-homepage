@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { combineReducers } from "redux";
-import entitiesReducer from "./entities";
+import { combineReducers } from 'redux';
+import entitiesReducer from './entities';
 
 export default combineReducers({
   entities: entitiesReducer,

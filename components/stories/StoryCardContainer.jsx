@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
+import React from 'react';
 
-import StoryCard from "./StoryCard";
+import StoryCard from './StoryCard';
 
 const StoryCardContainer = ({
   storiesToRender,

@@ -1,16 +1,16 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+'use client';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 
-import MobileSubMenuContainer from "./mobileSubMenuContainer";
-import { useDispatch, useSelector } from "react-redux";
+import MobileSubMenuContainer from './mobileSubMenuContainer';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   mobileMenuOpened,
   mobileMenuClosed,
   mobileSubMenuClosed,
-} from "@/store/mobileMenu";
-import LanguageSelector from "./languageSelector";
-import { motion, AnimatePresence } from "framer-motion";
+} from '@/store/mobileMenu';
+import LanguageSelector from './languageSelector';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
   const dispatch = useDispatch();
@@ -34,11 +34,11 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
         onClick={mobileMenuHandler}
         className={`relative z-[202] pb-2.5 min-h-full cursor-pointer duration-300 transition-all`}
       >
-        <div className="relative w-8 h-8">
+        <div className='relative w-8 h-8'>
           <AnimatePresence>
             {!mobileMenuOpen && (
               <motion.div
-                classname="absolute right-0 top-0 origin-center w-8 h-8"
+                classname='absolute right-0 top-0 origin-center w-8 h-8'
                 initial={{ rotate: -90, opacity: 0 }}
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: -90, opacity: 0 }}
@@ -47,8 +47,8 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
                 <Image
                   width={30}
                   height={30}
-                  src="/menu-circle.svg"
-                  alt="Menu"
+                  src='/menu-circle.svg'
+                  alt='Menu'
                 />
               </motion.div>
             )}
@@ -56,18 +56,18 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
           <AnimatePresence>
             {mobileMenuOpen && (
               <motion.div
-                className="absolute right-0 top-0 origin-center w-8 h-8"
+                className='absolute right-0 top-0 origin-center w-8 h-8'
                 initial={{ rotate: 90, opacity: 0 }}
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.1 }}
               >
                 <Image
-                  className="transition-all duration-300 hover:rotate-90"
+                  className='transition-all duration-300 hover:rotate-90'
                   width={30}
                   height={30}
-                  src="/close-circle.svg"
-                  alt="Menu"
+                  src='/close-circle.svg'
+                  alt='Menu'
                 />
               </motion.div>
             )}
@@ -78,11 +78,11 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ y: "-100%", opacity: 0.2 }}
+            initial={{ y: '-100%', opacity: 0.2 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "-100%", opacity: 0.2 }}
-            transition={{ ease: "linear" }}
-            className="fixed z-[201] w-screen h-screen bg-wwr_yellow_orange top-0 left-0 flex flex-col items-center justify-center uppercase gap-10 pt-14"
+            exit={{ y: '-100%', opacity: 0.2 }}
+            transition={{ ease: 'linear' }}
+            className='fixed z-[201] w-screen h-screen bg-wwr_yellow_orange top-0 left-0 flex flex-col items-center justify-center uppercase gap-10 pt-14'
           >
             {topLevelMenuItems.map((item) => {
               return (
@@ -91,7 +91,7 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
                 </React.Fragment>
               );
             })}
-            <div className="absolute bottom-10 right-10 z-[201] flex">
+            <div className='absolute bottom-10 right-10 z-[201] flex'>
               <LanguageSelector />
             </div>
           </motion.div>

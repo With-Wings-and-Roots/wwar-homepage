@@ -1,25 +1,25 @@
-import { fetchAllData } from "./general";
+import { fetchAllData } from './general';
 
-export async function getFooter(lang = "en") {
+export async function getFooter(lang = 'en') {
   const [data] = await fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/options?lang=${lang}`
   );
   return data;
 }
 
-export async function getAllStories(lang = "en") {
+export async function getAllStories(lang = 'en') {
   return await fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}`
   );
 }
 
-export async function fetchAllTopics(lang = "en") {
+export async function fetchAllTopics(lang = 'en') {
   return await fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story_topic?per_page=100&lang=${lang}`
   );
 }
 
-export async function getAllMedia(lang = "en") {
+export async function getAllMedia(lang = 'en') {
   return await fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/media?per_page=100&lang=${lang}`
   );
@@ -31,7 +31,7 @@ export async function getAllPersons() {
   );
 }
 
-export async function getStoryMedia(lang = "en", slug) {
+export async function getStoryMedia(lang = 'en', slug) {
   const [data] = fetchAllData(
     `https://wwar2022.backslashseven.com/wp-json/wp/v2/story?lang=${lang}&slug=${slug}`
   );
@@ -70,7 +70,7 @@ export async function getPersonById(personId) {
 
 export const getMenuId = async (_) => {
   const [data] = await fetchAllData(
-    "https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu"
+    'https://wwar2022.backslashseven.com/wp-json/wwarrest/v1/menu'
   );
 
   return data.primary;

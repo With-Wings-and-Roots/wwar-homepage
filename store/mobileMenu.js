@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const slice = createSlice({
-  name: "mobileMenu",
+  name: 'mobileMenu',
   initialState: {
     mobileMenuOpen: false,
     subMenuOpen: false,
     activeSubMenuId: null,
-    activeSubMenuTitle: "",
+    activeSubMenuTitle: '',
   },
   reducers: {
     mobileMenuOpened: (mobileMenu, action) => {

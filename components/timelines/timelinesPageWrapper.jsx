@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import TimelineCardContainer from "./timelineCardContainer";
-import RangeSlider from "./rangeSlider";
-import TimelineCountry from "./timelineCountrySelector";
+import TimelineCardContainer from './timelineCardContainer';
+import RangeSlider from './rangeSlider';
+import TimelineCountry from './timelineCountrySelector';
 
 const TimelinesPageWrapper = ({
   lang,

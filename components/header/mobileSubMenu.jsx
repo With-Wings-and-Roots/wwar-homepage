@@ -1,8 +1,8 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useSelector, useDispatch } from "react-redux";
-import { mobileSubMenuClosed } from "@/store/mobileMenu";
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux';
+import { mobileSubMenuClosed } from '@/store/mobileMenu';
 
 const MobileSubMenu = ({ menuItems }) => {
   const dispatch = useDispatch();
@@ -16,17 +16,17 @@ const MobileSubMenu = ({ menuItems }) => {
   return (
     <React.Fragment>
       <div
-        className="absolute left-[4%] top-5 cursor-pointer"
+        className='absolute left-[4%] top-5 cursor-pointer'
         onClick={() => dispatch(mobileSubMenuClosed({}))}
       >
         <Image
           src={`/arrow-left-circle.svg`}
           height={30}
           width={30}
-          alt="arrow-left-circle"
+          alt='arrow-left-circle'
         />
       </div>
-      <div className="text-2xl pb-4">{activeSubMenuTitle}</div>
+      <div className='text-2xl pb-4'>{activeSubMenuTitle}</div>
       {menuItems
         .filter(
           (subItem) =>
@@ -34,10 +34,10 @@ const MobileSubMenu = ({ menuItems }) => {
         )
         .map((subItem, index) => {
           return (
-            <div key={index} className="hover:text-wwr_white">
-              <Link href={subItem.url} className="min-w-max">
-                {subItem.title.localeCompare("FROM HERE FILM") === 0
-                  ? "FROM HERE film >"
+            <div key={index} className='hover:text-wwr_white'>
+              <Link href={subItem.url} className='min-w-max'>
+                {subItem.title.localeCompare('FROM HERE FILM') === 0
+                  ? 'FROM HERE film >'
                   : subItem.title}
               </Link>
             </div>

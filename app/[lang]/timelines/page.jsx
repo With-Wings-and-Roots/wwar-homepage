@@ -1,13 +1,13 @@
-import TimelinesPageWrapper from "@/components/timelines/timelinesPageWrapper";
-import { getAllMedia } from "@/utilities/stories";
-import { getTimeline } from "@/utilities/timeline";
+import TimelinesPageWrapper from '@/components/timelines/timelinesPageWrapper';
+import { getAllMedia } from '@/utilities/stories';
+import { getTimeline } from '@/utilities/timeline';
 
 const Timelines = async ({ params }) => {
   const lang = params.lang;
   const [timeLineEventsDe, timeLineEventsEn, allMedia] = await Promise.all([
-    getTimeline("de", lang),
-    getTimeline("us", lang),
-    getAllMedia("en"),
+    getTimeline('de', lang),
+    getTimeline('us', lang),
+    getAllMedia('en'),
   ]);
 
   return (
@@ -25,8 +25,8 @@ export default Timelines;
 export function generateStaticParams() {
   return [
     {
-      lang: "en",
+      lang: 'en',
     },
-    { lang: "de" },
+    { lang: 'de' },
   ];
 }
