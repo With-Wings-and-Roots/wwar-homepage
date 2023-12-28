@@ -5,6 +5,7 @@ import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
+import AboutTemplate from '@/components/templates/AboutTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -35,10 +36,13 @@ const Page = async ({ params }) => {
   // get page
   let template;
   if (pageObj) {
-    const pageData = getPage(params.lang, pageObj.id);
+    const pageData = await getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
         template = <StoriesTemplate data={pageData} params={params} />;
+        break;
+      case 'page_about.php':
+        template = <AboutTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;

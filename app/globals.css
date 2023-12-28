@@ -9,3 +9,7 @@
 .global_header_width {
   @apply w-11/12 lg:w-4/5 2xl:w-[90%] m-auto;
 }
+
+p + p {
+  margin-top: 1em;
+}

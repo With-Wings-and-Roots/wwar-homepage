@@ -32,7 +32,7 @@ export async function getFrontpageId(lang) {
 
 export async function getPage(lang, id) {
   const res = await fetch(
-    `${process.env.CMS_URL}/wp-json/wp/v2/pages/${id}?lang=${lang}`,
+    `${process.env.CMS_URL}/wp-json/wp/v2/pages/${id}?lang=${lang}&acf_format=standard`,
     {
       next: {
         revalidate: 600,
