@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { storiesCounted, storySelected } from "@/app/store/selectedStory";
+import { storiesCounted, storySelected } from "@/store/selectedStory";
 
-import { activatedStories } from "@/app/store/stories";
+import { activatedStories } from "@/store/stories";
 
 import StoryCardContainer from "./StoryCardContainer";
 import Image from "next/image";

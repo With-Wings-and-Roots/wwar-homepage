@@ -1,8 +1,8 @@
 import React from "react";
 
-import SocialShareIcons from "@/app/components/socialShare/socialShareIcons";
-import { findIndexBySlug, getPersonById } from "@/app/utilities/stories";
-import Header from "@/app/components/header/header";
+import SocialShareIcons from "@/components/socialShare/socialShareIcons";
+import { findIndexBySlug, getPersonById } from "@/utilities/stories";
+import Header from "@/components/header/header";
 import NavigationCircle from "./navigationCircle";
 import Categories from "./categories";
 import CloseIcon from "./closeIcon";
@@ -10,7 +10,7 @@ import PageTitle from "./pageTitle";
 import ClosedCaption from "./closedCaption";
 import QuotationMark from "./quotationMark";
 import RelatedStoriesContainer from "./relatedStoriesContainer";
-import { fetchAllData } from "@/app/utilities/general";
+import { fetchAllData } from "@/utilities/general";
 import FullPageBackground from "./fullPageBackground";
 
 const StoryPageComponent = async ({

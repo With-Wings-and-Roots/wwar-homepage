@@ -1,15 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { storiesAdded, activatedStories } from "@/app/store/stories";
-import { mediaAdded } from "@/app/store/media";
-import { personsAdded } from "@/app/store/persons";
+import { storiesAdded, activatedStories } from "@/store/stories";
+import { mediaAdded } from "@/store/media";
+import { personsAdded } from "@/store/persons";
 import StoriesContainer from "./StoriesContainer";
-import { topicsAdded } from "@/app/store/topics";
+import { topicsAdded } from "@/store/topics";
 import {
   englishLanguageActivated,
   germanLanguageActivated,
-} from "@/app/store/language";
+} from "@/store/language";
 import Tabs from "./Tabs";
 
 const StoriesPageContainer = ({

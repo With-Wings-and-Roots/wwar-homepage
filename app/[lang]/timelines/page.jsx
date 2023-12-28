@@ -1,6 +1,6 @@
-import TimelinesPageWrapper from "@/app/components/timelines/timelinesPageWrapper";
-import { getAllMedia } from "@/app/utilities/stories";
-import { getTimeline } from "@/app/utilities/timeline";
+import TimelinesPageWrapper from "@/components/timelines/timelinesPageWrapper";
+import { getAllMedia } from "@/utilities/stories";
+import { getTimeline } from "@/utilities/timeline";
 
 const Timelines = async ({ params }) => {
   const lang = params.lang;

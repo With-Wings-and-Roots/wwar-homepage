@@ -6,7 +6,7 @@ import {
   mobileSubMenuClosed,
   mobileSubMenuOpened,
   subMenuActivated,
-} from "@/app/store/mobileMenu";
+} from "@/store/mobileMenu";
 import MobileSubMenu from "./mobileSubMenu";
 import { motion, AnimatePresence } from "framer-motion";
 

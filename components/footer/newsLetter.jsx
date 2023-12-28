@@ -5,18 +5,10 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const NewsLetter = ({ footerEn, footerDe }) => {
-  const [footer, setFooter] = useState(footerEn);
+const NewsLetter = ({ footerData }) => {
+  const footer = footerData;
 
   const language = useSelector((state) => state.entities.language.language);
-
-  useEffect(() => {
-    if (language === "de") {
-      setFooter(footerDe);
-    } else {
-      setFooter(footerEn);
-    }
-  }, [language, footerDe, footerEn]);
 
   return (
     <div className="pt-10">

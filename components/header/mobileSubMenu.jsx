@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
-import { mobileSubMenuClosed } from "@/app/store/mobileMenu";
+import { mobileSubMenuClosed } from "@/store/mobileMenu";
 
 const MobileSubMenu = ({ menuItems }) => {
   const dispatch = useDispatch();

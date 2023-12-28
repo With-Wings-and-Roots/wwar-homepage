@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { germanySelected, usaSelected } from "@/app/store/timeline";
+import { germanySelected, usaSelected } from "@/store/timeline";
 import { useDispatch, useSelector } from "react-redux";
-import { rangeDateChanged } from "@/app/store/rangeSlider";
+import { rangeDateChanged } from "@/store/rangeSlider";
 
 const TimelineCountry = ({ firstDate, language }) => {
   const dispatch = useDispatch();

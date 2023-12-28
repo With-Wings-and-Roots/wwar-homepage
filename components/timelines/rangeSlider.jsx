@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { rangeDateChanged } from "@/app/store/rangeSlider";
+import { rangeDateChanged } from "@/store/rangeSlider";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { storySelected } from "@/app/store/selectedStory";
+import { storySelected } from "@/store/selectedStory";
 
 const SingleTabButton = ({ buttonText = "", slug = "all" }) => {
   const dispatch = useDispatch();

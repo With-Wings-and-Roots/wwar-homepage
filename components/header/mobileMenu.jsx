@@ -8,7 +8,7 @@ import {
   mobileMenuOpened,
   mobileMenuClosed,
   mobileSubMenuClosed,
-} from "@/app/store/mobileMenu";
+} from "@/store/mobileMenu";
 import LanguageSelector from "./languageSelector";
 import { motion, AnimatePresence } from "framer-motion";
 

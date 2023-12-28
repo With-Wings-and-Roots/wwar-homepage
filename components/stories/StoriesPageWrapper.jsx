@@ -1,5 +1,4 @@
-import StoriesPageContainer from "@/app/components/stories/StoriesPageContainer";
-import Header from "@/app/components/header/header";
+import StoriesPageContainer from "@/components/stories/StoriesPageContainer";
 
 const StoriesPageWrapper = async ({
   lang,
@@ -12,7 +11,6 @@ const StoriesPageWrapper = async ({
 
   return (
     <>
-      <Header />
       <div className="global_width">
         <StoriesPageContainer
           stories={stories}

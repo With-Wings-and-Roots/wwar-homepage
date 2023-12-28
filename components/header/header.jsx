@@ -1,19 +1,18 @@
 import React from "react";
-import { getMenuId, getMenuItems } from "@/app/utilities/stories";
 import HeaderMenuItems from "./headerMenuItems";
 import LanguageSelector from "./languageSelector";
 import MobileMenu from "./mobileMenu";
 import Logo from "./logo";
 import TopSpace from "./topSpace";
+import { getPrimaryMenuId, getMenuItems } from "@/utilities/menu";
 
-const Header = async () => {
-  const menuId = await getMenuId();
-
-  const menuItems = await getMenuItems(menuId);
+const Header = async ({lang}) => {
+  const menuId = await getPrimaryMenuId(lang);
+  const menuItems = await getMenuItems(menuId, lang);
 
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
-    return item.menu_item_parent === "0";
+    return ['0', ''].includes(item.menu_item_parent);
   });
 
   return (

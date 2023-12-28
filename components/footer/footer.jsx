@@ -1,28 +1,23 @@
 import Link from "next/link";
 import React from "react";
 import NewsLetter from "./newsLetter";
-import { getMenuId, getMenuItems } from "@/app/utilities/stories";
-import { getFooter } from "@/app/utilities/stories";
+import { getMenuItems, getPrimaryMenuId } from "@/utilities/menu";
+import {getFooter} from "@/utilities/footer";
 
-const Footer = async () => {
-  const menuId = await getMenuId();
-
-  const menuItems = await getMenuItems(menuId);
-
-  const footerEn = await getFooter("en");
-  const footerDe = await getFooter("de");
+const Footer = async ({lang}) => {
+  const menuId = await getPrimaryMenuId(lang);
+  const menuItems = await getMenuItems(menuId, lang);
+  const footerData = await getFooter(lang);
 
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
-    return item.menu_item_parent === "0";
+    return ['0', ''].includes(item.menu_item_parent);
   });
 
   const subMenuItems = (parentId) => {
-    const subMenuItems = menuItems.filter((item) => {
+    return menuItems.filter((item) => {
       return item.menu_item_parent.localeCompare(parentId) === 0;
     });
-
-    return subMenuItems;
   };
 
   return (
@@ -53,7 +48,7 @@ const Footer = async () => {
           })}
         </div>
 
-        <NewsLetter footerEn={footerEn} footerDe={footerDe} />
+        <NewsLetter footerData={footerData} />
       </div>
     </div>
   );

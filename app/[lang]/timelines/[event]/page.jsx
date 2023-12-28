@@ -1,5 +1,5 @@
-import TimelineEventPage from "@/app/components/timelineEvent/timelineEventPage";
-import { getTimeline, getTimelineEvents } from "@/app/utilities/timeline";
+import TimelineEventPage from "@/components/timelineEvent/timelineEventPage";
+import { getTimeline, getTimelineEvents } from "@/utilities/timeline";
 import React from "react";
 
 const Event = async ({ params }) => {

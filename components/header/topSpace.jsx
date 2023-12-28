@@ -4,7 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { logoExpanded, logoShrinked } from "@/app/store/header";
+import { logoExpanded, logoShrinked } from "@/store/header";
 
 const TopSpace = () => {
   const dispatch = useDispatch();

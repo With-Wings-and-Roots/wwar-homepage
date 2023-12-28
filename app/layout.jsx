@@ -1,7 +1,6 @@
-import Footer from "./components/footer/footer";
 import "./globals.css";
 
-import { Providers } from "./store/provider";
+import { Providers } from "@/store/provider";
 
 export const metadata = {
   title: "Create Next App",
@@ -21,7 +20,6 @@ export default function RootLayout({ children }) {
         </head>
         <body className={`font-main pt-10`}>
           {children}
-          <Footer />
         </body>
       </html>
     </Providers>
