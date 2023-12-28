@@ -47,6 +47,7 @@ build_api:
         docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
         docker push "$CI_REGISTRY_IMAGE${tag}"
       fi
+    - cat .env
   when: always
 
 deploy:
