@@ -1,39 +1,35 @@
-FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM node:20-alpine AS development
 WORKDIR /app
-
-COPY package.json package-lock.json ./
-RUN  npm install --production
-
-FROM node:18-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN npm run build
-
-FROM node:20-alpine AS runner
-WORKDIR /app
-
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
-
-RUN apk --no-cache add curl
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
-
-USER nextjs
-
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=development
 EXPOSE 3000
+CMD [ "yarn", "dev" ]
 
-ENV PORT 3000
+FROM node:20-alpine AS dependencies
+ENV NODE_ENV=production
+WORKDIR /app
+COPY package.json ./
+RUN yarn install
 
-CMD ["npm", "start"]
+FROM node:20-alpine AS builder
+ENV NODE_ENV=development
+WORKDIR /app
+COPY . .
+RUN yarn install && NODE_ENV=production yarn build
+
+FROM node:20-alpine AS production
+WORKDIR /app
+ENV HOST=0.0.0.0
+ENV PORT=3000
+ENV NODE_ENV=production
+RUN apk add --no-cache tzdata
+ENV TZ=Europe/Berlin
+COPY --chown=node --from=builder /app/next.config.js ./
+COPY --chown=node --from=builder /app/public ./public
+COPY --chown=node --from=builder /app/.next ./.next
+COPY --chown=node --from=builder /app/yarn.lock /app/package.json ./
+COPY --chown=node --from=dependencies /app/node_modules ./node_modules
+USER node
+EXPOSE 3000
+CMD [ "yarn", "start" ]
