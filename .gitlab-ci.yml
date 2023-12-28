@@ -16,6 +16,8 @@ build_api:
     # :unstable current state of development branch, merged the latest features, not even on staging
     # :stable /:$version for branches following the pattern release/X.X.X, considered for production use
     # :$CI_COMMIT_REF_SLUG for branches following the pattern feature/$feature_name
+    - cp .env.ci.staging .env
+    - cat .env
     - |
       if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
         cp .env.ci.staging .env
@@ -47,7 +49,6 @@ build_api:
         docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" .
         docker push "$CI_REGISTRY_IMAGE${tag}"
       fi
-    - cat .env
   when: always
 
 deploy:
