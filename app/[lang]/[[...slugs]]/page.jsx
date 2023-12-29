@@ -6,6 +6,7 @@ import Header from '@/components/header/header';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
+import CollaboratorsTemplate from '@/components/templates/CollaboratorsTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -43,6 +44,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_about.php':
         template = <AboutTemplate data={pageData} />;
+        break;
+      case 'page_collaborators.php':
+        template = <CollaboratorsTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;
