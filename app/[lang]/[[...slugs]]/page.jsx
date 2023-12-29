@@ -8,6 +8,7 @@ import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
 import CollaboratorsTemplate from '@/components/templates/CollaboratorsTemplate';
 import EventsTemplate from '@/components/templates/EventsTemplate';
+import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 
 const Page = async ({ params }) => {
@@ -52,6 +53,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_events.php':
         template = <EventsTemplate data={pageData} params={params} />;
+        break;
+      case 'page_workshops.php':
+        template = <WorkshopsTemplate data={pageData} />;
         break;
       case 'page_takePart.php':
         template = <TakePartTemplate data={pageData} params={params} />;

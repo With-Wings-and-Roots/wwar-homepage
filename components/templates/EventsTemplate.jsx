@@ -1,5 +1,4 @@
 import WysiwygContent from '@/components/common/WysiwygContent';
-import PersonImageSlider from '@/components/common/PersonImageSlider';
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import { getAllPosts } from '@/utilities/posts';

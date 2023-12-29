@@ -25,6 +25,7 @@ module.exports = {
         wwr_gray_storm: '#757580',
         wwr_outer_space: '#46464d',
         wwr_turquoise: '#35D0DC',
+        wwr_light: '#fff4df',
       },
     },
   },
