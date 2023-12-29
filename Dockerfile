@@ -16,6 +16,7 @@ FROM node:20-alpine AS builder
 ENV NODE_ENV=development
 WORKDIR /app
 COPY . .
+COPY .env .env
 RUN yarn install && NODE_ENV=production yarn build
 
 FROM node:20-alpine AS production
