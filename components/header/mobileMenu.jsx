@@ -38,7 +38,7 @@ const MobileMenu = ({ topLevelMenuItems, menuItems }) => {
           <AnimatePresence>
             {!mobileMenuOpen && (
               <motion.div
-                classname='absolute right-0 top-0 origin-center w-8 h-8'
+                className='absolute right-0 top-0 origin-center w-8 h-8'
                 initial={{ rotate: -90, opacity: 0 }}
                 animate={{ rotate: 0, opacity: 1 }}
                 exit={{ rotate: -90, opacity: 0 }}

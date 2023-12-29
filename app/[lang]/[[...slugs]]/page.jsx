@@ -7,6 +7,7 @@ import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
 import CollaboratorsTemplate from '@/components/templates/CollaboratorsTemplate';
+import EventsTemplate from '@/components/templates/EventsTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -47,6 +48,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_collaborators.php':
         template = <CollaboratorsTemplate data={pageData} />;
+        break;
+      case 'page_events.php':
+        template = <EventsTemplate data={pageData} params={params} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;
