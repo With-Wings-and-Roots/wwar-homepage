@@ -4,7 +4,7 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import { createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
 
-const TakePartTemplate = ({ data }) => {
+const DonateTemplate = ({ data }) => {
   const renderButton = (data, key) => (
     <div className='flex justify-center w-full' key={key}>
       <Link
@@ -34,15 +34,13 @@ const TakePartTemplate = ({ data }) => {
         content={data.acf?.text}
         className='text-lg md:text-xl font-light text-center'
       />
-      {/*{data.act?.buttons}*/}
 
       {data?.acf?.buttons.map((btn, bI) => renderButton(btn, bI))}
 
       <Image src={data?.acf?.image} alt='' width={985} height={657} />
 
-      {/*{data.acf?.sections.map((sec, sI) => renderSection(sec, sI))}*/}
     </div>
   );
 };
 
-export default TakePartTemplate;
+export default DonateTemplate;
