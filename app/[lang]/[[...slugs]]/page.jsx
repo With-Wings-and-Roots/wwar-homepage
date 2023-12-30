@@ -11,6 +11,7 @@ import EventsTemplate from '@/components/templates/EventsTemplate';
 import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
+import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -63,6 +64,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_donate.php':
         template = <DonateTemplate data={pageData} />;
+        break;
+      case 'page_materials.php':
+        template = <MaterialsTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;
