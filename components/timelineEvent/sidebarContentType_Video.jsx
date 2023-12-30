@@ -38,7 +38,7 @@ const SidebarContentTypeVideo = async ({sidebarContent}) => {
 
   return (
     <div>
-      <iframe className='w-full h-full min-h-fit'  src={youtubelink} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <iframe className='w-full h-full min-h-fit'  src={youtubelink} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
       
         {display_credit && <Link className='font-thin text-xs hover:underline' href={`credit_link`}> {credit}</Link>}
         <div className='text-2xl py-4'>{title}</div>
