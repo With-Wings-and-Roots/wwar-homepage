@@ -1,7 +1,9 @@
-import TimelineEventPage from "@/app/components/timelineEvent/timelineEventPage";
-import { getAdjacentSlug } from "@/app/utilities/general";
-import { getTimeline, getTimelineEvents } from "@/app/utilities/timeline";
+
+import { getTimeline, getTimelineEvents } from "../../../../utilities/timeline";
 import React from "react";
+import TimelineEventPage from "../../../../components/timelineEvent/timelineEventPage";
+import { getAdjacentSlug } from "../../../../utilities/general";
+
 
 const Event = async ({ params }) => {
   const lang = params.lang.toLowerCase();
@@ -26,8 +28,12 @@ const Event = async ({ params }) => {
     timelineEvents
   );
 
+  getTimeline
+
+
   return (
     <>
+
       <TimelineEventPage
         timelineEvent={timelineEvent}
         nextSlug={nextSlug}
