@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
+import { createLocalLink } from '@/utilities/links';
+import Link from 'next/link';
 
 const TakePartTemplate = ({ data }) => {
   const renderSection = (data, key) => (
@@ -32,12 +34,12 @@ const TakePartTemplate = ({ data }) => {
           {data?.section_button?.linked_page?.length > 0 &&
             data?.section_button?.label?.length > 0 && (
               <div className='flex'>
-                <a
-                  href={data.section_button.linked_page}
+                <Link
+                  href={createLocalLink(data.section_button.linked_page)}
                   className='bg-wwr_yellow_orange text-xl font-light px-5 py-2 hover:text-white transition-all uppercase'
                 >
                   {data.section_button.label}
-                </a>
+                </Link>
               </div>
             )}
           {data.external_icon_links?.length > 0 && (

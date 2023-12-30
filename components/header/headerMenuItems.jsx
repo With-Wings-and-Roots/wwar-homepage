@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { createLocalLink } from '@/utilities/links';
 
 const HeaderMenuItems = ({ item, menuItems, index }) => {
   const [hovered, setHovered] = useState(false);
@@ -41,7 +42,10 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
                     key={index}
                     className='min-w-full py-3 px-3 bg-wwr_rich_black flex justify-center hover:text-wwr_yellow_orange duration-300'
                   >
-                    <Link href={subItem.url} className='min-w-max'>
+                    <Link
+                      href={createLocalLink(subItem.url)}
+                      className='min-w-max'
+                    >
                       {subItem.title.localeCompare('FROM HERE FILM') === 0
                         ? 'FROM HERE film >'
                         : subItem.title}

@@ -3,6 +3,7 @@ import React from 'react';
 import NewsLetter from './newsLetter';
 import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
 import { getFooter } from '@/utilities/footer';
+import { createLocalLink } from '@/utilities/links';
 
 const Footer = async ({ lang }) => {
   const menuId = await getPrimaryMenuId(lang);
@@ -34,7 +35,7 @@ const Footer = async ({ lang }) => {
                   {subMenuItems(item.ID).map((subItem, index) => {
                     return (
                       <div key={index} className='font-thin text-lg'>
-                        <Link href={subItem.url}>
+                        <Link href={createLocalLink(subItem.url)}>
                           {subItem.title.localeCompare('FROM HERE FILM') === 0
                             ? 'FROM HERE film >'
                             : subItem.title}
