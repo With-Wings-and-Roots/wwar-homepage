@@ -28,7 +28,7 @@ const TimelineCardInternal = ({timeLineEvent, selectedCountry, mediaUrl, link})=
     ></Image>
     <div className='absolute w-full h-full bg-gradient-to-b from-transparent to-wwr_rich_black'></div>
     <div
-      className={`px-[10%] sm:px-8 cursor-pointer relative transition-all text-[4.4vw] leading-snug sm:text-xl duration-500 text-wwr_white ${
+      className={`px-[10%] sm:px-8 cursor-pointer relative transition-all text-[4.4vw] leading-tight lg:leading-snug sm:text-lg duration-500 text-wwr_white ${
         hovered ? 'pb-[20%] sm:pb-16' : 'pb-[10%]'
       }`}
     >

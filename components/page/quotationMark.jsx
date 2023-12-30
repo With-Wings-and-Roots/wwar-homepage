@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const QuotationMark = () => {
   return (
-    <div className='w-10 md:w-20 pb-2'>
+    <div className='w-full'>
       <Image
         className='w-full'
         src='/quotation-mark.svg'

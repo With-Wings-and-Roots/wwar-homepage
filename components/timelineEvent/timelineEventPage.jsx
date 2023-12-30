@@ -29,7 +29,7 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
   const {
     acf: {
       basic_info: { start_date: date, end_date: endDate } = {},
-      article: { lead_text, text, authors } = {},
+      article: { lead_text, text } = {},
     } = {},
     title: { rendered: title } = {},
   } = timelineEvent || {};
@@ -54,12 +54,12 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
 
             <PageTitle title={title} />
 
-            <div className="flex gap-6 ">
-              <div className="w-2/3">
+            <div className="flex gap-8 flex-wrap sm:flex-nowrap">
+              <div className="w-full sm:w-2/3">
                 <Excerpt excerpt={parse(lead_text)} color={"black"} />
                 <GeneralText text={parse(text)} />
               </div>
-              <div className="w-1/3">
+              <div className="w-full sm:w-1/3">
                 <Sidebar sidebarContent={timelineEvent.acf?.sidebar_content} />
                 <div className={`flex flex-col gap-px mt-10`}>
                   <Button color={`turquoise`}
@@ -77,23 +77,25 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
           </div>
           <div>
             <div className={`bg-wwr_gray_storm h-px w-full opacity-20`}></div>
-            <div className={`px-4 md:px-8 lg:px-20 pb-10 flex gap-5 font-light text-sm pt-10 `} >
-              <div>
+            <div className={`px-8 sm:px-4 md:px-8 lg:px-20 pb-10 flex gap-5 font-light text-sm pt-10 `} >
+              {event_sources && <div>
                 <div className={`text-xl font-normal pb-6`}>Sources</div>
                 <ol className={`flex flex-col gap-4`}>
-                  {event_sources && event_sources.map((eventSource, index) => {
-                    return <li className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`} key={index}>{parse(eventSource.source)}</li>;
+                  {event_sources.map((eventSource, index) => {
+                    return <li className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
+                               key={index}>{parse(eventSource.source)}</li>;
                   })}
                 </ol>
-              </div>
-              <div>
+              </div>}
+              {event_resources && <div>
                 <div className={`text-xl font-normal pb-6`}>Additional Resources</div>
                 <ol className={`flex flex-col gap-4`}>
-                  {event_resources && event_resources.map((eventResource, index) => {
-                    return <li className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`} key={index}>{parse(eventResource.resource)}</li>;
+                  {event_resources.map((eventResource, index) => {
+                    return <li className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
+                               key={index}>{parse(eventResource.resource)}</li>;
                   })}
                 </ol>
-              </div>
+              </div>}
 
             </div>
 
