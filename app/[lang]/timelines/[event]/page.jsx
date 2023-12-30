@@ -20,11 +20,13 @@ const Event = async ({ params }) => {
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
 
+  const indexInGerman = germanIdsArray.indexOf(timelineEvent.id);
+  const indexInUsa = usaIdsArray.indexOf(timelineEvent.id);
 
-  if(germanIdsArray.includes(timelineEvent.id)){
-    country = "de"
-  }else if (usaIdsArray.includes(timelineEvent.id)){
-    country = "us"
+  if (indexInGerman !== -1) {
+    country = "de";
+  } else if (indexInUsa !== -1) {
+    country = "us";
   }
 
   const timelineEventsLength = timelineEvents.length;
@@ -47,7 +49,6 @@ const Event = async ({ params }) => {
         timelineEvent={timelineEvent}
         nextSlug={nextSlug}
         prevSlug={prevSlug}
-        lang={lang}
         country={country}
       />
     </>
