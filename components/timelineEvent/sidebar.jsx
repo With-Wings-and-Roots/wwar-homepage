@@ -3,6 +3,7 @@ import SidebarContentTypeImage from './sidebarContentType_Image';
 import SidebarContentTypeVideo from './sidebarContentType_Video';
 import SidebarContentTypeStory from './sidebarContentType_Story';
 import SidebarContentTypeSideNote from './sidebarContentType_SideNote';
+import SidebarContentType_Quote from '@/components/timelineEvent/sidebarContentType_Quote';
 
 // type: sidenote, story, image, video, quote, none-selected, undefined
 
@@ -24,6 +25,9 @@ const Sidebar = ({ sidebarContent }) => {
             )}
             {type.includes('sidenote') && (
               <SidebarContentTypeSideNote content={content} />
+            )}
+            {type.includes('quote') && (
+              <SidebarContentType_Quote content={content} />
             )}
           </React.Fragment>
         );

@@ -77,8 +77,8 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
           </div>
           <div>
             <div className={`bg-wwr_gray_storm h-px w-full opacity-20`}></div>
-            <div className={`px-8 sm:px-4 md:px-8 lg:px-20 pb-10 flex gap-5 font-light text-sm pt-10 `} >
-              {event_sources && <div>
+            <div className={`px-8 sm:px-4 md:px-8 lg:px-20 pb-10 flex gap-12 font-light text-sm pt-10 `} >
+              {event_sources && <div className={`${event_resources?"w-1/2": "w-full"}`}>
                 <div className={`text-xl font-normal pb-6`}>Sources</div>
                 <ol className={`flex flex-col gap-4`}>
                   {event_sources.map((eventSource, index) => {
@@ -87,7 +87,7 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
                   })}
                 </ol>
               </div>}
-              {event_resources && <div>
+              {event_resources && <div className={`${event_sources?"w-1/2": "w-full"}`}>
                 <div className={`text-xl font-normal pb-6`}>Additional Resources</div>
                 <ol className={`flex flex-col gap-4`}>
                   {event_resources.map((eventResource, index) => {

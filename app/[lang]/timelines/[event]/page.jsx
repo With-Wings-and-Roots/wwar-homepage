@@ -1,7 +1,6 @@
 import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
 import TimelineEventPage from '../../../../components/timelineEvent/timelineEventPage';
 import { getAdjacentSlug } from '@/utilities/general';
-import { getAllMedia } from '@/utilities/stories';
 
 const Event = async ({ params }) => {
   let country = null;
@@ -46,7 +45,7 @@ const Event = async ({ params }) => {
 
   const {acf: {basic_info:{related_events}}} = timelineEvent;
 
-  const relatedEvents = timelineEvents.filter( event=> related_events.includes(event.id))||null
+  const relatedEvents = related_events?timelineEvents.filter( event=> related_events.includes(event.id)):null
 
 
   return (
