@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import FullPageBackground from '../page/fullPageBackground';
-import NavigationCircle from '../page/navigationCircle';
-import CloseIcon from '../page/closeIcon';
-import PageTitle from '../page/pageTitle';
-import parse from 'html-react-parser';
-import Excerpt from '../page/excerpt';
-import GeneralText from '../page/generalText';
-import YearButton from '../page/yearButton';
-import Sidebar from './sidebar';
+import FullPageBackground from "../page/fullPageBackground";
+import NavigationCircle from "../page/navigationCircle";
+import CloseIcon from "../page/closeIcon";
+import PageTitle from "../page/pageTitle";
+import parse from "html-react-parser";
+import Excerpt from "../page/excerpt";
+import GeneralText from "../page/generalText";
+import YearButton from "../page/yearButton";
+import Sidebar from "./sidebar";
 import { getTimelineTopicFromId } from '@/utilities/timeline';
 import Button from '@/components/page/button';
 

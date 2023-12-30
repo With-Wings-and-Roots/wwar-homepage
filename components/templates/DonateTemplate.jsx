@@ -6,19 +6,18 @@ import Link from 'next/link';
 
 const DonateTemplate = ({ data }) => {
   const renderButton = (data, key) => (
-    <div className='flex justify-center w-full' key={key}>
-      <Link
-        href={createLocalLink(data.url)}
-        className='bg-wwr_yellow_orange text-xl font-light px-5 py-2 hover:text-white transition-all uppercase mr-7'
-      >
-        {data.title}
-      </Link>
-    </div>
+    <Link
+      href={createLocalLink(data.url)}
+      className='bg-wwr_yellow_orange text-xl font-light px-5 py-2 hover:text-white transition-all uppercase mx-3 my-2 text-center'
+      key={key}
+    >
+      {data.title}
+    </Link>
   );
 
   return (
     <div
-      className='px-8 md:px-16 lg:px-64 pt-8 pb-16 relative'
+      className='px-8 md:px-16 lg:px-64 pt-16 relative'
       style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
     >
       <Image
@@ -32,12 +31,16 @@ const DonateTemplate = ({ data }) => {
       />
       <WysiwygContent
         content={data.acf?.text}
-        className='text-lg md:text-xl font-light text-center'
+        className='text-lg md:text-xl mt-3 font-light text-center'
       />
 
-      {data?.acf?.buttons.map((btn, bI) => renderButton(btn, bI))}
+      <div className='flex flex-col items-center lg:flex-row justify-center mt-8'>
+        {data?.acf?.buttons?.map((btn, bI) => renderButton(btn, bI))}
+      </div>
 
-      <Image src={data?.acf?.image} alt='' width={985} height={657} />
+      <div className='w-[66vw] xl:w-[50vw] mx-auto mt-16 xl:mt-24 relative -mb-1'>
+        <Image src={data?.acf?.image} alt='' width={1800} height={1800} />
+      </div>
     </div>
   );
 };

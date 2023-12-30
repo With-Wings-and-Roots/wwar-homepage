@@ -54,13 +54,15 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
   );
 };
 
-export const getTimelineTopicFromId = async(topicId)=>{
-  const res = await fetch(`${process.env.CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,{
-    next: {
-      revalidate: 600,
-    },
-  })
+export const getTimelineTopicFromId = async (topicId) => {
+  const res = await fetch(
+    `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,
+    {
+      next: {
+        revalidate: 600,
+      },
+    }
+  );
   const data = await res.json();
   return data;
-}
-
+};

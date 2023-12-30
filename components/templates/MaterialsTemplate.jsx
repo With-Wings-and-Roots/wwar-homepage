@@ -5,7 +5,6 @@ import { createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
 
 const MaterialsTemplate = ({ data }) => {
-
   const renderImageVideo = (obj) => {
     if (obj.acf_fc_layout === 'image') {
       return (
