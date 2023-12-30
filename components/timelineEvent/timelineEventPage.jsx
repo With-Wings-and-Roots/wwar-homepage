@@ -43,7 +43,7 @@ const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
                 <GeneralText text={parse(text)} />
               </div>
               <div className="w-1/3">
-                <Sidebar sidebarContent = {timelineEvent.acf?.sidebar_content?.[0]}/>
+                {timelineEvent.acf?.sidebar_content?.[0] && <Sidebar sidebarContent = {timelineEvent.acf?.sidebar_content?.[0]}/>}
               </div>
             </div>
 
