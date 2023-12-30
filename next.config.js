@@ -7,7 +7,7 @@ module.exports = {
   images: {
     remotePatterns: [
       {
-        hostname: 'wwar2022.backslashseven.com',
+        hostname: 'cms.withwingsandroots.org',
       },
     ],
   },

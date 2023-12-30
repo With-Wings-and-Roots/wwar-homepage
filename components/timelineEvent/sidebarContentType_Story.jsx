@@ -1,46 +1,42 @@
-import React from 'react'
+import React from 'react';
 
-const SidebarContentTypeStory =  async ({sidebarContent}) => {
+const SidebarContentTypeStory = async ({ sidebarContent }) => {
+  const { sidebar_content_featured_story } = sidebarContent;
 
-const  {sidebar_content_featured_story} = sidebarContent
-    
-    // const {sidebar_content_image:{image, title, caption, display_credit, credit, credit_link},  sidebar_content_quote, sidebar_content_sidenote, sidebar_content_featured_story, text } = sidebarContent
+  // const {sidebar_content_image:{image, title, caption, display_credit, credit, credit_link},  sidebar_content_quote, sidebar_content_sidenote, sidebar_content_featured_story, text } = sidebarContent
 
- 
-// {
-//   sidebar_content_type: 'story',
-//   sidebar_content_video: {
-//     video: null,
-//     title: '',
-//     caption: '',
-//     display_credit: false,
-//     credit: '',
-//     credit_link: ''
-//   },
-//   sidebar_content_image: {
-//     image: null,
-//     image_orientation: 'fit',
-//     title: '',
-//     caption: '',
-//     display_credit: false,
-//     credit: '',
-//     credit_link: ''
-//   },
-//   sidebar_content_quote: { quote: '', quote_author: '', quote_source: '' },
-//   sidebar_content_sidenote: { title: '', caption: '' },
-//   sidebar_content_featured_story: 1723,
-//   text: ''
-// }
-
-
+  // {
+  //   sidebar_content_type: 'story',
+  //   sidebar_content_video: {
+  //     video: null,
+  //     title: '',
+  //     caption: '',
+  //     display_credit: false,
+  //     credit: '',
+  //     credit_link: ''
+  //   },
+  //   sidebar_content_image: {
+  //     image: null,
+  //     image_orientation: 'fit',
+  //     title: '',
+  //     caption: '',
+  //     display_credit: false,
+  //     credit: '',
+  //     credit_link: ''
+  //   },
+  //   sidebar_content_quote: { quote: '', quote_author: '', quote_source: '' },
+  //   sidebar_content_sidenote: { title: '', caption: '' },
+  //   sidebar_content_featured_story: 1723,
+  //   text: ''
+  // }
 
   return (
     <div>
-        {/* <Image className={`w-50 h-50 mb-1`} src={mediaUrl} height={1000} width={1000} alt={title}/>
+      {/* <Image className={`w-50 h-50 mb-1`} src={mediaUrl} height={1000} width={1000} alt={title}/>
         {display_credit && <Link className='font-thin text-xs hover:underline' href={`credit_link`}> {credit}</Link>}
         <div className='text-2xl py-4'>{title}</div>
         <div className='text-base text-wwr_gray_storm font-light leading-6'>{caption}</div> */}
     </div>
-  )
-}
-export default SidebarContentTypeStory
+  );
+};
+export default SidebarContentTypeStory;

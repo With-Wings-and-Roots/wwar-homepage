@@ -2,7 +2,7 @@ import { fetchAllData } from './general';
 
 export const getTimelineEvents = async (lang = 'en') => {
   const data = await fetchAllData(
-    `https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100`
+    `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100`
   );
   const sortedData = data.sort((a, b) => {
     return (
@@ -16,7 +16,7 @@ export const getTimelineEvents = async (lang = 'en') => {
 
 const getTimelineCountryIds = async (lang = 'en') => {
   const allCountriesData = await fetchAllData(
-    `https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline?lang=${lang}`
+    `${process.env.CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
   );
 
   const usData = allCountriesData.find((country) =>
@@ -40,8 +40,8 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
 
   const baseUrl =
     lang === 'de'
-      ? 'https://wwar2022.backslashseven.com/de/wp-json/wp/v2/timeline_event'
-      : 'https://wwar2022.backslashseven.com/wp-json/wp/v2/timeline_event';
+      ? `${process.env.CMS_URL}/de/wp-json/wp/v2/timeline_event`
+      : `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event`;
 
   const data = await fetchAllData(
     `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}`

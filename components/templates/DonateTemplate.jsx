@@ -38,7 +38,6 @@ const DonateTemplate = ({ data }) => {
       {data?.acf?.buttons.map((btn, bI) => renderButton(btn, bI))}
 
       <Image src={data?.acf?.image} alt='' width={985} height={657} />
-
     </div>
   );
 };

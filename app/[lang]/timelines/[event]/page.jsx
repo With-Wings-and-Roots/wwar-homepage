@@ -1,20 +1,15 @@
-
-import { getTimeline, getTimelineEvents } from "../../../../utilities/timeline";
-import TimelineEventPage from "../../../../components/timelineEvent/timelineEventPage";
-import { getAdjacentSlug } from "../../../../utilities/general";
-
+import { getTimeline, getTimelineEvents } from '../../../../utilities/timeline';
+import TimelineEventPage from '../../../../components/timelineEvent/timelineEventPage';
+import { getAdjacentSlug } from '../../../../utilities/general';
 
 const Event = async ({ params }) => {
   const lang = params.lang.toLowerCase();
 
   const timelineEvents = await getTimelineEvents(lang);
 
-
-
   // for (let tl of timelineEvents){
   //   console.log(tl.acf.sidebar_content?.[0]?.sidebar_content_type)
-    
-    
+
   // }
 
   const timelineEvent =
@@ -34,8 +29,6 @@ const Event = async ({ params }) => {
     timelineEventsLength,
     timelineEvents
   );
-
-
 
   return (
     <>
@@ -57,10 +50,10 @@ export async function generateStaticParams() {
     timelineEventsUsaDe,
     timelineEventsUsaEn,
   ] = await Promise.all([
-    getTimeline("de", "de"),
-    getTimeline("de", "en"),
-    getTimeline("us", "de"),
-    getTimeline("us", "en"),
+    getTimeline('de', 'de'),
+    getTimeline('de', 'en'),
+    getTimeline('us', 'de'),
+    getTimeline('us', 'en'),
   ]);
 
   const mapEvents = (events, lang) =>
@@ -68,10 +61,10 @@ export async function generateStaticParams() {
       return { lang, event: singleEvent.slug };
     });
 
-  const eventsGermanyDe = mapEvents(timelineEventsGermanyDe, "de");
-  const eventsGermanyEn = mapEvents(timelineEventsGermanyEn, "en");
-  const eventsUsaDe = mapEvents(timelineEventsUsaDe, "de");
-  const eventsUsaEn = mapEvents(timelineEventsUsaEn, "en");
+  const eventsGermanyDe = mapEvents(timelineEventsGermanyDe, 'de');
+  const eventsGermanyEn = mapEvents(timelineEventsGermanyEn, 'en');
+  const eventsUsaDe = mapEvents(timelineEventsUsaDe, 'de');
+  const eventsUsaEn = mapEvents(timelineEventsUsaEn, 'en');
 
   return eventsUsaEn.concat(eventsUsaDe, eventsGermanyEn, eventsGermanyDe);
 }
