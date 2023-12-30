@@ -8,6 +8,7 @@ import parse from "html-react-parser";
 import Excerpt from "../page/excerpt";
 import GeneralText from "../page/generalText";
 import YearButton from "../page/yearButton";
+import Sidebar from "./sidebar";
 
 const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
   const {
@@ -36,12 +37,14 @@ const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
            
             <PageTitle title={title} />
 
-            <div className="flex">
+            <div className="flex gap-6 ">
               <div className="w-2/3">
                 <Excerpt excerpt={parse(lead_text)} color={"black"} />
                 <GeneralText text={parse(text)} />
               </div>
-              <div className="w-1/3"></div>
+              <div className="w-1/3">
+                <Sidebar sidebarContent = {timelineEvent.acf?.sidebar_content?.[0]}/>
+              </div>
             </div>
 
             <div>{authors}</div>
