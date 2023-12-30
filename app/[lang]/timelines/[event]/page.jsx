@@ -7,11 +7,6 @@ const Event = async ({ params }) => {
 
   const timelineEvents = await getTimelineEvents(lang);
 
-  // for (let tl of timelineEvents){
-  //   console.log(tl.acf.sidebar_content?.[0]?.sidebar_content_type)
-
-  // }
-
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
