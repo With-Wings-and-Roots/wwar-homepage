@@ -53,3 +53,14 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
       Number(b.acf.basic_info.start_date.slice(0, 4))
   );
 };
+
+export const getTimelineTopicFromId = async(topicId)=>{
+  const res = await fetch(`${process.env.CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,{
+    next: {
+      revalidate: 600,
+    },
+  })
+  const data = await res.json();
+  return data;
+}
+

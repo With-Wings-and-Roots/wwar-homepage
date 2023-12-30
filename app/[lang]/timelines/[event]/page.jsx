@@ -1,15 +1,31 @@
-import { getTimeline, getTimelineEvents } from '../../../../utilities/timeline';
+import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
 import TimelineEventPage from '../../../../components/timelineEvent/timelineEventPage';
-import { getAdjacentSlug } from '../../../../utilities/general';
+import { getAdjacentSlug } from '@/utilities/general';
+import { getAllMedia } from '@/utilities/stories';
 
 const Event = async ({ params }) => {
+  let country = null;
   const lang = params.lang.toLowerCase();
 
-  const timelineEvents = await getTimelineEvents(lang);
+  const [timelineEvents, timeLineEventsDe, timeLineEventsUs] = await Promise.all([
+    getTimelineEvents(lang),
+    getTimeline('de', lang),
+    getTimeline('us', lang),
+  ]);
+  const germanIdsArray = timeLineEventsDe.map(timeline=>timeline.id)
+  const usaIdsArray = timeLineEventsUs.map(timeline=>timeline.id)
+
 
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
+
+
+  if(germanIdsArray.includes(timelineEvent.id)){
+    country = "de"
+  }else if (usaIdsArray.includes(timelineEvent.id)){
+    country = "us"
+  }
 
   const timelineEventsLength = timelineEvents.length;
   const timelineEventIndex = timelineEvents.indexOf(timelineEvent);
@@ -31,6 +47,8 @@ const Event = async ({ params }) => {
         timelineEvent={timelineEvent}
         nextSlug={nextSlug}
         prevSlug={prevSlug}
+        lang={lang}
+        country={country}
       />
     </>
   );

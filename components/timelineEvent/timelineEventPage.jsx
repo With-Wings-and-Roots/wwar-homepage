@@ -1,5 +1,5 @@
 import React from "react";
-// import Header from "../header/header";
+
 import FullPageBackground from "../page/fullPageBackground";
 import NavigationCircle from "../page/navigationCircle";
 import CloseIcon from "../page/closeIcon";
@@ -9,9 +9,19 @@ import Excerpt from "../page/excerpt";
 import GeneralText from "../page/generalText";
 import YearButton from "../page/yearButton";
 import Sidebar from "./sidebar";
+import { getTimelineTopicFromId } from '@/utilities/timeline';
+import Button from '@/components/page/button';
 
-const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
+const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country}) => {
 
+  const topicsIdArray = timelineEvent.timeline_event_topic;
+
+  const topicsArray = await Promise.all(
+    topicsIdArray.map(async (id) => {
+      const tempTopic = await getTimelineTopicFromId(id);
+      return parse(tempTopic.name);
+    })
+  );
 
   const {
     acf: {
@@ -46,6 +56,16 @@ const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
               </div>
               <div className="w-1/3">
                 <Sidebar sidebarContent = {timelineEvent.acf?.sidebar_content}/>
+                <div className={`flex flex-col gap-px`}>
+                  <Button color={`turquoise`} name={country==="us"? "United States": `${country === "de"?"Germany": ""}`} />
+                  <div className={`flex flex-wrap gap-px`}>
+                    {topicsArray.map((topicName)=>{
+                      return <React.Fragment key={topicName}>
+                        <Button name={topicName}/>
+                      </React.Fragment>
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
 
