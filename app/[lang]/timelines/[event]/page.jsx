@@ -1,6 +1,7 @@
-import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
-import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
-import React from 'react';
+import TimelineEventPage from "@/app/components/timelineEvent/timelineEventPage";
+import { getAdjacentSlug } from "@/app/utilities/general";
+import { getTimeline, getTimelineEvents } from "@/app/utilities/timeline";
+import React from "react";
 
 const Event = async ({ params }) => {
   const lang = params.lang.toLowerCase();
@@ -11,9 +12,27 @@ const Event = async ({ params }) => {
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
 
+  const timelineEventsLength = timelineEvents.length;
+  const timelineEventIndex = timelineEvents.indexOf(timelineEvent);
+
+  const nextSlug = getAdjacentSlug(
+    timelineEventIndex + 1,
+    timelineEventsLength,
+    timelineEvents
+  );
+  const prevSlug = getAdjacentSlug(
+    timelineEventIndex - 1,
+    timelineEventsLength,
+    timelineEvents
+  );
+
   return (
     <>
-      <TimelineEventPage timelineEvent={timelineEvent} />
+      <TimelineEventPage
+        timelineEvent={timelineEvent}
+        nextSlug={nextSlug}
+        prevSlug={prevSlug}
+      />
     </>
   );
 };
@@ -27,10 +46,10 @@ export async function generateStaticParams() {
     timelineEventsUsaDe,
     timelineEventsUsaEn,
   ] = await Promise.all([
-    getTimeline('de', 'de'),
-    getTimeline('de', 'en'),
-    getTimeline('us', 'de'),
-    getTimeline('us', 'en'),
+    getTimeline("de", "de"),
+    getTimeline("de", "en"),
+    getTimeline("us", "de"),
+    getTimeline("us", "en"),
   ]);
 
   const mapEvents = (events, lang) =>
@@ -38,10 +57,10 @@ export async function generateStaticParams() {
       return { lang, event: singleEvent.slug };
     });
 
-  const eventsGermanyDe = mapEvents(timelineEventsGermanyDe, 'de');
-  const eventsGermanyEn = mapEvents(timelineEventsGermanyEn, 'en');
-  const eventsUsaDe = mapEvents(timelineEventsUsaDe, 'de');
-  const eventsUsaEn = mapEvents(timelineEventsUsaEn, 'en');
+  const eventsGermanyDe = mapEvents(timelineEventsGermanyDe, "de");
+  const eventsGermanyEn = mapEvents(timelineEventsGermanyEn, "en");
+  const eventsUsaDe = mapEvents(timelineEventsUsaDe, "de");
+  const eventsUsaEn = mapEvents(timelineEventsUsaEn, "en");
 
   return eventsUsaEn.concat(eventsUsaDe, eventsGermanyEn, eventsGermanyDe);
 }
