@@ -40,12 +40,12 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, re
   const endYear = endDate?.slice(0,4) || null
 
   return (
-    <div className="relative overflow-hidden lg:py-10">
+    <div className="relative overflow-hidden lg:pb-10">
       <FullPageBackground color={"black"} />
       <div className="min-h-[100vh] m-auto relative flex justify-center z-50">
         <NavigationCircle slug={prevSlug} direction={"left"}></NavigationCircle>
 
-        <div className="bg-white w-full sm:mt-10 md:mt-8 sm:w-10/12 md:w-11/12 lg:w-4/5 max-w-[1200px] ">
+        <div className="bg-white w-full sm:w-10/12 md:w-11/12 lg:w-4/5 max-w-[1200px] ">
           <div className="flex w-full p-4 justify-end text-4xl">
             <CloseIcon closeLink={`../timelines?date=${year}`} />
           </div>

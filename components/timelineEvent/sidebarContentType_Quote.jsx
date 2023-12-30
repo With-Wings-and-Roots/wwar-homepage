@@ -9,7 +9,7 @@ const SidebarContentTypeQuote = async ({ content }) => {
 
   return (
     <div>
-      <div className={`w-12 pb-2`}><QuotationMark color={'turquoise'} /></div>
+      <div className={`w-12 py-2`}><QuotationMark color={'turquoise'} /></div>
       <div className={`flex flex-col gap-2`}>
         <div className={"text-3xl leading-normal font-extralight"}>{parse(quote)}</div>
         <div className={`text-base font-normal text-right`}>{`- ${quote_author}`}</div>

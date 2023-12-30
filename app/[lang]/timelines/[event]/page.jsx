@@ -14,8 +14,6 @@ const Event = async ({ params }) => {
   const germanIdsArray = timeLineEventsDe.map(timeline=>timeline.id)
   const usaIdsArray = timeLineEventsUs.map(timeline=>timeline.id)
 
-
-
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
