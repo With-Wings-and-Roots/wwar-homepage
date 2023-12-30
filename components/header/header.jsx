@@ -5,10 +5,15 @@ import MobileMenu from './mobileMenu';
 import Logo from './logo';
 import TopSpace from './topSpace';
 import { getPrimaryMenuId, getMenuItems } from '@/utilities/menu';
+import Link from 'next/link';
+import { getFrontpageId, getPage } from '@/utilities/pages';
+import { createLocalLink } from '@/utilities/links';
 
 const Header = async ({ lang }) => {
   const menuId = await getPrimaryMenuId(lang);
   const menuItems = await getMenuItems(menuId, lang);
+  const frontpageId = await getFrontpageId(lang);
+  const frontpageData = await getPage(lang, frontpageId);
 
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
@@ -19,9 +24,12 @@ const Header = async ({ lang }) => {
     <div className='fixed top-0 left-0 z-[200] bg-wwr_yellow_orange w-screen max-w-full text-base'>
       <TopSpace />
       <div className='global_header_width flex justify-between items-stretch relative'>
-        <div className={`flex items-end min-h-full`}>
+        <Link
+          href={createLocalLink(frontpageData.link)}
+          className={`flex items-end min-h-full`}
+        >
           <Logo />
-        </div>
+        </Link>
 
         <div className='relative flex items-end justify-end min-h-full md:hidden z-[202]'>
           <MobileMenu
