@@ -1,54 +1,22 @@
 import { getAllStories, getStoryById } from '@/utilities/stories';
 import React from 'react';
+import QuotationMark from '@/components/page/quotationMark';
+import Excerpt from '@/components/page/excerpt';
 
 const SidebarContentTypeStory = async ({ content }) => {
   const { sidebar_content_featured_story } = content;
 
-  const allStories = await getAllStories('de');
-
-  const story = allStories.find((story) => {
-    return story.id === sidebar_content_featured_story;
-  });
-
-  // const story = await getStoryById(sidebar_content_featured_story)
-
-  // console.log(sidebar_content_featured_story)
-
-  // console.log(content)
-
-  // const {sidebar_content_image:{image, title, caption, display_credit, credit, credit_link},  sidebar_content_quote, sidebar_content_sidenote, sidebar_content_featured_story, text } = content
-
-  // {
-  //   sidebar_content_type: 'story',
-  //   sidebar_content_video: {
-  //     video: null,
-  //     title: '',
-  //     caption: '',
-  //     display_credit: false,
-  //     credit: '',
-  //     credit_link: ''
-  //   },
-  //   sidebar_content_image: {
-  //     image: null,
-  //     image_orientation: 'fit',
-  //     title: '',
-  //     caption: '',
-  //     display_credit: false,
-  //     credit: '',
-  //     credit_link: ''
-  //   },
-  //   sidebar_content_quote: { quote: '', quote_author: '', quote_source: '' },
-  //   sidebar_content_sidenote: { title: '', caption: '' },
-  //   sidebar_content_featured_story: 1723,
-  //   text: ''
-  // }
+  //Placeholder contents are used for now
 
   return (
     <div>
-      {/* <Image className={`w-50 h-50 mb-1`} src={mediaUrl} height={1000} width={1000} alt={title}/>
-        {display_credit && <Link className='font-thin text-xs hover:underline' href={`credit_link`}> {credit}</Link>}
-        <div className='text-2xl py-4'>{title}</div>
-        <div className='text-base text-wwr_gray_storm font-light leading-6'>{caption}</div> */}
+      <div className={`bg-wwr_yellow_orange text-wwr_white text-lg w-max px-2`}>Featured Story</div>
+
+      <div className={`w-full h-40 my-6 bg-green-100 flex items-center justify-center`}>Video</div>
+      <QuotationMark />
+      <Excerpt excerpt={`Disconnected from the 'Nation of Immigrants'`} color={"gray"}/>
+      <div className={`text-lg mb-10`}>Aisha</div>
+      <div className={`h-[2px] w-full bg-wwr_yellow_orange`}></div>
     </div>
   );
 };
