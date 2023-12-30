@@ -11,12 +11,13 @@ import YearButton from "../page/yearButton";
 import Sidebar from "./sidebar";
 import { getTimelineTopicFromId } from '@/utilities/timeline';
 import Button from '@/components/page/button';
+import RelatedEvents from '@/components/timelineEvent/relatedEvents';
 
-const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country}) => {
+const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country, relatedEvents}) => {
+
 
  const {timeline_event_topic,acf: {article: {event_sources, event_resources}}} = timelineEvent;
 
- console.log(event_resources)
 
  const topicsArray = await Promise.all(
     timeline_event_topic.map(async (id) => {
@@ -97,6 +98,7 @@ const TimelineEventPage = async({ timelineEvent, nextSlug, prevSlug, country}) =
             </div>
 
           </div>
+          {relatedEvents && <RelatedEvents relatedEvents={relatedEvents}/>}
         </div>
 
 

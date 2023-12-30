@@ -16,6 +16,7 @@ const Event = async ({ params }) => {
   const usaIdsArray = timeLineEventsUs.map(timeline=>timeline.id)
 
 
+
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
@@ -43,6 +44,11 @@ const Event = async ({ params }) => {
     timelineEvents
   );
 
+  const {acf: {basic_info:{related_events}}} = timelineEvent;
+
+  const relatedEvents = timelineEvents.filter( event=> related_events.includes(event.id))||null
+
+
   return (
     <>
       <TimelineEventPage
@@ -50,6 +56,7 @@ const Event = async ({ params }) => {
         nextSlug={nextSlug}
         prevSlug={prevSlug}
         country={country}
+        relatedEvents={relatedEvents}
       />
     </>
   );
