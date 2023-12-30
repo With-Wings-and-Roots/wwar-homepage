@@ -6,14 +6,14 @@ const Event = async ({ params }) => {
   let country = null;
   const lang = params.lang.toLowerCase();
 
-  const [timelineEvents, timeLineEventsDe, timeLineEventsUs] = await Promise.all([
-    getTimelineEvents(lang),
-    getTimeline('de', lang),
-    getTimeline('us', lang),
-  ]);
-  const germanIdsArray = timeLineEventsDe.map(timeline=>timeline.id)
-  const usaIdsArray = timeLineEventsUs.map(timeline=>timeline.id)
-
+  const [timelineEvents, timeLineEventsDe, timeLineEventsUs] =
+    await Promise.all([
+      getTimelineEvents(lang),
+      getTimeline('de', lang),
+      getTimeline('us', lang),
+    ]);
+  const germanIdsArray = timeLineEventsDe.map((timeline) => timeline.id);
+  const usaIdsArray = timeLineEventsUs.map((timeline) => timeline.id);
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
@@ -22,9 +22,9 @@ const Event = async ({ params }) => {
   const indexInUsa = usaIdsArray.indexOf(timelineEvent.id);
 
   if (indexInGerman !== -1) {
-    country = "de";
+    country = 'de';
   } else if (indexInUsa !== -1) {
-    country = "us";
+    country = 'us';
   }
 
   const timelineEventsLength = timelineEvents.length;

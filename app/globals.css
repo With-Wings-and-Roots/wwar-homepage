@@ -40,3 +40,6 @@ p + p {
   margin-left: 1em;
   margin-bottom: 1em;
 }
+.WysiwygContent a {
+  color: #564ae9;
+}

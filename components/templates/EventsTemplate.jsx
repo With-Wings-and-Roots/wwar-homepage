@@ -90,7 +90,7 @@ const EventsTemplate = async ({ data, params }) => {
           {' | '}
           <a
             href='#past'
-            className='hover:textwwr_yellow_orange_hovered transition-all'
+            className='hover:text-wwr_yellow_orange_hovered transition-all'
           >
             {data.acf?.label_past}
           </a>

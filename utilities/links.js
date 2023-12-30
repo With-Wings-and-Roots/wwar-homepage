@@ -16,3 +16,13 @@ export function createLocalLink(link) {
     return link;
   }
 }
+
+export function createHashString(title) {
+  return (
+    '#' +
+    title
+      ?.toLowerCase()
+      ?.replace(/\s+/g, '-')
+      ?.replace(/[^a-z0-9-]/g, '')
+  );
+}
