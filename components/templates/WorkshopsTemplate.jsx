@@ -42,7 +42,7 @@ const WorkshopsTemplate = ({ data }) => {
             />
           </div>
           <div className='col-span-6 col-start-2 mt-6 xl:mt-0 xl:col-span-3 xl:col-start-6'>
-            <div className='bg-wwr_yellow_orange h-[360px] xl:h-[calc(100%+70px)] xl:-mt-[70px] xl:ml-16'>
+            <div className='bg-wwr_yellow_orange h-[360px] xl:min-h-[500px] xl:h-[calc(100%+70px)] xl:-mt-[70px] xl:ml-16'>
               <div className='flex p-6'>
                 <Image
                   src={gfx_quote}

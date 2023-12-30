@@ -58,7 +58,7 @@ const Page = async ({ params }) => {
         template = <WorkshopsTemplate data={pageData} />;
         break;
       case 'page_takePart.php':
-        template = <TakePartTemplate data={pageData} params={params} />;
+        template = <TakePartTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;

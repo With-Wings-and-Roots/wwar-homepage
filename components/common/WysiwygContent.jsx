@@ -1,9 +1,9 @@
-const WysiwygContent = ({ content, ...otherProps }) => {
+const WysiwygContent = ({ content, className = '', ...otherProps }) => {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: content }}
       {...otherProps}
-      className='WysiwygContent'
+      className={`WysiwygContent ${className}`}
     />
   );
 };
