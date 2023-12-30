@@ -1,6 +1,6 @@
 import React from 'react';
 import QuotationMark from '@/components/page/quotationMark';
-import {parse} from "html-react-parser"
+import parse from 'html-react-parser';
 
 const SidebarContentTypeQuote = async ({ content }) => {
   const {sidebar_content_quote} = content;
