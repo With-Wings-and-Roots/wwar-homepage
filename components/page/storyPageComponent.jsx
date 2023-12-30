@@ -85,7 +85,7 @@ const StoryPageComponent = async ({
               </div>
               <div className='w-full md:w-4/12'>
                 <div className={`w-10 md:w-20 pb-2`}>
-                <QuotationMark />
+                  <QuotationMark />
                 </div>
                 <div>
                   <p className='text-xl lg:text-26px text-wwr_gray_storm font-light '>

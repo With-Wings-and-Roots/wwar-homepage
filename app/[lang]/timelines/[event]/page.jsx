@@ -41,10 +41,15 @@ const Event = async ({ params }) => {
     timelineEvents
   );
 
-  const {acf: {basic_info:{related_events}}} = timelineEvent;
+  const {
+    acf: {
+      basic_info: { related_events },
+    },
+  } = timelineEvent;
 
-  const relatedEvents = related_events?timelineEvents.filter( event=> related_events.includes(event.id)):null
-
+  const relatedEvents = related_events
+    ? timelineEvents.filter((event) => related_events.includes(event.id))
+    : null;
 
   return (
     <>
