@@ -7,23 +7,22 @@ import PageTitle from "../page/pageTitle";
 import parse from "html-react-parser";
 import Excerpt from "../page/excerpt";
 import GeneralText from "../page/generalText";
+import YearButton from "../page/yearButton";
 
 const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
   const {
     acf: {
-      basic_info: { start_date: date } = {},
+      basic_info: { start_date: date, end_date: endDate } = {},
       article: { lead_text, text, authors } = {},
     } = {},
     title: { rendered: title } = {},
   } = timelineEvent || {};
 
   const year = date.slice(0, 4);
+  const endYear = endDate?.slice(0,4) || null
 
   return (
     <div className="relative overflow-hidden lg:py-10">
-      <div className="hidden sm:block fixed z-10 top-0 left-0">
-        {/* <Header /> */}
-      </div>
       <FullPageBackground color={"black"} />
       <div className="min-h-[100vh] m-auto relative flex justify-center z-50">
         <NavigationCircle slug={prevSlug} direction={"left"}></NavigationCircle>
@@ -33,7 +32,8 @@ const TimelineEventPage = ({ timelineEvent, nextSlug, prevSlug }) => {
             <CloseIcon closeLink={`../timelines?date=${year}`} />
           </div>
           <div className="px-4 md:px-8 lg:px-20 pb-10">
-            <div>{year}</div>
+           <YearButton year={year} endYear={endYear}/>
+           
             <PageTitle title={title} />
 
             <div className="flex">

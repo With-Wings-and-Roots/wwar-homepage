@@ -1,6 +1,5 @@
 
 import { getTimeline, getTimelineEvents } from "../../../../utilities/timeline";
-import React from "react";
 import TimelineEventPage from "../../../../components/timelineEvent/timelineEventPage";
 import { getAdjacentSlug } from "../../../../utilities/general";
 
