@@ -12,6 +12,7 @@ import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
+import HomeTemplate from '@/components/templates/HomeTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -67,6 +68,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_materials.php':
         template = <MaterialsTemplate data={pageData} />;
+        break;
+      case 'page_home.php':
+        template = <HomeTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;

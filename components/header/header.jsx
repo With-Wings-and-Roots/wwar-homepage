@@ -21,7 +21,10 @@ const Header = async ({ lang }) => {
   });
 
   return (
-    <div className='fixed top-0 left-0 z-[200] bg-wwr_yellow_orange w-screen max-w-full text-base'>
+    <div
+      className='fixed top-0 left-0 z-[200] bg-wwr_yellow_orange w-screen max-w-full text-base'
+      id='header'
+    >
       <TopSpace />
       <div className='global_header_width flex justify-between items-stretch relative'>
         <Link
