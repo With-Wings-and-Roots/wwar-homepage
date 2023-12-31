@@ -71,7 +71,7 @@ const TimelinesTemplate = async ({ params, data, subSlugs, baseLink }) => {
     <div>
       <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative'>
         <h1
-          dangerouslySetInnerHTML={{ __html: data.acf?.page_title }}
+          dangerouslySetInnerHTML={{__html: data.acf?.page_title||""}}
           className='text-3xl md:text-6xl font-light'
         />
         <WysiwygContent
