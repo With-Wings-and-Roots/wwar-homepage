@@ -40,6 +40,11 @@ const Page = async ({ params }) => {
       }
       subSlugs = [...subSlugs, pageSlugs.pop()];
     }
+    if (!pageObj) {
+      const frontpageId = await getFrontpageId(params.lang);
+      pageObj = pages.find((page) => page.id === parseInt(frontpageId));
+      subSlugs = [...(params.slugs ?? [])];
+    }
   } else {
     const frontpageId = await getFrontpageId(params.lang);
     pageObj = pages.find((page) => page.id === parseInt(frontpageId));
@@ -92,7 +97,9 @@ const Page = async ({ params }) => {
         template = <MaterialsTemplate data={pageData} />;
         break;
       case 'page_home.php':
-        template = <HomeTemplate data={pageData} />;
+        template = (
+          <HomeTemplate data={pageData} params={params} subSlugs={subSlugs} />
+        );
         break;
       default:
         template = <DefaultTemplate data={pageData} />;
