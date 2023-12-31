@@ -4,6 +4,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { createLocalLink } from '@/utilities/links';
 
 const NewsLetter = ({ footerData }) => {
   const footer = footerData;
@@ -88,12 +90,12 @@ const NewsLetter = ({ footerData }) => {
         <div>
           {footer.copyright_text.replace('YEAR', new Date().getFullYear())}
         </div>
-        <a
-          href={footer.terms_page}
+        <Link
+          href={createLocalLink(footer.terms_page)}
           className='hover:brightness-75 duration-300'
         >
           {language === 'de' ? 'Impressum' : 'Terms and Conditions'}
-        </a>
+        </Link>
       </div>
     </div>
   );

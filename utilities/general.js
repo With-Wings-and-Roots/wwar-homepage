@@ -31,3 +31,8 @@ export async function fetchAllData(url) {
 
   return allData;
 }
+
+export function getAdjacentSlug(index, length, array) {
+  const adjustedIndex = (index + length) % length;
+  return array[adjustedIndex].slug;
+}

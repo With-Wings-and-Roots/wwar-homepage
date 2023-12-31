@@ -66,7 +66,6 @@ const TimelineCardContainer = ({
           return (
             <React.Fragment key={index}>
               <TimeLineCard
-                index={index}
                 mediaUrl={mediaUrl}
                 timeLineEvent={timeLineEvent}
                 setCardWidth={setCardWidth}

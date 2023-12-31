@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
 import { mobileSubMenuClosed } from '@/store/mobileMenu';
+import { createLocalLink } from '@/utilities/links';
 
 const MobileSubMenu = ({ menuItems }) => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const MobileSubMenu = ({ menuItems }) => {
         .map((subItem, index) => {
           return (
             <div key={index} className='hover:text-wwr_white'>
-              <Link href={subItem.url} className='min-w-max'>
+              <Link href={createLocalLink(subItem.url)} className='min-w-max'>
                 {subItem.title.localeCompare('FROM HERE FILM') === 0
                   ? 'FROM HERE film >'
                   : subItem.title}

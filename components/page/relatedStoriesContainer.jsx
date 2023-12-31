@@ -7,6 +7,7 @@ const RelatedStoriesContainer = ({
   allMedia,
   allPersons,
   hoverZoom,
+  baseLink,
 }) => {
   return (
     <div>
@@ -20,6 +21,7 @@ const RelatedStoriesContainer = ({
           allMedia={allMedia}
           allPersons={allPersons}
           hoverZoom={hoverZoom}
+          baseLink={baseLink}
         />
       </div>
     </div>

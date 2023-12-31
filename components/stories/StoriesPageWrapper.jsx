@@ -6,18 +6,20 @@ const StoriesPageWrapper = async ({
   allMedia,
   allPersons,
   topics,
+  baseLink,
 }) => {
   const language = lang || 'en';
 
   return (
     <>
-      <div className='global_width'>
+      <div className='px-8 md:px-16 xl:px-48'>
         <StoriesPageContainer
           stories={stories}
           allMedia={allMedia}
           allPersons={allPersons}
           topics={topics}
           lang={language}
+          baseLink={baseLink}
         />
       </div>
     </>

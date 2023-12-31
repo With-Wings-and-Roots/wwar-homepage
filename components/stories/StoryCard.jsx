@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import parse from 'html-react-parser';
+import { createLocalLink } from '@/utilities/links';
+import { usePathname } from 'next/navigation';
 
 const StoryCard = ({
   title,
@@ -13,11 +15,12 @@ const StoryCard = ({
   personName,
   mediaUrl,
   hoverZoom,
+  baseLink,
 }) => {
   const [hovered, setHovered] = useState(false);
 
   return (
-    <Link href={`/${lang}/stories/${slug}`}>
+    <Link href={`${createLocalLink(baseLink)}${slug}`} scroll={false}>
       <div
         className={`${
           hoverZoom ? 'hover:scale-105 ' : ' '

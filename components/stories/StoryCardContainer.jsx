@@ -10,6 +10,7 @@ const StoryCardContainer = ({
   allPersons,
   lang,
   hoverZoom = true,
+  baseLink,
 }) => {
   return (
     <>
@@ -24,18 +25,21 @@ const StoryCardContainer = ({
           );
 
           return (
-            <React.Fragment key={index}>
-              <StoryCard
-                title={story.title?.rendered}
-                mediaUrl={mediaUrl}
-                city={story.acf?.city}
-                slug={story.slug}
-                lang={lang}
-                color={story.acf?.color}
-                personName={person?.name}
-                hoverZoom={hoverZoom}
-              />
-            </React.Fragment>
+            mediaUrl && (
+              <React.Fragment key={story.id}>
+                <StoryCard
+                  title={story.title?.rendered}
+                  mediaUrl={mediaUrl}
+                  city={story.acf?.city}
+                  slug={story.slug}
+                  lang={lang}
+                  color={story.acf?.color}
+                  personName={person?.name}
+                  hoverZoom={hoverZoom}
+                  baseLink={baseLink}
+                />
+              </React.Fragment>
+            )
           );
         })}
     </>

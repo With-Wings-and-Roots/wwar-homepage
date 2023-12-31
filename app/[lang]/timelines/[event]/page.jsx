@@ -1,19 +1,65 @@
-import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
 import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
-import React from 'react';
+import TimelineEventPage from '../../../../components/timelineEvent/timelineEventPage';
+import { getAdjacentSlug } from '@/utilities/general';
 
 const Event = async ({ params }) => {
+  let country = null;
   const lang = params.lang.toLowerCase();
 
-  const timelineEvents = await getTimelineEvents(lang);
-
+  const [timelineEvents, timeLineEventsDe, timeLineEventsUs] =
+    await Promise.all([
+      getTimelineEvents(lang),
+      getTimeline('de', lang),
+      getTimeline('us', lang),
+    ]);
+  const germanIdsArray = timeLineEventsDe.map((timeline) => timeline.id);
+  const usaIdsArray = timeLineEventsUs.map((timeline) => timeline.id);
   const timelineEvent =
     timelineEvents.find((singleEvent) => singleEvent.slug === params.event) ||
     null;
 
+  const indexInGerman = germanIdsArray.indexOf(timelineEvent.id);
+  const indexInUsa = usaIdsArray.indexOf(timelineEvent.id);
+
+  if (indexInGerman !== -1) {
+    country = 'de';
+  } else if (indexInUsa !== -1) {
+    country = 'us';
+  }
+
+  const timelineEventsLength = timelineEvents.length;
+  const timelineEventIndex = timelineEvents.indexOf(timelineEvent);
+
+  const nextSlug = getAdjacentSlug(
+    timelineEventIndex + 1,
+    timelineEventsLength,
+    timelineEvents
+  );
+  const prevSlug = getAdjacentSlug(
+    timelineEventIndex - 1,
+    timelineEventsLength,
+    timelineEvents
+  );
+
+  const {
+    acf: {
+      basic_info: { related_events },
+    },
+  } = timelineEvent;
+
+  const relatedEvents = related_events
+    ? timelineEvents.filter((event) => related_events.includes(event.id))
+    : null;
+
   return (
     <>
-      <TimelineEventPage timelineEvent={timelineEvent} />
+      <TimelineEventPage
+        timelineEvent={timelineEvent}
+        nextSlug={nextSlug}
+        prevSlug={prevSlug}
+        country={country}
+        relatedEvents={relatedEvents}
+      />
     </>
   );
 };

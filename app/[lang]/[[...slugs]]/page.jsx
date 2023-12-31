@@ -7,12 +7,19 @@ import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
 import CollaboratorsTemplate from '@/components/templates/CollaboratorsTemplate';
+import EventsTemplate from '@/components/templates/EventsTemplate';
+import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
+import TakePartTemplate from '@/components/templates/TakePartTemplate';
+import DonateTemplate from '@/components/templates/DonateTemplate';
+import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
+import HomeTemplate from '@/components/templates/HomeTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
+  let pageSlug = '';
   let subSlugs = [];
   let pageObj;
   if (pageSlugs.length > 0) {
@@ -26,7 +33,10 @@ const Page = async ({ params }) => {
           .replace(/^(de\/|en\/)/, '');
         return urlPageSlug === pageSlugs?.join('/');
       });
-      if (pageObj) break;
+      if (pageObj) {
+        pageSlug = pageObj.link;
+        break;
+      }
       subSlugs = [...subSlugs, pageSlugs.pop()];
     }
   } else {
@@ -40,13 +50,38 @@ const Page = async ({ params }) => {
     const pageData = await getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
-        template = <StoriesTemplate data={pageData} params={params} />;
+        template = (
+          <StoriesTemplate
+            data={pageData}
+            params={params}
+            subSlugs={subSlugs}
+            baseLink={pageSlug}
+          />
+        );
         break;
       case 'page_about.php':
         template = <AboutTemplate data={pageData} />;
         break;
       case 'page_collaborators.php':
         template = <CollaboratorsTemplate data={pageData} />;
+        break;
+      case 'page_events.php':
+        template = <EventsTemplate data={pageData} params={params} />;
+        break;
+      case 'page_workshops.php':
+        template = <WorkshopsTemplate data={pageData} />;
+        break;
+      case 'page_takePart.php':
+        template = <TakePartTemplate data={pageData} />;
+        break;
+      case 'page_donate.php':
+        template = <DonateTemplate data={pageData} />;
+        break;
+      case 'page_materials.php':
+        template = <MaterialsTemplate data={pageData} />;
+        break;
+      case 'page_home.php':
+        template = <HomeTemplate data={pageData} />;
         break;
       default:
         template = <DefaultTemplate data={pageData} />;

@@ -1,16 +1,10 @@
 import React from 'react';
-import Image from 'next/image';
+import QuotationMarkSVG from '@/components/common/QuotationMarkSVG';
 
-const QuotationMark = () => {
+const QuotationMark = ({ color = null }) => {
   return (
-    <div className='w-10 md:w-20 pb-2'>
-      <Image
-        className='w-full'
-        src='/quotation-mark.svg'
-        alt='quotation mark'
-        width={100}
-        height={100}
-      />
+    <div className='w-full'>
+      <QuotationMarkSVG color={color} />
     </div>
   );
 };
