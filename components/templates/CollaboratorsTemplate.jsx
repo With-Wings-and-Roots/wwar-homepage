@@ -27,7 +27,7 @@ const CollaboratorsTemplate = ({ params, data }) => {
   );
 
   return (
-    <div className='px-8 md:px-16 lg:px-64 relative'>
+    <div className='px-8 md:px-16 xl:px-48 relative'>
       <Image
         src={gfx_bg_orange}
         alt=''

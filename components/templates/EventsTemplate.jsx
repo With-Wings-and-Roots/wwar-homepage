@@ -69,7 +69,7 @@ const EventsTemplate = async ({ data, params }) => {
   );
 
   return (
-    <div className='px-8 md:px-16 lg:px-64 mb-16 relative'>
+    <div className='px-8 md:px-16 xl:px-48 mb-16 relative'>
       <Image
         src={gfx_bg_orange}
         alt=''

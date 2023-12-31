@@ -26,7 +26,7 @@ const HomeTemplate = ({ data }) => {
         </ScrollToElementButton>
       </div>
       <div
-        className='px-8 md:px-16 lg:px-64 relative bg-black text-white py-20 relative'
+        className='px-8 md:px-16 xl:px-48 relative bg-black text-white py-20 relative'
         style={{
           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
         }}

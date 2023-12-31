@@ -70,7 +70,7 @@ const TakePartTemplate = ({ data }) => {
 
   return (
     <div
-      className='px-8 md:px-16 lg:px-64 pt-8 pb-16 relative'
+      className='px-8 md:px-16 xl:px-48 pt-8 pb-16 relative'
       style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
     >
       <Image

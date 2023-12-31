@@ -28,7 +28,7 @@ const AboutTemplate = ({ data }) => {
         ))}
       </div>
       <div
-        className='relative px-8 md:px-16 lg:px-64 py-16 bg-black text-white text-center'
+        className='relative px-8 md:px-16 xl:px-48 py-16 bg-black text-white text-center'
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
       >
         <Image
@@ -45,7 +45,7 @@ const AboutTemplate = ({ data }) => {
         />
       </div>
       <PersonImageSlider imageUrls={data.acf?.images?.map((i) => i.image)} />
-      <div className='px-8 md:px-16 lg:px-64 py-16 grid grid-cols-3 gap-8'>
+      <div className='px-8 md:px-16 xl:px-48 py-16 grid grid-cols-3 gap-8'>
         <div className='col-span-3 md:col-span-2'>
           <h2 className='text-3xl'>{data.acf?.history_title}</h2>
           <WysiwygContent

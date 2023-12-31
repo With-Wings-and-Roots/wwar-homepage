@@ -14,14 +14,14 @@ const WorkshopsTemplate = ({ data }) => {
           fill={true}
           className='!fixed object-cover'
         />
-        <div className='px-8 md:px-16 lg:px-64 pt-44 relative'>
+        <div className='px-8 md:px-16 xl:px-48 pt-44 relative'>
           <h1
             className='text-3xl md:text-6xl font-normal'
             dangerouslySetInnerHTML={{ __html: data.acf?.page_title }}
           />
         </div>
       </div>
-      <div className='px-8 md:px-16 lg:px-64 relative bg-white'>
+      <div className='px-8 md:px-16 xl:px-48 relative bg-white'>
         <div
           className='absolute left-0 right-0 top-0 bottom-0'
           style={{
@@ -62,7 +62,7 @@ const WorkshopsTemplate = ({ data }) => {
         </div>
       </div>
       <div
-        className='px-8 md:px-16 lg:px-64 relative bg-black'
+        className='px-8 md:px-16 xl:px-48 relative bg-black'
         style={{
           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
         }}
@@ -76,7 +76,7 @@ const WorkshopsTemplate = ({ data }) => {
           <WysiwygContent content={data.acf?.info_title} />
         </div>
       </div>
-      <div className='px-8 md:px-16 lg:px-64 py-16 relative bg-white'>
+      <div className='px-8 md:px-16 xl:px-48 py-16 relative bg-white'>
         <h2 className='font-medium text-xl lg:text-3xl'>
           {data.acf?.workshops_title}
         </h2>
@@ -141,7 +141,7 @@ const WorkshopsTemplate = ({ data }) => {
           ))}
         </div>
       </div>
-      <div className='px-8 md:px-16 lg:px-64 relative bg-wwr_light'>
+      <div className='px-8 md:px-16 xl:px-48 relative bg-wwr_light'>
         <div className='grid grid-cols-6 gap-8'>
           <div className='col-span-6 lg:col-span-3 xl:col-span-4 lg:order-2 relative'>
             <div className='-mx-8 md:-mx-16 lg:ml-0 lg:-mr-64 h-[300px] lg:h-full relative'>

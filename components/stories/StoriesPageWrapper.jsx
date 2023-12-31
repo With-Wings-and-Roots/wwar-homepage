@@ -12,7 +12,7 @@ const StoriesPageWrapper = async ({
 
   return (
     <>
-      <div className='global_width'>
+      <div className='px-8 md:px-16 xl:px-48'>
         <StoriesPageContainer
           stories={stories}
           allMedia={allMedia}
