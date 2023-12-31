@@ -74,7 +74,7 @@ const NewsLetter = ({ footerData }) => {
                 key={index}
               >
                 <Image
-                  className='w-full h-full'
+                  className='!h-[32px] !w-auto'
                   height={100}
                   width={100}
                   src={social.icon}
