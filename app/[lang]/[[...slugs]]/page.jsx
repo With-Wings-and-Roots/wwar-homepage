@@ -12,6 +12,7 @@ import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
+import ProjectsTemplate from '@/components/templates/ProjectsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import { getAllStories } from '@/utilities/stories';
@@ -97,6 +98,9 @@ const Page = async ({ params }) => {
         break;
       case 'page_materials.php':
         template = <MaterialsTemplate data={pageData} />;
+        break;
+      case 'page_projects.php':
+        template = <ProjectsTemplate data={pageData} />;
         break;
       case 'page_home.php':
         template = (
