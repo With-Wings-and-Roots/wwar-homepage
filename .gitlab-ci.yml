@@ -62,7 +62,7 @@ deploy:
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    - ssh root@$REMOTE_HOST "cd /opt/docker && docker-compose down && docker-compose pull && docker-compose up"
+    - ssh root@$REMOTE_HOST "cd /opt/docker && docker compose down && docker compose pull && docker compose up -d"
   environment: staging
   only:
     - main
