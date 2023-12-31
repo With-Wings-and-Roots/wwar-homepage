@@ -126,6 +126,30 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           />
         </div>
       </div>
+      <div className='px-8 md:px-16 xl:px-48 py-20'>
+        <h2
+          dangerouslySetInnerHTML={{ __html: data.acf?.timelines_title }}
+          className='text-3xl md:text-6xl font-light'
+        />
+        <WysiwygContent
+          content={data.acf?.timelines_text}
+          className='font-light md:text-lg mt-1'
+        />
+        <div className='flex mt-6 gap-x-4'>
+          <Link
+            href={createLocalLink(data.acf?.timelines_page)}
+            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {data.acf?.timelines_us_button_label}
+          </Link>
+          <Link
+            href={createLocalLink(data.acf?.timelines_page)}
+            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {data.acf?.timelines_german_button_label}
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
