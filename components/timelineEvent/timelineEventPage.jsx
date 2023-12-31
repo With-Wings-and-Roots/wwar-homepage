@@ -60,12 +60,12 @@ const TimelineEventPage = async ({
 
             <PageTitle title={title} />
 
-            <div className='flex gap-8 flex-wrap sm:flex-nowrap'>
-              <div className='w-full sm:w-2/3'>
+            <div className='flex gap-8 flex-wrap md:flex-nowrap'>
+              <div className='w-full md:w-2/3'>
                 <Excerpt excerpt={parse(lead_text)} color={'black'} />
                 <GeneralText text={parse(text)} />
               </div>
-              <div className='w-full sm:w-1/3'>
+              <div className='w-full md:w-1/3'>
                 <Sidebar sidebarContent={timelineEvent.acf?.sidebar_content} />
                 <div className={`flex flex-col gap-px mt-10`}>
                   <Button

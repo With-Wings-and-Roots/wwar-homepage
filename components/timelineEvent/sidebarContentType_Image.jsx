@@ -23,31 +23,6 @@ const SidebarContentTypeImage = async ({ content }) => {
 
   const mediaUrl = media.source_url;
 
-  // {
-  //   sidebar_content_type: 'image',
-  //   sidebar_content_video: {
-  //     video: null,
-  //     title: '',
-  //     caption: '',
-  //     display_credit: false,
-  //     credit: '',
-  //     credit_link: ''
-  //   },
-  //   sidebar_content_image: {
-  //     image: 1323,
-  //     image_orientation: 'landscape',
-  //     title: 'New Amsterdam',
-  //     caption: 'A map, drawn in 1916, depicts the Castello Plan of New Amsterdam in 1660.',
-  //     display_credit: true,
-  //     credit: 'New York Historical Society Library',
-  //     credit_link: 'http://www.nyhistory.org/library'
-  //   },
-  //   sidebar_content_quote: { quote: '', quote_author: '', quote_source: '' },
-  //   sidebar_content_sidenote: { title: '', caption: '' },
-  //   sidebar_content_featured_story: null,
-  //   text: ''
-  // }
-
   return (
     <div>
       <Image

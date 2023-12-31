@@ -19,31 +19,6 @@ const SidebarContentTypeVideo = async ({ content }) => {
 
   const youtubelink = video && video.replace('youtu.be', 'youtube.com/embed');
 
-  // {
-  //   sidebar_content_type: 'video',
-  //   sidebar_content_video: {
-  //     video: 'https://youtu.be/zBb9hTyLjfM',
-  //     title: 'Nicholas Brothers in Stormy Weather',
-  //     caption: 'Fayard and Harold Nicholas were a fantastic set of flash-dancers who performed as the Nicholas Brothers. Born seven years apart, the brothers performed for decades on stage and screen, later teaching dance to Michael and Janet Jackson, among many others. In the performance below from Stormy Weather, many of their trademark moves are on display — jumping down stairs into splits, sliding up from splits without using hands, and gleefully jumping through orchestra stands, while tap-dancing in unison.',
-  //     display_credit: false,
-  //     credit: '',
-  //     credit_link: ''
-  //   },
-  //   sidebar_content_image: {
-  //     image: null,
-  //     image_orientation: 'fit',
-  //     title: '',
-  //     caption: '',
-  //     display_credit: false,
-  //     credit: '',
-  //     credit_link: ''
-  //   },
-  //   sidebar_content_quote: { quote: '', quote_author: '', quote_source: '' },
-  //   sidebar_content_sidenote: { title: '', caption: '' },
-  //   sidebar_content_featured_story: null,
-  //   text: ''
-  // }
-
   return (
     <div>
       <iframe
