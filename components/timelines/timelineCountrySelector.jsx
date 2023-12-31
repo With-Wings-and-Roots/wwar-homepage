@@ -11,35 +11,37 @@ const TimelineCountry = ({ firstDate, language }) => {
     (state) => state.entities.timeline.country
   );
   return (
-    <div className='flex flex-wrap gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight'>
-      <div
-        className={`min-w-max ${
-          selectedCountry === 'us' ? 'font-normal' : ' cursor-pointer'
-        }`}
-        onClick={() => {
-          if (selectedCountry !== 'us') {
-            dispatch(usaSelected({}));
-            dispatch(rangeDateChanged({ date: firstDate.en }));
-          }
-        }}
-      >
-        {language === 'de' && <>USA</>}
-        {language !== 'de' && <>UNITED STATES</>}
-      </div>
-      <div className='font-normal px-4'>/</div>
-      <div
-        className={`min-w-max ${
-          selectedCountry === 'de' ? 'font-normal' : ' cursor-pointer'
-        }`}
-        onClick={() => {
-          if (selectedCountry !== 'de') {
-            dispatch(germanySelected({}));
-            dispatch(rangeDateChanged({ date: firstDate.de }));
-          }
-        }}
-      >
-        {language === 'de' && <>DEUTSCHLAND</>}
-        {language !== 'de' && <>GERMANY</>}
+    <div className='px-8 md:px-16 xl:px-48 relative'>
+      <div className='flex flex-wrap gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight'>
+        <div
+          className={`min-w-max ${
+            selectedCountry === 'us' ? 'font-normal' : ' cursor-pointer'
+          }`}
+          onClick={() => {
+            if (selectedCountry !== 'us') {
+              dispatch(usaSelected({}));
+              dispatch(rangeDateChanged({ date: firstDate.en }));
+            }
+          }}
+        >
+          {language === 'de' && <>USA</>}
+          {language !== 'de' && <>UNITED STATES</>}
+        </div>
+        <div className='font-normal px-4'>/</div>
+        <div
+          className={`min-w-max ${
+            selectedCountry === 'de' ? 'font-normal' : ' cursor-pointer'
+          }`}
+          onClick={() => {
+            if (selectedCountry !== 'de') {
+              dispatch(germanySelected({}));
+              dispatch(rangeDateChanged({ date: firstDate.de }));
+            }
+          }}
+        >
+          {language === 'de' && <>DEUTSCHLAND</>}
+          {language !== 'de' && <>GERMANY</>}
+        </div>
       </div>
     </div>
   );

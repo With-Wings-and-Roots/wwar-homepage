@@ -8,7 +8,7 @@ function prependLanguage(str) {
 }
 
 export function createLocalLink(link) {
-  if (link.startsWith(process.env.NEXT_PUBLIC_CMS_URL)) {
+  if (link?.startsWith(process.env.NEXT_PUBLIC_CMS_URL)) {
     const url = new URL(link);
     let relativeLink = url.toString().substring(url.origin.length);
     return prependLanguage(relativeLink);

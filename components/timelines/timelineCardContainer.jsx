@@ -10,6 +10,7 @@ const TimelineCardContainer = ({
   allMedia,
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
+  baseLink,
 }) => {
   const {
     language,
@@ -51,7 +52,7 @@ const TimelineCardContainer = ({
   }, [cardWidthPercentage, dateIndex, timeLineEventDatesArray.length]);
 
   return (
-    <div className='w-screen overflow-hidden'>
+    <div className='w-full overflow-hidden'>
       <motion.div
         animate={{ x: leftPosition }}
         transition={{ duration: 0.8, ease: easeOut }}
@@ -72,6 +73,7 @@ const TimelineCardContainer = ({
                 cardWidth={cardWidth}
                 language={language}
                 selectedCountry={country}
+                baseLink={baseLink}
               />
             </React.Fragment>
           );

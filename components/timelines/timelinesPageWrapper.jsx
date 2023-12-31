@@ -9,6 +9,7 @@ const TimelinesPageWrapper = ({
   timeLineEventsDe,
   timeLineEventsEn,
   allMedia,
+  baseLink,
 }) => {
   const extractYearFromTimeline = (timeLineEvents) =>
     timeLineEvents.map((timeLineEvent) =>
@@ -33,6 +34,7 @@ const TimelinesPageWrapper = ({
         timeLineEventDatesArrayDe={timeLineEventDatesArrayDe}
         timeLineEventDatesArrayEn={timeLineEventDatesArrayEn}
         lang={lang}
+        baseLink={baseLink}
       />
 
       <RangeSlider
