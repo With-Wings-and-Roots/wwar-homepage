@@ -15,7 +15,7 @@ const LanguageSelector = () => {
   return (
     <>
       <a
-        href={`/de/stories`}
+        href={`/de`}
         className={`${
           lang === 'de' ? 'font-bold ' : ''
         } hover:text-wwr_white cursor-pointer`}
@@ -27,7 +27,7 @@ const LanguageSelector = () => {
         className={`${
           lang === 'en' ? 'font-bold ' : ''
         } hover:text-wwr_white cursor-pointer`}
-        href={`/en/stories`}
+        href={`/en`}
       >
         EN
       </a>
