@@ -15,6 +15,7 @@ import {
 } from '@/utilities/stories';
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
+import { getAllPages } from '@/utilities/pages';
 
 const HomeTemplate = async ({ data, params, subSlugs }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
@@ -23,6 +24,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
     getAllPersons(),
     fetchAllTopics(params.lang),
   ]);
+  const pages = await getAllPages(params.lang);
 
   return (
     <div className='-mt-20'>
@@ -148,6 +150,41 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           >
             {data.acf?.timelines_german_button_label}
           </Link>
+        </div>
+      </div>
+      <div className='relative min-h-screen'>
+        <Image
+          src={data.acf?.resources_image}
+          alt=''
+          fill={true}
+          className='object-cover'
+        />
+        <div className='px-8 md:px-16 xl:px-48 py-20 relative'>
+          <div className='grid grid-cols-3'>
+            <div className='col-span-3 md:col-span-2 xl:col-span-1'>
+              <h2
+                dangerouslySetInnerHTML={{ __html: data.acf?.resources_title }}
+                className='text-3xl md:text-6xl font-light'
+              />
+              <WysiwygContent
+                content={data.acf?.resources_text}
+                className='font-medium md:text-lg mt-1'
+              />
+              <div className='flex flex-col mt-6 gap-y-4 items-start'>
+                {data.acf?.resources_pages?.map((page, pI) => (
+                  <Link
+                    key={pI}
+                    href={createLocalLink(
+                      pages.find((p) => p.id === page.linked_page.ID)?.link
+                    )}
+                    className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
+                  >
+                    {page.linked_page.post_title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
