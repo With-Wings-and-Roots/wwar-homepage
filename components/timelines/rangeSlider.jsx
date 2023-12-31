@@ -43,11 +43,13 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
     const currentIndex = uniqueTimeLineEventDatesArray.indexOf(rangeValue);
     if (direction === 'left' && currentIndex > 0) {
       setRangeValue(uniqueTimeLineEventDatesArray[currentIndex - 1]);
+      setValue(rangeValue);
     } else if (
       direction === 'right' &&
       currentIndex < uniqueTimeLineEventDatesArray.length - 1
     ) {
       setRangeValue(uniqueTimeLineEventDatesArray[currentIndex + 1]);
+      setValue(rangeValue)
     }
   };
 
