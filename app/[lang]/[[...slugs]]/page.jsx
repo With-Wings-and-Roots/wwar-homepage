@@ -14,6 +14,8 @@ import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
+import { getAllStories } from '@/utilities/stories';
+import { getTimelineEvents } from '@/utilities/timeline';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -120,7 +122,40 @@ const Page = async ({ params }) => {
 };
 
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'de' }];
+  let paths = [];
+  for (const lang of ['en', 'de']) {
+    const pages = await getAllPages(lang);
+    const stories = await getAllStories(lang);
+    const timelineEvents = await getTimelineEvents(lang);
+    pages.map((page) => {
+      const url = new URL(page.link);
+      let urlPageSlug = url
+        .toString()
+        .substring(url.origin.length)
+        .replace(/^\/|\/$/g, '')
+        .replace(/^(de\/|en\/)/, '');
+      if (urlPageSlug === 'de') urlPageSlug = null;
+      paths.push({ lang: lang, slugs: urlPageSlug?.split('/') ?? [''] });
+      if (page.template === 'page_stories.php') {
+        stories?.map((story) => {
+          paths.push({
+            lang: lang,
+            slugs: [...urlPageSlug?.split('/'), story.slug],
+          });
+        });
+      }
+      if (page.template === 'page_timelines.php') {
+        timelineEvents?.map((event) => {
+          paths.push({
+            lang: lang,
+            slugs: [...urlPageSlug?.split('/'), event.slug],
+          });
+        });
+      }
+    });
+  }
+
+  return paths;
 }
 
 export default Page;
