@@ -13,6 +13,7 @@ import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
+import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 
 const Page = async ({ params }) => {
   const pages = await getAllPages(params.lang);
@@ -52,6 +53,16 @@ const Page = async ({ params }) => {
       case 'page_stories.php':
         template = (
           <StoriesTemplate
+            data={pageData}
+            params={params}
+            subSlugs={subSlugs}
+            baseLink={pageSlug}
+          />
+        );
+        break;
+      case 'page_timelines.php':
+        template = (
+          <TimelinesTemplate
             data={pageData}
             params={params}
             subSlugs={subSlugs}

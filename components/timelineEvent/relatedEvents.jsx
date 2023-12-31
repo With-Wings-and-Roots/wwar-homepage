@@ -1,8 +1,9 @@
 import { getAllMedia } from '@/utilities/stories';
 import React from 'react';
 import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
+import { createLocalLink } from '@/utilities/links';
 
-const RelatedEvents = async ({ relatedEvents }) => {
+const RelatedEvents = async ({ relatedEvents, baseLink }) => {
   const allMedia = await getAllMedia('en');
 
   return (
@@ -21,7 +22,7 @@ const RelatedEvents = async ({ relatedEvents }) => {
               <TimelineCardInternal
                 timeLineEvent={relatedEvent}
                 mediaUrl={mediaUrl}
-                link={`./${relatedEvent.slug}`}
+                link={`${createLocalLink(baseLink)}${relatedEvent.slug}`}
               />
             </div>
           );

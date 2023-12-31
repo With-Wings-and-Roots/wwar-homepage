@@ -4,6 +4,7 @@ import Image from 'next/image';
 import parse from 'html-react-parser';
 import Link from 'next/link';
 import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
+import { createLocalLink } from '@/utilities/links';
 
 const TimeLineCard = ({
   mediaUrl,
@@ -11,6 +12,7 @@ const TimeLineCard = ({
   setCardWidth,
   cardWidth,
   selectedCountry,
+  baseLink,
 }) => {
   const cardRef = useRef(null);
 
@@ -29,7 +31,7 @@ const TimeLineCard = ({
         mediaUrl={mediaUrl}
         timeLineEvent={timeLineEvent}
         selectedCountry={selectedCountry}
-        link={`./timelines/${timeLineEvent.slug}`}
+        link={`${createLocalLink(baseLink)}${timeLineEvent.slug}`}
       />
     </div>
   );

@@ -12,6 +12,8 @@ import Sidebar from './sidebar';
 import { getTimelineTopicFromId } from '@/utilities/timeline';
 import Button from '@/components/page/button';
 import RelatedEvents from '@/components/timelineEvent/relatedEvents';
+import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
+import { createLocalLink } from '@/utilities/links';
 
 const TimelineEventPage = async ({
   timelineEvent,
@@ -19,6 +21,7 @@ const TimelineEventPage = async ({
   prevSlug,
   country,
   relatedEvents,
+  baseLink,
 }) => {
   const {
     timeline_event_topic,
@@ -46,96 +49,116 @@ const TimelineEventPage = async ({
   const endYear = endDate?.slice(0, 4) || null;
 
   return (
-    <div className='relative overflow-hidden lg:pb-10'>
+    <div className='fixed left-0 right-0 top-0 bottom-0 z-[500] lg:py-10 overflow-y-auto'>
       <FullPageBackground color={'black'} />
-      <div className='min-h-[100vh] m-auto relative flex justify-center z-50'>
-        <NavigationCircle slug={prevSlug} direction={'left'}></NavigationCircle>
+      <ModalOpenBodyClass />
+      <div className='h-[100vh] m-auto relative flex justify-center items-start z-50'>
+        <NavigationCircle
+          slug={prevSlug}
+          direction={'left'}
+          baseLink={baseLink}
+        ></NavigationCircle>
 
-        <div className='bg-white w-full sm:w-10/12 md:w-11/12 lg:w-4/5 max-w-[1200px] '>
-          <div className='flex w-full p-4 justify-end text-4xl'>
-            <CloseIcon closeLink={`../timelines?date=${year}`} />
-          </div>
-          <div className='px-4 md:px-8 lg:px-20 pb-10'>
-            <YearButton year={year} endYear={endYear} />
+        <div className='w-full sm:w-4/5 xl:w-full max-w-[1200px]'>
+          <div className='bg-white sm:my-10 md:my-8'>
+            <div className='flex w-full p-4 justify-end text-4xl'>
+              <CloseIcon
+                closeLink={`${createLocalLink(baseLink)}?date=${year}`}
+              />
+            </div>
+            <div className='px-4 md:px-8 lg:px-20 pb-10'>
+              <YearButton year={year} endYear={endYear} />
 
-            <PageTitle title={title} />
+              <PageTitle title={title} />
 
-            <div className='flex gap-8 flex-wrap md:flex-nowrap'>
-              <div className='w-full md:w-2/3'>
-                <Excerpt excerpt={parse(lead_text)} color={'black'} />
-                <GeneralText text={parse(text)} />
-              </div>
-              <div className='w-full md:w-1/3'>
-                <Sidebar sidebarContent={timelineEvent.acf?.sidebar_content} />
-                <div className={`flex flex-col gap-px mt-10`}>
-                  <Button
-                    color={`turquoise`}
-                    name={
-                      country === 'us'
-                        ? 'United States'
-                        : `${country === 'de' ? 'Germany' : ''}`
-                    }
+              <div className='flex gap-8 flex-wrap md:flex-nowrap'>
+                <div className='w-full md:w-2/3'>
+                  <Excerpt excerpt={parse(lead_text)} color={'black'} />
+                  <GeneralText text={parse(text)} />
+                </div>
+                <div className='w-full md:w-1/3'>
+                  <Sidebar
+                    sidebarContent={timelineEvent.acf?.sidebar_content}
                   />
-                  <div className={`flex flex-wrap gap-px`}>
-                    {topicsArray.map((topicName) => {
-                      return (
-                        <React.Fragment key={topicName}>
-                          <Button name={topicName} />
-                        </React.Fragment>
-                      );
-                    })}
+                  <div className={`flex flex-col gap-px mt-10`}>
+                    <Button
+                      color={`turquoise`}
+                      name={
+                        country === 'us'
+                          ? 'United States'
+                          : `${country === 'de' ? 'Germany' : ''}`
+                      }
+                    />
+                    <div className={`flex flex-wrap gap-px`}>
+                      {topicsArray.map((topicName) => {
+                        return (
+                          <React.Fragment key={topicName}>
+                            <Button name={topicName} />
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div>
-            <div className={`bg-wwr_gray_storm h-px w-full opacity-20`}></div>
-            <div
-              className={`px-8 sm:px-4 md:px-8 lg:px-20 pb-10 flex gap-12 font-light text-sm pt-10 `}
-            >
-              {event_sources && (
-                <div className={`${event_resources ? 'w-1/2' : 'w-full'}`}>
-                  <div className={`text-xl font-normal pb-6`}>Sources</div>
-                  <ol className={`flex flex-col gap-4`}>
-                    {event_sources.map((eventSource, index) => {
-                      return (
-                        <li
-                          className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
-                          key={index}
-                        >
-                          {parse(eventSource.source)}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              )}
-              {event_resources && (
-                <div className={`${event_sources ? 'w-1/2' : 'w-full'}`}>
-                  <div className={`text-xl font-normal pb-6`}>
-                    Additional Resources
+            <div>
+              <div className={`bg-wwr_gray_storm h-px w-full opacity-20`}></div>
+              <div
+                className={`px-8 sm:px-4 md:px-8 lg:px-20 pb-10 flex gap-12 font-light text-sm pt-10 `}
+              >
+                {event_sources && (
+                  <div className={`${event_resources ? 'w-1/2' : 'w-full'}`}>
+                    <div className={`text-xl font-normal pb-6`}>Sources</div>
+                    <ol className={`flex flex-col gap-4`}>
+                      {event_sources.map((eventSource, index) => {
+                        return (
+                          <li
+                            className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
+                            key={index}
+                          >
+                            {parse(eventSource.source)}
+                          </li>
+                        );
+                      })}
+                    </ol>
                   </div>
-                  <ol className={`flex flex-col gap-4`}>
-                    {event_resources.map((eventResource, index) => {
-                      return (
-                        <li
-                          className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
-                          key={index}
-                        >
-                          {parse(eventResource.resource)}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              )}
+                )}
+                {event_resources && (
+                  <div className={`${event_sources ? 'w-1/2' : 'w-full'}`}>
+                    <div className={`text-xl font-normal pb-6`}>
+                      Additional Resources
+                    </div>
+                    <ol className={`flex flex-col gap-4`}>
+                      {event_resources.map((eventResource, index) => {
+                        return (
+                          <li
+                            className={`list-decimal [&>p>a]:text-wwr_majorelle_blue [&>p>a]:hover:underline`}
+                            key={index}
+                          >
+                            {parse(eventResource.resource)}
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                )}
+              </div>
             </div>
+            {relatedEvents && (
+              <RelatedEvents
+                relatedEvents={relatedEvents}
+                baseLink={baseLink}
+              />
+            )}
           </div>
-          {relatedEvents && <RelatedEvents relatedEvents={relatedEvents} />}
         </div>
 
-        <NavigationCircle slug={nextSlug} direction={'right'} />
+        <NavigationCircle
+          slug={nextSlug}
+          direction={'right'}
+          baseLink={baseLink}
+        />
       </div>
     </div>
   );

@@ -19,6 +19,7 @@ const TimelineCardInternal = ({
       className='relative aspect-square w-full flex flex-col justify-end cursor-pointer'
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      scroll={false}
     >
       <Image
         className={`absolute min-w-full min-h-full ${hovered ? 'blur' : ''}`}
