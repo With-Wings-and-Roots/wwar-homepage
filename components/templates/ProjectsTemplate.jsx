@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
+import {Fragment} from "react";
+import {createHashString} from "@/utilities/links";
 
 
 const ProjectsTemplate = ({ data }) => {
@@ -58,7 +60,7 @@ const ProjectsTemplate = ({ data }) => {
         <div
           className='grid grid-cols-4 gap-6 border-t border-t-gray-200 mt-8 pt-8'
           key={eI}
-          id={title.trim()}
+          id={createHashString(title)?.replace('#', '')}
         >
           <div className='col-span-1'>
             <Image
@@ -78,7 +80,7 @@ const ProjectsTemplate = ({ data }) => {
       // console.log('trying to render with not mainimage');
       // console.log(blocks);
       return (
-        <div className='border-t border-t-gray-200 mt-8 pt-8' key={eI}>
+        <div className='border-t border-t-gray-200 mt-8 pt-8' key={eI} id={createHashString(title)?.replace('#', '')}>
           <h2 className='text-xl lg:text-3xl font-medium'>{title}</h2>
           {blocks.map((bl) => renderBlock(bl))}
         </div>
@@ -101,14 +103,19 @@ const ProjectsTemplate = ({ data }) => {
         className='text-3xl md:text-6xl font-normal text-center'
       />
 
-      {data.acf?.entries.map((ent, eI) => (
-        <div className='text-center' key={eI}>
-          <a href={`#${ent.title.trim()}`}>
-            {ent.title}
-            {eI < data.acf.entries.length - 1 ? ' | ' : ''}
-          </a>
-        </div>
-      ))}
+      <div className='text-center text-lg font-light xl:px-16'>
+        {data.acf?.entries?.map((entry, eI) => (
+          <Fragment key={eI}>
+            <a
+              href={createHashString(entry.title)}
+              className='hover:text-wwr_yellow_orange_hovered transition-all'
+            >
+              {entry.title}
+            </a>
+            {eI < data.acf?.entries?.length - 1 && <>{' | '}</>}
+          </Fragment>
+        ))}
+      </div>
 
       {data.acf?.entries.map((ent, eI) =>
         renderEntry(ent.title, ent.main_image, ent.blocks, eI)

@@ -60,6 +60,7 @@ const MaterialsTemplate = ({ data }) => {
     <div
       className='flex flex-col items-center xl:items-start xl:flex-row border-t border-t-gray-200 mt-12 pt-10'
       key={key}
+      id={createHashString(entry.title)?.replace('#', '')}
     >
       <div className='w-full xl:w-auto xl:mr-8 shrink-0'>
         <div className='w-full flex justify-center xl:w-auto'>
