@@ -1,12 +1,10 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import {Fragment} from "react";
-import {createHashString} from "@/utilities/links";
-
+import { Fragment } from 'react';
+import { createHashString } from '@/utilities/links';
 
 const ProjectsTemplate = ({ data }) => {
-
   const renderBlock = (block) => {
     switch (block.acf_fc_layout) {
       case 'text':
@@ -17,8 +15,6 @@ const ProjectsTemplate = ({ data }) => {
           />
         );
       case 'content_row_image_title_text':
-        // console.log('trying jep');
-        // console.log(block);
         return (
           <div className='grid grid-cols-4 gap-6 mt-8 pt-8'>
             <div className='col-span-1'>
@@ -38,9 +34,27 @@ const ProjectsTemplate = ({ data }) => {
             </div>
           </div>
         );
+      case 'content_column_image_text':
+        return (
+          <div className='flex mt-8 pt-8'>
+            <div className='flex-shrink-0'>
+              <Image
+                src={block.image.sizes.thumbnail}
+                alt={block.image.alt}
+                width={block.image.sizes['thumbnail-width']}
+                height={block.image.sizes['thumbnail-height']}
+              />
+            </div>
+            <div className='flex-grow ml-4'>
+              <h6 className='text-xl lg:text-3xl font-medium'>{block.title}</h6>
+              <WysiwygContent
+                content={block.text}
+                className='mt-2 md:text-lg'
+              />
+            </div>
+          </div>
+        );
       case 'title_and_text':
-        // console.log('trying jep');
-        // console.log(block);
         return (
           <div className='mt-8 pt-8'>
             <h1 className='text-lg lg:text-xl font-medium'>{block.title}</h1>
@@ -48,8 +62,8 @@ const ProjectsTemplate = ({ data }) => {
           </div>
         );
       default:
-        console.log('no matching type found');
-        console.log(block);
+        // console.log('no matching type found');
+        // console.log(block);
         break;
     }
   };
@@ -77,10 +91,12 @@ const ProjectsTemplate = ({ data }) => {
         </div>
       );
     } else if (blocks.length > 0) {
-      // console.log('trying to render with not mainimage');
-      // console.log(blocks);
       return (
-        <div className='border-t border-t-gray-200 mt-8 pt-8' key={eI} id={createHashString(title)?.replace('#', '')}>
+        <div
+          className='border-t border-t-gray-200 mt-8 pt-8'
+          key={eI}
+          id={createHashString(title)?.replace('#', '')}
+        >
           <h2 className='text-xl lg:text-3xl font-medium'>{title}</h2>
           {blocks.map((bl) => renderBlock(bl))}
         </div>

@@ -111,7 +111,6 @@ const Page = async ({ params }) => {
         template = <DefaultTemplate data={pageData} />;
         break;
     }
-    console.log('result', pageObj.template, subSlugs, pageObj.title?.rendered);
   } else {
     return notFound();
   }
