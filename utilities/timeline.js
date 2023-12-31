@@ -2,7 +2,7 @@ import { fetchAllData } from './general';
 
 export const getTimelineEvents = async (lang = 'en') => {
   const data = await fetchAllData(
-    `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100`
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100`
   );
   const sortedData = data.sort((a, b) => {
     return (
@@ -16,7 +16,7 @@ export const getTimelineEvents = async (lang = 'en') => {
 
 const getTimelineCountryIds = async (lang = 'en') => {
   const allCountriesData = await fetchAllData(
-    `${process.env.CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
   );
 
   const usData = allCountriesData.find((country) =>
@@ -40,8 +40,8 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
 
   const baseUrl =
     lang === 'de'
-      ? `${process.env.CMS_URL}/de/wp-json/wp/v2/timeline_event`
-      : `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event`;
+      ? `${process.env.NEXT_PUBLIC_CMS_URL}/de/wp-json/wp/v2/timeline_event`
+      : `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event`;
 
   const data = await fetchAllData(
     `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}`
@@ -56,7 +56,7 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
 
 export const getTimelineTopicFromId = async (topicId) => {
   const res = await fetch(
-    `${process.env.CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,
     {
       next: {
         revalidate: 600,

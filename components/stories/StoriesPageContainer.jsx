@@ -17,7 +17,7 @@ const StoriesPageContainer = ({
   allMedia,
   allPersons,
   topics,
-
+  baseLink,
   lang,
 }) => {
   const dispatch = useDispatch();
@@ -37,6 +37,7 @@ const StoriesPageContainer = ({
 
   useEffect(() => {
     dispatch(storiesAdded({ stories }));
+    dispatch(activatedStories({ stories }));
   }, [stories, dispatch]);
 
   useEffect(() => {
@@ -51,12 +52,10 @@ const StoriesPageContainer = ({
     dispatch(topicsAdded({ topics }), [topics, dispatch]);
   });
 
-  dispatch(activatedStories({ stories }));
-
   return (
     <>
       <Tabs />
-      <StoriesContainer />
+      <StoriesContainer baseLink={baseLink} />
     </>
   );
 };

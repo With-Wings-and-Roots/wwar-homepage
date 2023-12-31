@@ -15,7 +15,11 @@
 }
 
 .close-icon {
-  @apply w-8 h-8 lg:w-12 lg:h-12
+  @apply w-8 h-8 lg:w-12 lg:h-12;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 p + p {

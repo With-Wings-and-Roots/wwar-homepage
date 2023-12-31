@@ -4,7 +4,7 @@ export async function getAllPages(lang) {
   let pages = [];
   while (currentPage <= totalPages) {
     const res = await fetch(
-      `${process.env.CMS_URL}/wp-json/wp/v2/pages?page=${currentPage}&lang=${lang}`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/pages?page=${currentPage}&lang=${lang}`,
       {
         next: {
           revalidate: 600,
@@ -20,7 +20,7 @@ export async function getAllPages(lang) {
 
 export async function getFrontpageId(lang) {
   const res = await fetch(
-    `${process.env.CMS_URL}/wp-json/wwarrest/v1/frontpage-id?lang=${lang}`,
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/frontpage-id?lang=${lang}`,
     {
       next: {
         revalidate: 600,
@@ -32,7 +32,7 @@ export async function getFrontpageId(lang) {
 
 export async function getPage(lang, id) {
   const res = await fetch(
-    `${process.env.CMS_URL}/wp-json/wp/v2/pages/${id}?lang=${lang}&acf_format=standard`,
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/pages/${id}?lang=${lang}&acf_format=standard`,
     {
       next: {
         revalidate: 600,

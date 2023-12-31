@@ -4,7 +4,7 @@ export async function getAllPosts(lang, post_type) {
   let posts = [];
   while (currentPage <= totalPages) {
     const res = await fetch(
-      `${process.env.CMS_URL}/wp-json/wp/v2/${post_type}?page=${currentPage}&lang=${lang}&acf_format=standard`,
+      `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/${post_type}?page=${currentPage}&lang=${lang}&acf_format=standard`,
       {
         next: {
           revalidate: 600,

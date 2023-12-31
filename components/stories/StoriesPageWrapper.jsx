@@ -6,6 +6,7 @@ const StoriesPageWrapper = async ({
   allMedia,
   allPersons,
   topics,
+  baseLink,
 }) => {
   const language = lang || 'en';
 
@@ -18,6 +19,7 @@ const StoriesPageWrapper = async ({
           allPersons={allPersons}
           topics={topics}
           lang={language}
+          baseLink={baseLink}
         />
       </div>
     </>

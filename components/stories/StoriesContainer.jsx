@@ -11,7 +11,7 @@ import { activatedStories } from '@/store/stories';
 import StoryCardContainer from './StoryCardContainer';
 import Image from 'next/image';
 
-const StoriesContainer = () => {
+const StoriesContainer = ({ baseLink }) => {
   const dispatch = useDispatch();
 
   // useSelectors
@@ -100,6 +100,7 @@ const StoriesContainer = () => {
             lang={language}
             allMedia={allMedia}
             allPersons={allPersons}
+            baseLink={baseLink}
           />
         )}
       </div>

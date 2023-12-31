@@ -19,6 +19,7 @@ const Page = async ({ params }) => {
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
+  let pageSlug = '';
   let subSlugs = [];
   let pageObj;
   if (pageSlugs.length > 0) {
@@ -32,7 +33,10 @@ const Page = async ({ params }) => {
           .replace(/^(de\/|en\/)/, '');
         return urlPageSlug === pageSlugs?.join('/');
       });
-      if (pageObj) break;
+      if (pageObj) {
+        pageSlug = pageObj.link;
+        break;
+      }
       subSlugs = [...subSlugs, pageSlugs.pop()];
     }
   } else {
@@ -46,7 +50,14 @@ const Page = async ({ params }) => {
     const pageData = await getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
-        template = <StoriesTemplate data={pageData} params={params} />;
+        template = (
+          <StoriesTemplate
+            data={pageData}
+            params={params}
+            subSlugs={subSlugs}
+            baseLink={pageSlug}
+          />
+        );
         break;
       case 'page_about.php':
         template = <AboutTemplate data={pageData} />;
