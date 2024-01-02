@@ -4,15 +4,12 @@ import { rangeDateChanged } from '@/store/rangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import RangeArrowSVG from '@/components/common/RangeArrowSVG';
 
-const RangeSlider = ({ timeLineEventDatesArrayObject}) => {
-  const selectedCountry = useSelector(state => state.entities.timeline.country);
-  const { date: selectedDate } = useSelector(state => state.entities.rangeSlider);
+const RangeSlider = ({ timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) => {
+  const { rangeSlider: { date: selectedDate } } = useSelector(state => state.entities);
   const dispatch = useDispatch();
-  const timeLineEventDatesArray = timeLineEventDatesArrayObject[selectedCountry] || timeLineEventDatesArrayObject.en;
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
-  const uniqueTimeLineEventDatesArray = useMemo(() => [...new Set(timeLineEventDatesArray)], [timeLineEventDatesArray]);
   const [activeArrows, setActiveArrows] = useState({ left: false, right: true });
 
   const handleChange = (e) => {
@@ -51,7 +48,6 @@ const RangeSlider = ({ timeLineEventDatesArrayObject}) => {
       dispatch(rangeDateChanged({ date: tempValue }));
     }
   };
-
 
   return (
     <div className='pb-20 pt-4'>
