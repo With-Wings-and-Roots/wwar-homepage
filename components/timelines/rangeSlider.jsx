@@ -28,6 +28,14 @@ const RangeSlider = ({ timeLineEventDatesArrayObject, searchParams }) => {
   };
 
   useEffect(() => {
+    // Dispatch rangeDateChanged on initial load with the value from searchParams.date
+    if(searchParams.date){
+      dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
+    }
+  }, [dispatch,searchParams.date]); // Empty dependency array ensures it runs only once on initial load
+
+
+  useEffect(() => {
     const currentIndex = uniqueTimeLineEventDatesArray.indexOf(value);
     setActiveArrows({
       left: currentIndex > 0,
@@ -41,6 +49,7 @@ const RangeSlider = ({ timeLineEventDatesArrayObject, searchParams }) => {
       const tempValue = uniqueTimeLineEventDatesArray[currentIndex + (direction === 'left' ? -1 : 1)];
       setRangeValue(tempValue);
       setValue(tempValue);
+      // dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
       dispatch(rangeDateChanged({ date: tempValue }));
     }
   };
