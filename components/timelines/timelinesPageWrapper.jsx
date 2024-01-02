@@ -1,8 +1,8 @@
 import React from 'react';
 
 import TimelineCardContainer from './timelineCardContainer';
-import RangeSlider from './rangeSlider';
 import TimelineCountry from './timelineCountrySelector';
+import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
 
 const TimelinesPageWrapper = ({
   lang,
@@ -39,7 +39,7 @@ const TimelinesPageWrapper = ({
         baseLink={baseLink}
       />
 
-      <RangeSlider
+      <RangeSliderWrapper
         timeLineEventDatesArrayObject={{
           de: timeLineEventDatesArrayDe,
           en: timeLineEventDatesArrayEn,

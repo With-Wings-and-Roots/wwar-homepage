@@ -4,14 +4,13 @@ import { rangeDateChanged } from '@/store/rangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import RangeArrowSVG from '@/components/common/RangeArrowSVG';
 
-const RangeSlider = ({ timeLineEventDatesArrayObject, searchParams }) => {
-
-  const dispatch = useDispatch();
+const RangeSlider = ({ timeLineEventDatesArrayObject}) => {
   const selectedCountry = useSelector(state => state.entities.timeline.country);
   const { date: selectedDate } = useSelector(state => state.entities.rangeSlider);
+  const dispatch = useDispatch();
   const timeLineEventDatesArray = timeLineEventDatesArrayObject[selectedCountry] || timeLineEventDatesArrayObject.en;
-  const [value, setValue] = useState(searchParams.date || timeLineEventDatesArray[0]);
-  const [rangeValue, setRangeValue] = useState(searchParams.date || timeLineEventDatesArray[0]);
+  const [value, setValue] = useState(timeLineEventDatesArray[0]);
+  const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
   const uniqueTimeLineEventDatesArray = useMemo(() => [...new Set(timeLineEventDatesArray)], [timeLineEventDatesArray]);
   const [activeArrows, setActiveArrows] = useState({ left: false, right: true });
@@ -28,12 +27,12 @@ const RangeSlider = ({ timeLineEventDatesArrayObject, searchParams }) => {
   };
 
   useEffect(() => {
-    // Dispatch rangeDateChanged on initial load with the value from searchParams.date
-    if(searchParams.date){
-      dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
+    // Update rangeValue if selectedDate is set from somewhere
+    if (selectedDate && timeLineEventDatesArray.includes(selectedDate)) {
+      setRangeValue(selectedDate);
+      setValue(selectedDate)
     }
-  }, [dispatch,searchParams.date]); // Empty dependency array ensures it runs only once on initial load
-
+  }, [selectedDate, timeLineEventDatesArray]);
 
   useEffect(() => {
     const currentIndex = uniqueTimeLineEventDatesArray.indexOf(value);
@@ -49,7 +48,6 @@ const RangeSlider = ({ timeLineEventDatesArrayObject, searchParams }) => {
       const tempValue = uniqueTimeLineEventDatesArray[currentIndex + (direction === 'left' ? -1 : 1)];
       setRangeValue(tempValue);
       setValue(tempValue);
-      // dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
       dispatch(rangeDateChanged({ date: tempValue }));
     }
   };
