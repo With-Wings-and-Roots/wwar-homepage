@@ -6,7 +6,7 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
 import { getAdjacentSlug } from '@/utilities/general';
 
-const TimelinesTemplate = async ({ params, data, subSlugs, baseLink }) => {
+const TimelinesTemplate = async ({ params, data, subSlugs, baseLink, searchParams }) => {
   const [timeLineEventsDe, timeLineEventsEn, allMedia, timelineEvents] =
     await Promise.all([
       getTimeline('de', params.lang),
@@ -99,6 +99,7 @@ const TimelinesTemplate = async ({ params, data, subSlugs, baseLink }) => {
           timeLineEventsEn={timeLineEventsEn}
           allMedia={allMedia}
           baseLink={baseLink}
+          searchParams={searchParams}
         />
       </div>
     </div>

@@ -18,7 +18,8 @@ import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import { getAllStories } from '@/utilities/stories';
 import { getTimelineEvents } from '@/utilities/timeline';
 
-const Page = async ({ params }) => {
+const Page = async ({ params, searchParams }) => {
+
   const pages = await getAllPages(params.lang);
 
   // find page by slugs
@@ -75,6 +76,7 @@ const Page = async ({ params }) => {
             params={params}
             subSlugs={subSlugs}
             baseLink={pageSlug}
+            searchParams = {searchParams}
           />
         );
         break;
