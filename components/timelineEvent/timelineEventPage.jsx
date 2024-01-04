@@ -50,7 +50,7 @@ const TimelineEventPage = async ({
 
   return (
     <div className='fixed left-0 right-0 top-0 bottom-0 z-[500] lg:py-10 overflow-y-auto'>
-      <FullPageBackground color={'black'} />
+      <FullPageBackground color={'black'} animation={false} />
       <ModalOpenBodyClass />
       <div className='h-[100vh] m-auto relative flex justify-center items-start z-50'>
         <NavigationCircle

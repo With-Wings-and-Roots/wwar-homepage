@@ -3,6 +3,7 @@ import TimeLineCard from './timelineCard';
 import { easeOut, motion } from 'framer-motion';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { usePathname } from 'next/navigation';
 
 const TimelineCardContainer = ({
   timeLineEventsDe,
@@ -12,6 +13,8 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayEn,
   baseLink,
 }) => {
+  const pathname = usePathname()
+
   const {
     language,
     timeline: { country },
@@ -29,7 +32,7 @@ const TimelineCardContainer = ({
   const [cardWidth, setCardWidth] = useState(0);
   const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
 
-  const [leftPosition, setLeftPosition] = useState('0%');
+  const [leftPosition, setLeftPosition] = useState(0);
 
   useEffect(() => {
     if (cardWidth && window?.innerWidth) {
@@ -54,9 +57,8 @@ const TimelineCardContainer = ({
   return (
     <div className='w-full overflow-hidden'>
       <motion.div
-        animate={{ x: leftPosition }}
+        animate={pathname === `/${"en"||"de"}/timelines`? {x:leftPosition} : false}
         transition={{ duration: 0.8, ease: easeOut }}
-        drag='x'
         className='flex'
       >
         {timeLineEvents.map((timeLineEvent, index) => {

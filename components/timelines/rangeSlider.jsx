@@ -3,8 +3,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { rangeDateChanged } from '@/store/rangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import RangeArrowSVG from '@/components/common/RangeArrowSVG';
+import { useRouter } from 'next/navigation';
 
-const RangeSlider = ({ timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) => {
+
+const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) => {
+
   const { rangeSlider: { date: selectedDate } } = useSelector(state => state.entities);
   const dispatch = useDispatch();
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
