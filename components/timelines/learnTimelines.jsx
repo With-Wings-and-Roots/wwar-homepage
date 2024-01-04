@@ -4,22 +4,27 @@ import { useState } from 'react';
 import CloseIcon from '@/components/page/closeIcon';
 import PageTitle from '@/components/page/pageTitle';
 import GeneralText from '@/components/page/generalText';
+import { usePathname } from 'next/navigation'
 import Image from 'next/image';
+import Link from 'next/link';
 
 const LearnTimelines = ()=>{
-  const [popupOpen, setPopupOpen] = useState(false)
+  const pathName = usePathname()
 
   return<>
-    <div onClick={()=>setPopupOpen(true)} className={`flex global_width justify-end gap-2 text-base text-wwr_gray_storm cursor-pointer`}>
-      <div>Learn how these timelines were made</div>
-      <div className={`rotate-180 w-5`}><RangeArrowSVG fill={"#46464d"}/></div>
-    </div>
+    <Link href={`./timelines/info`}>
+      <div className={`flex global_width justify-end gap-2 text-base text-wwr_gray_storm cursor-pointer`}>
+        <div>Learn how these timelines were made</div>
+        <div className={`rotate-180 w-5`}><RangeArrowSVG fill={'#46464d'} /></div>
+      </div>
+    </Link>
 
-    {
-      popupOpen && <div className={`w-screen min-h-screen absolute left-0 py-20 top-0 z-[9999]`}>
+
+    {pathName.endsWith('/timelines/info') &&
+      <div className={`w-screen min-h-screen absolute left-0 py-20 top-0 z-[9999]`}>
         <div className={`w-screen h-screen fixed top-0 left-0 opacity-80 bg-wwr_black`}></div>
         <div className={`global_width bg-wwr_white h-full relative p-4`}>
-          <div onClick={()=>setPopupOpen(false)} className={`w-full flex justify-end`}><CloseIcon closeLink={""} /></div>
+          <div className={`w-full flex justify-end`}><CloseIcon closeLink={`./`} /></div>
           <div className={`px-5 md:px-20 pb-20`}>
             <PageTitle title={"Who created this timeline?"}/>
             <div className={`flex flex-wrap md:flex-nowrap gap-10`}>

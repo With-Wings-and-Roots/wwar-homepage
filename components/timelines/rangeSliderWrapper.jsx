@@ -19,7 +19,7 @@ const RangeSliderWrapper = ({ timeLineEventDatesArrayObject, searchParams })=>{
     // Dispatch rangeDateChanged on initial load with the value from searchParams.date
     if(searchParams.date){
       dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
-      router.replace("/en/timelines", undefined, {shallow: true})
+      router.replace("./timelines", undefined, {shallow: true})
     }
   }, [router, dispatch,searchParams.date]);
 
