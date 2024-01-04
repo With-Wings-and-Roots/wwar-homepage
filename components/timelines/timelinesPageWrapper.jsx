@@ -3,6 +3,7 @@ import React from 'react';
 import TimelineCardContainer from './timelineCardContainer';
 import TimelineCountry from './timelineCountrySelector';
 import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
+import LearnTimelines from '@/components/timelines/learnTimelines';
 
 const TimelinesPageWrapper = ({
   lang,
@@ -22,6 +23,7 @@ const TimelinesPageWrapper = ({
   const timeLineEventDatesArrayEn = extractYearFromTimeline(timeLineEventsEn);
   return (
     <>
+      <LearnTimelines />
       <TimelineCountry
         firstDate={{
           de: timeLineEventDatesArrayDe[0],
