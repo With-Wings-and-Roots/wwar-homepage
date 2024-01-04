@@ -30,34 +30,23 @@ const TimelineCardContainer = ({
     countryTimelineData[country] || countryTimelineData['en'];
 
   const [cardWidth, setCardWidth] = useState(0);
-  const [cardWidthPercentage, setCardWidthPercentage] = useState(0);
 
-  const [leftPosition, setLeftPosition] = useState(0);
-
-  useEffect(() => {
-    if (cardWidth && window?.innerWidth) {
-      setCardWidthPercentage(100 / Math.round(window.innerWidth / cardWidth));
-    }
-  }, [cardWidth]);
+  const cardWidthPercentage =
+    cardWidth !== 0 ? 100 / Math.round(window?.innerWidth / cardWidth) : 0;
 
   const dateIndex = useMemo(
     () => Math.max(0, timeLineEventDatesArray.indexOf(selectedDate) ?? 0),
     [selectedDate, timeLineEventDatesArray]
   );
 
-  useEffect(() => {
-    setLeftPosition(
-      `${-Math.min(
-        cardWidthPercentage * dateIndex,
-        cardWidthPercentage * timeLineEventDatesArray.length - 100
-      )}%`
-    );
-  }, [cardWidthPercentage, dateIndex, timeLineEventDatesArray.length]);
+  const isDateIndexZero = dateIndex === 0;
+  const maxLeftPositionPercentage = cardWidthPercentage * timeLineEventDatesArray.length - 100;
+  const leftPositionPercentage = isDateIndexZero ? 0 : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
 
   return (
     <div className='w-full overflow-hidden'>
       <motion.div
-        animate={pathname === `/${"en"||"de"}/timelines`? {x:leftPosition} : false}
+        animate={pathname.endsWith("/timelines") ? {x:`${leftPositionPercentage}%`} : false}
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
       >
@@ -82,14 +71,11 @@ const TimelineCardContainer = ({
         })}
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
+      <div
         className={`${
           country === 'de' ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
         } w-full h-5`}
-      ></motion.div>
+      ></div>
     </div>
   );
 };
