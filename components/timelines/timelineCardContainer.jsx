@@ -1,7 +1,7 @@
 'use client';
 import TimeLineCard from './timelineCard';
 import { easeOut, motion } from 'framer-motion';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 
