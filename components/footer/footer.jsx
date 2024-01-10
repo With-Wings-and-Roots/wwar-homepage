@@ -4,6 +4,7 @@ import NewsLetter from './newsLetter';
 import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
 import { getFooter } from '@/utilities/footer';
 import { createLocalLink } from '@/utilities/links';
+import CopyrightAndTerms from '@/components/footer/copyrightAndTerms';
 
 const Footer = async ({ lang }) => {
   const menuId = await getPrimaryMenuId(lang);
@@ -24,33 +25,36 @@ const Footer = async ({ lang }) => {
   return (
     <div className='bg-wwr_rich_black w-full text-wwr_white p-10 relative'>
       <div className='w-10/12 m-auto'>
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-          {topLevelMenuItems.map((item, index) => {
-            return (
-              <div key={index}>
-                <div className='pb-4 text-xl font-medium uppercase'>
-                  {item.title}
+        <div className={`flex flex-col xl:flex-row`}>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-4 xl:flex xl:gap-10 xl:pr-12 xl:min-w-max xl:shrink-0 xl:justify-between'>
+            {topLevelMenuItems.map((item, index) => {
+              return (
+                <div key={index}>
+                  <div className='pb-4 text-xl font-medium uppercase'>
+                    {item.title}
+                  </div>
+                  <div className='grid grid-cols-1 gap-2'>
+                    {subMenuItems(item.ID).map((subItem, index) => {
+                      return (
+                        <div key={index} className='font-thin text-lg'>
+                          <Link href={createLocalLink(subItem.url)}>
+                            {subItem.title.localeCompare('FROM HERE FILM') === 0
+                              ? 'FROM HERE film >'
+                              : subItem.title}
+                          </Link>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className='grid grid-cols-1 gap-2'>
-                  {subMenuItems(item.ID).map((subItem, index) => {
-                    return (
-                      <div key={index} className='font-thin text-lg'>
-                        <Link href={createLocalLink(subItem.url)}>
-                          {subItem.title.localeCompare('FROM HERE FILM') === 0
-                            ? 'FROM HERE film >'
-                            : subItem.title}
-                        </Link>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <NewsLetter footerData={footerData} />
         </div>
-
-        <NewsLetter footerData={footerData} />
+        <CopyrightAndTerms footer={footerData} />
       </div>
+
     </div>
   );
 };

@@ -1,20 +1,13 @@
-'use client';
-
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { createLocalLink } from '@/utilities/links';
+import FooterSocialIcons from '@/components/footer/footerSocialIcons';
+import CopyrightAndTerms from '@/components/footer/copyrightAndTerms';
 
 const NewsLetter = ({ footerData }) => {
   const footer = footerData;
 
-  const language = useSelector((state) => state.entities.language.language);
-
   return (
     <div className='pt-10'>
-      <div className='flex space-between gap-8 flex-wrap'>
+      <div className='flex flex-row space-between gap-8 flex-wrap xl:flex-col'>
         <form
           action='https://fromherefilm.us2.list-manage.com/subscribe/post?u=40662e5abd8c9438fbcbc8c40&amp;id=0eeb9c281b'
           method='post'
@@ -65,38 +58,11 @@ const NewsLetter = ({ footerData }) => {
             </div>
           </div>
         </form>
-        <div className='flex gap-4 items-end'>
-          {footer.socials.map((social, index) => {
-            return (
-              <a
-                className='w-10 flex items-center justify-center hover:brightness-75 duration-300'
-                href={social.url}
-                key={index}
-              >
-                <Image
-                  className='!h-[32px] !w-auto'
-                  height={100}
-                  width={100}
-                  src={social.icon}
-                  alt={social.name}
-                />
-              </a>
-            );
-          })}
-        </div>
+
+        <FooterSocialIcons footer={footer}/>
+
       </div>
 
-      <div className='pt-10 text-wwr_gray_storm flex flex-wrap gap-2'>
-        <div>
-          {footer.copyright_text.replace('YEAR', new Date().getFullYear())}
-        </div>
-        <Link
-          href={createLocalLink(footer.terms_page)}
-          className='hover:brightness-75 duration-300'
-        >
-          {language === 'de' ? 'Impressum' : 'Terms and Conditions'}
-        </Link>
-      </div>
     </div>
   );
 };
