@@ -4,15 +4,16 @@ import React from 'react';
 import { germanySelected, usaSelected } from '@/store/timeline';
 import { useDispatch, useSelector } from 'react-redux';
 import { rangeDateChanged } from '@/store/rangeSlider';
+import SingleButton from '@/components/timelines/singleButton';
 
-const NewTimelineCountry = ({ firstDate, language }) => {
+const TimelineCountry = ({ firstDate, language }) => {
   const dispatch = useDispatch();
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
   );
   return (
-    <div className='px-8 md:px-16 xl:px-48 relative'>
-      <div className='flex flex-wrap gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight'>
+    <div className='global_width relative'>
+      <div className='flex flex-wrap items-center gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight'>
         <div
           className={`min-w-max ${
             selectedCountry === 'us' ? 'font-normal' : ' cursor-pointer'
@@ -24,8 +25,8 @@ const NewTimelineCountry = ({ firstDate, language }) => {
             }
           }}
         >
-          {language === 'de' && <>USA</>}
-          {language !== 'de' && <>UNITED STATES</>}
+          {language === 'de' && <SingleButton title={`USA`}/>}
+          {language !== 'de' && <SingleButton title={`UNITED STATES`}/> }
         </div>
         <div className='font-normal px-4'>/</div>
         <div
@@ -39,12 +40,12 @@ const NewTimelineCountry = ({ firstDate, language }) => {
             }
           }}
         >
-          {language === 'de' && <>DEUTSCHLAND</>}
-          {language !== 'de' && <>GERMANY</>}
+          {language === 'de' && <SingleButton title={`DEUTSCHLAND`} color={`turquoise`}/> }
+          {language !== 'de' && <SingleButton title={`GERMANY`} color={`turquoise`}/>}
         </div>
       </div>
     </div>
   );
 };
 
-export default NewTimelineCountry;
+export default TimelineCountry;

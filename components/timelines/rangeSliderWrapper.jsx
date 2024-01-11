@@ -7,19 +7,20 @@ import { useRouter } from 'next/navigation';
 
 const RangeSliderWrapper = ({ timeLineEventDatesArrayObject, searchParams })=>{
   const router = useRouter();
-  const { country: selectedCountry } = useSelector(state => state.entities);
+  const selectedCountry = useSelector(state => {
+    return state.entities.timeline.country
+  });
 
   const dispatch = useDispatch()
 
-  const timeLineEventDatesArray = useMemo(() => timeLineEventDatesArrayObject[selectedCountry] || timeLineEventDatesArrayObject.en, [timeLineEventDatesArrayObject,selectedCountry]);
+  const timeLineEventDatesArray = useMemo(() => timeLineEventDatesArrayObject[selectedCountry], [timeLineEventDatesArrayObject,selectedCountry]);
   const uniqueTimeLineEventDatesArray = useMemo(() => [...new Set(timeLineEventDatesArray)], [timeLineEventDatesArray]);
-
 
   useEffect(() => {
     // Dispatch rangeDateChanged on initial load with the value from searchParams.date
     if(searchParams?.date){
       dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
-      router.replace("./timelines", undefined, {shallow: true})
+      // router.replace("./timelines", undefined, {shallow: true})
     }
   }, [router, dispatch,searchParams?.date]);
 

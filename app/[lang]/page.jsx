@@ -1,7 +1,7 @@
 import Header from '@/components/header/header';
 import Footer from '@/components/footer/footer';
 import HomeWrapper from '@/components/home/homeWrapper';
-import { getTimelineEvents } from '@/utilities/timeline';
+import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
 import { getAllMedia } from '@/utilities/stories';
 import TimelinesPageWrapper from '@/components/timelines/timelinesPageWrapper';
 
@@ -12,16 +12,15 @@ const Page = async ({ params, searchParams })=>{
 
 // Fetch concurrently
   const [timeLineEventsEn, timeLineEventsDe, allMedia] = await Promise.all([
-    getTimelineEvents("en"),
-    getTimelineEvents("de"),
+    getTimeline('us', lang),
+    getTimeline('de', lang),
     getAllMedia(lang),
   ]);
 
   return(
     <>
       <Header />
-      <HomeWrapper lang={params.lang.toLowerCase()} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams }/>
-      {/*<TimelinesPageWrapper lang={lang} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams }/>*/}
+      <HomeWrapper lang={params} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams }/>
 
       <Footer />
     </>

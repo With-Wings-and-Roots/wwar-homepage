@@ -4,17 +4,11 @@ export const getTimelineEvents = async (lang = 'en') => {
   const data = await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100`
   );
-  const sortedData = data.sort((a, b) => {
-    return (
-      Number(a.acf.basic_info.start_date.slice(0, 4)) -
-      Number(b.acf.basic_info.start_date.slice(0, 4))
-    );
-  });
 
-  return sortedData;
+  return sortedData(data);
 };
 
-const getTimelineCountryIds = async (lang = 'en') => {
+export const getTimelineCountryIds = async (lang = 'en') => {
   const allCountriesData = await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
   );
@@ -36,6 +30,7 @@ const getTimelineCountryIds = async (lang = 'en') => {
 };
 
 export const getTimeline = async (country = 'us', lang = 'en') => {
+  let returnData
   const timelineCountryIds = await getTimelineCountryIds(lang);
 
   const baseUrl =
@@ -47,11 +42,7 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
     `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}`
   );
 
-  return data.sort(
-    (a, b) =>
-      Number(a.acf.basic_info.start_date.slice(0, 4)) -
-      Number(b.acf.basic_info.start_date.slice(0, 4))
-  );
+  return sortedData(data)
 };
 
 export const getTimelineTopicFromId = async (topicId) => {
@@ -63,6 +54,14 @@ export const getTimelineTopicFromId = async (topicId) => {
       },
     }
   );
-  const data = await res.json();
-  return data;
+  return await res.json();
 };
+
+export const sortedData = (data)=>{
+  return data.sort((a, b) => {
+    return (
+      Number(a.acf.basic_info.start_date.slice(0, 4)) -
+      Number(b.acf.basic_info.start_date.slice(0, 4))
+    );
+  })
+}

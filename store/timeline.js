@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const slice = createSlice({
   name: 'timeline',
   initialState: {
-    country: 'us',
+    country: 'all',
   },
   reducers: {
     usaSelected: (timeline, action) => {
