@@ -90,6 +90,7 @@ const TimelinesTemplate = async ({ params, data, subSlugs, baseLink, searchParam
             country={country}
             relatedEvents={relatedEvents}
             baseLink={baseLink}
+            searchParams={searchParams}
           />
         )}
       <div className='mt-12'>
