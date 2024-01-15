@@ -17,26 +17,28 @@ const TimelineCardInternal = ({
   const [countryId] = timeLineEvent.timeline;
 
   return (
-    <Link
-      href={link}
-      className='relative aspect-square w-full flex flex-col justify-end cursor-pointer'
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      scroll={false}
-    >
-      <Image
-        className={`absolute min-w-full min-h-full ${hovered ? 'blur' : ''}`}
-        src={mediaUrl ? mediaUrl : '/colors.png'}
-        fill={true}
-        style={{ objectFit: 'cover' }}
-        alt={timeLineEvent.title.rendered}
-        quality={80}
-        sizes='100%'
-        priority={true}
-      ></Image>
-      <div className='absolute w-full h-full bg-gradient-to-b from-transparent to-wwr_rich_black'></div>
+    <>
+  <Link
+    href={link}
+    className='relative aspect-square w-full flex flex-col justify-end cursor-pointer'
+    onMouseEnter={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
+    scroll={false}
+  >
+    <Image
+      className={`absolute min-w-full min-h-full ${hovered ? 'blur' : ''}`}
+      src={mediaUrl ? mediaUrl : '/colors.png'}
+      fill={true}
+      style={{ objectFit: 'cover' }}
+      alt={timeLineEvent.title.rendered}
+      quality={80}
+      sizes='100%'
+      priority={true}
+    ></Image>
+    <div className='absolute w-full h-full bg-gradient-to-b from-transparent to-wwr_rich_black'></div>
+    <div className={`absolute top-0 left-0 w-full h-full flex flex-col justify-end `}>
       <div
-        className={`px-[10%] sm:px-8 cursor-pointer relative transition-all text-[4.4vw] leading-tight lg:leading-snug sm:text-lg duration-500 text-wwr_white ${
+        className={`relative px-[10%] sm:px-8 cursor-pointer transition-all text-[4.4vw] leading-tight lg:leading-snug sm:text-lg duration-500 text-wwr_white ${
           hovered ? 'pb-[20%] sm:pb-16' : 'pb-[10%]'
         }`}
       >
@@ -51,11 +53,18 @@ const TimelineCardInternal = ({
         </div>
 
 
-
         <div className='font-light'>{parse(timeLineEvent.title.rendered)}</div>
       </div>
-    </Link>
-  );
+    </div>
+  </Link>
+      <div
+        className={`${
+          countryId === countriesId.deId ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
+        } w-full h-5`}
+      ></div>
+    </>
+  )
+    ;
 };
 
 export default TimelineCardInternal;

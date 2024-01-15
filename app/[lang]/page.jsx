@@ -21,7 +21,6 @@ const Page = async ({ params, searchParams })=>{
     <>
       <Header />
       <HomeWrapper lang={params} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams }/>
-
       <Footer />
     </>
 

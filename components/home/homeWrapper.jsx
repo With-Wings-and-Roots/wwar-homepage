@@ -7,7 +7,6 @@ const HomeWrapper=({lang, timeLineEventsDe, timeLineEventsEn, allMedia, searchPa
     <>
       <HomeTitle />
       <TimelinesPageWrapper lang={lang} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams } skip={true}/>
-
     </>
   )
 }

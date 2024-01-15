@@ -78,11 +78,6 @@ const TimelineCardContainer = ({
         })}
       </motion.div>
 
-      <div
-        className={`${
-          country === 'de' ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
-        } w-full h-5`}
-      ></div>
     </div>
   );
 };

@@ -32,14 +32,16 @@ const TimelinesPageWrapper =async ({
 
   return (
     <>
-      <LearnTimelines />
-      <NewTimelineCountrySelector
-        firstDate={{
-          de: timeLineEventDatesArrayDe[0],
-          en: timeLineEventDatesArrayEn[0],
-        }}
-        language={lang}
-      />
+      {!skip && <LearnTimelines />}
+     <div className={`pt-4`}>
+       <NewTimelineCountrySelector
+         firstDate={{
+           de: timeLineEventDatesArrayDe[0],
+           en: timeLineEventDatesArrayEn[0],
+         }}
+         language={lang}
+       />
+     </div>
       <TimelineCardContainer
         timeLineEventsDe={timeLineEventsDe}
         timeLineEventsEn={timeLineEventsEn}
