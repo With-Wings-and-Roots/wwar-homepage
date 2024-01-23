@@ -13,7 +13,7 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayEn,
   baseLink,
 }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const {
     language,
@@ -40,13 +40,20 @@ const TimelineCardContainer = ({
   );
 
   const isDateIndexZero = dateIndex === 0;
-  const maxLeftPositionPercentage = cardWidthPercentage * timeLineEventDatesArray.length - 100;
-  const leftPositionPercentage = isDateIndexZero ? 0 : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
+  const maxLeftPositionPercentage =
+    cardWidthPercentage * timeLineEventDatesArray.length - 100;
+  const leftPositionPercentage = isDateIndexZero
+    ? 0
+    : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
 
   return (
     <div className='w-full overflow-hidden'>
       <motion.div
-        animate={pathname.endsWith("/timelines") ? {x:`${leftPositionPercentage}%`} : false}
+        animate={
+          pathname.endsWith('/timelines')
+            ? { x: `${leftPositionPercentage}%` }
+            : false
+        }
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
       >

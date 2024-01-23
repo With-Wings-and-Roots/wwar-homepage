@@ -6,7 +6,13 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
 import { getAdjacentSlug } from '@/utilities/general';
 
-const TimelinesTemplate = async ({ params, data, subSlugs, baseLink, searchParams }) => {
+const TimelinesTemplate = async ({
+  params,
+  data,
+  subSlugs,
+  baseLink,
+  searchParams,
+}) => {
   const [timeLineEventsDe, timeLineEventsEn, allMedia, timelineEvents] =
     await Promise.all([
       getTimeline('de', params.lang),
@@ -71,7 +77,7 @@ const TimelinesTemplate = async ({ params, data, subSlugs, baseLink, searchParam
     <div>
       <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative'>
         <h1
-          dangerouslySetInnerHTML={{__html: data.acf?.page_title||""}}
+          dangerouslySetInnerHTML={{ __html: data.acf?.page_title || '' }}
           className='text-3xl md:text-6xl font-light'
         />
         <WysiwygContent

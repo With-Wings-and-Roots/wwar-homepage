@@ -59,10 +59,8 @@ const NewsLetter = ({ footerData }) => {
           </div>
         </form>
 
-        <FooterSocialIcons footer={footer}/>
-
+        <FooterSocialIcons footer={footer} />
       </div>
-
     </div>
   );
 };

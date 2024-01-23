@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-const CopyrightAndTerms = ({footer})=>{
+const CopyrightAndTerms = ({ footer }) => {
   const language = useSelector((state) => state.entities.language.language);
 
   return (
@@ -20,7 +20,7 @@ const CopyrightAndTerms = ({footer})=>{
         {language === 'de' ? 'Impressum' : 'Terms and Conditions'}
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default CopyrightAndTerms
+export default CopyrightAndTerms;

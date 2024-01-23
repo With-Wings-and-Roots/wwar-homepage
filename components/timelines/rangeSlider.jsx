@@ -5,15 +5,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import RangeArrowSVG from '@/components/common/RangeArrowSVG';
 import { useRouter } from 'next/navigation';
 
-
-const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) => {
-
-  const { rangeSlider: { date: selectedDate } } = useSelector(state => state.entities);
+const RangeSlider = ({
+  timeLineEventDatesArray,
+  uniqueTimeLineEventDatesArray,
+}) => {
+  const {
+    rangeSlider: { date: selectedDate },
+  } = useSelector((state) => state.entities);
   const dispatch = useDispatch();
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
-  const [activeArrows, setActiveArrows] = useState({ left: false, right: true });
+  const [activeArrows, setActiveArrows] = useState({
+    left: false,
+    right: true,
+  });
 
   const handleChange = (e) => {
     setGrab(false);
@@ -30,7 +36,7 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
     // Update rangeValue if selectedDate is set from somewhere
     if (selectedDate && timeLineEventDatesArray.includes(selectedDate)) {
       setRangeValue(selectedDate);
-      setValue(selectedDate)
+      setValue(selectedDate);
     }
   }, [selectedDate, timeLineEventDatesArray]);
 
@@ -44,8 +50,15 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
 
   const navArrowHandler = (direction) => {
     const currentIndex = uniqueTimeLineEventDatesArray.indexOf(rangeValue);
-    if ((direction === 'left' && currentIndex > 0) || (direction === 'right' && currentIndex < uniqueTimeLineEventDatesArray.length - 1)) {
-      const tempValue = uniqueTimeLineEventDatesArray[currentIndex + (direction === 'left' ? -1 : 1)];
+    if (
+      (direction === 'left' && currentIndex > 0) ||
+      (direction === 'right' &&
+        currentIndex < uniqueTimeLineEventDatesArray.length - 1)
+    ) {
+      const tempValue =
+        uniqueTimeLineEventDatesArray[
+          currentIndex + (direction === 'left' ? -1 : 1)
+        ];
       setRangeValue(tempValue);
       setValue(tempValue);
       dispatch(rangeDateChanged({ date: tempValue }));
@@ -58,7 +71,11 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
         <div className='flex'>
           <DateText date={timeLineEventDatesArray[0]} />
           <div className='pl-2 flex items-center'>
-            <Arrow direction='left' navArrowHandler={navArrowHandler} activeArrows={activeArrows}/>
+            <Arrow
+              direction='left'
+              navArrowHandler={navArrowHandler}
+              activeArrows={activeArrows}
+            />
           </div>
         </div>
 
@@ -96,7 +113,7 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
                     ((value - timeLineEventDatesArray[0]) * 100) /
                     (timeLineEventDatesArray[
                       timeLineEventDatesArray.length - 1
-                        ] -
+                    ] -
                       timeLineEventDatesArray[0])
                   }%`,
                 }}
@@ -108,7 +125,11 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
         </div>
         <div className='flex'>
           <div className='pr-2 flex items-center'>
-            <Arrow direction='right' navArrowHandler={navArrowHandler} activeArrows={activeArrows}/>
+            <Arrow
+              direction='right'
+              navArrowHandler={navArrowHandler}
+              activeArrows={activeArrows}
+            />
           </div>
 
           <DateText
@@ -123,18 +144,28 @@ const RangeSlider = ({timeLineEventDatesArray, uniqueTimeLineEventDatesArray}) =
 export default RangeSlider;
 
 const Arrow = ({ navArrowHandler, direction, activeArrows }) => {
+  const { left, right } = activeArrows;
 
-  const {left, right} = activeArrows
-
-  const fill = direction === "left" ? (left ? "#fefdfd" : "#46464d") : (right ? "#fefdfd" : "#46464d");
+  const fill =
+    direction === 'left'
+      ? left
+        ? '#fefdfd'
+        : '#46464d'
+      : right
+        ? '#fefdfd'
+        : '#46464d';
 
   return (
     <div
       onClick={() => navArrowHandler(direction)}
       className='relative w-6 h-6 overflow-hidden bg-wwr_black  rounded-full hover:scale-125 cursor-pointer transition-transform duration-300'
     >
-      <div className={`absolute top-0 left-0 w-8 h-8 -translate-y-1/2 -translate-x-1/2 mt-[50%] ml-[50%]  ${direction === "right" && "rotate-180"}`}>
-        <RangeArrowSVG fill={fill}/>
+      <div
+        className={`absolute top-0 left-0 w-8 h-8 -translate-y-1/2 -translate-x-1/2 mt-[50%] ml-[50%]  ${
+          direction === 'right' && 'rotate-180'
+        }`}
+      >
+        <RangeArrowSVG fill={fill} />
       </div>
     </div>
   );

@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import {createLocalLink, isExternalLink} from '@/utilities/links';
+import { createLocalLink, isExternalLink } from '@/utilities/links';
 import Link from 'next/link';
 
 const DonateTemplate = ({ data }) => {
   const renderButton = (data, key) => (
     <Link
-      href={isExternalLink(data.url) ? data.url : createLocalLink(data.url)} target={isExternalLink(data.url) ? '_blank' : '_self'}
-      rel={isExternalLink(data.url) ? 'noreferrer noopener': ''}
+      href={isExternalLink(data.url) ? data.url : createLocalLink(data.url)}
+      target={isExternalLink(data.url) ? '_blank' : '_self'}
+      rel={isExternalLink(data.url) ? 'noreferrer noopener' : ''}
       className='bg-wwr_yellow_orange text-xl font-light px-5 py-2 hover:text-white transition-all uppercase mx-3 my-2 text-center'
       key={key}
     >

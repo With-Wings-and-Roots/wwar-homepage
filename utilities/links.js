@@ -28,5 +28,8 @@ export function createHashString(title) {
 }
 
 export function isExternalLink(link) {
-  return !link?.startsWith(process.env.NEXT_PUBLIC_CMS_URL) && link?.startsWith('https://')
+  return (
+    !link?.startsWith(process.env.NEXT_PUBLIC_CMS_URL) &&
+    link?.startsWith('https://')
+  );
 }

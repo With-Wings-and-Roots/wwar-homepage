@@ -19,7 +19,6 @@ import { getAllStories } from '@/utilities/stories';
 import { getTimelineEvents } from '@/utilities/timeline';
 
 const Page = async ({ params, searchParams }) => {
-
   const pages = await getAllPages(params.lang);
 
   // find page by slugs
@@ -76,7 +75,7 @@ const Page = async ({ params, searchParams }) => {
             params={params}
             subSlugs={subSlugs}
             baseLink={pageSlug}
-            searchParams = {searchParams}
+            searchParams={searchParams}
           />
         );
         break;
