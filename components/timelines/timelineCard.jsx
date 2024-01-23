@@ -13,8 +13,7 @@ const TimeLineCard = ({
   cardWidth,
   selectedCountry,
   baseLink,
-  skip,
-  countriesId
+  skip
 }) => {
   const cardRef = useRef(null);
 
@@ -23,7 +22,6 @@ const TimeLineCard = ({
       setCardWidth(cardRef.current.offsetWidth);
     }
   });
-
 
   return (
     <div
@@ -34,7 +32,6 @@ const TimeLineCard = ({
         mediaUrl={mediaUrl}
         timeLineEvent={timeLineEvent}
         selectedCountry={selectedCountry}
-        countriesId={countriesId}
         link={`${skip? `${createLocalLink(baseLink)}timelines/${timeLineEvent.slug}?skip=true`:`${createLocalLink(baseLink)}${timeLineEvent.slug}` }  `}
       />
     </div>

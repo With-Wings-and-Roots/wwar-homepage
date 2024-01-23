@@ -2,12 +2,10 @@ import React from 'react';
 
 import TimelineCardContainer from './timelineCardContainer';
 import TimelineCountry from './timelineCountrySelector';
-import NewTimelineCountrySelector from '@/components/timelines/newTimelineCountrySelector';
 import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
 import LearnTimelines from '@/components/timelines/learnTimelines';
-import { getTimelineCountryIds, sortedData } from '@/utilities/timeline';
 
-const TimelinesPageWrapper =async ({
+const TimelinesPageWrapper = ({
   lang,
   timeLineEventsDe,
   timeLineEventsEn,
@@ -17,8 +15,6 @@ const TimelinesPageWrapper =async ({
   skip=false
 }) => {
 
-  const timeLineEventsAll = sortedData( [...timeLineEventsEn, ...timeLineEventsDe])
-
   const extractYearFromTimeline = (timeLineEvents) =>
     timeLineEvents.map((timeLineEvent) =>
       Number(timeLineEvent.acf.basic_info.start_date.slice(0, 4))
@@ -26,14 +22,10 @@ const TimelinesPageWrapper =async ({
 
   const timeLineEventDatesArrayDe = extractYearFromTimeline(timeLineEventsDe);
   const timeLineEventDatesArrayEn = extractYearFromTimeline(timeLineEventsEn);
-  const timeLineEventDatesArrayAll = extractYearFromTimeline(timeLineEventsAll);
-
-  const countriesId = await getTimelineCountryIds(lang)
-
   return (
     <>
       <LearnTimelines />
-      <NewTimelineCountrySelector
+      <TimelineCountry
         firstDate={{
           de: timeLineEventDatesArrayDe[0],
           en: timeLineEventDatesArrayEn[0],
@@ -43,22 +35,18 @@ const TimelinesPageWrapper =async ({
       <TimelineCardContainer
         timeLineEventsDe={timeLineEventsDe}
         timeLineEventsEn={timeLineEventsEn}
-        timeLineEventsAll={timeLineEventsAll}
         allMedia={allMedia}
         timeLineEventDatesArrayDe={timeLineEventDatesArrayDe}
         timeLineEventDatesArrayEn={timeLineEventDatesArrayEn}
-        timeLineEventDatesArrayAll={timeLineEventDatesArrayAll}
         lang={lang}
         baseLink={baseLink}
         skip={skip}
-        countriesId={countriesId}
       />
 
       <RangeSliderWrapper
         timeLineEventDatesArrayObject={{
           de: timeLineEventDatesArrayDe,
-          us: timeLineEventDatesArrayEn,
-          all: timeLineEventDatesArrayAll
+          en: timeLineEventDatesArrayEn,
 
         }}
         searchParams={searchParams}

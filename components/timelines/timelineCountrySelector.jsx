@@ -5,7 +5,7 @@ import { germanySelected, usaSelected } from '@/store/timeline';
 import { useDispatch, useSelector } from 'react-redux';
 import { rangeDateChanged } from '@/store/rangeSlider';
 
-const NewTimelineCountry = ({ firstDate, language }) => {
+const TimelineCountry = ({ firstDate, language }) => {
   const dispatch = useDispatch();
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
@@ -47,4 +47,4 @@ const NewTimelineCountry = ({ firstDate, language }) => {
   );
 };
 
-export default NewTimelineCountry;
+export default TimelineCountry;

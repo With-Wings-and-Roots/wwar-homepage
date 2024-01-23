@@ -8,14 +8,11 @@ import { usePathname } from 'next/navigation';
 const TimelineCardContainer = ({
   timeLineEventsDe,
   timeLineEventsEn,
-  timeLineEventsAll,
   allMedia,
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
-  timeLineEventDatesArrayAll,
   baseLink,
-  skip,
-  countriesId
+  skip
 }) => {
   const pathname = usePathname()
 
@@ -26,13 +23,12 @@ const TimelineCardContainer = ({
   } = useSelector((state) => state.entities);
 
   const countryTimelineData = {
-    all: { events: timeLineEventsAll, datesArray: timeLineEventDatesArrayAll },
     de: { events: timeLineEventsDe, datesArray: timeLineEventDatesArrayDe },
-    us: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
+    en: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
   };
 
   const { events: timeLineEvents, datesArray: timeLineEventDatesArray } =
-    countryTimelineData[country] || countryTimelineData['all'];
+    countryTimelineData[country] || countryTimelineData['en'];
 
   const [cardWidth, setCardWidth] = useState(0);
 
@@ -71,7 +67,6 @@ const TimelineCardContainer = ({
                 selectedCountry={country}
                 baseLink={baseLink}
                 skip={skip}
-                countriesId={countriesId}
               />
             </React.Fragment>
           );

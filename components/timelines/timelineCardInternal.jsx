@@ -5,16 +5,13 @@ import Image from 'next/image';
 import parse from 'html-react-parser';
 import React, { useState } from 'react';
 
-
 const TimelineCardInternal = ({
   timeLineEvent,
   selectedCountry,
   mediaUrl,
   link,
-  countriesId
 }) => {
   const [hovered, setHovered] = useState(false);
-  const [countryId] = timeLineEvent.timeline;
 
   return (
     <Link
@@ -42,15 +39,13 @@ const TimelineCardInternal = ({
       >
         <div
           className={`scale-90 font-extralight tracking-wider mb-2  w-max px-2 py-1 transition-all duration-300 ${
-            countryId === countriesId.deId
+            selectedCountry === 'de'
               ? 'bg-wwr_turquoise'
               : 'bg-wwr_yellow_orange'
           }`}
         >
           {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}
         </div>
-
-
 
         <div className='font-light'>{parse(timeLineEvent.title.rendered)}</div>
       </div>
