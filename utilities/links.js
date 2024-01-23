@@ -26,3 +26,7 @@ export function createHashString(title) {
       ?.replace(/[^a-z0-9-]/g, '')
   );
 }
+
+export function isExternalLink(link) {
+  return !link?.startsWith(process.env.NEXT_PUBLIC_CMS_URL) && link?.startsWith('https://')
+}

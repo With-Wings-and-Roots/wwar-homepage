@@ -89,7 +89,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
               className='font-light text-lg mt-4'
             />
             <Link
-              href={createLocalLink(data.acf?.film_button?.url)}
+              href={data.acf?.film_button?.url}
               target='_blank'
               rel='noopener noreferrer'
               className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'

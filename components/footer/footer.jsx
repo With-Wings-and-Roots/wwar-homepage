@@ -3,7 +3,7 @@ import React from 'react';
 import NewsLetter from './newsLetter';
 import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
 import { getFooter } from '@/utilities/footer';
-import { createLocalLink } from '@/utilities/links';
+import {createLocalLink, isExternalLink} from '@/utilities/links';
 import CopyrightAndTerms from '@/components/footer/copyrightAndTerms';
 
 const Footer = async ({ lang }) => {
@@ -37,7 +37,8 @@ const Footer = async ({ lang }) => {
                     {subMenuItems(item.ID).map((subItem, index) => {
                       return (
                         <div key={index} className='font-thin text-lg'>
-                          <Link href={createLocalLink(subItem.url)}>
+                          <Link href={isExternalLink(subItem.url) ? subItem.url : createLocalLink(subItem.url)} target={isExternalLink(subItem.url) ? '_blank' : '_self'}
+                                rel={isExternalLink(subItem.url) ? 'noreferrer noopener': ''}>
                             {subItem.title.localeCompare('FROM HERE FILM') === 0
                               ? 'FROM HERE film >'
                               : subItem.title}
