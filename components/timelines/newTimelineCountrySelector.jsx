@@ -12,8 +12,8 @@ const TimelineCountry = ({ firstDate, language }) => {
     (state) => state.entities.timeline.country
   );
   return (
-    <div className='w-11/12 lg:w-4/5 2xl:w-[90%] m-auto relative pb-4 lg:pb-6'>
-      <div className='flex flex-wrap items-center gap-x-4 gap-y-2'>
+    <div className='global_width relative'>
+      <div className='flex flex-wrap items-center gap-y-2 mb-4 text-2xl lg:text-4xl font-extralight'>
         <div
           className={`min-w-max ${
             selectedCountry === 'us' ? 'font-normal' : ' cursor-pointer'
@@ -26,9 +26,9 @@ const TimelineCountry = ({ firstDate, language }) => {
           }}
         >
           {language === 'de' && <SingleButton title={`USA`}/>}
-          {language !== 'de' && <SingleButton title={`EXPLORE UNITED STATES TIMELINE`}/> }
+          {language !== 'de' && <SingleButton title={`UNITED STATES`}/> }
         </div>
-        {/*<div className='font-normal px-4'>/</div>*/}
+        <div className='font-normal px-4'>/</div>
         <div
           className={`min-w-max ${
             selectedCountry === 'de' ? 'font-normal' : ' cursor-pointer'
@@ -41,7 +41,7 @@ const TimelineCountry = ({ firstDate, language }) => {
           }}
         >
           {language === 'de' && <SingleButton title={`DEUTSCHLAND`} color={`turquoise`}/> }
-          {language !== 'de' && <SingleButton title={`EXPLORE GERMANY TIMELINE`} color={`turquoise`}/>}
+          {language !== 'de' && <SingleButton title={`GERMANY`} color={`turquoise`}/>}
         </div>
       </div>
     </div>
