@@ -13,7 +13,6 @@ const TimeLineCard = ({
   cardWidth,
   selectedCountry,
   baseLink,
-  skip
 }) => {
   const cardRef = useRef(null);
 
@@ -32,7 +31,7 @@ const TimeLineCard = ({
         mediaUrl={mediaUrl}
         timeLineEvent={timeLineEvent}
         selectedCountry={selectedCountry}
-        link={`${skip? `${createLocalLink(baseLink)}timelines/${timeLineEvent.slug}?skip=true`:`${createLocalLink(baseLink)}${timeLineEvent.slug}` }  `}
+        link={`${createLocalLink(baseLink)}${timeLineEvent.slug}`}
       />
     </div>
   );

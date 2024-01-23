@@ -22,7 +22,6 @@ const TimelineEventPage = async ({
   country,
   relatedEvents,
   baseLink,
-  searchParams
 }) => {
   const {
     timeline_event_topic,
@@ -48,7 +47,6 @@ const TimelineEventPage = async ({
 
   const year = date.slice(0, 4);
   const endYear = endDate?.slice(0, 4) || null;
-  const closeLink = `${createLocalLink(baseLink)}?date=${year}`
 
   return (
     <div className='fixed left-0 right-0 top-0 bottom-0 z-[500] lg:py-10 overflow-y-auto'>
@@ -65,7 +63,7 @@ const TimelineEventPage = async ({
           <div className='bg-white sm:my-10 md:my-8'>
             <div className='flex w-full p-4 justify-end text-4xl'>
               <CloseIcon
-                closeLink={`${searchParams.skip? closeLink.replace("timelines/", ""): closeLink}`}
+                closeLink={`${createLocalLink(baseLink)}?date=${year}`}
               />
             </div>
             <div className='px-4 md:px-8 lg:px-20 pb-10'>

@@ -12,7 +12,6 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
   baseLink,
-  skip
 }) => {
   const pathname = usePathname()
 
@@ -47,7 +46,7 @@ const TimelineCardContainer = ({
   return (
     <div className='w-full overflow-hidden'>
       <motion.div
-        animate={pathname.endsWith("/timelines") || pathname.endsWith("/de") || pathname.endsWith("/en")? {x:`${leftPositionPercentage}%`} : false}
+        animate={pathname.endsWith("/timelines") ? {x:`${leftPositionPercentage}%`} : false}
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
       >
@@ -66,7 +65,6 @@ const TimelineCardContainer = ({
                 language={language}
                 selectedCountry={country}
                 baseLink={baseLink}
-                skip={skip}
               />
             </React.Fragment>
           );

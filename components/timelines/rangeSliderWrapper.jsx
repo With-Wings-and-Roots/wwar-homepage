@@ -17,11 +17,11 @@ const RangeSliderWrapper = ({ timeLineEventDatesArrayObject, searchParams })=>{
 
   useEffect(() => {
     // Dispatch rangeDateChanged on initial load with the value from searchParams.date
-    if(searchParams?.date){
+    if(searchParams.date){
       dispatch(rangeDateChanged({ date: Number(searchParams.date) }));
       router.replace("./timelines", undefined, {shallow: true})
     }
-  }, [router, dispatch,searchParams?.date]);
+  }, [router, dispatch,searchParams.date]);
 
   return<>
 <RangeSlider timeLineEventDatesArray={timeLineEventDatesArray} uniqueTimeLineEventDatesArray={uniqueTimeLineEventDatesArray} />
