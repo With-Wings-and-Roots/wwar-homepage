@@ -41,7 +41,7 @@ const Header = async ({ lang }) => {
           />
         </div>
         <ul className='hidden md:flex uppercase min-w-max md:tracking-tight lg:tracking-widest min-h-full'>
-          <li className='z-30 w-10 bg-wwr_yellow_orange relative'></li>
+          <li className='z-30 w-20 bg-wwr_yellow_orange relative'></li>
           {topLevelMenuItems.map((item, index) => {
             return (
               <React.Fragment key={index}>
