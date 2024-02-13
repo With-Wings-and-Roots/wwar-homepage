@@ -2,7 +2,12 @@ import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import { Fragment } from 'react';
-import { createHashString } from '@/utilities/links';
+import {
+  createHashString,
+  createLocalLink,
+  isExternalLink,
+} from '@/utilities/links';
+import Link from 'next/link';
 
 const ProjectsTemplate = ({ data }) => {
   const renderBlock = (block) => {
@@ -59,6 +64,27 @@ const ProjectsTemplate = ({ data }) => {
           <div className='mt-8 pt-8'>
             <h1 className='text-lg lg:text-xl font-medium'>{block.title}</h1>
             <WysiwygContent content={block.text} className='mt-2 md:text-lg' />
+          </div>
+        );
+      case 'buttons':
+        return (
+          <div className='flex flex-col md:flex-row gap-2'>
+            {block.buttons?.map((button, bI) => (
+              <div className='flex' key={bI}>
+                <Link
+                  href={
+                    isExternalLink(button.url)
+                      ? button.url
+                      : createLocalLink(button.url)
+                  }
+                  target={button.open_in_new_tab ? '_blank' : '_self'}
+                  rel={button.open_in_new_tab ? 'noopener noreferrer' : ''}
+                  className='bg-wwr_yellow_orange text-xl font-light px-5 py-2 hover:text-white transition-all uppercase'
+                >
+                  {button.label}
+                </Link>
+              </div>
+            ))}
           </div>
         );
       default:
