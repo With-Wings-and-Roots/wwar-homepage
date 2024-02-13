@@ -17,8 +17,11 @@ import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import { getAllStories } from '@/utilities/stories';
 import { getTimelineEvents } from '@/utilities/timeline';
+import { getPageSettings } from '@/utilities/pageSettings';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const Page = async ({ params, searchParams }) => {
+  const pageSettings = await getPageSettings(params.lang);
   const pages = await getAllPages(params.lang);
 
   // find page by slugs
@@ -118,6 +121,10 @@ const Page = async ({ params, searchParams }) => {
 
   return (
     <>
+      {pageSettings?.google_analytics_id &&
+      pageSettings?.google_analytics_id?.length > 0 ? (
+        <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
+      ) : null}
       <Header lang={params.lang} />
       {template}
       <Footer lang={params.lang} />

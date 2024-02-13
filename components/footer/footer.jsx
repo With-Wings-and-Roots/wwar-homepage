@@ -2,14 +2,14 @@ import Link from 'next/link';
 import React from 'react';
 import NewsLetter from './newsLetter';
 import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
-import { getFooter } from '@/utilities/footer';
+import { getPageSettings } from '@/utilities/pageSettings';
 import { createLocalLink, isExternalLink } from '@/utilities/links';
 import CopyrightAndTerms from '@/components/footer/copyrightAndTerms';
 
 const Footer = async ({ lang }) => {
   const menuId = await getPrimaryMenuId(lang);
   const menuItems = await getMenuItems(menuId, lang);
-  const footerData = await getFooter(lang);
+  const footerData = await getPageSettings(lang);
 
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
