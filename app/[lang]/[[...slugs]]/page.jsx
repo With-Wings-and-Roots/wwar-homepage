@@ -1,6 +1,5 @@
 import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
 import { notFound } from 'next/navigation';
-import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
@@ -15,14 +14,24 @@ import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import ProjectsTemplate from '@/components/templates/ProjectsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
-import { getAllStories } from '@/utilities/stories';
-import { getTimelineEvents } from '@/utilities/timeline';
+import { getAllMedia, getAllStories } from '@/utilities/stories';
+import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
   const pages = await getAllPages(params.lang);
+
+  const lang=params.lang.toLowerCase()
+  const baseLink = process.env.NEXT_PUBLIC_CMS_URL;
+
+// Fetch concurrently
+  const [timeLineEventsEn, timeLineEventsDe, allMedia] = await Promise.all([
+    getTimeline('us', lang),
+    getTimeline('de', lang),
+    getAllMedia(lang),
+  ]);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
@@ -112,7 +121,7 @@ const Page = async ({ params, searchParams }) => {
         );
         break;
       default:
-        template = <DefaultTemplate data={pageData} />;
+        template = <DefaultTemplate data={pageData} lang={lang} timeLineEventsDe={timeLineEventsDe} timeLineEventsEn={timeLineEventsEn} allMedia={allMedia} baseLink={baseLink} searchParams={searchParams }/>;
         break;
     }
   } else {

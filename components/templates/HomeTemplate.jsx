@@ -27,7 +27,8 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
   const pages = await getAllPages(params.lang);
 
   return (
-    <div className='-mt-20'>
+    <div className='mt-40'>
+      <div>This is test</div>
       {subSlugs?.length > 1 &&
         subSlugs[0] === 'story' &&
         !!stories?.find((s) => s.slug === subSlugs[1]) && (
@@ -62,7 +63,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
         </ScrollToElementButton>
       </div>
       <div
-        className='px-8 md:px-16 xl:px-48 relative bg-black text-white py-20 relative'
+        className='px-8 md:px-16 xl:px-48 relative bg-black text-white py-20'
         style={{
           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
         }}
@@ -83,6 +84,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           <div className='col-span-2 lg:col-span-1'>
             <h2 className='text-2xl lg:text-4xl font-medium'>
               {data.acf?.film_intro_title}
+
             </h2>
             <WysiwygContent
               content={data.acf?.film_text}
