@@ -1,7 +1,9 @@
+import React from 'react';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import Image from 'next/image';
+import Team from '@/components/collaborators/team/team';
 
-const CollaboratorsTemplate = ({ params, data }) => {
+const CollaboratorsTemplate = ({ data }) => {
   const renderLogoAndTitle = (logo, title, logoWidth) => (
     <div className='flex flex-col justify-center items-center'>
       {logo?.length > 0 && (
@@ -19,7 +21,7 @@ const CollaboratorsTemplate = ({ params, data }) => {
 
   const renderNameAndOrganisation = (name, organisation) => (
     <div className='text-center'>
-      <h3 className='text-lg font-light'>{name}</h3>
+      <h3 className='text-lg font-light'>{name}abcd</h3>
       {organisation?.length > 0 && (
         <div className='text-sm font-medium'>{organisation}</div>
       )}
@@ -41,35 +43,25 @@ const CollaboratorsTemplate = ({ params, data }) => {
           />
           <div className='grid grid-cols-6 gap-4 text-center mt-4'>
             {data.acf?.team?.map((teamMember, tmI) => (
-              <div key={tmI} className='col-span-6 md:col-span-3 lg:col-span-2'>
-                <h3 className='text-lg font-light'>{teamMember.name}</h3>
-                <div className='text-sm font-medium'>
-                  {teamMember.position?.length > 0 ? (
-                    <>{teamMember.position}</>
-                  ) : null}
-                  {teamMember.position?.length > 0 &&
-                  teamMember.city?.length > 0 ? (
-                    <>, </>
-                  ) : null}
-                  {teamMember.city?.length > 0 ? <>{teamMember.city}</> : null}
-                </div>
-              </div>
+              <React.Fragment key={tmI}>
+                <Team teamMember={teamMember} />
+              </React.Fragment>
             ))}
           </div>
         </div>
       ) : null}
       {data.acf?.past_collaborators?.length > 0 ? (
-        <div className='my-16'>
+        <div className="my-16">
           <h2
             dangerouslySetInnerHTML={{
               __html: data.acf?.past_collaborators_title,
             }}
-            className='text-4xl text-center'
+            className="text-4xl text-center"
           />
-          <div className='grid grid-cols-6 gap-x-4 text-center mt-4'>
+          <div className="grid grid-cols-6 gap-x-4 text-center mt-4">
             {data.acf?.past_collaborators?.map((collaborator, cI) => (
-              <div key={cI} className='col-span-6 md:col-span-3 lg:col-span-2'>
-                <h3 className='text-lg font-light'>{collaborator.name}</h3>
+              <div key={cI} className="col-span-6 md:col-span-3 lg:col-span-2">
+                <h3 className="text-lg font-light">{collaborator.name}</h3>
               </div>
             ))}
           </div>
