@@ -7,41 +7,34 @@ import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 
 const TimeLineCard = ({
-                        mediaUrl,
-                        timeLineEvent,
-                        setCardWidth,
-                        cardWidth,
-                        selectedCountry,
-                        baseLink,
-                        skip,
-                        countriesId
-                      }) => {
+  mediaUrl,
+  timeLineEvent,
+  setCardWidth,
+  cardWidth,
+  selectedCountry,
+  baseLink,
+}) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
-    if (cardWidth !== cardRef.current.offsetWidth) {
+    if (cardWidth != cardRef.current.offsetWidth) {
       setCardWidth(cardRef.current.offsetWidth);
     }
   });
 
   return (
-
     <div
       ref={cardRef}
-      className={`relative w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 2xl:w-1/6 shrink-0`}
+      className={`relative aspect-square w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 2xl:w-1/6 shrink-0`}
     >
       <TimelineCardInternal
         mediaUrl={mediaUrl}
         timeLineEvent={timeLineEvent}
         selectedCountry={selectedCountry}
-        countriesId={countriesId}
-        link={`${skip ? `${createLocalLink(baseLink)}timelines/${timeLineEvent.slug}?skip=true` : `${createLocalLink(baseLink)}${timeLineEvent.slug}`}  `}
+        link={`${createLocalLink(baseLink)}${timeLineEvent.slug}`}
       />
     </div>
-
-
-  )
-    ;
+  );
 };
 
 export default TimeLineCard;
