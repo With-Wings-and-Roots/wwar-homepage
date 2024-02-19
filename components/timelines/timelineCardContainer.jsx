@@ -6,18 +6,14 @@ import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 
 const TimelineCardContainer = ({
-                                 timeLineEventsDe,
-                                 timeLineEventsEn,
-                                 timeLineEventsAll,
-                                 allMedia,
-                                 timeLineEventDatesArrayDe,
-                                 timeLineEventDatesArrayEn,
-                                 timeLineEventDatesArrayAll,
-                                 baseLink,
-                                 skip,
-                                 countriesId
-                               }) => {
-  const pathname = usePathname()
+  timeLineEventsDe,
+  timeLineEventsEn,
+  allMedia,
+  timeLineEventDatesArrayDe,
+  timeLineEventDatesArrayEn,
+  baseLink,
+}) => {
+  const pathname = usePathname();
 
   const {
     language,
@@ -26,13 +22,12 @@ const TimelineCardContainer = ({
   } = useSelector((state) => state.entities);
 
   const countryTimelineData = {
-    all: { events: timeLineEventsAll, datesArray: timeLineEventDatesArrayAll },
     de: { events: timeLineEventsDe, datesArray: timeLineEventDatesArrayDe },
-    us: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
+    en: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
   };
 
   const { events: timeLineEvents, datesArray: timeLineEventDatesArray } =
-  countryTimelineData[country] || countryTimelineData['all'];
+    countryTimelineData[country] || countryTimelineData['en'];
 
   const [cardWidth, setCardWidth] = useState(0);
 
@@ -45,13 +40,20 @@ const TimelineCardContainer = ({
   );
 
   const isDateIndexZero = dateIndex === 0;
-  const maxLeftPositionPercentage = cardWidthPercentage * timeLineEventDatesArray.length - 100;
-  const leftPositionPercentage = isDateIndexZero ? 0 : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
+  const maxLeftPositionPercentage =
+    cardWidthPercentage * timeLineEventDatesArray.length - 100;
+  const leftPositionPercentage = isDateIndexZero
+    ? 0
+    : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
 
   return (
     <div className='w-full overflow-hidden'>
       <motion.div
-        animate={pathname.endsWith("/timelines") || pathname.endsWith("/de") || pathname.endsWith("/en")? {x:`${leftPositionPercentage}%`} : false}
+        animate={
+          pathname.endsWith('/timelines')
+            ? { x: `${leftPositionPercentage}%` }
+            : false
+        }
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
       >
@@ -70,14 +72,17 @@ const TimelineCardContainer = ({
                 language={language}
                 selectedCountry={country}
                 baseLink={baseLink}
-                skip={skip}
-                countriesId={countriesId}
               />
             </React.Fragment>
           );
         })}
       </motion.div>
 
+      <div
+        className={`${
+          country === 'de' ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
+        } w-full h-5`}
+      ></div>
     </div>
   );
 };
