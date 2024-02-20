@@ -144,11 +144,13 @@ const Team = ({ teamMember }) => {
                   >
                     {parse(text)}
                   </div>
-                  <div className={'flex gap-4 justify-end mt-5'}>
-                    {tags.map((tag, i) => (
-                      <Button name={tag?.name} textDark={true} key={i} />
-                    ))}
-                  </div>
+                  {tags ? (
+                    <div className={'flex gap-4 justify-end mt-5'}>
+                      {tags.map((tag, i) => (
+                        <Button name={tag?.name} textDark={true} key={i} />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>
