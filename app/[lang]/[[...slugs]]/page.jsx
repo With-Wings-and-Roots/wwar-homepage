@@ -1,6 +1,5 @@
 import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
 import { notFound } from 'next/navigation';
-import { getMenuItems, getPrimaryMenuId } from '@/utilities/menu';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
@@ -167,6 +166,72 @@ export async function generateStaticParams() {
   }
 
   return paths;
+}
+
+export async function generateMetadata({ params, searchParams }) {
+  const pages = await getAllPages(params.lang);
+
+  // find page by slugs
+  let pageSlugs = [...(params.slugs ?? [])];
+  let pageSlug = '';
+  let subSlugs = [];
+  let pageObj;
+  let pageData;
+  if (pageSlugs.length > 0) {
+    while (pageSlugs.length > 0) {
+      pageObj = pages.find((page) => {
+        const url = new URL(page.link);
+        const urlPageSlug = url
+          .toString()
+          .substring(url.origin.length)
+          .replace(/^\/|\/$/g, '')
+          .replace(/^(de\/|en\/)/, '');
+        return urlPageSlug === pageSlugs?.join('/');
+      });
+      if (pageObj) {
+        pageSlug = pageObj.link;
+        break;
+      }
+      subSlugs = [...subSlugs, pageSlugs.pop()];
+    }
+    if (!pageObj) {
+      const frontpageId = await getFrontpageId(params.lang);
+      pageObj = pages.find((page) => page.id === parseInt(frontpageId));
+    }
+  } else {
+    const frontpageId = await getFrontpageId(params.lang);
+    pageObj = pages.find((page) => page.id === parseInt(frontpageId));
+  }
+
+  // get page
+  if (pageObj) {
+    pageData = await getPage(params.lang, pageObj.id);
+    const seoData = pageData.seo;
+
+    return {
+      description: seoData?._genesis_description,
+      openGraph: {
+        title: seoData?._open_graph_title,
+        description: seoData?._open_graph_description,
+        images:
+          seoData?._social_image_url !== ''
+            ? [
+                {
+                  url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData._social_image_url}`,
+                },
+              ]
+            : [],
+      },
+      twitter: {
+        title: seoData?._twitter_title,
+        description: seoData?._twitter_description,
+        images:
+          seoData?._social_image_url !== ''
+            ? [`${process.env.NEXT_PUBLIC_CMS_URL}${seoData._social_image_url}`]
+            : [],
+      },
+    };
+  }
 }
 
 export default Page;
