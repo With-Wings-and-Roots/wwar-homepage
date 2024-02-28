@@ -51,7 +51,7 @@ const StoryCard = ({
           className=' w-full h-full flex flex-col justify-between '
         >
           <div
-            className={`text-2xl sm:text-[5vw] md:text-[2.2vw] relative z-10 max-w-max leading-tight`}
+            className={`text-2xl sm:text-[5vw] md:text-[2.2vw] relative z-10 max-w-max leading-tight text-pretty break-words`}
           >
             <span
               className='relative opacity-50 z-20 text-transparent bg-no-repeat no-underline transition-all duration-500 ease-out bg-opacity-10'
@@ -63,7 +63,9 @@ const StoryCard = ({
             >
               {parse(title)}
             </span>
-            <span className='absolute top-0 left-0 z-20'>{parse(title)}</span>
+            <span className='absolute top-0 left-0 right-0 z-20'>
+              {parse(title)}
+            </span>
           </div>
           <div className='text-base sm:text-2xl md:text-xl lg:text-2xl relative flex'>
             <div className='font-medium'>{personName} </div>
