@@ -213,6 +213,7 @@ export async function generateMetadata({ params, searchParams }) {
     const seoData = pageData.seo;
 
     return {
+      metadataBase: process.env.PUBLIC_URL,
       description: seoData?._genesis_description,
       openGraph: {
         title: seoData?._open_graph_title,
