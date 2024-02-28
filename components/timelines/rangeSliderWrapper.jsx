@@ -10,7 +10,9 @@ const RangeSliderWrapper = ({
   searchParams,
 }) => {
   const router = useRouter();
-  const { country: selectedCountry } = useSelector((state) => state.entities?.timeline);
+  const { country: selectedCountry } = useSelector(
+    (state) => state.entities?.timeline
+  );
 
   const dispatch = useDispatch();
 
