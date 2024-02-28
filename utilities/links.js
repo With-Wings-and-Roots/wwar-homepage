@@ -35,7 +35,7 @@ export function isExternalLink(link) {
 }
 
 export function createVideoEmbedLink(link) {
-  if (link.includes('vimeo.com')) {
+  if (link?.includes('vimeo.com')) {
     const vimeoRegex = /^https:\/\/vimeo\.com\/(\d+)$/;
     const targetFormat =
       'https://player.vimeo.com/video/$1?h=dc24e1496c&dnt=1&app_id=122963';
