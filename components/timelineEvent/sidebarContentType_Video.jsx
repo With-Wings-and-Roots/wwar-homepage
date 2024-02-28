@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { createVideoEmbedLink } from '@/utilities/links';
 
 const SidebarContentTypeVideo = async ({ content }) => {
   const {
@@ -23,7 +24,7 @@ const SidebarContentTypeVideo = async ({ content }) => {
     <div>
       <iframe
         className='w-full h-full min-h-fit'
-        src={youtubelink}
+        src={createVideoEmbedLink(youtubelink)}
         title='YouTube video player'
         allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
         allowFullScreen

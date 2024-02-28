@@ -2,7 +2,6 @@ import React from 'react';
 
 import SocialShareIcons from '@/components/socialShare/socialShareIcons';
 import { findIndexBySlug, getPersonById } from '@/utilities/stories';
-import Header from '@/components/header/header';
 import NavigationCircle from './navigationCircle';
 import Categories from './categories';
 import CloseIcon from './closeIcon';
@@ -12,7 +11,7 @@ import QuotationMark from './quotationMark';
 import RelatedStoriesContainer from './relatedStoriesContainer';
 import { fetchAllData } from '@/utilities/general';
 import FullPageBackground from './fullPageBackground';
-import { createLocalLink } from '@/utilities/links';
+import { createLocalLink, createVideoEmbedLink } from '@/utilities/links';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
 
 const StoryPageComponent = async ({
@@ -82,7 +81,7 @@ const StoryPageComponent = async ({
                   <div className='w-full'>
                     <iframe
                       className='w-full h-[52vw] sm:h-[44vw] md:h-[30vw] lg:h-96'
-                      src={story?.acf?.video_embed}
+                      src={createVideoEmbedLink(story?.acf?.video_embed)}
                     ></iframe>
                   </div>
                   <div className='flex flex-wrap gap-1 mt-4 md:mt-10'>
