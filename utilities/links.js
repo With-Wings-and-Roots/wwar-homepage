@@ -13,7 +13,7 @@ export function createLocalLink(link) {
     let relativeLink = url.toString().substring(url.origin.length);
     return prependLanguage(relativeLink);
   } else {
-    return link;
+    return prependLanguage(link);
   }
 }
 
@@ -25,4 +25,31 @@ export function createHashString(title) {
       ?.replace(/\s+/g, '-')
       ?.replace(/[^a-z0-9-]/g, '')
   );
+}
+
+export function isExternalLink(link) {
+  return (
+    !link?.startsWith(process.env.NEXT_PUBLIC_CMS_URL) &&
+    link?.startsWith('https://')
+  );
+}
+
+export function createVideoEmbedLink(link) {
+  if (link?.includes('vimeo.com')) {
+    const vimeoRegex = /^https:\/\/vimeo\.com\/(\d+)$/;
+    const targetFormat =
+      'https://player.vimeo.com/video/$1?h=dc24e1496c&dnt=1&app_id=122963';
+
+    if (link.startsWith('https://player.vimeo.com/video/')) {
+      return link;
+    }
+
+    const match = link.match(vimeoRegex);
+    if (match) {
+      return link.replace(vimeoRegex, targetFormat);
+    } else {
+      return link;
+    }
+  }
+  return link;
 }

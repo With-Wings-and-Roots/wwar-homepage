@@ -66,9 +66,14 @@ const StoriesContainer = ({ baseLink }) => {
     if (searchValue.length > 0) {
       dispatch(
         activatedStories({
-          stories: allStories.filter((story) =>
-            story.title.rendered.toLowerCase().includes(searchValue)
-          ),
+          stories: allStories.filter((story) => {
+            const person = allPersons.find(
+              (person) => person.id === story.acf.person
+            );
+            return `${story.title.rendered}${person?.name}`
+              .toLowerCase()
+              .includes(searchValue?.toLowerCase());
+          }),
         })
       );
     } else {

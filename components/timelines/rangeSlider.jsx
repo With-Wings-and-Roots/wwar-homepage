@@ -1,53 +1,67 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { rangeDateChanged } from '@/store/rangeSlider';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
+import RangeArrowSVG from '@/components/common/RangeArrowSVG';
+import { useRouter } from 'next/navigation';
 
-const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
+const RangeSlider = ({
+  timeLineEventDatesArray,
+  uniqueTimeLineEventDatesArray,
+}) => {
+  const {
+    rangeSlider: { date: selectedDate },
+  } = useSelector((state) => state.entities);
   const dispatch = useDispatch();
-  const selectedCountry = useSelector(
-    (state) => state.entities.timeline.country
-  );
-  const timeLineEventDatesArray =
-    timeLineEventDatesArrayObject[selectedCountry] ||
-    timeLineEventDatesArrayObject.en;
   const [value, setValue] = useState(timeLineEventDatesArray[0]);
   const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
   const [grab, setGrab] = useState(false);
-  const uniqueTimeLineEventDatesArray = [...new Set(timeLineEventDatesArray)];
-
-  useEffect(() => {
-    setRangeValue((prevRangeValue) => {
-      dispatch(rangeDateChanged({ date: prevRangeValue }));
-      return prevRangeValue;
-    });
-  }, [rangeValue, dispatch]);
+  const [activeArrows, setActiveArrows] = useState({
+    left: false,
+    right: true,
+  });
 
   const handleChange = (e) => {
     setGrab(false);
     const targetValue = e.target.value;
-    if (timeLineEventDatesArray.includes(targetValue)) {
-      setRangeValue(targetValue);
-      setValue(targetValue);
-    } else {
-      const closestDate = timeLineEventDatesArray.reduce((a, b) =>
-        Math.abs(b - targetValue) < Math.abs(a - targetValue) ? b : a
-      );
-      setRangeValue(closestDate);
-      setValue(closestDate);
-    }
+    const closestDate = timeLineEventDatesArray.reduce((a, b) =>
+      Math.abs(b - targetValue) < Math.abs(a - targetValue) ? b : a
+    );
+    setRangeValue(closestDate);
+    setValue(closestDate);
+    dispatch(rangeDateChanged({ date: closestDate }));
   };
+
+  useEffect(() => {
+    // Update rangeValue if selectedDate is set from somewhere
+    if (selectedDate && timeLineEventDatesArray.includes(selectedDate)) {
+      setRangeValue(selectedDate);
+      setValue(selectedDate);
+    }
+  }, [selectedDate, timeLineEventDatesArray]);
+
+  useEffect(() => {
+    const currentIndex = uniqueTimeLineEventDatesArray.indexOf(value);
+    setActiveArrows({
+      left: currentIndex > 0,
+      right: currentIndex < uniqueTimeLineEventDatesArray.length - 1,
+    });
+  }, [uniqueTimeLineEventDatesArray, value]);
 
   const navArrowHandler = (direction) => {
     const currentIndex = uniqueTimeLineEventDatesArray.indexOf(rangeValue);
-    if (direction === 'left' && currentIndex > 0) {
-      setRangeValue(uniqueTimeLineEventDatesArray[currentIndex - 1]);
-    } else if (
-      direction === 'right' &&
-      currentIndex < uniqueTimeLineEventDatesArray.length - 1
+    if (
+      (direction === 'left' && currentIndex > 0) ||
+      (direction === 'right' &&
+        currentIndex < uniqueTimeLineEventDatesArray.length - 1)
     ) {
-      setRangeValue(uniqueTimeLineEventDatesArray[currentIndex + 1]);
+      const tempValue =
+        uniqueTimeLineEventDatesArray[
+          currentIndex + (direction === 'left' ? -1 : 1)
+        ];
+      setRangeValue(tempValue);
+      setValue(tempValue);
+      dispatch(rangeDateChanged({ date: tempValue }));
     }
   };
 
@@ -57,7 +71,11 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
         <div className='flex'>
           <DateText date={timeLineEventDatesArray[0]} />
           <div className='pl-2 flex items-center'>
-            <Arrow direction='left' navArrowHandler={navArrowHandler} />
+            <Arrow
+              direction='left'
+              navArrowHandler={navArrowHandler}
+              activeArrows={activeArrows}
+            />
           </div>
         </div>
 
@@ -107,7 +125,11 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
         </div>
         <div className='flex'>
           <div className='pr-2 flex items-center'>
-            <Arrow direction='right' navArrowHandler={navArrowHandler} />
+            <Arrow
+              direction='right'
+              navArrowHandler={navArrowHandler}
+              activeArrows={activeArrows}
+            />
           </div>
 
           <DateText
@@ -121,24 +143,29 @@ const RangeSlider = ({ timeLineEventDatesArrayObject }) => {
 
 export default RangeSlider;
 
-const Arrow = ({ navArrowHandler, direction }) => {
+const Arrow = ({ navArrowHandler, direction, activeArrows }) => {
+  const { left, right } = activeArrows;
+
+  const fill =
+    direction === 'left'
+      ? left
+        ? '#fefdfd'
+        : '#46464d'
+      : right
+        ? '#fefdfd'
+        : '#46464d';
+
   return (
     <div
       onClick={() => navArrowHandler(direction)}
       className='relative w-6 h-6 overflow-hidden bg-wwr_black  rounded-full hover:scale-125 cursor-pointer transition-transform duration-300'
     >
-      <div className='absolute top-0 left-0 w-8 h-8 -translate-y-1/2 -translate-x-1/2 mt-[50%] ml-[50%]'>
-        <Image
-          className='min-w-full min-h-full'
-          src={
-            direction === 'left'
-              ? '/arrow-left--circle-white.svg'
-              : '/arrow-right--circle-darkGray.svg'
-          }
-          alt={`arrow-${direction}`}
-          width={50}
-          height={50}
-        />
+      <div
+        className={`absolute top-0 left-0 w-8 h-8 -translate-y-1/2 -translate-x-1/2 mt-[50%] ml-[50%]  ${
+          direction === 'right' && 'rotate-180'
+        }`}
+      >
+        <RangeArrowSVG fill={fill} />
       </div>
     </div>
   );

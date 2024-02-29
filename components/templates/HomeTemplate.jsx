@@ -5,10 +5,46 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import PersonImageSlider from '@/components/common/PersonImageSlider';
 import { createLocalLink } from '@/utilities/links';
 import ScrollToElementButton from '@/components/common/ScrollToElementButton';
+import React from 'react';
+import Link from 'next/link';
+import {
+  fetchAllTopics,
+  getAllMedia,
+  getAllPersons,
+  getAllStories,
+} from '@/utilities/stories';
+import StoryCardContainer from '@/components/stories/StoryCardContainer';
+import PageComponent from '@/components/page/storyPageComponent';
+import { getAllPages } from '@/utilities/pages';
 
-const HomeTemplate = ({ data }) => {
+const HomeTemplate = async ({ data, params, subSlugs }) => {
+  const [stories, allMedia, allPersons, topics] = await Promise.all([
+    getAllStories(params.lang),
+    getAllMedia(params.lang),
+    getAllPersons(),
+    fetchAllTopics(params.lang),
+  ]);
+  const pages = await getAllPages(params.lang);
+
   return (
     <div className='-mt-20'>
+      {subSlugs?.length > 1 &&
+        subSlugs[0] === 'story' &&
+        !!stories?.find((s) => s.slug === subSlugs[1]) && (
+          <PageComponent
+            lang={params.lang}
+            paramsStory={subSlugs[1]}
+            stories={stories.filter((story) =>
+              data.acf?.stories_linked_stories
+                ?.map((sts) => sts.story?.ID)
+                ?.includes(story.id)
+            )}
+            topics={topics}
+            allMedia={allMedia}
+            allPersons={allPersons}
+            baseLink={createLocalLink('/story/')}
+          />
+        )}
       <PersonImageSlider
         imageUrls={data.acf?.images?.map((i) => i.image)}
         height={100}
@@ -52,12 +88,102 @@ const HomeTemplate = ({ data }) => {
               content={data.acf?.film_text}
               className='font-light text-lg mt-4'
             />
-            <a
-              href={createLocalLink(data.acf?.film_button?.url)}
+            <Link
+              href={data.acf?.film_button?.url}
+              target='_blank'
+              rel='noopener noreferrer'
               className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
             >
               {data.acf?.film_button?.label}
-            </a>
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className='px-8 md:px-16 xl:px-48 py-20'>
+        <h2
+          dangerouslySetInnerHTML={{ __html: data.acf?.stories_title }}
+          className='text-3xl md:text-6xl font-light'
+        />
+        <WysiwygContent
+          content={data.acf?.stories_text}
+          className='font-light md:text-lg mt-1'
+        />
+        <Link
+          href={createLocalLink(data.acf?.stories_button?.linked_page)}
+          className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
+        >
+          {data.acf?.stories_button?.label}
+        </Link>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10'>
+          <StoryCardContainer
+            storiesToRender={stories.filter((story) =>
+              data.acf?.stories_linked_stories
+                ?.map((sts) => sts.story?.ID)
+                ?.includes(story.id)
+            )}
+            lang={params.lang}
+            allMedia={allMedia}
+            allPersons={allPersons}
+            baseLink={createLocalLink('/story/')}
+          />
+        </div>
+      </div>
+      <div className='px-8 md:px-16 xl:px-48 py-20'>
+        <h2
+          dangerouslySetInnerHTML={{ __html: data.acf?.timelines_title }}
+          className='text-3xl md:text-6xl font-light'
+        />
+        <WysiwygContent
+          content={data.acf?.timelines_text}
+          className='font-light md:text-lg mt-1'
+        />
+        <div className='flex mt-6 gap-x-4'>
+          <Link
+            href={createLocalLink(data.acf?.timelines_page)}
+            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {data.acf?.timelines_us_button_label}
+          </Link>
+          <Link
+            href={createLocalLink(data.acf?.timelines_page)}
+            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {data.acf?.timelines_german_button_label}
+          </Link>
+        </div>
+      </div>
+      <div className='relative min-h-screen'>
+        <Image
+          src={data.acf?.resources_image}
+          alt=''
+          fill={true}
+          className='object-cover'
+        />
+        <div className='px-8 md:px-16 xl:px-48 py-20 relative'>
+          <div className='grid grid-cols-3'>
+            <div className='col-span-3 md:col-span-2 xl:col-span-1'>
+              <h2
+                dangerouslySetInnerHTML={{ __html: data.acf?.resources_title }}
+                className='text-3xl md:text-6xl font-light'
+              />
+              <WysiwygContent
+                content={data.acf?.resources_text}
+                className='font-medium md:text-lg mt-1'
+              />
+              <div className='flex flex-col mt-6 gap-y-4 items-start'>
+                {data.acf?.resources_pages?.map((page, pI) => (
+                  <Link
+                    key={pI}
+                    href={createLocalLink(
+                      pages.find((p) => p.id === page.linked_page.ID)?.link
+                    )}
+                    className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
+                  >
+                    {page.linked_page.post_title}
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
