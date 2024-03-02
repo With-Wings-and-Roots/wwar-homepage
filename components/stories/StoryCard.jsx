@@ -5,6 +5,7 @@ import Image from 'next/image';
 import parse from 'html-react-parser';
 import { createLocalLink } from '@/utilities/links';
 import { usePathname } from 'next/navigation';
+import { getHexForColorString } from '@/utilities/color';
 
 const StoryCard = ({
   title,
@@ -42,7 +43,9 @@ const StoryCard = ({
         <div
           className='absolute left-0 top-0 w-full h-full opacity-40'
           style={{
-            background: `linear-gradient(to bottom, transparent 0%, ${color} 100%)`,
+            background: `linear-gradient(to bottom, transparent 0%, ${getHexForColorString(
+              color
+            )} 100%)`,
           }}
         ></div>
         <div
@@ -58,7 +61,9 @@ const StoryCard = ({
               style={{
                 backgroundSize: hovered ? '100% 100%' : '0% 100%',
 
-                backgroundImage: `linear-gradient(${color}, ${color})`,
+                backgroundImage: `linear-gradient(${getHexForColorString(
+                  color
+                )}, ${getHexForColorString(color)})`,
               }}
             >
               {parse(title)}

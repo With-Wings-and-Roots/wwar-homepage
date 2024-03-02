@@ -1,5 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
+import { getHexForColorString } from '@/utilities/color';
 
 const FullPageBackground = ({ color, animation = true }) => {
   return (
@@ -10,7 +11,7 @@ const FullPageBackground = ({ color, animation = true }) => {
       className={`w-full h-screen fixed top-0 left-0 z-40 ${
         !animation && 'opacity-80'
       }`}
-      style={{ background: color }}
+      style={{ background: getHexForColorString(color) }}
     ></motion.div>
   );
 };
