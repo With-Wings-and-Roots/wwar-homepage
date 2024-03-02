@@ -16,6 +16,8 @@ import {
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
 import { getAllPages } from '@/utilities/pages';
+import { getAllPosts } from '@/utilities/posts';
+import EventsList from '@/components/publicEvents/EventsList';
 
 const HomeTemplate = async ({ data, params, subSlugs }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
@@ -25,6 +27,12 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
     fetchAllTopics(params.lang),
   ]);
   const pages = await getAllPages(params.lang);
+  const events = await getAllPosts(params.lang, 'publicevent');
+  const upcomingEvents = [...events]
+    .filter((e) => new Date(e.acf?.date_sorting) > new Date())
+    ?.sort(
+      (a, b) => new Date(a.acf?.date_sorting) - new Date(b.acf?.date_sorting)
+    );
 
   return (
     <div className='-mt-20'>
@@ -99,6 +107,19 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       </div>
+      {upcomingEvents?.length > 1 ? (
+        <div className='px-8 md:px-16 xl:px-48 py-20'>
+          <h2
+            dangerouslySetInnerHTML={{
+              __html: data.acf?.upcoming_events_title,
+            }}
+            className='text-3xl md:text-6xl font-light'
+          />
+          <div>
+            <EventsList events={upcomingEvents} />
+          </div>
+        </div>
+      ) : null}
       <div className='px-8 md:px-16 xl:px-48 py-20'>
         <h2
           dangerouslySetInnerHTML={{ __html: data.acf?.stories_title }}
