@@ -38,16 +38,20 @@ const Team = ({ teamMember }) => {
   }, [lastPath, teamMemberSlug]);
   useEffect(() => {
     if (active) {
-      document.getElementsByTagName('body')[0].style.position = 'fixed';
+      document.getElementsByTagName('body')[0].style.overflow = 'hidden';
     } else {
-      document.getElementsByTagName('body')[0].style.position = 'relative';
+      document.getElementsByTagName('body')[0].style.overflow = '';
     }
   });
   return (
     <>
       <Link
-        href={`./collaborators/${teamMemberSlug}`}
+        href={`${pathname?.replaceAll(
+          `/${teamMemberSlug}`,
+          ''
+        )}/${teamMemberSlug}`}
         className='hover:text-wwr_yellow_orange transition-all duration-300 z-20 col-span-6 md:col-span-3 lg:col-span-2'
+        scroll={false}
       >
         <h3 className='text-lg font-light'>{name}</h3>
         <div className='text-sm font-medium'>
@@ -78,13 +82,15 @@ const Team = ({ teamMember }) => {
                 <div
                   className={`w-[150px] md:w-auto md:min-w-[201px] md:max-w-[300px] lg:min-w-[20vw] shrink-0`}
                 >
-                  <Image
-                    className={'pb-4 w-full aspect-auto'}
-                    src={image}
-                    alt={name}
-                    width={201}
-                    height={201}
-                  />
+                  {image && (
+                    <Image
+                      className={'pb-4 w-full aspect-auto'}
+                      src={image}
+                      alt={name}
+                      width={201}
+                      height={201}
+                    />
+                  )}
                   <h1
                     className={
                       'text-[28px] text-left font-light md:text-4xl md:pt-2 md:pb-2'
