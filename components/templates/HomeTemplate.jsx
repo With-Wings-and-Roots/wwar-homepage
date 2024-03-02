@@ -18,6 +18,7 @@ import PageComponent from '@/components/page/storyPageComponent';
 import { getAllPages } from '@/utilities/pages';
 import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
+import FlexibleContent from '@/components/home/flexibleContent';
 
 const HomeTemplate = async ({ data, params, subSlugs }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
@@ -107,8 +108,13 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       </div>
+      {data.acf?.flexible_content?.length > 1 ? (
+        <div className='px-8 md:px-16 xl:px-48 pt-20 flex flex-col gap-y-10'>
+          <FlexibleContent items={data.acf.flexible_content} />
+        </div>
+      ) : null}
       {upcomingEvents?.length > 1 ? (
-        <div className='px-8 md:px-16 xl:px-48 py-20'>
+        <div className='px-8 md:px-16 xl:px-48 pt-20'>
           <h2
             dangerouslySetInnerHTML={{
               __html: data.acf?.upcoming_events_title,
