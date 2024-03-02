@@ -1,17 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-
-const LanguageSelector = () => {
-  const language = useSelector((state) => state.entities.language.language);
-
-  const [lang, setLang] = useState();
-
-  useEffect(() => {
-    setLang(language);
-  }, [language]);
-
+const LanguageSelector = ({ lang }) => {
   return (
     <>
       <a

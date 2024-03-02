@@ -66,7 +66,7 @@ const Footer = async ({ lang }) => {
           </div>
           <NewsLetter footerData={footerData} />
         </div>
-        <CopyrightAndTerms footer={footerData} />
+        <CopyrightAndTerms footer={footerData} lang={lang} />
       </div>
     </div>
   );

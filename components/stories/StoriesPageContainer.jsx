@@ -6,10 +6,6 @@ import { mediaAdded } from '@/store/media';
 import { personsAdded } from '@/store/persons';
 import StoriesContainer from './StoriesContainer';
 import { topicsAdded } from '@/store/topics';
-import {
-  englishLanguageActivated,
-  germanLanguageActivated,
-} from '@/store/language';
 import Tabs from './Tabs';
 
 const StoriesPageContainer = ({
@@ -21,19 +17,6 @@ const StoriesPageContainer = ({
   lang,
 }) => {
   const dispatch = useDispatch();
-  const [language, setLanguage] = useState();
-
-  useEffect(() => {
-    setLanguage(lang);
-  }, [lang]);
-
-  useEffect(() => {
-    if (language === 'de') {
-      dispatch(germanLanguageActivated({}));
-    } else {
-      dispatch(englishLanguageActivated({}));
-    }
-  }, [language, dispatch]);
 
   useEffect(() => {
     dispatch(storiesAdded({ stories }));
@@ -54,8 +37,8 @@ const StoriesPageContainer = ({
 
   return (
     <>
-      <Tabs />
-      <StoriesContainer baseLink={baseLink} />
+      <Tabs lang={lang} />
+      <StoriesContainer baseLink={baseLink} lang={lang} />
     </>
   );
 };

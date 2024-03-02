@@ -11,11 +11,10 @@ import { activatedStories } from '@/store/stories';
 import StoryCardContainer from './StoryCardContainer';
 import Image from 'next/image';
 
-const StoriesContainer = ({ baseLink }) => {
+const StoriesContainer = ({ baseLink, lang: language }) => {
   const dispatch = useDispatch();
 
   // useSelectors
-  const language = useSelector((state) => state.entities.language.language);
   const allStories = useSelector((state) => state.entities.stories.allStories);
   const allMedia = useSelector((state) => state.entities.media.allMedia);
   const allPersons = useSelector((state) => state.entities.persons.allPersons);

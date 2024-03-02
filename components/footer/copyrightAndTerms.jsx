@@ -3,11 +3,8 @@
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
-const CopyrightAndTerms = ({ footer }) => {
-  const language = useSelector((state) => state.entities.language.language);
-
+const CopyrightAndTerms = ({ footer, lang: language }) => {
   return (
     <div className='pt-10 text-wwr_gray_storm flex flex-wrap gap-2'>
       <div>

@@ -38,6 +38,7 @@ const Header = async ({ lang }) => {
           <MobileMenu
             topLevelMenuItems={topLevelMenuItems}
             menuItems={menuItems}
+            lang={lang}
           />
         </div>
         <ul className='hidden md:flex uppercase min-w-max md:tracking-tight lg:tracking-widest min-h-full'>
@@ -55,7 +56,7 @@ const Header = async ({ lang }) => {
           })}
 
           <li className='pb-2 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end'>
-            <LanguageSelector />
+            <LanguageSelector lang={lang} />
           </li>
         </ul>
       </div>

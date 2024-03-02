@@ -1,10 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { storySelected } from '@/store/selectedStory';
 
-const SingleTabButton = ({ buttonText = '', slug = 'all' }) => {
+const SingleTabButton = ({ buttonText = '', slug = 'all', lang: language }) => {
   const dispatch = useDispatch();
-
-  const language = useSelector((state) => state.entities.language.language);
 
   const selectedTopic = useSelector(
     (state) => state.entities.selectedStory.selectedStory
