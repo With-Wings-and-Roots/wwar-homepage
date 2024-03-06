@@ -40,7 +40,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
                 return (
                   <div
                     key={index}
-                    className='min-w-full py-3 px-3 bg-wwr_rich_black flex justify-center hover:text-wwr_yellow_orange duration-300'
+                    className='min-w-full py-3 px-3 bg-wwr_rich_black text-center hover:text-wwr_yellow_orange duration-300'
                   >
                     <Link
                       href={
@@ -52,7 +52,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
                       rel={
                         isExternalLink(subItem.url) ? 'noreferrer noopener' : ''
                       }
-                      className='min-w-max'
+                      className='min-w-max whitespace-nowrap'
                     >
                       {subItem.title.localeCompare('FROM HERE FILM') === 0
                         ? 'FROM HERE film >'
