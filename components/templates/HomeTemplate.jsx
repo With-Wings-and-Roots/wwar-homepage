@@ -108,9 +108,9 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       </div>
-      {data.acf?.flexible_content?.length > 1 ? (
+      {data.acf?.flexible_content?.length > 0 ? (
         <div className='px-8 md:px-16 xl:px-48 pt-20 flex flex-col gap-y-10'>
-          <FlexibleContent items={data.acf.flexible_content} />
+          <FlexibleContent items={data.acf.flexible_content} buttons={data.acf.flexible_content_buttons} />
         </div>
       ) : null}
       {upcomingEvents?.length > 1 ? (
