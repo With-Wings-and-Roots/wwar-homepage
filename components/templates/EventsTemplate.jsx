@@ -1,8 +1,6 @@
-import WysiwygContent from '@/components/common/WysiwygContent';
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import { getAllPosts } from '@/utilities/posts';
-import { Fragment } from 'react';
 import EventsList from '@/components/publicEvents/EventsList';
 
 const EventsTemplate = async ({ data, params }) => {
@@ -17,6 +15,8 @@ const EventsTemplate = async ({ data, params }) => {
     ?.sort(
       (a, b) => new Date(b.acf?.date_sorting) - new Date(a.acf?.date_sorting)
     );
+
+  console.log(upcomingEvents);
 
   return (
     <div className='px-8 md:px-16 xl:px-48 mb-16 relative'>
