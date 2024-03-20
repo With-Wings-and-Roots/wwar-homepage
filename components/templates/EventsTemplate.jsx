@@ -16,8 +16,6 @@ const EventsTemplate = async ({ data, params }) => {
       (a, b) => new Date(b.acf?.date_sorting) - new Date(a.acf?.date_sorting)
     );
 
-  console.log(upcomingEvents);
-
   return (
     <div className='px-8 md:px-16 xl:px-48 mb-16 relative'>
       <Image
