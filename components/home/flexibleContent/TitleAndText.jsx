@@ -1,6 +1,6 @@
 import WysiwygContent from '@/components/common/WysiwygContent';
 import React from 'react';
-import Buttons from "@/components/common/Buttons";
+import Buttons from '@/components/common/Buttons';
 
 const TitleAndText = ({ data, buttons }) => (
   <div className='lg:max-w-[66%]'>
@@ -14,7 +14,7 @@ const TitleAndText = ({ data, buttons }) => (
     />
     {buttons && buttons?.length > 0 ? (
       <div className='mt-4 flex flex-col items-center xl:flex-row gap-4'>
-        <Buttons buttons={buttons}/>
+        <Buttons buttons={buttons} />
       </div>
     ) : null}
   </div>

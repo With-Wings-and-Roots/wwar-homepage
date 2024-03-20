@@ -4,7 +4,7 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import { createHashString, createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import Buttons from "@/components/common/Buttons";
+import Buttons from '@/components/common/Buttons';
 
 const MaterialsTemplate = ({ data }) => {
   const renderImageVideo = (obj) => {
@@ -46,7 +46,7 @@ const MaterialsTemplate = ({ data }) => {
         </div>
         {entry?.buttons_position === 'left' && (
           <div className='mt-4 xl:mt-6 flex items-center xl:items-start flex-col gap-4'>
-            <Buttons buttons={entry?.buttons}/>
+            <Buttons buttons={entry?.buttons} />
           </div>
         )}
       </div>
@@ -61,7 +61,7 @@ const MaterialsTemplate = ({ data }) => {
         />
         {entry?.buttons_position === 'right' && (
           <div className='mt-4 flex flex-col items-center xl:flex-row gap-4'>
-            <Buttons buttons={entry?.buttons}/>
+            <Buttons buttons={entry?.buttons} />
           </div>
         )}
       </div>

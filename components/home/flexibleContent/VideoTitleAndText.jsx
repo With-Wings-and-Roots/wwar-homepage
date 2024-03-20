@@ -1,6 +1,6 @@
 import WysiwygContent from '@/components/common/WysiwygContent';
 import React from 'react';
-import Buttons from "@/components/common/Buttons";
+import Buttons from '@/components/common/Buttons';
 
 const VideoTitleAndText = ({ data, buttons }) => (
   <div className='grid grid-cols-2 gap-6 lg:gap-12'>
@@ -21,7 +21,7 @@ const VideoTitleAndText = ({ data, buttons }) => (
       />
       {buttons && buttons?.length > 0 ? (
         <div className='mt-4 flex flex-col items-center xl:flex-row gap-4'>
-          <Buttons buttons={buttons}/>
+          <Buttons buttons={buttons} />
         </div>
       ) : null}
     </div>

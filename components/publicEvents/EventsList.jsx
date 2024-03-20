@@ -18,7 +18,10 @@ const EventsList = ({ events }) => (
           )}
         </div>
         <div className='col-span-12 md:col-span-8 xl:col-span-9'>
-          <h2 className='text-2xl font-medium' dangerouslySetInnerHTML={{__html: event.title?.rendered}}/>
+          <h2
+            className='text-2xl font-medium'
+            dangerouslySetInnerHTML={{ __html: event.title?.rendered }}
+          />
           {event.acf?.date_string?.length > 0 && (
             <div className='mt-2 text-lg font-medium'>
               {event.acf?.date_string}

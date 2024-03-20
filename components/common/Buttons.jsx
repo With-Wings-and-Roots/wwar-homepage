@@ -1,7 +1,7 @@
-import {createLocalLink} from "@/utilities/links";
-import Link from "next/link";
+import { createLocalLink } from '@/utilities/links';
+import Link from 'next/link';
 
-const Buttons = ({buttons}) => {
+const Buttons = ({ buttons }) => {
   const getUrlFromButtonTarget = (btn) => {
     if (btn.target[0].file && btn.target[0].file.url) {
       return btn.target[0].file.url;
@@ -38,7 +38,7 @@ const Buttons = ({buttons}) => {
         </Link>
       ))}
     </>
-  )
-}
+  );
+};
 
 export default Buttons;
