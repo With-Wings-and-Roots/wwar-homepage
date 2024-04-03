@@ -19,9 +19,11 @@ const SidebarContentTypeImage = async ({ content }) => {
     text,
   } = content;
 
-  const media = (await fetchMediaFromId(image)) || null;
-
-  const mediaUrl = media.source_url;
+  let mediaUrl = image;
+  if (!mediaUrl.startsWith('https://')) {
+    const media = (await fetchMediaFromId(image)) || null;
+    mediaUrl = media.source_url;
+  }
 
   return (
     <div>

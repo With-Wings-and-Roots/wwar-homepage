@@ -19,6 +19,7 @@ import { getTimelineEvents } from '@/utilities/timeline';
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
+import BlogTemplate from "@/components/templates/BlogTemplate";
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -84,6 +85,9 @@ const Page = async ({ params, searchParams }) => {
         break;
       case 'page_about.php':
         template = <AboutTemplate data={pageData} />;
+        break;
+      case 'page_blog.php':
+        template = <BlogTemplate data={pageData} params={params} />;
         break;
       case 'page_collaborators.php':
         template = <CollaboratorsTemplate data={pageData} />;
