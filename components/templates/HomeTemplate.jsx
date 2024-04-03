@@ -127,6 +127,14 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           <div>
             <EventsList events={upcomingEvents} />
           </div>
+          <div>
+            <Link
+              href={createLocalLink(data.acf?.upcoming_events_linked_page?.url)}
+              className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+            >
+              {data.acf?.upcoming_events_linked_page?.title}
+            </Link>
+          </div>
         </div>
       ) : null}
       <div className='px-8 md:px-16 xl:px-48 py-20'>
