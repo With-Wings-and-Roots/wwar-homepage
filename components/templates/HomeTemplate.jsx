@@ -33,7 +33,8 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
     .filter((e) => new Date(e.acf?.date_sorting) > new Date())
     ?.sort(
       (a, b) => new Date(a.acf?.date_sorting) - new Date(b.acf?.date_sorting)
-    )?.slice(0, 3);
+    )
+    ?.slice(0, 3);
 
   return (
     <div className='-mt-20'>

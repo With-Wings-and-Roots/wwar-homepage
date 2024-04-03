@@ -19,7 +19,7 @@ import { getTimelineEvents } from '@/utilities/timeline';
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
-import BlogTemplate from "@/components/templates/BlogTemplate";
+import BlogTemplate from '@/components/templates/BlogTemplate';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
