@@ -20,7 +20,7 @@ const SidebarContentTypeImage = async ({ content }) => {
   } = content;
 
   let mediaUrl = image;
-  if (!mediaUrl.startsWith('https://')) {
+  if (typeof mediaUrl === 'number') {
     const media = (await fetchMediaFromId(image)) || null;
     mediaUrl = media.source_url;
   }

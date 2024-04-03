@@ -20,6 +20,7 @@ import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
+import {getAllPosts} from "@/utilities/posts";
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -145,6 +146,7 @@ export async function generateStaticParams() {
     const pages = await getAllPages(lang);
     const stories = await getAllStories(lang);
     const timelineEvents = await getTimelineEvents(lang);
+    const posts = await getAllPosts(lang, 'posts');
     pages.map((page) => {
       const url = new URL(page.link);
       let urlPageSlug = url
@@ -169,6 +171,14 @@ export async function generateStaticParams() {
             slugs: [...urlPageSlug?.split('/'), event.slug],
           });
         });
+      }
+      if (page.template === 'page_blog.php') {
+        posts?.map((post) => {
+          paths.push({
+            lang: lang,
+            slugs: [...urlPageSlug?.split('/'), post.slug],
+          })
+        })
       }
     });
   }
