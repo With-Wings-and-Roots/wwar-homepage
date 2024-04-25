@@ -1,26 +1,20 @@
-import { getTimeline, getTimelineEvents } from '@/utilities/timeline';
-import { getAllMedia } from '@/utilities/stories';
 import TimelinesPageWrapper from '@/components/timelines/timelinesPageWrapper';
 import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
 import { getAdjacentSlug } from '@/utilities/general';
 
-const TimelinesTemplate = async ({
+const TimelinesTemplate = ({
   params,
   data,
   subSlugs,
   baseLink,
-  searchParams,
+  timeLineEventsDe,
+  timeLineEventsEn,
+  allMedia,
+  timelineEvents,
+  timelineTopics,
 }) => {
-  const [timeLineEventsDe, timeLineEventsEn, allMedia, timelineEvents] =
-    await Promise.all([
-      getTimeline('de', params.lang),
-      getTimeline('us', params.lang),
-      getAllMedia('en'),
-      getTimelineEvents(params.lang),
-    ]);
-
   let country = null;
   let timelineEvent = null;
   let nextSlug = null;
@@ -96,16 +90,17 @@ const TimelinesTemplate = async ({
             country={country}
             relatedEvents={relatedEvents}
             baseLink={baseLink}
+            timelineTopics={timelineTopics}
+            allMedia={allMedia}
           />
         )}
       <div className='mt-12'>
         <TimelinesPageWrapper
-          lang={params.lang.toLowerCase()}
+          lang={params.lang?.toLowerCase()}
           timeLineEventsDe={timeLineEventsDe}
           timeLineEventsEn={timeLineEventsEn}
           allMedia={allMedia}
           baseLink={baseLink}
-          searchParams={searchParams}
         />
       </div>
     </div>

@@ -15,13 +15,15 @@ import RelatedEvents from '@/components/timelineEvent/relatedEvents';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
 import { createLocalLink } from '@/utilities/links';
 
-const TimelineEventPage = async ({
+const TimelineEventPage = ({
   timelineEvent,
   nextSlug,
   prevSlug,
   country,
   relatedEvents,
   baseLink,
+  timelineTopics,
+  allMedia,
 }) => {
   const {
     timeline_event_topic,
@@ -30,12 +32,9 @@ const TimelineEventPage = async ({
     },
   } = timelineEvent;
 
-  const topicsArray = await Promise.all(
-    timeline_event_topic.map(async (id) => {
-      const tempTopic = await getTimelineTopicFromId(id);
-      return parse(tempTopic.name);
-    })
-  );
+  const topicsArray = timelineTopics
+    ?.filter((t) => timeline_event_topic?.includes(t.id))
+    ?.map((t) => parse(t.name));
 
   const {
     acf: {
@@ -149,6 +148,7 @@ const TimelineEventPage = async ({
               <RelatedEvents
                 relatedEvents={relatedEvents}
                 baseLink={baseLink}
+                allMedia={allMedia}
               />
             )}
           </div>

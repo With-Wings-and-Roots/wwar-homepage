@@ -1,22 +1,18 @@
 import StoriesPageWrapper from '@/components/stories/StoriesPageWrapper';
-import {
-  fetchAllTopics,
-  getAllMedia,
-  getAllPersons,
-  getAllStories,
-} from '@/utilities/stories';
 import PageComponent from '@/components/page/storyPageComponent';
 import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
 
-const StoriesTemplate = async ({ params, data, subSlugs, baseLink }) => {
-  const [stories, allMedia, allPersons, topics] = await Promise.all([
-    getAllStories(params.lang),
-    getAllMedia(params.lang),
-    getAllPersons(),
-    fetchAllTopics(params.lang),
-  ]);
-
+const StoriesTemplate = ({
+  stories,
+  allMedia,
+  allPersons,
+  topics,
+  params,
+  data,
+  subSlugs,
+  baseLink,
+}) => {
   return (
     <div>
       <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative'>

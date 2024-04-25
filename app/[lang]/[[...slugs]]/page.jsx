@@ -14,17 +14,39 @@ import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import ProjectsTemplate from '@/components/templates/ProjectsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
-import { getAllStories } from '@/utilities/stories';
-import { getTimelineEvents } from '@/utilities/timeline';
+import {
+  fetchAllTopics,
+  getAllMedia,
+  getAllPersons,
+  getAllStories,
+} from '@/utilities/stories';
+import {
+  getTimeline,
+  getTimelineEvents,
+  getTimelineTopics,
+} from '@/utilities/timeline';
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
-import {getAllPosts} from "@/utilities/posts";
+import { getAllPosts } from '@/utilities/posts';
 
-const Page = async ({ params, searchParams }) => {
+const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
   const pages = await getAllPages(params.lang);
+  const [stories, allMedia, allPersons, topics] = await Promise.all([
+    getAllStories(params.lang),
+    getAllMedia(params.lang),
+    getAllPersons(),
+    fetchAllTopics(params.lang),
+  ]);
+  const [timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics] =
+    await Promise.all([
+      getTimeline('de', params.lang),
+      getTimeline('us', params.lang),
+      getTimelineEvents(params.lang),
+      getTimelineTopics(params.lang),
+    ]);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
@@ -70,6 +92,10 @@ const Page = async ({ params, searchParams }) => {
             params={params}
             subSlugs={subSlugs}
             baseLink={pageSlug}
+            stories={stories}
+            allMedia={allMedia}
+            allPersons={allPersons}
+            topics={topics}
           />
         );
         break;
@@ -80,7 +106,11 @@ const Page = async ({ params, searchParams }) => {
             params={params}
             subSlugs={subSlugs}
             baseLink={pageSlug}
-            searchParams={searchParams}
+            timeLineEventsDe={timeLineEventsDe}
+            timeLineEventsEn={timeLineEventsEn}
+            allMedia={allMedia}
+            timelineEvents={timelineEvents}
+            timelineTopics={timelineTopics}
           />
         );
         break;
@@ -142,51 +172,60 @@ const Page = async ({ params, searchParams }) => {
 
 export async function generateStaticParams() {
   let paths = [];
-  for (const lang of ['en', 'de']) {
+  const languages = ['en', 'de'];
+
+  for (const lang of languages) {
     const pages = await getAllPages(lang);
     const stories = await getAllStories(lang);
     const timelineEvents = await getTimelineEvents(lang);
     const posts = await getAllPosts(lang, 'posts');
-    pages.map((page) => {
+
+    for (const page of pages) {
       const url = new URL(page.link);
-      let urlPageSlug = url
-        .toString()
-        .substring(url.origin.length)
+      let urlPageSlug = url.pathname
         .replace(/^\/|\/$/g, '')
         .replace(/^(de\/|en\/)/, '');
-      if (urlPageSlug === 'de') urlPageSlug = null;
-      paths.push({ lang: lang, slugs: urlPageSlug?.split('/') ?? [''] });
+
+      if (urlPageSlug === 'de') {
+        urlPageSlug = '';
+      }
+
+      const baseSlugs = urlPageSlug.split('/').filter(Boolean);
+
+      // Add the base page path
+      paths.push({ params: { lang, slugs: baseSlugs } });
+
+      // Conditionally add paths for stories, timeline events, and posts
       if (page.template === 'page_stories.php') {
-        stories?.map((story) => {
+        stories.forEach((story) => {
           paths.push({
-            lang: lang,
-            slugs: [...urlPageSlug?.split('/'), story.slug],
+            params: { lang, slugs: [...baseSlugs, story.slug] },
           });
         });
       }
+
       if (page.template === 'page_timelines.php') {
-        timelineEvents?.map((event) => {
+        timelineEvents.forEach((event) => {
           paths.push({
-            lang: lang,
-            slugs: [...urlPageSlug?.split('/'), event.slug],
+            params: { lang, slugs: [...baseSlugs, event.slug] },
           });
         });
       }
+
       if (page.template === 'page_blog.php') {
-        posts?.map((post) => {
+        posts.forEach((post) => {
           paths.push({
-            lang: lang,
-            slugs: [...urlPageSlug?.split('/'), post.slug],
-          })
-        })
+            params: { lang, slugs: [...baseSlugs, post.slug] },
+          });
+        });
       }
-    });
+    }
   }
 
   return paths;
 }
 
-export async function generateMetadata({ params, searchParams }) {
+export async function generateMetadata({ params }) {
   const pages = await getAllPages(params.lang);
 
   // find page by slugs

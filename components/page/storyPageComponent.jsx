@@ -14,7 +14,7 @@ import FullPageBackground from './fullPageBackground';
 import { createLocalLink, createVideoEmbedLink } from '@/utilities/links';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
 
-const StoryPageComponent = async ({
+const StoryPageComponent = ({
   lang = 'en',
   paramsStory,
   stories,
@@ -26,22 +26,16 @@ const StoryPageComponent = async ({
   const story = stories.find((s) => s.slug === paramsStory) || null;
 
   const personId = story?.person?.[0];
-  const person = personId ? await getPersonById(personId) : null;
+  const person = personId ? allPersons?.find((p) => p.id === personId) : null;
 
-  const topicsHref = story?._links['acf:term']?.map((term) => term.href) || [];
-
-  const categoriesArray = await Promise.all(
-    topicsHref.map(async (topic) => {
-      const [data] = await fetchAllData(topic);
-      const temp = topics.find((t) => t.slug === data.slug);
-      return temp ? { name: data.name, slug: data.slug } : null;
-    })
-  );
+  const categoriesArray = topics
+    ?.filter((t) => story?.acf?.topics?.includes(t.id))
+    ?.map((t) => ({ name: t.name, slug: t.slug }));
 
   const categories = categoriesArray.filter(Boolean);
 
   const storiesLength = stories.length;
-  const storyIndex = parseInt(await findIndexBySlug(stories, paramsStory));
+  const storyIndex = parseInt(findIndexBySlug(stories, paramsStory));
 
   const nextSlug =
     storyIndex === storiesLength - 1

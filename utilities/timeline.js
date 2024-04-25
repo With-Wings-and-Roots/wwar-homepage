@@ -66,3 +66,9 @@ export const getTimelineTopicFromId = async (topicId) => {
   const data = await res.json();
   return data;
 };
+
+export const getTimelineTopics = async (lang = 'en') => {
+  return await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event_topic?lang=${lang}`
+  );
+};

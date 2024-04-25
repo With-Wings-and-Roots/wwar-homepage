@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import TimelineCardContainer from './timelineCardContainer';
 import TimelineCountry from './timelineCountrySelector';
@@ -11,7 +11,6 @@ const TimelinesPageWrapper = ({
   timeLineEventsEn,
   allMedia,
   baseLink,
-  searchParams,
 }) => {
   const extractYearFromTimeline = (timeLineEvents) =>
     timeLineEvents.map((timeLineEvent) =>
@@ -40,13 +39,14 @@ const TimelinesPageWrapper = ({
         baseLink={baseLink}
       />
 
-      <RangeSliderWrapper
-        timeLineEventDatesArrayObject={{
-          de: timeLineEventDatesArrayDe,
-          en: timeLineEventDatesArrayEn,
-        }}
-        searchParams={searchParams}
-      />
+      <Suspense>
+        <RangeSliderWrapper
+          timeLineEventDatesArrayObject={{
+            de: timeLineEventDatesArrayDe,
+            en: timeLineEventDatesArrayEn,
+          }}
+        />
+      </Suspense>
     </>
   );
 };

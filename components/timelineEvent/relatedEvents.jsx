@@ -3,9 +3,7 @@ import React from 'react';
 import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 
-const RelatedEvents = async ({ relatedEvents, baseLink }) => {
-  const allMedia = await getAllMedia('en');
-
+const RelatedEvents = ({ relatedEvents, baseLink, allMedia }) => {
   return (
     <div className={`w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 pb-10`}>
       <div className={`py-6 text-wwr_white text-xl font-light`}>
