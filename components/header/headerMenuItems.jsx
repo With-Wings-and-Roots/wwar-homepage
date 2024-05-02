@@ -21,13 +21,24 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
       onMouseLeave={() => setHovered(false)}
       className='hover:text-wwr_white cursor-pointer relative'
     >
-      <div
-        className={`px-2 py-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
-      >
-        {item.title}
-      </div>
+      {subMenuItems(item.ID)?.length > 0 ? (
+        <div
+          className={`px-2 py-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
+        >
+          {item.title}
+        </div>
+      ) : (
+        <Link
+          className={`px-2 py-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
+          href={isExternalLink(item.url) ? item.url : createLocalLink(item.url)}
+          target={isExternalLink(item.url) ? '_blank' : '_self'}
+          rel={isExternalLink(item.url) ? 'noreferrer noopener' : ''}
+        >
+          AA{item.title}
+        </Link>
+      )}
 
-      {hovered && (
+      {hovered && subMenuItems(item.ID)?.length > 0 && (
         <motion.div
           initial={{ y: -200 }}
           animate={{ y: 0 }}

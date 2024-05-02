@@ -9,6 +9,8 @@ import {
 } from '@/store/mobileMenu';
 import MobileSubMenu from './mobileSubMenu';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { createLocalLink, isExternalLink } from '@/utilities/links';
 
 const MobileSubMenuContainer = ({ item, menuItems }) => {
   const dispatch = useDispatch();
@@ -28,12 +30,25 @@ const MobileSubMenuContainer = ({ item, menuItems }) => {
 
   return (
     <>
-      <div
-        className='hover:text-wwr_white cursor-pointer'
-        onClick={() => subMenuHandler(item.ID)}
-      >
-        {item.title}
-      </div>
+      {menuItems?.filter(
+        (mi) => mi.menu_item_parent.localeCompare(item.ID) === 0
+      )?.length > 0 ? (
+        <div
+          className='hover:text-wwr_white cursor-pointer'
+          onClick={() => subMenuHandler(item.ID)}
+        >
+          {item.title}
+        </div>
+      ) : (
+        <Link
+          className='hover:text-wwr_white cursor-pointer'
+          href={isExternalLink(item.url) ? item.url : createLocalLink(item.url)}
+          target={isExternalLink(item.url) ? '_blank' : '_self'}
+          rel={isExternalLink(item.url) ? 'noreferrer noopener' : ''}
+        >
+          AA{item.title}
+        </Link>
+      )}
       <AnimatePresence>
         {subMenuOpen && (
           <motion.div
