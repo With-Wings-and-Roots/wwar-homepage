@@ -7,7 +7,10 @@ const Excerpt = ({ excerpt, color }) => {
         color === 'gray' ? 'text-wwr_gray_storm' : 'text-wwr_black'
       }`}
     >
-      <span className='leading-10'>{excerpt}</span>
+      <span
+        className='leading-10'
+        dangerouslySetInnerHTML={{ __html: excerpt }}
+      />
     </p>
   );
 };

@@ -24,6 +24,8 @@ const TimelineEventPage = ({
   baseLink,
   timelineTopics,
   allMedia,
+  stories,
+  allPersons,
 }) => {
   const {
     timeline_event_topic,
@@ -78,6 +80,8 @@ const TimelineEventPage = ({
                 <div className='w-full md:w-1/3'>
                   <Sidebar
                     sidebarContent={timelineEvent.acf?.sidebar_content}
+                    stories={stories}
+                    allPersons={allPersons}
                   />
                   <div className={`flex flex-col gap-px mt-10`}>
                     <Button

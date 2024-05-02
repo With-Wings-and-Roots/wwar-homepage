@@ -7,7 +7,7 @@ import SidebarContentType_Quote from '@/components/timelineEvent/sidebarContentT
 
 // type: sidenote, story, image, video, quote, none-selected, undefined
 
-const Sidebar = ({ sidebarContent }) => {
+const Sidebar = ({ sidebarContent, stories, allPersons }) => {
   return (
     <div>
       {sidebarContent?.map((content, index) => {
@@ -21,7 +21,11 @@ const Sidebar = ({ sidebarContent }) => {
               <SidebarContentTypeVideo content={content} />
             )}
             {type.includes('story') && (
-              <SidebarContentTypeStory content={content} />
+              <SidebarContentTypeStory
+                content={content}
+                stories={stories}
+                allPersons={allPersons}
+              />
             )}
             {type.includes('sidenote') && (
               <SidebarContentTypeSideNote content={content} />

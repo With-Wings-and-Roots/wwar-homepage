@@ -14,6 +14,8 @@ const TimelinesTemplate = ({
   allMedia,
   timelineEvents,
   timelineTopics,
+  stories,
+  allPersons,
 }) => {
   let country = null;
   let timelineEvent = null;
@@ -89,6 +91,8 @@ const TimelinesTemplate = ({
             baseLink={baseLink}
             timelineTopics={timelineTopics}
             allMedia={allMedia}
+            stories={stories}
+            allPersons={allPersons}
           />
         )}
       <div className='mt-12'>
