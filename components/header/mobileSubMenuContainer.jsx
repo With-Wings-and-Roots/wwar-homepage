@@ -46,7 +46,7 @@ const MobileSubMenuContainer = ({ item, menuItems }) => {
           target={isExternalLink(item.url) ? '_blank' : '_self'}
           rel={isExternalLink(item.url) ? 'noreferrer noopener' : ''}
         >
-          AA{item.title}
+          {item.title}
         </Link>
       )}
       <AnimatePresence>
