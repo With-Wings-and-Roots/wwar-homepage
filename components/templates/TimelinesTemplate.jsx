@@ -42,18 +42,15 @@ const TimelinesTemplate = ({
       country = 'us';
     }
 
-    const timelineEventsLength = timelineEvents.length;
-    const timelineEventIndex = timelineEvents.indexOf(timelineEvent);
-
     nextSlug = getAdjacentSlug(
-      timelineEventIndex + 1,
-      timelineEventsLength,
-      timelineEvents
+      (country === 'de' ? indexInGerman : indexInUsa) + 1,
+      country === 'de' ? timeLineEventsDe?.length : timeLineEventsEn?.length,
+      country === 'de' ? timeLineEventsDe : timeLineEventsEn
     );
     prevSlug = getAdjacentSlug(
-      timelineEventIndex - 1,
-      timelineEventsLength,
-      timelineEvents
+      (country === 'de' ? indexInGerman : indexInUsa) - 1,
+      country === 'de' ? timeLineEventsDe?.length : timeLineEventsEn?.length,
+      country === 'de' ? timeLineEventsDe : timeLineEventsEn
     );
 
     const {
