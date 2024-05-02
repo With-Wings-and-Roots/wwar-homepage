@@ -34,12 +34,15 @@ import { getAllPosts } from '@/utilities/posts';
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
   const pages = await getAllPages(params.lang);
-  const [stories, allMedia, allPersons, topics] = await Promise.all([
+  const [stories, allMediaDe, allMediaEn, allPersons, topics] = await Promise.all([
     getAllStories(params.lang),
-    getAllMedia(params.lang),
+    getAllMedia('de'),
+    getAllMedia('en'),
     getAllPersons(),
     fetchAllTopics(params.lang),
   ]);
+  const allMedia = [...allMediaDe, ...allMediaEn];
+
   const [timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics] =
     await Promise.all([
       getTimeline('de', params.lang),

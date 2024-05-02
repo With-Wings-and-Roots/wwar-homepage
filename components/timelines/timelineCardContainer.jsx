@@ -56,6 +56,11 @@ const TimelineCardContainer = ({
         }
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
+        initial={
+          pathname.endsWith('/timelines')
+            ? { x: `${leftPositionPercentage}%` }
+            : false
+        }
       >
         {timeLineEvents.map((timeLineEvent, index) => {
           const mediaUrl = allMedia.find(
