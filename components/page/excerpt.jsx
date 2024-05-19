@@ -9,7 +9,7 @@ const Excerpt = ({ excerpt, color }) => {
     >
       <span
         className='leading-10'
-        dangerouslySetInnerHTML={{ __html: excerpt }}
+        dangerouslySetInnerHTML={{ __html: excerpt ?? '' }}
       />
     </p>
   );
