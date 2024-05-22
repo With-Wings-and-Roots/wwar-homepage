@@ -28,17 +28,19 @@ const Buttons = ({ buttons }) => {
 
   return (
     <>
-      {buttons.map((btn, bI) => (
-        <Link
-          key={bI}
-          href={getUrlFromButtonTarget(btn)}
-          target={shouldOpenInNewTab(btn) ? '_blank' : '_self'}
-          rel={shouldOpenInNewTab(btn) ? 'noopener noreferrer' : ''}
-          className='bg-wwr_yellow_orange text-sm lg:text-lg  font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-        >
-          {btn.label}
-        </Link>
-      ))}
+      {Array.isArray(buttons)
+        ? buttons?.map((btn, bI) => (
+            <Link
+              key={bI}
+              href={getUrlFromButtonTarget(btn)}
+              target={shouldOpenInNewTab(btn) ? '_blank' : '_self'}
+              rel={shouldOpenInNewTab(btn) ? 'noopener noreferrer' : ''}
+              className='bg-wwr_yellow_orange text-sm lg:text-lg  font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+            >
+              {btn.label}
+            </Link>
+          ))
+        : null}
     </>
   );
 };
