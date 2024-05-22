@@ -124,7 +124,14 @@ const Page = async ({ params }) => {
         template = <AboutTemplate data={pageData} />;
         break;
       case 'page_blog.php':
-        template = <BlogTemplate data={pageData} params={params} />;
+        template = (
+          <BlogTemplate
+            data={pageData}
+            params={params}
+            stories={stories}
+            allPersons={allPersons}
+          />
+        );
         break;
       case 'page_collaborators.php':
         template = <CollaboratorsTemplate data={pageData} />;

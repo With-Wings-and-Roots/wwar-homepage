@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { createVideoEmbedLink } from '@/utilities/links';
+import WysiwygContent from '@/components/common/WysiwygContent';
 
 const SidebarContentTypeVideo = async ({ content }) => {
   const {
@@ -22,13 +22,7 @@ const SidebarContentTypeVideo = async ({ content }) => {
 
   return (
     <div>
-      <iframe
-        className='w-full h-full min-h-fit'
-        src={createVideoEmbedLink(youtubelink)}
-        title='YouTube video player'
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-        allowFullScreen
-      ></iframe>
+      <WysiwygContent content={youtubelink} className='video' />
 
       {display_credit && (
         <Link
@@ -39,7 +33,7 @@ const SidebarContentTypeVideo = async ({ content }) => {
           {credit}
         </Link>
       )}
-      <div className='text-2xl py-4'>{title}</div>
+      {title ? <div className='text-2xl py-4'>{title}</div> : null}
       <div className='text-base text-wwr_gray_storm font-light leading-6'>
         {caption}
       </div>

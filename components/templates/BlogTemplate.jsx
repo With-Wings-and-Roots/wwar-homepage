@@ -9,7 +9,7 @@ import { createLocalLink } from '@/utilities/links';
 import Sidebar from '@/components/timelineEvent/sidebar';
 import React from 'react';
 
-const BlogTemplate = async ({ params, data }) => {
+const BlogTemplate = async ({ params, data, stories, allPersons }) => {
   const posts = await getAllPosts(params.lang, 'posts');
 
   let blogPost = null;
@@ -59,7 +59,13 @@ const BlogTemplate = async ({ params, data }) => {
                 <ImageMedia mediaId={blogPost.featured_media} />
               </div>
               {blogPost.acf?.sidebar_content && (
-                <Sidebar sidebarContent={blogPost.acf?.sidebar_content} />
+                <div className='mt-6'>
+                  <Sidebar
+                    sidebarContent={blogPost.acf?.sidebar_content}
+                    stories={stories}
+                    allPersons={allPersons}
+                  />
+                </div>
               )}
             </div>
           </div>

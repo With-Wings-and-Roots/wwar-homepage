@@ -7,12 +7,14 @@ const SidebarContentTypeStory = async ({ content, stories, allPersons }) => {
   const story =
     Array.isArray(content.sidebar_content_featured_story) &&
     content.sidebar_content_featured_story?.length > 0
-      ? stories.find((s) => s.id === content.sidebar_content_featured_story[0])
+      ? stories?.find(
+          (s) => s.id === content.sidebar_content_featured_story[0]?.ID
+        )
       : null;
   const personId = story?.person?.[0];
   const person = personId ? allPersons?.find((p) => p.id === personId) : null;
 
-  return (
+  return story ? (
     <div>
       <div className={`bg-wwr_yellow_orange text-wwr_white text-lg w-max px-2`}>
         Featured Story
@@ -31,10 +33,12 @@ const SidebarContentTypeStory = async ({ content, stories, allPersons }) => {
         <QuotationMark />
       </div>
 
-      <Excerpt excerpt={story?.title?.rendered} color={'gray'} />
-      <div className={`text-lg mb-10`}>{person?.name}</div>
+      <div className='-mb-6'>
+        <Excerpt excerpt={story?.title?.rendered} color={'gray'} />
+      </div>
+      <div className={`text-lg mb-4`}>{person?.name}</div>
       <div className={`h-[2px] w-full bg-wwr_yellow_orange`}></div>
     </div>
-  );
+  ) : null;
 };
 export default SidebarContentTypeStory;

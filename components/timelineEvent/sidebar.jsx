@@ -9,7 +9,7 @@ import SidebarContentType_Quote from '@/components/timelineEvent/sidebarContentT
 
 const Sidebar = ({ sidebarContent, stories, allPersons }) => {
   return (
-    <div>
+    <div className='flex flex-col gap-y-6'>
       {sidebarContent?.map((content, index) => {
         const type = content.sidebar_content_type;
         return (
