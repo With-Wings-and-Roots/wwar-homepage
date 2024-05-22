@@ -2,9 +2,13 @@
 
 import { Provider } from 'react-redux';
 import ConfigureStore from './configureStore';
+import { useRef } from 'react';
 
 export function Providers({ children }) {
-  const store = ConfigureStore();
+  const storeRef = useRef();
+  if (!storeRef.current) {
+    storeRef.current = ConfigureStore();
+  }
 
-  return <Provider store={store}>{children}</Provider>;
+  return <Provider store={storeRef.current}>{children}</Provider>;
 }
