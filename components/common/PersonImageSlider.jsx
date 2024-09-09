@@ -13,7 +13,7 @@ const PersonImageSlider = ({ imageUrls, height = 80, interval = 3000 }) => {
     }, interval);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [interval]);
 
   return (
     <div

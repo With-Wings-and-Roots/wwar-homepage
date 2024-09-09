@@ -206,29 +206,29 @@ export async function generateStaticParams() {
       const baseSlugs = urlPageSlug.split('/').filter(Boolean);
 
       // Add the base page path
-      paths.push({ params: { lang, slugs: baseSlugs } });
+      paths.push({ lang, slugs: baseSlugs });
 
       // Conditionally add paths for stories, timeline events, and posts
       if (page.template === 'page_stories.php') {
         stories.forEach((story) => {
           paths.push({
-            params: { lang, slugs: [...baseSlugs, story.slug] },
+            lang,
+            slugs: [...baseSlugs, story.slug],
           });
         });
       }
 
       if (page.template === 'page_timelines.php') {
         timelineEvents.forEach((event) => {
-          paths.push({
-            params: { lang, slugs: [...baseSlugs, event.slug] },
-          });
+          paths.push({ lang, slugs: [...baseSlugs, event.slug] });
         });
       }
 
       if (page.template === 'page_blog.php') {
         posts.forEach((post) => {
           paths.push({
-            params: { lang, slugs: [...baseSlugs, post.slug] },
+            lang,
+            slugs: [...baseSlugs, post.slug],
           });
         });
       }
