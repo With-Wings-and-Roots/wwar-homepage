@@ -23,12 +23,14 @@ const ProjectsTemplate = ({ data }) => {
         return (
           <div className='grid grid-cols-4 gap-6 mt-8 pt-8'>
             <div className='col-span-1'>
-              <Image
-                src={block.image.sizes.thumbnail}
-                alt={block.image.alt}
-                width={block.image.sizes['thumbnail-width']}
-                height={block.image.sizes['thumbnail-height']}
-              />
+              {block.image?.sizes?.thumbnail ? (
+                <Image
+                  src={block.image.sizes.thumbnail}
+                  alt={block.image.alt}
+                  width={block.image.sizes['thumbnail-width']}
+                  height={block.image.sizes['thumbnail-height']}
+                />
+              ) : null}
             </div>
             <div className='col-span-4 lg:col-span-3 flex flex-col'>
               <h6 className='text-xl lg:text-3xl font-medium'>{block.title}</h6>
@@ -43,12 +45,14 @@ const ProjectsTemplate = ({ data }) => {
         return (
           <div className='flex mt-8 pt-8'>
             <div className='flex-shrink-0'>
-              <Image
-                src={block.image.sizes.thumbnail}
-                alt={block.image.alt}
-                width={block.image.sizes['thumbnail-width']}
-                height={block.image.sizes['thumbnail-height']}
-              />
+              {block.image?.sizes?.thumbnail ? (
+                <Image
+                  src={block.image.sizes.thumbnail}
+                  alt={block.image.alt}
+                  width={block.image.sizes['thumbnail-width']}
+                  height={block.image.sizes['thumbnail-height']}
+                />
+              ) : null}
             </div>
             <div className='flex-grow ml-4'>
               <h6 className='text-xl lg:text-3xl font-medium'>{block.title}</h6>
