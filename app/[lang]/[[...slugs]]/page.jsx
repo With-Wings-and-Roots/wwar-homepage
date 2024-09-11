@@ -34,23 +34,6 @@ import { getAllPosts } from '@/utilities/posts';
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
   const pages = await getAllPages(params.lang);
-  const [stories, allMediaDe, allMediaEn, allPersons, topics] =
-    await Promise.all([
-      getAllStories(params.lang),
-      getAllMedia('de'),
-      getAllMedia('en'),
-      getAllPersons(),
-      fetchAllTopics(params.lang),
-    ]);
-  const allMedia = [...allMediaDe, ...allMediaEn];
-
-  const [timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics] =
-    await Promise.all([
-      getTimeline('de', params.lang),
-      getTimeline('us', params.lang),
-      getTimelineEvents(params.lang),
-      getTimelineTopics(params.lang),
-    ]);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
@@ -84,12 +67,23 @@ const Page = async ({ params }) => {
     pageObj = pages.find((page) => page.id === parseInt(frontpageId));
   }
 
+  let stories, allMediaDe, allMediaEn, allPersons, topics, allMedia, timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics;
+
   // get page
   let template;
   if (pageObj) {
     const pageData = await getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
+        [stories, allMediaDe, allMediaEn, allPersons, topics] =
+          await Promise.all([
+            getAllStories(params.lang),
+            getAllMedia('de'),
+            getAllMedia('en'),
+            getAllPersons(),
+            fetchAllTopics(params.lang),
+          ]);
+        allMedia = [...allMediaDe, ...allMediaEn];
         template = (
           <StoriesTemplate
             data={pageData}
@@ -104,6 +98,18 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_timelines.php':
+        [timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics, allMediaDe, allMediaEn, stories, allPersons] =
+          await Promise.all([
+            getTimeline('de', params.lang),
+            getTimeline('us', params.lang),
+            getTimelineEvents(params.lang),
+            getTimelineTopics(params.lang),
+            getAllMedia('de'),
+            getAllMedia('en'),
+            getAllStories(params.lang),
+            getAllPersons(),
+          ]);
+        allMedia = [...allMediaDe, ...allMediaEn];
         template = (
           <TimelinesTemplate
             data={pageData}
@@ -124,6 +130,11 @@ const Page = async ({ params }) => {
         template = <AboutTemplate data={pageData} />;
         break;
       case 'page_blog.php':
+        [stories, allPersons] =
+          await Promise.all([
+            getAllStories(params.lang),
+            getAllPersons(),
+          ]);
         template = (
           <BlogTemplate
             data={pageData}
