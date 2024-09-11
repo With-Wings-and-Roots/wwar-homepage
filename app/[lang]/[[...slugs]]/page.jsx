@@ -67,7 +67,7 @@ const Page = async ({ params }) => {
     pageObj = pages.find((page) => page.id === parseInt(frontpageId));
   }
 
-  let stories, allMediaDe, allMediaEn, allPersons, topics, allMedia, timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics;
+  let stories, allMediaDe, allMediaEn, allPersons, topics, allMedia, timeLineEventsDe, timeLineEventsEn, timelineTopics;
 
   // get page
   let template;
@@ -98,11 +98,10 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_timelines.php':
-        [timeLineEventsDe, timeLineEventsEn, timelineEvents, timelineTopics, allMediaDe, allMediaEn, stories, allPersons] =
+        [timeLineEventsDe, timeLineEventsEn, timelineTopics, allMediaDe, allMediaEn, stories, allPersons] =
           await Promise.all([
             getTimeline('de', params.lang),
             getTimeline('us', params.lang),
-            getTimelineEvents(params.lang),
             getTimelineTopics(params.lang),
             getAllMedia('de'),
             getAllMedia('en'),
@@ -119,7 +118,6 @@ const Page = async ({ params }) => {
             timeLineEventsDe={timeLineEventsDe}
             timeLineEventsEn={timeLineEventsEn}
             allMedia={allMedia}
-            timelineEvents={timelineEvents}
             timelineTopics={timelineTopics}
             stories={stories}
             allPersons={allPersons}

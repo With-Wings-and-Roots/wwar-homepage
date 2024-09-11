@@ -12,12 +12,12 @@ const TimelinesTemplate = ({
   timeLineEventsDe,
   timeLineEventsEn,
   allMedia,
-  timelineEvents,
   timelineTopics,
   stories,
   allPersons,
 }) => {
   let country = null;
+  let timelineEvents = [...timeLineEventsDe, ...timeLineEventsEn];
   let timelineEvent = null;
   let nextSlug = null;
   let prevSlug = null;

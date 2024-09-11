@@ -43,8 +43,17 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
       ? `${process.env.NEXT_PUBLIC_CMS_URL}/de/wp-json/wp/v2/timeline_event`
       : `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event`;
 
+  const neededFields = [
+    'id',
+    'slug',
+    'title.rendered',
+    'featured_media',
+    'acf',
+    'seo'
+  ]
+
   const data = await fetchAllData(
-    `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}`
+    `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}&_fields=${neededFields.join(',')}`
   );
 
   return data.sort(

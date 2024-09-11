@@ -1,4 +1,3 @@
-import { getAllMedia } from '@/utilities/stories';
 import React from 'react';
 import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
