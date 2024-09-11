@@ -299,7 +299,7 @@ export async function generateMetadata({ params }) {
           seoData?._social_image_url !== ''
             ? [
                 {
-                  url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData._social_image_url}`,
+                  url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
                 },
               ]
             : [],
@@ -309,7 +309,7 @@ export async function generateMetadata({ params }) {
         description: seoData?._twitter_description,
         images:
           seoData?._social_image_url !== ''
-            ? [`${process.env.NEXT_PUBLIC_CMS_URL}${seoData._social_image_url}`]
+            ? [`${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`]
             : [],
       },
     };

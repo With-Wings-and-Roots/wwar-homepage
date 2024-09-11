@@ -116,11 +116,11 @@ const ProjectsTemplate = ({ data }) => {
           </div>
           <div className='col-span-4 lg:col-span-3 flex flex-col'>
             <h2 className='text-xl lg:text-3xl font-medium'>{title}</h2>
-            {blocks.map((bl) => renderBlock(bl))}
+            {blocks?.map((bl) => renderBlock(bl))}
           </div>
         </div>
       );
-    } else if (blocks.length > 0) {
+    } else if (blocks?.length > 0) {
       return (
         <div
           className='border-t border-t-gray-200 mt-8 pt-8'
@@ -128,7 +128,7 @@ const ProjectsTemplate = ({ data }) => {
           id={createHashString(title)?.replace('#', '')}
         >
           <h2 className='text-xl lg:text-3xl font-medium'>{title}</h2>
-          {blocks.map((bl) => renderBlock(bl))}
+          {blocks?.map((bl) => renderBlock(bl))}
         </div>
       );
     }
