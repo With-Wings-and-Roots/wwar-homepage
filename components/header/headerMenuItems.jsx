@@ -39,10 +39,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
       )}
 
       {hovered && subMenuItems(item.ID)?.length > 0 && (
-        <motion.div
-          initial={{ y: -200 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.3 }}
+        <div
           className='hidden md:block relative z-10'
         >
           <div className='absolute text-wwr_white left-1/2 -translate-x-1/2'>
@@ -74,7 +71,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
               })}
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );
