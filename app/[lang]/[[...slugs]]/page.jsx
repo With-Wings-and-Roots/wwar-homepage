@@ -143,7 +143,7 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_collaborators.php':
-        template = <CollaboratorsTemplate data={pageData} baseSlug={pageSlugs?.pop()} subSlugs={subSlugs} />;
+        template = <CollaboratorsTemplate data={pageData} subSlugs={subSlugs} baseLink={pageSlug} />;
         break;
       case 'page_partners.php':
         template = <PartnersTemplate data={pageData} />;

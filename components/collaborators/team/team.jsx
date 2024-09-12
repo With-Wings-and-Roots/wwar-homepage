@@ -7,8 +7,9 @@ import Image from 'next/image';
 import parse from 'html-react-parser';
 import CloseIcon from '@/components/page/closeIcon';
 import Button from '@/components/page/button';
+import {createLocalLink} from "@/utilities/links";
 
-const Team = ({ teamMember, baseSlug, subSlugs }) => {
+const Team = ({ teamMember, subSlugs, baseLink }) => {
   const {
     city,
     e_mail,
@@ -44,7 +45,7 @@ const Team = ({ teamMember, baseSlug, subSlugs }) => {
   return (
     <>
       <Link
-        href={`./${baseSlug}/${teamMemberSlug}`}
+        href={`${createLocalLink(baseLink)}${teamMemberSlug}`}
         className='hover:text-wwr_yellow_orange transition-all duration-300 z-20 col-span-6 md:col-span-3 lg:col-span-2'
         scroll={false}
       >
@@ -71,7 +72,7 @@ const Team = ({ teamMember, baseSlug, subSlugs }) => {
                   'w-full flex justify-end lg:absolute lg:top-4 lg:right-4'
                 }
               >
-                <CloseIcon closeLink={'./'} />
+                <CloseIcon closeLink={createLocalLink(baseLink)} />
               </div>
               <div className={`flex flex-col md:flex-row md:gap-8 lg:pt-10`}>
                 <div
