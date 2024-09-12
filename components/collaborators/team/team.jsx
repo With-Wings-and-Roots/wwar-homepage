@@ -8,7 +8,7 @@ import parse from 'html-react-parser';
 import CloseIcon from '@/components/page/closeIcon';
 import Button from '@/components/page/button';
 
-const Team = ({ teamMember }) => {
+const Team = ({ teamMember, subSlugs }) => {
   const {
     city,
     e_mail,
@@ -27,15 +27,13 @@ const Team = ({ teamMember }) => {
   } = teamMember;
 
   const [active, setActive] = useState(false);
-  const pathname = usePathname();
-  const lastPath = pathname.split('/').pop();
   const teamMemberSlug = name.replace(/ /g, '-');
 
   useEffect(() => {
-    if (lastPath.localeCompare(teamMemberSlug) === 0) {
+    if (subSlugs?.length === 1 && subSlugs[0].localeCompare(teamMemberSlug) === 0) {
       setActive(true);
     }
-  }, [lastPath, teamMemberSlug]);
+  }, [subSlugs, teamMemberSlug]);
   useEffect(() => {
     if (active) {
       document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -46,10 +44,7 @@ const Team = ({ teamMember }) => {
   return (
     <>
       <Link
-        href={`${pathname?.replaceAll(
-          `/${teamMemberSlug}`,
-          ''
-        )}/${teamMemberSlug}`}
+        href={`./${teamMemberSlug}`}
         className='hover:text-wwr_yellow_orange transition-all duration-300 z-20 col-span-6 md:col-span-3 lg:col-span-2'
         scroll={false}
       >
