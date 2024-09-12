@@ -3,7 +3,7 @@ import gfx_bg_orange from '@/public/bg_orange.png';
 import Image from 'next/image';
 import Team from '@/components/collaborators/team/team';
 
-const CollaboratorsTemplate = ({ data }) => {
+const CollaboratorsTemplate = ({ data, baseSlug, subSlugs }) => {
   return (
     <div className='px-8 md:px-16 xl:px-48 relative'>
       <Image
@@ -19,7 +19,7 @@ const CollaboratorsTemplate = ({ data }) => {
           />
           <div className='grid grid-cols-6 gap-4 text-center mt-4'>
             {data.acf?.team?.map((teamMember, tmI) => (
-              <Team teamMember={teamMember} key={tmI} />
+              <Team teamMember={teamMember} baseSlug={baseSlug} subSlugs={subSlugs} key={tmI} />
             ))}
           </div>
         </div>

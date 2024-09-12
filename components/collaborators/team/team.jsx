@@ -8,7 +8,7 @@ import parse from 'html-react-parser';
 import CloseIcon from '@/components/page/closeIcon';
 import Button from '@/components/page/button';
 
-const Team = ({ teamMember, subSlugs }) => {
+const Team = ({ teamMember, baseSlug, subSlugs }) => {
   const {
     city,
     e_mail,
@@ -44,7 +44,7 @@ const Team = ({ teamMember, subSlugs }) => {
   return (
     <>
       <Link
-        href={`./${teamMemberSlug}`}
+        href={`./${baseSlug}/${teamMemberSlug}`}
         className='hover:text-wwr_yellow_orange transition-all duration-300 z-20 col-span-6 md:col-span-3 lg:col-span-2'
         scroll={false}
       >
