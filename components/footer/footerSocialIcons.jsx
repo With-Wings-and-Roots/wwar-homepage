@@ -4,7 +4,7 @@ import React from 'react';
 const FooterSocialIcons = ({ footer }) => {
   return (
     <div className='flex gap-4 items-end'>
-      {footer.socials.map((social, index) => {
+      {footer.socials?.filter(s => s.icon)?.map((social, index) => {
         return (
           <a
             className='w-10 flex items-center justify-center hover:brightness-75 duration-300'
