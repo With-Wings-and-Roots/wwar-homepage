@@ -231,6 +231,7 @@ export async function generateStaticParams() {
         timelineEvents.forEach((event) => {
           paths.push({ lang, slugs: [...baseSlugs, event.slug] });
         });
+        paths.push({ lang, slugs: [...baseSlugs, 'info'] });
       }
 
       if (page.template === 'page_blog.php') {
