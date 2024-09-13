@@ -241,6 +241,16 @@ export async function generateStaticParams() {
           });
         });
       }
+
+      if (page.template === 'page_collaborators.php') {
+        page.acf?.team?.forEach((member) => {
+          const teamMemberSlug = member?.name?.replace(/ /g, '-');
+          paths.push({
+            lang,
+            slugs: [...baseSlugs, teamMemberSlug]
+          })
+        })
+      }
     }
   }
 

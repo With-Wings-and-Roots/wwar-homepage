@@ -6,6 +6,8 @@ export const metadata = {
   title: 'With Wings And Roots',
 };
 
+export const dynamicParams = false;
+
 export default function RootLayout({ children }) {
   return (
     <Providers>
