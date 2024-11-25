@@ -38,7 +38,7 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
       dispatch(
         activatedStories({
           stories: allStories.filter((story) =>
-            story.story_topic.includes(selectedTopicId)
+            story.acf?.topics?.includes(selectedTopicId)
           ),
         })
       );
