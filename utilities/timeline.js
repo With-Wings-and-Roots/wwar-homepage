@@ -49,11 +49,13 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
     'title.rendered',
     'featured_media',
     'acf',
-    'seo'
-  ]
+    'seo',
+  ];
 
   const data = await fetchAllData(
-    `${baseUrl}?timeline=${timelineCountryIds[`${country}Id`]}&_fields=${neededFields.join(',')}`
+    `${baseUrl}?timeline=${
+      timelineCountryIds[`${country}Id`]
+    }&_fields=${neededFields.join(',')}`
   );
 
   return data.sort(

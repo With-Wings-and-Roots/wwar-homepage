@@ -3,7 +3,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoExpanded, logoShrinked } from '@/store/header';
 
 const TopSpace = () => {
@@ -35,10 +35,16 @@ const TopSpace = () => {
     <motion.div
       animate='animate'
       variants={shrink ? shrinkVariant : expandVariant}
-      className={`w-full relative z-[203] bg-wwr_yellow_orange ${logoShrink ? 'h-[6px]' : 'h-5'}`}
+      className={`w-full relative z-[203] bg-wwr_yellow_orange ${
+        logoShrink ? 'h-[6px]' : 'h-5'
+      }`}
     ></motion.div>
   ) : (
-    <div className={`w-full relative z-[203] bg-wwr_yellow_orange ${logoShrink ? 'h-[6px]' : 'h-5'}`}/>
+    <div
+      className={`w-full relative z-[203] bg-wwr_yellow_orange ${
+        logoShrink ? 'h-[6px]' : 'h-5'
+      }`}
+    />
   );
 };
 

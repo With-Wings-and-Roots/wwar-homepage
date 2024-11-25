@@ -19,7 +19,12 @@ const CollaboratorsTemplate = ({ data, subSlugs, baseLink }) => {
           />
           <div className='grid grid-cols-6 gap-4 text-center mt-4'>
             {data.acf?.team?.map((teamMember, tmI) => (
-              <Team teamMember={teamMember} subSlugs={subSlugs} baseLink={baseLink} key={tmI} />
+              <Team
+                teamMember={teamMember}
+                subSlugs={subSlugs}
+                baseLink={baseLink}
+                key={tmI}
+              />
             ))}
           </div>
         </div>

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import parse from 'html-react-parser';
 import CloseIcon from '@/components/page/closeIcon';
 import Button from '@/components/page/button';
-import {createLocalLink} from "@/utilities/links";
+import { createLocalLink } from '@/utilities/links';
 
 const Team = ({ teamMember, subSlugs, baseLink }) => {
   const {
@@ -31,7 +31,10 @@ const Team = ({ teamMember, subSlugs, baseLink }) => {
   const teamMemberSlug = name.replace(/ /g, '-');
 
   useEffect(() => {
-    if (subSlugs?.length === 1 && subSlugs[0].localeCompare(teamMemberSlug) === 0) {
+    if (
+      subSlugs?.length === 1 &&
+      subSlugs[0].localeCompare(teamMemberSlug) === 0
+    ) {
       setActive(true);
     }
   }, [subSlugs, teamMemberSlug]);

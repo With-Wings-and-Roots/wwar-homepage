@@ -14,11 +14,13 @@ export async function getAllStories(lang = 'en') {
     'title.rendered',
     'featured_media',
     'acf',
-    'seo'
-  ]
+    'seo',
+  ];
 
   return await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story?lang=${lang}&_fields=${neededFields.join(',')}`
+    `${
+      process.env.NEXT_PUBLIC_CMS_URL
+    }/wp-json/wp/v2/story?lang=${lang}&_fields=${neededFields.join(',')}`
   );
 }
 
@@ -29,23 +31,24 @@ export async function fetchAllTopics(lang = 'en') {
 }
 
 export async function getAllMedia(lang = 'en') {
-  const neededFields = [
-    'id',
-    'source_url',
-  ]
+  const neededFields = ['id', 'source_url'];
   return await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/media?per_page=100&lang=${lang}&_fields=${neededFields.join(',')}`
+    `${
+      process.env.NEXT_PUBLIC_CMS_URL
+    }/wp-json/wp/v2/media?per_page=100&lang=${lang}&_fields=${neededFields.join(
+      ','
+    )}`
   );
 }
 
 export async function getAllPersons() {
-  const neededFields = [
-    'id',
-    'name',
-    'slug'
-  ]
+  const neededFields = ['id', 'name', 'slug'];
   return await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/person?lang=en&per_page=100&_fields=${neededFields.join(',')}`
+    `${
+      process.env.NEXT_PUBLIC_CMS_URL
+    }/wp-json/wp/v2/person?lang=en&per_page=100&_fields=${neededFields.join(
+      ','
+    )}`
   );
 }
 

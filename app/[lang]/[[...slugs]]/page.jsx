@@ -67,7 +67,15 @@ const Page = async ({ params }) => {
     pageObj = pages.find((page) => page.id === parseInt(frontpageId));
   }
 
-  let stories, allMediaDe, allMediaEn, allPersons, topics, allMedia, timeLineEventsDe, timeLineEventsEn, timelineTopics;
+  let stories,
+    allMediaDe,
+    allMediaEn,
+    allPersons,
+    topics,
+    allMedia,
+    timeLineEventsDe,
+    timeLineEventsEn,
+    timelineTopics;
 
   // get page
   let template;
@@ -98,16 +106,23 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_timelines.php':
-        [timeLineEventsDe, timeLineEventsEn, timelineTopics, allMediaDe, allMediaEn, stories, allPersons] =
-          await Promise.all([
-            getTimeline('de', params.lang),
-            getTimeline('us', params.lang),
-            getTimelineTopics(params.lang),
-            getAllMedia('de'),
-            getAllMedia('en'),
-            getAllStories(params.lang),
-            getAllPersons(),
-          ]);
+        [
+          timeLineEventsDe,
+          timeLineEventsEn,
+          timelineTopics,
+          allMediaDe,
+          allMediaEn,
+          stories,
+          allPersons,
+        ] = await Promise.all([
+          getTimeline('de', params.lang),
+          getTimeline('us', params.lang),
+          getTimelineTopics(params.lang),
+          getAllMedia('de'),
+          getAllMedia('en'),
+          getAllStories(params.lang),
+          getAllPersons(),
+        ]);
         allMedia = [...allMediaDe, ...allMediaEn];
         template = (
           <TimelinesTemplate
@@ -128,11 +143,10 @@ const Page = async ({ params }) => {
         template = <AboutTemplate data={pageData} />;
         break;
       case 'page_blog.php':
-        [stories, allPersons] =
-          await Promise.all([
-            getAllStories(params.lang),
-            getAllPersons(),
-          ]);
+        [stories, allPersons] = await Promise.all([
+          getAllStories(params.lang),
+          getAllPersons(),
+        ]);
         template = (
           <BlogTemplate
             data={pageData}
@@ -143,7 +157,13 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_collaborators.php':
-        template = <CollaboratorsTemplate data={pageData} subSlugs={subSlugs} baseLink={pageSlug} />;
+        template = (
+          <CollaboratorsTemplate
+            data={pageData}
+            subSlugs={subSlugs}
+            baseLink={pageSlug}
+          />
+        );
         break;
       case 'page_partners.php':
         template = <PartnersTemplate data={pageData} />;
@@ -248,9 +268,9 @@ export async function generateStaticParams() {
           const teamMemberSlug = member?.name?.replace(/ /g, '-');
           paths.push({
             lang,
-            slugs: [...baseSlugs, teamMemberSlug]
-          })
-        })
+            slugs: [...baseSlugs, teamMemberSlug],
+          });
+        });
       }
     }
   }
@@ -318,7 +338,9 @@ export async function generateMetadata({ params }) {
         description: seoData?._twitter_description,
         images:
           seoData?._social_image_url !== ''
-            ? [`${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`]
+            ? [
+                `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
+              ]
             : [],
       },
     };

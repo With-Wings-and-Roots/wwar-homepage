@@ -39,9 +39,7 @@ const HeaderMenuItems = ({ item, menuItems, index }) => {
       )}
 
       {hovered && subMenuItems(item.ID)?.length > 0 && (
-        <div
-          className='hidden md:block relative z-10'
-        >
+        <div className='hidden md:block relative z-10'>
           <div className='absolute text-wwr_white left-1/2 -translate-x-1/2'>
             <div className='flex flex-col gap-px bg-wwr_outer_space'>
               {subMenuItems(item.ID).map((subItem, index) => {
