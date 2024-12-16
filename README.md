@@ -1,36 +1,36 @@
+# With Wings And Roots - Homepage
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+All needed data comes from Wordpress CMS via the WP Rest API.
+
+## Development
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deployment
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+The GitHub Action will create an image. You can use it via Docker on any server.
+```bash
+docker run -p 3000:3000 ghcr.io/withwingsandroots/withwingsandroots/withwingsandroots:latest
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Environment Variables
 
-## Learn More
+The application requires certain environment variables to be set for proper configuration. These variables are managed through GitHub Secrets and Variables. The key environment variables include:  
+- `NEXT_PUBLIC_CMS_URL`: The URL of the CMS providing the data.
+- `PUBLIC_URL`: The public URL where the application is hosted.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technologies Used
+- Next.js: A React framework for server-side rendering and static site generation.
+- React: A JavaScript library for building user interfaces.
+- Tailwind CSS: A utility-first CSS framework for rapid UI development.
+- WordPress CMS: A content management system providing data via the WP Rest API.
+- Docker: A platform for developing, shipping, and running applications in containers.
+- GitHub Actions: A CI/CD service for automating the build and deployment process.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
