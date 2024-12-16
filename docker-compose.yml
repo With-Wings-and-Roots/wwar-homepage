@@ -1,9 +1,0 @@
-version: '3'
-
-services:
-  wwar:
-    container_name: wwar_frontend
-    image: gitlab.cloudhall.de:5050/backslashsevengmbh/homepages/wwar-frontend-2023:stable
-    restart: always
-    ports:
-      - 3000:3000
