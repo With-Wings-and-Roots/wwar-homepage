@@ -8,10 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: production
-    env:
-      NEXT_PUBLIC_CMS_URL: ${{ vars.NEXT_PUBLIC_CMS_URL }}
-      PUBLIC_URL: ${{ vars.PUBLIC_URL }}
 
     steps:
       - name: Checkout repository
@@ -33,3 +29,6 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}/withwingsandroots-frontend:latest
+          build-args: |
+              NEXT_PUBLIC_CMS_URL=${{ env.NEXT_PUBLIC_CMS_URL }}
+              PUBLIC_URL=${{ env.PUBLIC_URL }}
