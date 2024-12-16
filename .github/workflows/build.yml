@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
+    env:
+      NEXT_PUBLIC_CMS_URL: ${{ vars.NEXT_PUBLIC_CMS_URL }}
+      PUBLIC_URL: ${{ vars.PUBLIC_URL }}
 
     steps:
       - name: Checkout repository
