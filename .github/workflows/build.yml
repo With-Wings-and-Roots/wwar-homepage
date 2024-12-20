@@ -21,14 +21,14 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/withwingsandroots-frontend:latest
+          tags: ghcr.io/With-Wings-and-Roots/wwar-homepage:latest
           build-args: |
               NEXT_PUBLIC_CMS_URL=${{ vars.NEXT_PUBLIC_CMS_URL }}
               PUBLIC_URL=${{ vars.PUBLIC_URL }}
