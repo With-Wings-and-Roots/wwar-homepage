@@ -9,14 +9,10 @@ ARG PUBLIC_URL
 ENV NEXT_PUBLIC_CMS_URL=${NEXT_PUBLIC_CMS_URL}
 ENV PUBLIC_URL=${PUBLIC_URL}
 
-ENV HOST=0.0.0.0
-ENV PORT=3000
-ENV NODE_ENV=production
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
 COPY . .
 RUN yarn build
-USER node
 EXPOSE 3000
 CMD [ "yarn", "start" ]
