@@ -46,7 +46,7 @@ const TimelineEventPage = ({
     title: { rendered: title } = {},
   } = timelineEvent || {};
 
-  const year = date.slice(0, 4);
+  const year = date?.slice(0, 4) || null;
   const endYear = endDate?.slice(0, 4) || null;
 
   return (

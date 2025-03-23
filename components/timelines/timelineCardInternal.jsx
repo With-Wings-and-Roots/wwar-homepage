@@ -44,7 +44,7 @@ const TimelineCardInternal = ({
               : 'bg-wwr_yellow_orange'
           }`}
         >
-          {timeLineEvent.acf.basic_info.start_date.slice(0, 4)}
+          {timeLineEvent.acf?.basic_info?.start_date?.slice(0, 4)}
         </div>
 
         <div className='font-light'>{parse(timeLineEvent.title.rendered)}</div>

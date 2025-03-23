@@ -60,8 +60,8 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
 
   return data.sort(
     (a, b) =>
-      Number(a.acf.basic_info.start_date.slice(0, 4)) -
-      Number(b.acf.basic_info.start_date.slice(0, 4))
+      Number(a.acf.basic_info.start_date?.slice(0, 4)) -
+      Number(b.acf.basic_info.start_date?.slice(0, 4))
   );
 };
 
