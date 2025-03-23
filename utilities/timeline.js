@@ -6,8 +6,8 @@ export const getTimelineEvents = async (lang = 'en') => {
   );
   const sortedData = data.sort((a, b) => {
     return (
-      Number(a.acf.basic_info.start_date.slice(0, 4)) -
-      Number(b.acf.basic_info.start_date.slice(0, 4))
+      Number(a.acf.basic_info.start_date?.slice(0, 4)) -
+      Number(b.acf.basic_info.start_date?.slice(0, 4))
     );
   });
 

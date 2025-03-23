@@ -3,24 +3,24 @@ import Link from 'next/link';
 
 const Buttons = ({ buttons }) => {
   const getUrlFromButtonTarget = (btn) => {
-    if (btn.target[0].file && btn.target[0].file.url) {
+    if (btn.target[0]?.file && btn.target[0].file.url) {
       return btn.target[0].file.url;
-    } else if (btn.target[0].link) {
+    } else if (btn.target[0]?.link) {
       return btn.target[0].link;
-    } else if (btn.target[0].page) {
+    } else if (btn.target[0]?.page) {
       return createLocalLink(btn.target[0].page);
-    } else if (btn.target[0].email) {
+    } else if (btn.target[0]?.email) {
       return `mailto:${btn.target[0].email}`;
     }
     return '#';
   };
 
   const shouldOpenInNewTab = (btn) => {
-    if (btn.target[0].file && btn.target[0].file.url) {
+    if (btn.target[0]?.file && btn.target[0].file.url) {
       return true;
-    } else if (btn.target[0].link) {
+    } else if (btn.target[0]?.link) {
       return true;
-    } else if (btn.target[0].page) {
+    } else if (btn.target[0]?.page) {
       return false;
     }
     return false;
