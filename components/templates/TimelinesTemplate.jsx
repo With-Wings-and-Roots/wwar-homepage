@@ -102,6 +102,7 @@ const TimelinesTemplate = ({
           timeLineEventsEn={timeLineEventsEn}
           allMedia={allMedia}
           baseLink={baseLink}
+          timelineTopics={timelineTopics}
         />
       </div>
     </div>
