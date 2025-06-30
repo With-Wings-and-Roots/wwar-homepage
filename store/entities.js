@@ -11,6 +11,7 @@ import mobileMenuReducer from './mobileMenu';
 import headerReducer from './header';
 import rangeSliderReducer from './rangeSlider';
 import timelineReducer from './timeline';
+import timelinesReducer from './timelines';
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
   header: headerReducer,
   rangeSlider: rangeSliderReducer,
   timeline: timelineReducer,
+  timelines: timelinesReducer,
 });

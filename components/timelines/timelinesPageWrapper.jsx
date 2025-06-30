@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, use, useEffect } from 'react';
 
 import TimelineCardContainer from './timelineCardContainer';
 import TimelineCountry from './timelineCountrySelector';
@@ -7,6 +7,11 @@ import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
 import LearnTimelines from '@/components/timelines/learnTimelines';
 import { useDispatch } from 'react-redux';
 import { topicsAdded } from '@/store/topics';
+import {
+  activatedTimelines,
+  timelinesAdded,
+  timelinesDatesAdded,
+} from '@/store/timelines';
 
 const TimelinesPageWrapper = ({
   lang,
@@ -26,11 +31,20 @@ const TimelinesPageWrapper = ({
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(topicsAdded({ topics: timelineTopics }), [
-      timelineTopics,
-      dispatch,
-    ]);
-  });
+    dispatch(topicsAdded({ topics: timelineTopics }));
+  }, [timelineTopics, dispatch]);
+
+  useEffect(() => {
+    if (lang == 'en') {
+      dispatch(timelinesAdded({ timelines: timeLineEventsEn }));
+      dispatch(activatedTimelines({ timelines: timeLineEventsEn }));
+      dispatch(timelinesDatesAdded({ timelines: timeLineEventsEn }));
+    } else {
+      dispatch(timelinesAdded({ timelines: timeLineEventsDe }));
+      dispatch(activatedTimelines({ timelines: timeLineEventsDe }));
+      dispatch(timelinesDatesAdded({ timelines: timeLineEventsDe }));
+    }
+  }, [timeLineEventsEn, timeLineEventsDe, dispatch]);
 
   return (
     <>
