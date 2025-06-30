@@ -11,9 +11,9 @@ const slice = createSlice({
   name: 'timelinesList',
   initialState: {
     allTimelines: [],
-    activatedTimelines: [],
+    allActivatedTimelines: [],
     allTimelinesDates: [],
-    activatedTimelinesDates: [],
+    allActivatedTimelinesDates: [],
   },
   reducers: {
     timelinesAdded: (timelinesList, action) => {
@@ -24,8 +24,8 @@ const slice = createSlice({
 
     activatedTimelines: (timelinesList, action) => {
       console.log('in activating');
-      timelinesList.activatedTimelines = [...action.payload.timelines];
-      console.log(timelinesList.activatedTimelines);
+      timelinesList.allActivatedTimelines = [...action.payload.timelines];
+      console.log(timelinesList.allActivatedTimelines);
     },
     deleteAllTimelines: (timelinesList) => {
       timelinesList.allTimelines = [];
@@ -37,7 +37,7 @@ const slice = createSlice({
 
     activatedTimeLineDates: (timelinesList, action) => {
       const timelinesDates = extractYearFromTimeline(action.payload.timelines);
-      timelinesList.activatedTimelinesDates = [...timelinesDates];
+      timelinesList.allActivatedTimelinesDates = [...timelinesDates];
     },
     deleteTimelinesDates: (timelinesList) => {
       timelinesList.allTimelinesDates = [];

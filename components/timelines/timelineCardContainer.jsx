@@ -3,9 +3,11 @@ import TimeLineCard from './timelineCard';
 import Tabs from './tabs';
 import Image from 'next/image';
 import { easeOut, motion } from 'framer-motion';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
+import { activatedTimeLineDates, activatedTimelines } from '@/store/timelines';
 
 const TimelineCardContainer = ({
   timeLineEventsDe,
@@ -17,12 +19,47 @@ const TimelineCardContainer = ({
   lang,
 }) => {
   const pathname = usePathname();
-
+  const dispatch = useDispatch();
   const {
     language,
     timeline: { country },
     rangeSlider: { date: selectedDate },
+    timelines: { allTimelines, allActivatedTimelines },
+    selectedStory: {
+      selectedStory: selectedTopic,
+      selectedStoryId: selectedTopicId,
+    },
   } = useSelector((state) => state.entities);
+  console.log({ selectedTopicId });
+  useEffect(() => {
+    if (selectedTopic === 'all') {
+      dispatch(activatedTimelines({ timelines: allTimelines }));
+      dispatch(activatedTimeLineDates({ timelines: allTimelines }));
+    }
+
+    if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
+      const timelines = allTimelines.filter((story) =>
+        story.acf?.basic_info?.topics?.includes(selectedTopicId)
+      );
+      dispatch(
+        activatedTimelines({
+          timelines,
+        })
+      );
+      dispatch(activatedTimeLineDates({ timelines }));
+    }
+    if (selectedTopic === 'featured') {
+      const timelines = allTimelines.filter(
+        (timeline) => timeline.acf.featured_story === true
+      );
+      dispatch(
+        activatedStories({
+          timelines,
+        })
+      );
+      dispatch(activatedTimeLineDates({ timelines }));
+    }
+  }, [selectedTopic, dispatch, allTimelines, selectedTopicId]);
 
   const countryTimelineData = {
     de: { events: timeLineEventsDe, datesArray: timeLineEventDatesArrayDe },
@@ -77,7 +114,7 @@ const TimelineCardContainer = ({
             : false
         }
       >
-        {timeLineEvents.map((timeLineEvent, index) => {
+        {allActivatedTimelines.map((timeLineEvent, index) => {
           const mediaUrl = allMedia.find(
             (media) => media.id === timeLineEvent.featured_media
           )?.source_url;

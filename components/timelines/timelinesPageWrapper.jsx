@@ -44,7 +44,7 @@ const TimelinesPageWrapper = ({
       dispatch(activatedTimelines({ timelines: timeLineEventsDe }));
       dispatch(timelinesDatesAdded({ timelines: timeLineEventsDe }));
     }
-  }, [timeLineEventsEn, timeLineEventsDe, dispatch]);
+  }, [timeLineEventsEn, timeLineEventsDe, lang, dispatch]);
 
   return (
     <>
