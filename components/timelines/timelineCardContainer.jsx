@@ -1,5 +1,7 @@
 'use client';
 import TimeLineCard from './timelineCard';
+import Tabs from './tabs';
+import Image from 'next/image';
 import { easeOut, motion } from 'framer-motion';
 import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -12,6 +14,7 @@ const TimelineCardContainer = ({
   timeLineEventDatesArrayDe,
   timeLineEventDatesArrayEn,
   baseLink,
+  lang,
 }) => {
   const pathname = usePathname();
 
@@ -48,6 +51,18 @@ const TimelineCardContainer = ({
 
   return (
     <div className='w-full overflow-hidden'>
+      <Tabs lang={lang} />
+      <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8'>
+        <input
+          className='my-4 p-1  h-full border-0 focus:outline-none'
+          placeholder='Search all timelines'
+          type='text'
+          // onChange={handleInput}
+        />
+        <div className='text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2'>
+          <Image src='/search.svg' width={24} height={24} alt='Search icon' />
+        </div>
+      </div>
       <motion.div
         animate={
           pathname.endsWith('/timelines')
