@@ -79,6 +79,22 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
     ? 0
     : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
 
+  const handleInput = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+    if (searchValue.length > 0) {
+      dispatch(
+        activatedTimelines({
+          timelines: allTimelines.filter((timeline) => {
+            return `${timeline.title.rendered}${timeline?.acf?.article?.author}`
+              .toLowerCase()
+              .includes(searchValue?.toLowerCase());
+          }),
+        })
+      );
+    } else {
+      dispatch(activatedTimelines({ timelines: allTimelines }));
+    }
+  };
   return (
     <div className='w-full overflow-hidden'>
       <Tabs lang={lang} />
@@ -87,7 +103,7 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
           className='my-4 p-1  h-full border-0 focus:outline-none'
           placeholder='Search all timelines'
           type='text'
-          // onChange={handleInput}
+          onChange={handleInput}
         />
         <div className='text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2'>
           <Image src='/search.svg' width={24} height={24} alt='Search icon' />
