@@ -8,6 +8,7 @@ import LearnTimelines from '@/components/timelines/learnTimelines';
 import { useDispatch } from 'react-redux';
 import { topicsAdded } from '@/store/topics';
 import {
+  activatedTimeLineDates,
   activatedTimelines,
   timelinesAdded,
   timelinesDatesAdded,
@@ -39,10 +40,12 @@ const TimelinesPageWrapper = ({
       dispatch(timelinesAdded({ timelines: timeLineEventsEn }));
       dispatch(activatedTimelines({ timelines: timeLineEventsEn }));
       dispatch(timelinesDatesAdded({ timelines: timeLineEventsEn }));
+      dispatch(activatedTimeLineDates({ timelines: timeLineEventsEn }));
     } else {
       dispatch(timelinesAdded({ timelines: timeLineEventsDe }));
       dispatch(activatedTimelines({ timelines: timeLineEventsDe }));
       dispatch(timelinesDatesAdded({ timelines: timeLineEventsDe }));
+      dispatch(activatedTimeLineDates({ timelines: timeLineEventsDe }));
     }
   }, [timeLineEventsEn, timeLineEventsDe, lang, dispatch]);
 

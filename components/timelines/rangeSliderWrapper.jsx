@@ -14,11 +14,8 @@ const RangeSliderWrapper = ({ timeLineEventDatesArrayObject }) => {
 
   const dispatch = useDispatch();
 
-  const timeLineEventDatesArray = useMemo(
-    () =>
-      timeLineEventDatesArrayObject[selectedCountry] ||
-      timeLineEventDatesArrayObject.en,
-    [timeLineEventDatesArrayObject, selectedCountry]
+  const timeLineEventDatesArray = useSelector(
+    (state) => state.entities.timelines.allActivatedTimelinesDates
   );
   const uniqueTimeLineEventDatesArray = useMemo(
     () => [...new Set(timeLineEventDatesArray)],

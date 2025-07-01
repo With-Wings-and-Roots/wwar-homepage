@@ -8,33 +8,32 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { activatedTimeLineDates, activatedTimelines } from '@/store/timelines';
+import { storiesCounted } from '@/store/selectedStory';
 
-const TimelineCardContainer = ({
-  timeLineEventsDe,
-  timeLineEventsEn,
-  allMedia,
-  timeLineEventDatesArrayDe,
-  timeLineEventDatesArrayEn,
-  baseLink,
-  lang,
-}) => {
+const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const {
     language,
     timeline: { country },
     rangeSlider: { date: selectedDate },
-    timelines: { allTimelines, allActivatedTimelines },
+    timelines: {
+      allTimelines,
+      allActivatedTimelines,
+      allActivatedTimelinesDates,
+    },
     selectedStory: {
       selectedStory: selectedTopic,
       selectedStoryId: selectedTopicId,
     },
   } = useSelector((state) => state.entities);
   console.log({ selectedTopicId });
+
   useEffect(() => {
     if (selectedTopic === 'all') {
       dispatch(activatedTimelines({ timelines: allTimelines }));
       dispatch(activatedTimeLineDates({ timelines: allTimelines }));
+      dispatch(storiesCounted({ count: allTimelines.length }));
     }
 
     if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
@@ -47,27 +46,21 @@ const TimelineCardContainer = ({
         })
       );
       dispatch(activatedTimeLineDates({ timelines }));
+      dispatch(storiesCounted({ count: timelines.length }));
     }
     if (selectedTopic === 'featured') {
       const timelines = allTimelines.filter(
         (timeline) => timeline.acf.featured_story === true
       );
       dispatch(
-        activatedStories({
+        activatedTimelines({
           timelines,
         })
       );
       dispatch(activatedTimeLineDates({ timelines }));
+      dispatch(storiesCounted({ count: timelines.length }));
     }
   }, [selectedTopic, dispatch, allTimelines, selectedTopicId]);
-
-  const countryTimelineData = {
-    de: { events: timeLineEventsDe, datesArray: timeLineEventDatesArrayDe },
-    en: { events: timeLineEventsEn, datesArray: timeLineEventDatesArrayEn },
-  };
-
-  const { events: timeLineEvents, datesArray: timeLineEventDatesArray } =
-    countryTimelineData[country] || countryTimelineData['en'];
 
   const [cardWidth, setCardWidth] = useState(0);
 
@@ -75,13 +68,13 @@ const TimelineCardContainer = ({
     cardWidth !== 0 ? 100 / Math.round(window?.innerWidth / cardWidth) : 0;
 
   const dateIndex = useMemo(
-    () => Math.max(0, timeLineEventDatesArray.indexOf(selectedDate) ?? 0),
-    [selectedDate, timeLineEventDatesArray]
+    () => Math.max(0, allActivatedTimelinesDates.indexOf(selectedDate) ?? 0),
+    [selectedDate, allActivatedTimelinesDates]
   );
 
   const isDateIndexZero = dateIndex === 0;
   const maxLeftPositionPercentage =
-    cardWidthPercentage * timeLineEventDatesArray.length - 100;
+    cardWidthPercentage * allActivatedTimelinesDates.length - 100;
   const leftPositionPercentage = isDateIndexZero
     ? 0
     : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
