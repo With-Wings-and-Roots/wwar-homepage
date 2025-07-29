@@ -5,7 +5,7 @@ import { germanySelected, usaSelected } from '@/store/timeline';
 import { useDispatch, useSelector } from 'react-redux';
 import { rangeDateChanged } from '@/store/rangeSlider';
 
-const TimelineCountry = ({ firstDate, language }) => {
+const TimelineCountry = ({ language }) => {
   const dispatch = useDispatch();
   const selectedCountry = useSelector(
     (state) => state.entities.timeline.country
@@ -20,7 +20,6 @@ const TimelineCountry = ({ firstDate, language }) => {
           onClick={() => {
             if (selectedCountry !== 'us') {
               dispatch(usaSelected({}));
-              dispatch(rangeDateChanged({ date: firstDate.en }));
             }
           }}
         >
@@ -35,7 +34,6 @@ const TimelineCountry = ({ firstDate, language }) => {
           onClick={() => {
             if (selectedCountry !== 'de') {
               dispatch(germanySelected({}));
-              dispatch(rangeDateChanged({ date: firstDate.de }));
             }
           }}
         >

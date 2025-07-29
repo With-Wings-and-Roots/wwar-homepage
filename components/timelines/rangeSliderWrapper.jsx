@@ -5,7 +5,7 @@ import { rangeDateChanged } from '@/store/rangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-const RangeSliderWrapper = ({ timeLineEventDatesArrayObject }) => {
+const RangeSliderWrapper = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { country: selectedCountry } = useSelector(

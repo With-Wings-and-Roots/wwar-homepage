@@ -27,7 +27,6 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
       selectedStoryId: selectedTopicId,
     },
   } = useSelector((state) => state.entities);
-  console.log({ selectedTopicId });
 
   useEffect(() => {
     if (selectedTopic === 'all') {
@@ -37,9 +36,13 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
     }
 
     if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
-      const timelines = allTimelines.filter((story) =>
-        story.acf?.basic_info?.topics?.includes(selectedTopicId)
-      );
+      const timelines = allTimelines.filter((story) => {
+        try {
+          return story.acf?.basic_info?.topics?.includes(selectedTopicId);
+        } catch {
+          return false;
+        }
+      });
       dispatch(
         activatedTimelines({
           timelines,
@@ -81,11 +84,15 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
 
   const handleInput = (e) => {
     const searchValue = e.target.value.toLowerCase();
+
     if (searchValue.length > 0) {
       dispatch(
         activatedTimelines({
           timelines: allTimelines.filter((timeline) => {
-            return `${timeline.title.rendered}${timeline?.acf?.article?.author}`
+            return `${timeline.title.rendered}
+            ${timeline.acf?.basic_info?.tags}${
+              timeline?.acf?.basic_info?.keywords
+            }${timeline.acf?.basic_info?.start_date?.slice(0, 4)}`
               .toLowerCase()
               .includes(searchValue?.toLowerCase());
           }),
@@ -98,7 +105,7 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
   return (
     <div className='w-full overflow-hidden'>
       <Tabs lang={lang} />
-      <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8'>
+      <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8 ml-8 md:ml-16 xl:ml-48'>
         <input
           className='my-4 p-1  h-full border-0 focus:outline-none'
           placeholder='Search all timelines'
@@ -127,6 +134,7 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
           const mediaUrl = allMedia.find(
             (media) => media.id === timeLineEvent.featured_media
           )?.source_url;
+          console.log('Card:', timeLineEvent.id, timeLineEvent.title.rendered);
 
           return (
             <React.Fragment key={index}>

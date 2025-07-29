@@ -17,15 +17,11 @@ const slice = createSlice({
   },
   reducers: {
     timelinesAdded: (timelinesList, action) => {
-      console.log('in adding');
       timelinesList.allTimelines = [...action.payload.timelines];
-      console.log(timelinesList.allTimelines);
     },
 
     activatedTimelines: (timelinesList, action) => {
-      console.log('in activating');
       timelinesList.allActivatedTimelines = [...action.payload.timelines];
-      console.log(timelinesList.allActivatedTimelines);
     },
     deleteAllTimelines: (timelinesList) => {
       timelinesList.allTimelines = [];
