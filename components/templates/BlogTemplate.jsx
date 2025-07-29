@@ -103,7 +103,9 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
                         />
                         <div className='mt-auto'>
                           <Link
-                            href={createLocalLink(`/blog/${post.slug}`)}
+                            href={createLocalLink(
+                              `/${params.lang}/blog/${post.slug}`
+                            )}
                             className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                           >
                             {data.acf?.read_more_label}
