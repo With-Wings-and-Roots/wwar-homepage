@@ -2,7 +2,7 @@
 import React from 'react';
 import parse from 'html-react-parser';
 
-import SingleTabButton from './SingleTabButton';
+import SingleTabButton from './singleTabButton';
 import { useSelector } from 'react-redux';
 
 const Tabs = ({ lang: language }) => {
@@ -13,11 +13,7 @@ const Tabs = ({ lang: language }) => {
   );
 
   return (
-    <div className='flex global_width flex-wrap gap-0.5 my-8'>
-      <SingleTabButton
-        buttonText={language === 'de' ? 'Ausgewählte Geschichten' : 'Featured'}
-        slug={'featured'}
-      />
+    <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 my-8 pt-8 pb-8'>
       {allTabData.map((singleTabData, i) => {
         return (
           <React.Fragment key={i}>

@@ -1,9 +1,18 @@
-import React, { Suspense } from 'react';
+'use client';
+import React, { Suspense, useEffect } from 'react';
 
 import TimelineCardContainer from './timelineCardContainer';
 import TimelineCountry from './timelineCountrySelector';
 import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
 import LearnTimelines from '@/components/timelines/learnTimelines';
+import { useDispatch, useSelector } from 'react-redux';
+import { topicsAdded } from '@/store/topics';
+import {
+  activatedTimeLineDates,
+  activatedTimelines,
+  timelinesAdded,
+  timelinesDatesAdded,
+} from '@/store/timelines';
 
 const TimelinesPageWrapper = ({
   lang,
@@ -11,41 +20,43 @@ const TimelinesPageWrapper = ({
   timeLineEventsEn,
   allMedia,
   baseLink,
+  timelineTopics,
 }) => {
-  const extractYearFromTimeline = (timeLineEvents) =>
-    timeLineEvents.map((timeLineEvent) =>
-      Number(timeLineEvent.acf.basic_info?.start_date?.slice(0, 4))
-    );
+  const {
+    timeline: { country },
+  } = useSelector((state) => state.entities);
 
-  const timeLineEventDatesArrayDe = extractYearFromTimeline(timeLineEventsDe);
-  const timeLineEventDatesArrayEn = extractYearFromTimeline(timeLineEventsEn);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(topicsAdded({ topics: timelineTopics }));
+  }, [timelineTopics, dispatch]);
+
+  useEffect(() => {
+    if (country == 'us') {
+      dispatch(timelinesAdded({ timelines: timeLineEventsEn }));
+      dispatch(activatedTimelines({ timelines: timeLineEventsEn }));
+      dispatch(timelinesDatesAdded({ timelines: timeLineEventsEn }));
+      dispatch(activatedTimeLineDates({ timelines: timeLineEventsEn }));
+    } else {
+      dispatch(timelinesAdded({ timelines: timeLineEventsDe }));
+      dispatch(activatedTimelines({ timelines: timeLineEventsDe }));
+      dispatch(timelinesDatesAdded({ timelines: timeLineEventsDe }));
+      dispatch(activatedTimeLineDates({ timelines: timeLineEventsDe }));
+    }
+  }, [timeLineEventsEn, timeLineEventsDe, country, dispatch]);
+
   return (
     <>
       <LearnTimelines />
-      <TimelineCountry
-        firstDate={{
-          de: timeLineEventDatesArrayDe[0],
-          en: timeLineEventDatesArrayEn[0],
-        }}
-        language={lang}
-      />
+      <TimelineCountry language={lang} />
       <TimelineCardContainer
-        timeLineEventsDe={timeLineEventsDe}
-        timeLineEventsEn={timeLineEventsEn}
         allMedia={allMedia}
-        timeLineEventDatesArrayDe={timeLineEventDatesArrayDe}
-        timeLineEventDatesArrayEn={timeLineEventDatesArrayEn}
         lang={lang}
         baseLink={baseLink}
       />
 
       <Suspense>
-        <RangeSliderWrapper
-          timeLineEventDatesArrayObject={{
-            de: timeLineEventDatesArrayDe,
-            en: timeLineEventDatesArrayEn,
-          }}
-        />
+        <RangeSliderWrapper />
       </Suspense>
     </>
   );

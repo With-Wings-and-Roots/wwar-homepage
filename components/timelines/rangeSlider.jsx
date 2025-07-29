@@ -3,12 +3,13 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { rangeDateChanged } from '@/store/rangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
 import RangeArrowSVG from '@/components/common/RangeArrowSVG';
-import { useRouter } from 'next/navigation';
 
 const RangeSlider = ({
   timeLineEventDatesArray,
   uniqueTimeLineEventDatesArray,
 }) => {
+  const [hasMounted, setHasMounted] = useState(false);
+
   const {
     rangeSlider: { date: selectedDate },
   } = useSelector((state) => state.entities);
@@ -33,6 +34,7 @@ const RangeSlider = ({
   };
 
   useEffect(() => {
+    setHasMounted(true);
     // Update rangeValue if selectedDate is set from somewhere
     if (selectedDate && timeLineEventDatesArray.includes(selectedDate)) {
       setRangeValue(selectedDate);
@@ -64,6 +66,7 @@ const RangeSlider = ({
       dispatch(rangeDateChanged({ date: tempValue }));
     }
   };
+  if (!hasMounted) return null;
 
   return (
     <div className='pb-20 pt-4'>
