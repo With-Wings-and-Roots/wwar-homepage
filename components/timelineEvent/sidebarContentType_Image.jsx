@@ -27,13 +27,15 @@ const SidebarContentTypeImage = async ({ content }) => {
 
   return (
     <div>
-      <Image
-        className={`w-50 h-50 mb-1`}
-        src={mediaUrl}
-        height={1000}
-        width={1000}
-        alt={title}
-      />
+      {mediaUrl && (
+        <Image
+          className={`w-50 h-50 mb-1`}
+          src={mediaUrl}
+          height={1000}
+          width={1000}
+          alt={title}
+        />
+      )}
       {display_credit && (
         <Link
           className='font-thin text-xs hover:underline'
