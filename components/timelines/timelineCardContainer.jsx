@@ -134,7 +134,6 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
           const mediaUrl = allMedia.find(
             (media) => media.id === timeLineEvent.featured_media
           )?.source_url;
-          console.log('Card:', timeLineEvent.id, timeLineEvent.title.rendered);
 
           return (
             <React.Fragment key={index}>
