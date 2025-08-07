@@ -8,7 +8,7 @@ const CopyrightAndTerms = ({ footer, lang: language }) => {
   return (
     <div className='pt-10 text-wwr_gray_storm flex flex-wrap gap-2'>
       <div>
-        {footer.copyright_text.replace('YEAR', new Date().getFullYear())}
+        {footer?.copyright_text?.replace('YEAR', new Date().getFullYear())}
       </div>
       <Link
         href={createLocalLink(footer.terms_page)}
