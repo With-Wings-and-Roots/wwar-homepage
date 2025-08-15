@@ -25,7 +25,7 @@ const Tabs = ({ lang: language }) => {
         );
       })}
       <SingleTabButton
-        buttonText={language === 'en' ? 'All Stories' : 'Alle Geschichten'}
+        buttonText={language === 'en' ? 'All Events' : 'Alle Ereignisse'}
         slug={'all'}
         lang={language}
       />
