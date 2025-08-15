@@ -12,7 +12,10 @@ const StoriesTemplate = ({
   data,
   subSlugs,
   baseLink,
+  timeLineEventsDe,
+  timeLineEventsEn,
 }) => {
+  const allEvents = [...(timeLineEventsDe || []), ...(timeLineEventsEn || [])];
   return (
     <div>
       <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative'>
@@ -48,6 +51,7 @@ const StoriesTemplate = ({
             allMedia={allMedia}
             allPersons={allPersons}
             baseLink={baseLink}
+            allEvents={allEvents}
           />
         )}
       <StoriesPageWrapper

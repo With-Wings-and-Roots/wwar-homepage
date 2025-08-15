@@ -83,14 +83,23 @@ const Page = async ({ params }) => {
     const pageData = await getPage(params.lang, pageObj.id);
     switch (pageObj.template) {
       case 'page_stories.php':
-        [stories, allMediaDe, allMediaEn, allPersons, topics] =
-          await Promise.all([
-            getAllStories(params.lang),
-            getAllMedia('de'),
-            getAllMedia('en'),
-            getAllPersons(),
-            fetchAllTopics(params.lang),
-          ]);
+        [
+          stories,
+          allMediaDe,
+          allMediaEn,
+          allPersons,
+          topics,
+          timeLineEventsDe,
+          timeLineEventsEn,
+        ] = await Promise.all([
+          getAllStories(params.lang),
+          getAllMedia('de'),
+          getAllMedia('en'),
+          getAllPersons(),
+          fetchAllTopics(params.lang),
+          getTimeline('de', params.lang),
+          getTimeline('us', params.lang),
+        ]);
         allMedia = [...allMediaDe, ...allMediaEn];
         template = (
           <StoriesTemplate
@@ -102,6 +111,8 @@ const Page = async ({ params }) => {
             allMedia={allMedia}
             allPersons={allPersons}
             topics={topics}
+            timeLineEventsDe={timeLineEventsDe}
+            timeLineEventsEn={timeLineEventsEn}
           />
         );
         break;

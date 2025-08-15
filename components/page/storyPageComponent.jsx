@@ -13,6 +13,7 @@ import { fetchAllData } from '@/utilities/general';
 import FullPageBackground from './fullPageBackground';
 import { createLocalLink, createVideoEmbedLink } from '@/utilities/links';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
+import RelatedEvents from '../timelineEvent/relatedEvents';
 
 const StoryPageComponent = ({
   lang = 'en',
@@ -22,6 +23,7 @@ const StoryPageComponent = ({
   allMedia,
   allPersons,
   baseLink,
+  allEvents,
 }) => {
   const story = stories.find((s) => s.slug === paramsStory) || null;
 
@@ -48,6 +50,9 @@ const StoryPageComponent = ({
 
   const relatedStories = (story?.acf?.related_stories || []).map((id) =>
     stories.find((s) => s.id === id)
+  );
+  const relatedEvents = (story?.acf?.related_events || []).map((id) =>
+    allEvents.find((e) => e.id === id)
   );
 
   return (
@@ -103,17 +108,26 @@ const StoryPageComponent = ({
                   </div>
                 </div>
               </div>
-              {relatedStories.length > 0 && (
-                <RelatedStoriesContainer
-                  relatedStories={relatedStories}
-                  lang={lang}
-                  allMedia={allMedia}
-                  allPersons={allPersons}
-                  hoverZoom={false}
-                  baseLink={baseLink}
-                />
-              )}
             </div>
+
+            {relatedStories.length > 0 && (
+              <RelatedStoriesContainer
+                relatedStories={relatedStories}
+                lang={lang}
+                allMedia={allMedia}
+                allPersons={allPersons}
+                hoverZoom={false}
+                baseLink={baseLink}
+              />
+            )}
+            {relatedEvents?.length > 0 && (
+              <RelatedEvents
+                relatedEvents={relatedEvents}
+                lang={lang}
+                baseLink={baseLink}
+                allMedia={allMedia}
+              />
+            )}
           </div>
         </div>
 

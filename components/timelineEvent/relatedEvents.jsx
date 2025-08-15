@@ -3,6 +3,8 @@ import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 
 const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
+  const modifiedBaseLink = baseLink.replace('/stories/', '/timelines/');
+
   return (
     <div className={`w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 pb-10`}>
       <div className={`py-6 text-wwr_white text-xl font-light`}>
@@ -19,7 +21,9 @@ const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
               <TimelineCardInternal
                 timeLineEvent={relatedEvent}
                 mediaUrl={mediaUrl}
-                link={`${createLocalLink(baseLink)}${relatedEvent.slug}`}
+                link={`${createLocalLink(modifiedBaseLink)}${
+                  relatedEvent.slug
+                }`}
               />
             </div>
           );
