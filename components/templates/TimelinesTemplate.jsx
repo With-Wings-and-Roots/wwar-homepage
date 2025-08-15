@@ -22,6 +22,7 @@ const TimelinesTemplate = ({
   let nextSlug = null;
   let prevSlug = null;
   let relatedEvents = null;
+  let relatedStories = null;
 
   if (
     subSlugs?.length > 0 &&
@@ -64,6 +65,16 @@ const TimelinesTemplate = ({
     relatedEvents = related_events
       ? timelineEvents.filter((event) => related_events.includes(event.id))
       : null;
+
+    const {
+      acf: {
+        basic_info: { related_stories },
+      },
+    } = timelineEvent;
+
+    relatedStories = related_stories
+      ? stories.filter((story) => related_stories.includes(story.id))
+      : null;
   }
 
   return (
@@ -88,6 +99,8 @@ const TimelinesTemplate = ({
             prevSlug={prevSlug}
             country={country}
             relatedEvents={relatedEvents}
+            relatedStories={relatedStories}
+            lang={params.lang?.toLowerCase()}
             baseLink={baseLink}
             timelineTopics={timelineTopics}
             allMedia={allMedia}

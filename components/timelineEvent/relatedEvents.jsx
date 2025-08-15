@@ -2,11 +2,11 @@ import React from 'react';
 import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 
-const RelatedEvents = ({ relatedEvents, baseLink, allMedia }) => {
+const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
   return (
     <div className={`w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 pb-10`}>
       <div className={`py-6 text-wwr_white text-xl font-light`}>
-        Related Events
+        {lang === 'en' ? 'Related Events' : 'Ähnliche Ereignisse'}
       </div>
       <div className={`grid grid-cols-2 md:grid-cols-4 gap-2`}>
         {relatedEvents.map((relatedEvent, index) => {

@@ -9,11 +9,13 @@ const RelatedStoriesContainer = ({
   hoverZoom,
   baseLink,
 }) => {
+  const modifiedBaseLink = baseLink.replace('/timelines/', '/stories/');
+
   return (
-    <div>
-      <h3 className='mb-8 mt-16 text-xl font-light'>
-        {lang === 'de' ? 'Ähnliche Beiträge' : 'Related Stories'}
-      </h3>
+    <div className={`w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 pb-10`}>
+      <div className={`py-6 text-wwr_white text-xl font-light`}>
+        {lang === 'en' ? 'Related Stories' : 'Ähnliche Beiträge'}
+      </div>
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3'>
         <StoryCardContainer
           storiesToRender={relatedStories}
@@ -21,7 +23,7 @@ const RelatedStoriesContainer = ({
           allMedia={allMedia}
           allPersons={allPersons}
           hoverZoom={hoverZoom}
-          baseLink={baseLink}
+          baseLink={modifiedBaseLink}
         />
       </div>
     </div>

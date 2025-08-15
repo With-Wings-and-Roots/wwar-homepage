@@ -14,6 +14,7 @@ import Button from '@/components/page/button';
 import RelatedEvents from '@/components/timelineEvent/relatedEvents';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
 import { createLocalLink } from '@/utilities/links';
+import RelatedStoriesContainer from '../page/relatedStoriesContainer';
 
 const TimelineEventPage = ({
   timelineEvent,
@@ -21,11 +22,13 @@ const TimelineEventPage = ({
   prevSlug,
   country,
   relatedEvents,
+  relatedStories,
   baseLink,
   timelineTopics,
   allMedia,
   stories,
   allPersons,
+  lang,
 }) => {
   const {
     timeline_event_topic,
@@ -151,8 +154,19 @@ const TimelineEventPage = ({
             {relatedEvents && (
               <RelatedEvents
                 relatedEvents={relatedEvents}
+                lang={lang}
                 baseLink={baseLink}
                 allMedia={allMedia}
+              />
+            )}
+            {relatedStories && (
+              <RelatedStoriesContainer
+                relatedStories={relatedStories}
+                lang={lang}
+                allMedia={allMedia}
+                allPersons={allPersons}
+                hoverZoom={false}
+                baseLink={baseLink}
               />
             )}
           </div>
