@@ -13,7 +13,7 @@ const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
       <div className={`grid grid-cols-2 md:grid-cols-4 gap-2`}>
         {relatedEvents.map((relatedEvent, index) => {
           const mediaUrl = allMedia.find(
-            (media) => media.id === relatedEvent.featured_media
+            (media) => media.id === relatedEvent?.featured_media
           )?.source_url;
 
           return (
@@ -22,7 +22,7 @@ const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
                 timeLineEvent={relatedEvent}
                 mediaUrl={mediaUrl}
                 link={`${createLocalLink(modifiedBaseLink)}${
-                  relatedEvent.slug
+                  relatedEvent?.slug
                 }`}
               />
             </div>
