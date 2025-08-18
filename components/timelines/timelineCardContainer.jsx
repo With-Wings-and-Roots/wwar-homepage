@@ -130,25 +130,26 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
             : false
         }
       >
-        {allActivatedTimelines.map((timeLineEvent, index) => {
-          const mediaUrl = allMedia.find(
-            (media) => media.id === timeLineEvent.featured_media
-          )?.source_url;
-
-          return (
-            <React.Fragment key={index}>
-              <TimeLineCard
-                mediaUrl={mediaUrl}
-                timeLineEvent={timeLineEvent}
-                setCardWidth={setCardWidth}
-                cardWidth={cardWidth}
-                language={language}
-                selectedCountry={country}
-                baseLink={baseLink}
-              />
-            </React.Fragment>
-          );
-        })}
+        {allActivatedTimelines.length > 0
+          ? allActivatedTimelines.map((timeLineEvent, index) => {
+              const mediaUrl = allMedia.find(
+                (media) => media.id === timeLineEvent.featured_media
+              )?.source_url;
+              return (
+                <React.Fragment key={index}>
+                  <TimeLineCard
+                    mediaUrl={mediaUrl}
+                    timeLineEvent={timeLineEvent}
+                    setCardWidth={setCardWidth}
+                    cardWidth={cardWidth}
+                    language={language}
+                    selectedCountry={country}
+                    baseLink={baseLink}
+                  />
+                </React.Fragment>
+              );
+            })
+          : ''}
       </motion.div>
 
       <div

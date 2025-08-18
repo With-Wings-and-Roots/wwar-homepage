@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const extractYearFromTimeline = (timeLineEvents) =>
   timeLineEvents.map((timeLineEvent) =>
-    Number(timeLineEvent.acf.basic_info?.start_date?.slice(0, 4))
+    Number(timeLineEvent?.acf?.basic_info?.start_date?.slice(0, 4))
   );
 
 const slice = createSlice({

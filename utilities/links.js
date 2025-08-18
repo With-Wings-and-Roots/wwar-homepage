@@ -1,6 +1,6 @@
 function prependLanguage(str) {
   // Check if the string starts with "/en" or "/de"
-  if (!/^\/(en|de)/.test(str)) {
+  if (!/^\/(en|de|ed)/.test(str)) {
     // If it doesn't, prepend "/en"
     str = '/en' + str;
   }
