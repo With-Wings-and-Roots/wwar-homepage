@@ -85,7 +85,7 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
   }, [dispatch, storiesToRender]);
 
   return (
-    <div className='pb-20'>
+    <div className='py-10'>
       <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8'>
         <input
           className='my-4 p-1  h-full border-0 focus:outline-none'

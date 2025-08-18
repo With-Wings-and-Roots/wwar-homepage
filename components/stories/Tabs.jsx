@@ -13,7 +13,7 @@ const Tabs = ({ lang: language }) => {
   );
 
   return (
-    <div className='flex global_width flex-wrap gap-0.5 my-8'>
+    <div className='flex w-full flex-wrap gap-0.5 my-8'>
       <SingleTabButton
         buttonText={language === 'de' ? 'Ausgewählte Geschichten' : 'Featured'}
         slug={'featured'}
