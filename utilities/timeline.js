@@ -20,11 +20,11 @@ const getTimelineCountryIds = async (lang = 'en') => {
   );
 
   const usData = allCountriesData.find((country) =>
-    ['united-states', 'usa'].includes(country.slug)
+    ['united-states', 'usa', 'united-states-ed'].includes(country.slug)
   );
 
   const deData = allCountriesData.find((country) =>
-    ['germany', 'deutschland'].includes(country.slug)
+    ['germany', 'deutschland', 'germany-ed'].includes(country.slug)
   );
 
   const result = {
@@ -37,11 +37,12 @@ const getTimelineCountryIds = async (lang = 'en') => {
 
 export const getTimeline = async (country = 'us', lang = 'en') => {
   const timelineCountryIds = await getTimelineCountryIds(lang);
-
   const baseUrl =
     lang === 'de'
       ? `${process.env.NEXT_PUBLIC_CMS_URL}/de/wp-json/wp/v2/timeline_event`
-      : `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event`;
+      : lang === 'ed'
+        ? `${process.env.NEXT_PUBLIC_CMS_URL}/ed/wp-json/wp/v2/timeline_event`
+        : `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event`;
 
   const neededFields = [
     'id',
