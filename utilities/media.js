@@ -3,7 +3,8 @@ export const fetchMediaFromId = async (mediaId) => {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/media/${mediaId}`,
     {
       next: {
-        revalidate: 600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     }
   );

@@ -2,7 +2,8 @@ export async function fetchAllData(url) {
   let allData = [];
   const res = await fetch(url, {
     next: {
-      revalidate: 600,
+      revalidate: 0,
+      cache: 'no-store',
     },
   });
   const data = await res.json();
@@ -13,7 +14,8 @@ export async function fetchAllData(url) {
   const fetchPage = async (page) => {
     const pageRes = await fetch(`${url}&page=${page}`, {
       next: {
-        revalidate: 600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     });
     return pageRes.json();

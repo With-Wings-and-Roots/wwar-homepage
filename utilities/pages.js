@@ -7,7 +7,8 @@ export async function getAllPages(lang) {
       `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/pages?page=${currentPage}&lang=${lang}`,
       {
         next: {
-          revalidate: 600,
+          revalidate: 0,
+          cache: 'no-store',
         },
       }
     );
@@ -35,7 +36,8 @@ export async function getPage(lang, id) {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/pages/${id}?lang=${lang}&acf_format=standard`,
     {
       next: {
-        revalidate: 600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     }
   );

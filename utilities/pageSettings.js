@@ -3,7 +3,8 @@ export async function getPageSettings(lang) {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/options?lang=${lang}`,
     {
       next: {
-        revalidate: 600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     }
   );

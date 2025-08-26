@@ -71,7 +71,8 @@ export const getTimelineTopicFromId = async (topicId) => {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event_topic/${topicId}`,
     {
       next: {
-        revalidate: 600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     }
   );

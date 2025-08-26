@@ -7,7 +7,8 @@ export async function getAllPosts(lang, post_type) {
       `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/${post_type}?page=${currentPage}&lang=${lang}&acf_format=standard`,
       {
         next: {
-          revalidate: 600,
+          revalidate: 0,
+          cache: 'no-store',
         },
       }
     );
