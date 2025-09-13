@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSelector, useDispatch } from 'react-redux';
-import { mobileSubMenuClosed } from '@/store/mobileMenu';
+import { mobileMenuClosed, mobileSubMenuClosed } from '@/store/mobileMenu';
 import { createLocalLink, isExternalLink } from '@/utilities/links';
 
 const MobileSubMenu = ({ menuItems }) => {
@@ -35,7 +35,11 @@ const MobileSubMenu = ({ menuItems }) => {
         )
         .map((subItem, index) => {
           return (
-            <div key={index} className='hover:text-wwr_white'>
+            <div
+              key={index}
+              className='hover:text-wwr_white'
+              onClick={() => dispatch(mobileMenuClosed({}))}
+            >
               <Link
                 href={
                   isExternalLink(subItem.url)
