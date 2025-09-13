@@ -168,16 +168,26 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_collaborators.php':
+        const partnerPageObj = pages.find((page) => {
+          const url = new URL(page.link);
+          const urlPageSlug = url
+            .toString()
+            .substring(url.origin.length)
+            .replace(/^\/|\/$/g, '')
+            .replace(/^(de\/|en\/|ed\/)/, '');
+          return urlPageSlug === 'partner' || urlPageSlug === 'partners';
+        });
+        const partnerPageData = await getPage(params.lang, partnerPageObj.id);
         template = (
-          <CollaboratorsTemplate
-            data={pageData}
-            subSlugs={subSlugs}
-            baseLink={pageSlug}
-          />
+          <>
+            <CollaboratorsTemplate
+              data={pageData}
+              subSlugs={subSlugs}
+              baseLink={pageSlug}
+            />
+            <PartnersTemplate data={partnerPageData} />
+          </>
         );
-        break;
-      case 'page_partners.php':
-        template = <PartnersTemplate data={pageData} />;
         break;
       case 'page_events.php':
         template = <EventsTemplate data={pageData} params={params} />;
