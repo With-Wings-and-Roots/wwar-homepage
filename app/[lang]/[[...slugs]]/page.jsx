@@ -70,6 +70,7 @@ const Page = async ({ params }) => {
 
   let stories,
     allMediaDe,
+    allMediaEd,
     allMediaEn,
     allPersons,
     topics,
@@ -82,17 +83,19 @@ const Page = async ({ params }) => {
   let template;
   if (pageObj) {
     const pageData = await getPage(params.lang, pageObj.id);
+
     switch (pageObj.template) {
       case 'page_stories.php':
-        [stories, allMediaDe, allMediaEn, allPersons, topics] =
+        [stories, allMediaDe, allMediaEd, allMediaEn, allPersons, topics] =
           await Promise.all([
             getAllStories(params.lang),
             getAllMedia('de'),
+            getAllMedia('ed'),
             getAllMedia('en'),
             getAllPersons(),
             fetchAllTopics(params.lang),
           ]);
-        allMedia = [...allMediaDe, ...allMediaEn];
+        allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
           <StoriesTemplate
             data={pageData}
@@ -112,6 +115,7 @@ const Page = async ({ params }) => {
           timeLineEventsEn,
           timelineTopics,
           allMediaDe,
+          allMediaEd,
           allMediaEn,
           stories,
           allPersons,
@@ -120,11 +124,12 @@ const Page = async ({ params }) => {
           getTimeline('us', params.lang),
           getTimelineTopics(params.lang),
           getAllMedia('de'),
+          getAllMedia('ed'),
           getAllMedia('en'),
           getAllStories(params.lang),
           getAllPersons(),
         ]);
-        allMedia = [...allMediaDe, ...allMediaEn];
+        allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
           <TimelinesTemplate
             data={pageData}
@@ -158,16 +163,27 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_collaborators.php':
+        const partnerPageObj = pages.find((page) => {
+          const url = new URL(page.link);
+          const urlPageSlug = url
+            .toString()
+            .substring(url.origin.length)
+            .replace(/^\/|\/$/g, '')
+            .replace(/^(de\/|en\/|ed\/)/, '');
+          return urlPageSlug === 'partner' || urlPageSlug === 'partners';
+        });
+        const partnerPageData = await getPage(params.lang, partnerPageObj.id);
+
         template = (
-          <CollaboratorsTemplate
-            data={pageData}
-            subSlugs={subSlugs}
-            baseLink={pageSlug}
-          />
+          <>
+            <CollaboratorsTemplate
+              data={pageData}
+              subSlugs={subSlugs}
+              baseLink={pageSlug}
+            />
+            <PartnersTemplate data={partnerPageData} />
+          </>
         );
-        break;
-      case 'page_partners.php':
-        template = <PartnersTemplate data={pageData} />;
         break;
       case 'page_events.php':
         template = <EventsTemplate data={pageData} params={params} />;
@@ -316,8 +332,26 @@ export async function generateMetadata({ params }) {
 
   // get page
   if (pageObj) {
-    pageData = await getPage(params.lang, pageObj.id);
-    const seoData = pageData.seo;
+    let seoData;
+
+    //Check if its timeline or story, because these pages are not handled by get all pages func
+    const isTimelineEvent =
+      pageObj?.template === 'page_timelines.php' && params.slugs?.length > 1;
+    const isStory =
+      pageObj?.template === 'page_stories.php' && params.slugs?.length > 1;
+
+    if (isTimelineEvent) {
+      const allEvents = await getTimelineEvents(params.lang);
+      const timelineEvent = allEvents.find((e) => e.slug === params.slugs[1]);
+      seoData = timelineEvent?.seo;
+    } else if (isStory) {
+      const allStories = await getAllStories(params.lang);
+      const story = allStories.find((e) => e.slug === params.slugs[1]);
+      seoData = story?.seo;
+    } else {
+      pageData = await getPage(params.lang, pageObj.id);
+      seoData = pageData.seo;
+    }
 
     return {
       metadataBase: process.env.PUBLIC_URL,
@@ -325,24 +359,20 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: seoData?._open_graph_title,
         description: seoData?._open_graph_description,
-        images:
-          seoData?._social_image_url !== ''
-            ? [
-                {
-                  url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-                },
-              ]
-            : [],
+        images: [
+          {
+            url: seoData._social_image_url,
+          },
+        ],
       },
       twitter: {
         title: seoData?._twitter_title,
         description: seoData?._twitter_description,
-        images:
-          seoData?._social_image_url !== ''
-            ? [
-                `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-              ]
-            : [],
+        images: [
+          {
+            url: seoData._social_image_url,
+          },
+        ],
       },
     };
   }
