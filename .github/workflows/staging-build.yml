@@ -32,3 +32,4 @@ jobs:
           build-args: |
               NEXT_PUBLIC_CMS_URL=${{ vars.NEXT_PUBLIC_CMS_URL }}
               PUBLIC_URL=${{ vars.PUBLIC_URL }}
+              BREVO_API_KEY=${{ vars.BREVO_API_KEY }}
