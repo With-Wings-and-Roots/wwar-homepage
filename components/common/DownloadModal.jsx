@@ -1,5 +1,4 @@
 'use client';
-import { sub } from 'date-fns';
 import React, { useState } from 'react';
 
 const DownloadModal = ({ open, onClose, selectedFile }) => {
@@ -8,6 +7,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
   const [lName, setLName] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false); // GDPR consent
 
   if (!open) return null; // Don’t render if modal is closed
 
@@ -24,6 +24,11 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
       return;
     }
 
+    if (!consent) {
+      alert('Please agree to receive emails to continue.');
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -32,16 +37,18 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           to: email,
-          fName: fName,
-          lName: lName,
+          fName,
+          lName,
+          language: selectedFile?.target[0]?.language?.label,
           subject: `Download Link: ${selectedFile?.label}`,
           html: `
-  Hello ${fName},<br/><br/>
-  The requested item can be accessed here:<br/>
-  <a href="${selectedFile?.target[0]?.file?.url}" target="_blank">${selectedFile?.label}</a><br/><br/>
-  Best regards,<br/>
-  With Wings and Roots
-`,
+            Hello ${fName},<br/><br/>
+            The requested item can be accessed here:<br/>
+            <a href="${selectedFile?.target[0]?.file?.url}" target="_blank">${selectedFile?.label}</a><br/><br/>
+            Best regards,<br/>
+            With Wings and Roots
+          `,
+          saveContact: consent, // only save if consent is true
         }),
       });
 
@@ -50,11 +57,11 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
       if (json.success) {
         setSubmitted(true);
       } else {
-        console.error('errorrrr', json.error);
+        console.error('Error sending email:', json.error);
         alert(json.error || 'Failed to send email');
       }
     } catch (err) {
-      console.error('errorrrr', err);
+      console.error('Error:', err);
       alert('Something went wrong. Please try again later.');
     } finally {
       setLoading(false);
@@ -67,6 +74,9 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
         <button
           onClick={() => {
             setEmail('');
+            setFName('');
+            setLName('');
+            setConsent(false);
             setSubmitted(false);
             onClose();
           }}
@@ -82,7 +92,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
             </h2>
             <form onSubmit={handleSubmit} className='space-y-4'>
               <input
-                type='name'
+                type='text'
                 placeholder='Enter your first name'
                 value={fName}
                 onChange={(e) => setFName(e.target.value)}
@@ -90,7 +100,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
                 required
               />
               <input
-                type='name'
+                type='text'
                 placeholder='Enter your last name'
                 value={lName}
                 onChange={(e) => setLName(e.target.value)}
@@ -106,6 +116,21 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
                 required
               />
 
+              {/* GDPR Consent */}
+              <div className='flex items-start space-x-2'>
+                <input
+                  type='checkbox'
+                  id='gdprConsent'
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  className='mt-1'
+                />
+                <label htmlFor='gdprConsent' className='text-sm'>
+                  I agree to receive emails from With Wings and Roots e.V. I
+                  understand I can unsubscribe anytime.
+                </label>
+              </div>
+
               <button
                 type='submit'
                 disabled={loading}
@@ -119,7 +144,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
           </>
         ) : (
           <div className='text-center'>
-            <h2 className='text-lg font-semibold mb-2'>✅ Request received</h2>
+            <h2 className='text-lg font-semibold mb-2'>Request received</h2>
             <p>
               The file will be sent to <strong>{email}</strong> shortly.
             </p>

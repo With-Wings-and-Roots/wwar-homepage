@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { to, subject, html, fName, lName } = body;
+    const { to, subject, html, fName, lName, language, saveContact } = body;
 
     if (!to || !to.includes('@')) {
       return NextResponse.json(
@@ -12,7 +12,7 @@ export async function POST(req) {
       );
     }
 
-    // Prepare email payload with params so name appears in email
+    // --- 1. Send transactional email ---
     const emailData = {
       sender: {
         email: 'olga@withwingsandroots.com',
@@ -21,97 +21,113 @@ export async function POST(req) {
       to: [{ email: to, name: fName || '' }],
       subject: subject || 'No Subject',
       htmlContent: html || '<p>No content provided</p>',
-      params: {
-        fName: fName || '',
-        lName: lName || '',
-      },
+      params: { fName: fName || '', lName: lName || '', language },
     };
 
-    // Send transactional email
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'api-key': process.env.BREVO_API_KEY,
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(emailData),
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return NextResponse.json(result, { status: response.status });
-    }
-
-    // ---- Check if contact exists ----
-    const checkResponse = await fetch(
-      `https://api.brevo.com/v3/contacts/${encodeURIComponent(to)}`,
-      {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          'api-key': process.env.BREVO_API_KEY,
-        },
-      }
-    );
-
-    const contactExists = checkResponse.status === 200;
-
-    // ---- Create or Update contact with name ----
-    let contactAdded = false;
-    let contactResult = null;
-
-    const contactData = {
-      email: to,
-      listIds: [2],
-      attributes: {
-        NACHNAME: fName || '',
-        VORNAME: lName || '',
-      },
-    };
-
-    if (!contactExists) {
-      // Create new contact
-      const createResponse = await fetch('https://api.brevo.com/v3/contacts', {
+    let emailResult;
+    try {
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
         method: 'POST',
         headers: {
           accept: 'application/json',
           'api-key': process.env.BREVO_API_KEY,
           'content-type': 'application/json',
         },
-        body: JSON.stringify(contactData),
+        body: JSON.stringify(emailData),
       });
 
-      contactResult = await createResponse.json();
-      contactAdded = createResponse.ok;
-    } else {
-      // Update existing contact with name (so name shows in Brevo UI)
-      const updateResponse = await fetch(
-        `https://api.brevo.com/v3/contacts/${encodeURIComponent(to)}`,
-        {
-          method: 'PUT',
-          headers: {
-            accept: 'application/json',
-            'api-key': process.env.BREVO_API_KEY,
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({ attributes: contactData.attributes }),
-        }
-      );
+      emailResult = await response.json();
 
-      contactResult = await updateResponse.json();
+      if (!response.ok) {
+        console.error('Email send error:', emailResult);
+        return NextResponse.json(emailResult, { status: response.status });
+      }
+    } catch (err) {
+      console.error('Email sending failed:', err);
+      return NextResponse.json(
+        { error: 'Failed to send email' },
+        { status: 500 }
+      );
     }
 
+    // --- 2. Save/update contact only if consented ---
+    let contactAdded = false;
+    let contactResult = null;
+
+    if (saveContact) {
+      try {
+        // Check if contact exists
+        const checkResponse = await fetch(
+          `https://api.brevo.com/v3/contacts/${encodeURIComponent(to)}`,
+          {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              'api-key': process.env.BREVO_API_KEY,
+            },
+          }
+        );
+
+        const contactExists = checkResponse.status === 200;
+
+        const contactData = {
+          email: to,
+          listIds: [2],
+          attributes: {
+            NACHNAME: fName || '',
+            VORNAME: lName || '',
+            LANGUAGE: language,
+          },
+        };
+
+        if (!contactExists) {
+          // Create new contact
+          const createResponse = await fetch(
+            'https://api.brevo.com/v3/contacts',
+            {
+              method: 'POST',
+              headers: {
+                accept: 'application/json',
+                'api-key': process.env.BREVO_API_KEY,
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify(contactData),
+            }
+          );
+          contactResult = await createResponse.json();
+          contactAdded = createResponse.ok;
+        } else {
+          // Update existing contact
+          const updateResponse = await fetch(
+            `https://api.brevo.com/v3/contacts/${encodeURIComponent(to)}`,
+            {
+              method: 'PUT',
+              headers: {
+                accept: 'application/json',
+                'api-key': process.env.BREVO_API_KEY,
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({ attributes: contactData.attributes }),
+            }
+          );
+          contactResult = await updateResponse.json();
+        }
+      } catch (err) {
+        console.error('Brevo contact save/update failed (ignored):', err);
+        // Do NOT throw — email already sent
+      }
+    }
+
+    // --- 3. Return response ---
     return NextResponse.json({
       success: true,
       emailSent: true,
       contactAdded,
-      alreadyExisted: contactExists,
       contactResult,
-      emailResult: result,
+      emailResult,
     });
   } catch (error) {
+    console.error('Server error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
