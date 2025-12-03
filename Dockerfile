@@ -4,6 +4,7 @@ WORKDIR /app
 # Declare build arguments
 ARG NEXT_PUBLIC_CMS_URL
 ARG PUBLIC_URL
+ARG BREVO_API_KEY
 
 # Set environment variables
 ENV NEXT_PUBLIC_CMS_URL=${NEXT_PUBLIC_CMS_URL}
