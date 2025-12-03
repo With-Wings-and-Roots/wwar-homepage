@@ -1522,6 +1522,11 @@
     "domhandler" "5.0.3"
     "htmlparser2" "9.0.0"
 
+"html-entities@^2.6.0":
+  "integrity" "sha512-kig+rMn/QOVRvr7c86gQ8lWXq+Hkv6CbAH1hLu+RG338StTpE8Z0b44SDVaqVu7HGKf27frdmUYEs9hTUX/cLQ=="
+  "resolved" "https://registry.npmjs.org/html-entities/-/html-entities-2.6.0.tgz"
+  "version" "2.6.0"
+
 "html-react-parser@^4.2.2":
   "integrity" "sha512-lh0wEGISnFZEAmvQqK4xc0duFMUh/m9YYyAhFursWxdtNv+hCZge0kj1y4wep6qPB5Zm33L+2/P6TcGWAJJbjA=="
   "resolved" "https://registry.npmjs.org/html-react-parser/-/html-react-parser-4.2.2.tgz"

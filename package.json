@@ -17,6 +17,7 @@
     "autoprefixer": "^10",
     "date-fns": "^3.6.0",
     "framer-motion": "^10.16.4",
+    "html-entities": "^2.6.0",
     "html-react-parser": "^4.2.2",
     "next": "^14.0.5-canary.31",
     "next-share": "^0.27.0",

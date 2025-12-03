@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import Sidebar from '@/components/timelineEvent/sidebar';
 import React from 'react';
+import { decode } from 'html-entities';
 
 const BlogTemplate = async ({ params, data, stories, allPersons }) => {
   const posts = await getAllPosts(params.lang, 'posts');
@@ -16,6 +17,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
   if (params.slugs.length === 2) {
     blogPost = posts.find((p) => p.slug === params.slugs[1]);
   }
+  const pageTitle = decode(data.acf?.page_title ?? data.title?.rendered);
 
   return (
     <div
@@ -44,7 +46,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
                 />
               )}
               <h1 className='text-3xl md:text-6xl font-normal'>
-                {blogPost.title?.rendered}
+                {decode(blogPost.title?.rendered || '')}
               </h1>
               <div className='mt-1 text-lg font-medium'>
                 {format(blogPost.date, 'yyyy-MM-dd')}
@@ -72,12 +74,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
         </>
       ) : (
         <>
-          <h1
-            dangerouslySetInnerHTML={{
-              __html: data.acf?.page_title ?? data.title?.rendered,
-            }}
-            className='text-3xl md:text-6xl font-normal'
-          />
+          <h1 className='text-3xl md:text-6xl font-normal'>{pageTitle}</h1>
           <div className='mt-16'>
             {posts?.length > 0 ? (
               <>
@@ -92,7 +89,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
                       </div>
                       <div className='col-span-12 md:col-span-8 xl:col-span-9 flex flex-col'>
                         <h2 className='text-2xl font-medium'>
-                          {post.title?.rendered}
+                          {decode(post.title?.rendered || '')}
                         </h2>
                         <div className='-mt-1 text-lg font-medium'>
                           {format(post.date, 'yyyy-MM-dd')}
