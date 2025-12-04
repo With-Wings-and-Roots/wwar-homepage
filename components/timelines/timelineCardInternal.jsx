@@ -12,7 +12,7 @@ const TimelineCardInternal = ({
   link,
 }) => {
   const [hovered, setHovered] = useState(false);
-
+  if (!timeLineEvent) return null;
   return (
     <Link
       href={link}
@@ -26,7 +26,7 @@ const TimelineCardInternal = ({
         src={mediaUrl ? mediaUrl : '/colors.png'}
         fill={true}
         style={{ objectFit: 'cover' }}
-        alt={timeLineEvent.title.rendered}
+        alt={timeLineEvent?.title.rendered}
         quality={80}
         sizes='100%'
         priority={true}
@@ -44,10 +44,10 @@ const TimelineCardInternal = ({
               : 'bg-wwr_yellow_orange'
           }`}
         >
-          {timeLineEvent.acf?.basic_info?.start_date?.slice(0, 4)}
+          {timeLineEvent?.acf?.basic_info?.start_date?.slice(0, 4)}
         </div>
 
-        <div className='font-light'>{parse(timeLineEvent.title.rendered)}</div>
+        <div className='font-light'>{parse(timeLineEvent?.title.rendered)}</div>
       </div>
     </Link>
   );
