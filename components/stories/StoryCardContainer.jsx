@@ -17,7 +17,7 @@ const StoryCardContainer = ({
       {storiesToRender &&
         storiesToRender.map((story, index) => {
           const mediaUrl = allMedia.find(
-            (media) => media.id === story.featured_media
+            (media) => media.id === story?.featured_media
           )?.source_url;
 
           const person = allPersons.find(
