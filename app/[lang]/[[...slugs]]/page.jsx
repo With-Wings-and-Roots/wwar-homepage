@@ -39,6 +39,7 @@ const Page = async ({ params }) => {
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
+  console.log('pageSlugs:', pageSlugs);
   let pageSlug = '';
   let subSlugs = [];
   let pageObj;
@@ -84,7 +85,7 @@ const Page = async ({ params }) => {
   let template;
   if (pageObj) {
     const pageData = await getPage(params.lang, pageObj.id);
-
+    console.log('tem', pageObj.template);
     switch (pageObj.template) {
       case 'page_stories.php':
         [
@@ -213,19 +214,24 @@ const Page = async ({ params }) => {
       case 'page_materials.php':
         template = <MaterialsTemplate data={pageData} />;
         break;
+
       case 'page_projects.php':
-        template = <OurWorkTemplate data={pageData} />;
+        template = <ProjectsTemplate data={pageData} />;
         break;
-      // case 'page_projects.php':
-      //   template = <ProjectsTemplate data={pageData} />;
-      //   break;
+
       case 'page_home.php':
         template = (
           <HomeTemplate data={pageData} params={params} subSlugs={subSlugs} />
         );
         break;
       default:
-        template = <DefaultTemplate data={pageData} />;
+        switch (pageObj.slug) {
+          case 'our-work':
+            template = <OurWorkTemplate data={pageData} />;
+            break;
+          default:
+            template = <DefaultTemplate data={pageData} />;
+        }
         break;
     }
   } else {
