@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import { createLocalLink } from '@/utilities/links';
-import { usePathname } from 'next/navigation';
 import { getHexForColorString } from '@/utilities/color';
 
 const StoryCard = ({

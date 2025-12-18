@@ -30,6 +30,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import { getAllPosts } from '@/utilities/posts';
+import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -213,8 +214,11 @@ const Page = async ({ params }) => {
         template = <MaterialsTemplate data={pageData} />;
         break;
       case 'page_projects.php':
-        template = <ProjectsTemplate data={pageData} />;
+        template = <OurWorkTemplate data={pageData} />;
         break;
+      // case 'page_projects.php':
+      //   template = <ProjectsTemplate data={pageData} />;
+      //   break;
       case 'page_home.php':
         template = (
           <HomeTemplate data={pageData} params={params} subSlugs={subSlugs} />

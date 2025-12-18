@@ -13,6 +13,9 @@ export function createLocalLink(link) {
     let relativeLink = url.toString().substring(url.origin.length);
     return prependLanguage(relativeLink);
   } else {
+    if (link?.startsWith('https://')) {
+      return link;
+    }
     return prependLanguage(link);
   }
 }

@@ -13,12 +13,14 @@ import {
   getAllPersons,
   getAllStories,
 } from '@/utilities/stories';
+import { getAllProjects } from '@/utilities/projects';
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
 import { getAllPages } from '@/utilities/pages';
 import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
+import ProjectCard from '../page/projectCard';
 
 const HomeTemplate = async ({ data, params, subSlugs }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
@@ -35,14 +37,18 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
       (a, b) => new Date(a.acf?.date_sorting) - new Date(b.acf?.date_sorting)
     )
     ?.slice(0, 3);
-
+  const lang = params.lang || 'en';
+  const projects = await getAllProjects(lang);
+  const projectsToRender = projects.filter((p) =>
+    data.acf?.projects?.map((project) => project)?.includes(p.id)
+  );
   return (
     <div className='-mt-20'>
       {subSlugs?.length > 1 &&
         subSlugs[0] === 'story' &&
         !!stories?.find((s) => s.slug === subSlugs[1]) && (
           <PageComponent
-            lang={params.lang}
+            lang={lang}
             paramsStory={subSlugs[1]}
             stories={stories.filter((story) =>
               data.acf?.stories_linked_stories
@@ -52,7 +58,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
             topics={topics}
             allMedia={allMedia}
             allPersons={allPersons}
-            baseLink={createLocalLink('/story/')}
+            baseLink={createLocalLink(`/${lang}/story/`)}
           />
         )}
       <PersonImageSlider
@@ -71,6 +77,14 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           />
         </ScrollToElementButton>
       </div>
+      {data.acf?.flexible_content?.length > 0 ? (
+        <div className='px-8 md:px-16 xl:px-48 relative text-black py-40 relative'>
+          <FlexibleContent
+            items={data.acf.flexible_content}
+            buttons={data.acf.flexible_content_buttons}
+          />
+        </div>
+      ) : null}
       <div
         className='px-8 md:px-16 xl:px-48 relative bg-black text-white py-20 relative'
         style={{
@@ -99,9 +113,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
               className='font-light text-lg mt-4'
             />
             <Link
-              href={data.acf?.film_button?.url}
-              target='_blank'
-              rel='noopener noreferrer'
+              href={createLocalLink(data.acf?.film_button?.url)}
               className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
             >
               {data.acf?.film_button?.label}
@@ -109,12 +121,17 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       </div>
-      {data.acf?.flexible_content?.length > 0 ? (
-        <div className='px-8 md:px-16 xl:px-48 pt-20 flex flex-col gap-y-10'>
-          <FlexibleContent
-            items={data.acf.flexible_content}
-            buttons={data.acf.flexible_content_buttons}
-          />
+      {projectsToRender?.length > 0 ? (
+        <div className='px-8 md:px-16 xl:px-48 py-20'>
+          <h2 className='text-3xl md:text-6xl font-light mb-10'>
+            Major Initiatives
+          </h2>
+
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+            {projectsToRender.map((project, index) => (
+              <ProjectCard key={index} project={project} />
+            ))}
+          </div>
         </div>
       ) : null}
       {upcomingEvents?.length > 0 ? (
@@ -160,10 +177,10 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
                 ?.map((sts) => sts.story?.ID)
                 ?.includes(story.id)
             )}
-            lang={params.lang}
+            lang={lang}
             allMedia={allMedia}
             allPersons={allPersons}
-            baseLink={createLocalLink('/story/')}
+            baseLink={createLocalLink(`/${lang}/story/`)}
           />
         </div>
       </div>
@@ -221,6 +238,13 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
                     {page.linked_page.post_title}
                   </Link>
                 ))}
+                <Link
+                  key={'for-educators'}
+                  href={'/'}
+                  className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
+                >
+                  For Educators
+                </Link>
               </div>
             </div>
           </div>
