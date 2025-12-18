@@ -3,104 +3,30 @@ import Image from 'next/image';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import WorkshopQuotes from '@/components/workshops/WorkshopQuotes';
 import ProjectCard from '../page/projectCard';
+import { getAllProjects } from '@/utilities/projects';
+import { fetchMediaFromId } from '@/utilities/media';
 
-export const ourWorkSampleData = {
-  page_title: 'Our Work',
-  intro_header_image: '/images/portrait_12.webp',
-  intro_text:
-    'We create media, programs, and learning experiences that challenge bias, spark dialogue, and build cultures of belonging across communities.',
-
-  initiatives: [
-    {
-      title: 'Belonging Beyond Borders',
-      excerpt:
-        'A film-driven initiative exploring identity, empathy, and belonging through storytelling and dialogue.',
-      image: '/images/portrait_12.webp',
-      link: '/initiatives/bbb',
-    },
-    {
-      title: 'Reimagine Belonging',
-      excerpt:
-        'A multi-year storytelling and research project uplifting lived experiences.',
-      image: '/images/portrait_12.webp',
-      link: '/initiatives/reimagine-belonging',
-    },
-    {
-      title: 'PASSt',
-      excerpt:
-        'A youth-centered project focused on creative expression and leadership.',
-      image: '/images/portrait_12.webp',
-      link: '/initiatives/passt',
-    },
-  ],
-  projectAreas: [
-    {
-      title: 'Film-Based Projects',
-      description:
-        'Documentary films and short-form media used to spark dialogue.',
-    },
-    {
-      title: 'Education & Curriculum',
-      description:
-        'Lesson plans, toolkits, and learning resources for classrooms.',
-    },
-    {
-      title: 'Youth Workshops',
-      description:
-        'Participatory workshops centered on storytelling and identity.',
-    },
-    {
-      title: 'Campaigns',
-      description: 'Public-facing media campaigns and community activations.',
-    },
-    {
-      title: 'Installations',
-      description: 'Exhibitions and immersive storytelling experiences.',
-    },
-    {
-      title: 'Convenings',
-      description: 'Facilitated dialogues, panels, and community gatherings.',
-    },
-  ],
-  cta: [
-    {
-      label: 'Explore Our Work',
-      url: '/work',
-    },
-    {
-      label: 'Partner With Us',
-      url: '/get-involved',
-    },
-  ],
-  quotes: [
-    'Storytelling can move people where data cannot.',
-    'Belonging is built when stories are shared.',
-  ],
-
-  impact: [
-    { value: '12,000+', label: 'Students reached' },
-    { value: '65+', label: 'Community partners' },
-    { value: '20+', label: 'Cities engaged' },
-    { value: '250+', label: 'Workshops & events' },
-  ],
-};
-
-const OurWorkTemplate = () => {
-  const data = ourWorkSampleData;
+const OurWorkTemplate = async ({ data }) => {
+  const projects = await getAllProjects();
+  const projectsToRender = projects.filter((p) =>
+    data.acf?.major_projects?.map((project) => project)?.includes(p.id)
+  );
+  const headerImage = await fetchMediaFromId(data?.acf?.image);
+  console.log('data in our work template:', data.acf.call_to_action);
 
   return (
     <div className='-mt-20'>
       {/* HERO */}
       <div className='h-screen relative'>
         <Image
-          src={data.intro_header_image}
-          alt={data.page_title}
+          src={data.acf?.image}
+          alt={headerImage?.alt_text || 'Our Work Header Image'}
           fill
           className='object-cover'
           priority
         />
         <div className='px-8 md:px-16 xl:px-48 pt-44 relative text-black'>
-          <h1 className='text-3xl md:text-6xl font-light'>{data.page_title}</h1>
+          <h1 className='text-3xl md:text-6xl font-bold'>{data.acf?.title}</h1>
         </div>
       </div>
 
@@ -109,15 +35,9 @@ const OurWorkTemplate = () => {
         <div className='grid grid-cols-6 gap-12'>
           <div className='col-span-6 lg:col-span-4'>
             <WysiwygContent
-              content={data.intro_text}
+              content={data.acf?.intro_text}
               className='text-lg font-light max-w-3xl'
             />
-          </div>
-
-          <div className='col-span-6 lg:col-span-2'>
-            <div className='border-l-4 border-wwr_yellow_orange pl-6'>
-              <WorkshopQuotes quotes={data.quotes} />
-            </div>
           </div>
         </div>
       </div>
@@ -129,7 +49,7 @@ const OurWorkTemplate = () => {
         </h2>
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-          {ourWorkSampleData.initiatives.slice(0, 3).map((project, index) => (
+          {projectsToRender.map((project, index) => (
             <ProjectCard key={index} project={project} />
           ))}
         </div>
@@ -139,15 +59,16 @@ const OurWorkTemplate = () => {
         <h2 className='text-3xl md:text-6xl font-light mb-10'>Project Areas</h2>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12'>
-          {data.projectAreas.map((area, i) => (
+          {data.acf?.project_areas.map((area, i) => (
             <div key={i} className='group border-t border-black/20 pt-6'>
               <h3 className='text-lg lg:text-xl font-medium group-hover:text-wwr_yellow_orange transition-colors'>
-                {area.title}
+                {area.area_name}
               </h3>
 
-              <p className='mt-3 font-light text-black/70'>
-                {area.description}
-              </p>
+              <WysiwygContent
+                content={area.description}
+                className='mt-3 font-light text-black/70'
+              />
             </div>
           ))}
         </div>
@@ -174,7 +95,7 @@ const OurWorkTemplate = () => {
           {/* RIGHT — SIGNALS */}
           <div className='col-span-6 lg:col-span-3'>
             <div className='space-y-8'>
-              {data.impact.map((item, i) => (
+              {data.acf?.our_impact.map((item, i) => (
                 <div
                   key={i}
                   className='flex items-baseline gap-6 border-b border-black/10 pb-4'
@@ -183,7 +104,7 @@ const OurWorkTemplate = () => {
                     {item.value}
                   </div>
                   <div className='text-sm md:text-base uppercase tracking-wide text-black/70'>
-                    {item.label}
+                    {item.impact}
                   </div>
                 </div>
               ))}
@@ -207,10 +128,10 @@ const OurWorkTemplate = () => {
           </h2>
 
           <div className='flex flex-wrap gap-6 mt-10'>
-            {data.cta.map((item, i) => (
+            {data.acf?.call_to_action?.map((item, i) => (
               <a
                 key={i}
-                href={item.url}
+                href={item.cta.url}
                 className={`
             px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
             ${
@@ -220,7 +141,7 @@ const OurWorkTemplate = () => {
             }
           `}
               >
-                {item.label}
+                {item.cta.title}
               </a>
             ))}
           </div>
