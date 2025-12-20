@@ -6,3 +6,9 @@ export const getAllProjects = async (lang = 'en') => {
   );
   return data;
 };
+export const getProjectBySlug = async (slug, lang = 'en') => {
+  const data = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/project?slug=${slug}&lang=${lang}`
+  );
+  return data;
+};

@@ -31,6 +31,7 @@ import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import { getAllPosts } from '@/utilities/posts';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
+import ProjectTemplate from '@/components/templates/ProjectTemplate';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -228,6 +229,10 @@ const Page = async ({ params }) => {
         switch (pageObj.slug) {
           case 'our-work':
             template = <OurWorkTemplate data={pageData} />;
+            break;
+
+          case 'project':
+            template = <ProjectTemplate subSlugs={subSlugs} />;
             break;
           default:
             template = <DefaultTemplate data={pageData} />;
