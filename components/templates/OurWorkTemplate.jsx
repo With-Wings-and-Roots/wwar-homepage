@@ -1,18 +1,19 @@
 import React from 'react';
 import Image from 'next/image';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import WorkshopQuotes from '@/components/workshops/WorkshopQuotes';
 import ProjectCard from '../page/projectCard';
-import { getAllProjects } from '@/utilities/projects';
+import { getAllProjectAreas, getAllProjects } from '@/utilities/projects';
 import { fetchMediaFromId } from '@/utilities/media';
+import Link from 'next/link';
+import { createLocalLink } from '@/utilities/links';
 
-const OurWorkTemplate = async ({ data }) => {
-  const projects = await getAllProjects();
+const OurWorkTemplate = async ({ data, lang = 'en' }) => {
+  const projects = await getAllProjects(lang);
+  const projectAreas = await getAllProjectAreas(lang);
   const projectsToRender = projects.filter((p) =>
     data.acf?.major_projects?.map((project) => project)?.includes(p.id)
   );
   const headerImage = await fetchMediaFromId(data?.acf?.image);
-  console.log('data in our work template:', data.acf.call_to_action);
 
   return (
     <div className='-mt-20'>
@@ -55,24 +56,33 @@ const OurWorkTemplate = async ({ data }) => {
         </div>
       </div>
       {/* PROJECT AREAS */}
-      <div className='px-8 md:px-16 xl:px-48 py-20 bg-white'>
-        <h2 className='text-3xl md:text-6xl font-light mb-10'>Project Areas</h2>
+      {projectAreas?.length > 0 && (
+        <div className='px-8 md:px-16 xl:px-48 py-20 bg-white'>
+          <h2 className='text-3xl md:text-6xl font-light mb-10'>
+            Project Areas
+          </h2>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12'>
-          {data.acf?.project_areas.map((area, i) => (
-            <div key={i} className='group border-t border-black/20 pt-6'>
-              <h3 className='text-lg lg:text-xl font-medium group-hover:text-wwr_yellow_orange transition-colors'>
-                {area.area_name}
-              </h3>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12'>
+            {projectAreas.map((area, i) => (
+              <Link
+                key={i}
+                href={createLocalLink(`/projects/${area.slug}`)}
+                className='group border-t border-black/20 pt-6 block'
+              >
+                <h3
+                  className='text-lg lg:text-xl font-medium group-hover:text-wwr_yellow_orange transition-colors'
+                  dangerouslySetInnerHTML={{ __html: area.name }}
+                />
 
-              <WysiwygContent
-                content={area.description}
-                className='mt-3 font-light text-black/70'
-              />
-            </div>
-          ))}
+                <WysiwygContent
+                  content={area.description}
+                  className='mt-3 font-light text-black/70'
+                />
+              </Link>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* IMPACT */}
       <div className='px-8 md:px-16 xl:px-48 py-24 bg-wwr_gray_storm/5'>
