@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { createLocalLink } from '@/utilities/links';
+import ProjectList from '../page/projectList';
+import ProjectGrid from '../page/projectGrid';
 
 const ProjectsArchive = ({
   projects,
@@ -25,7 +26,7 @@ const ProjectsArchive = ({
 
   const [filteredProjects, setFilteredProjects] = useState(initialFiltered);
   const [selectedType, setSelectedType] = useState('All');
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState('list');
   const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const ProjectsArchive = ({
         {/* Project Area / Type */}
         <div>
           <h3 className='uppercase text-sm tracking-wide opacity-80 mb-2 mt-6'>
-            Filter by project areas
+            Filter by project area
           </h3>
           <div className='flex flex-wrap gap-3'>
             {[{ slug: 'all', name: 'All' }, ...allProjectAreas].map((area) => {
@@ -99,7 +100,7 @@ const ProjectsArchive = ({
         </div>
       </section>
 
-      {/* ================= PROJECT GRID ================= */}
+      {/* ================= PROJECT GRID/LIST ================= */}
       <section
         className={`grid gap-8 ${
           viewMode === 'grid'
@@ -107,48 +108,15 @@ const ProjectsArchive = ({
             : 'grid-cols-1'
         }`}
       >
-        {filteredProjects.slice(0, visibleCount).map((project, i) => {
-          const { title, acf, link } = project;
-          return (
-            <div
-              key={i}
-              className='border rounded-lg overflow-hidden hover:shadow-lg transition'
-            >
-              {acf?.thumbnail && (
-                <div className='relative h-56 w-full'>
-                  <Image
-                    src={acf.thumbnail.url}
-                    alt={title?.rendered}
-                    fill
-                    sizes='(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'
-                    className='object-cover'
-                  />
-                </div>
-              )}
-
-              <div className='p-6'>
-                <h3
-                  className='text-2xl font-medium mb-2'
-                  dangerouslySetInnerHTML={{ __html: title?.rendered }}
-                />
-                <p className='text-sm text-gray-600 mb-2'>
-                  {acf?.project_type?.join(' / ')} |{' '}
-                  {acf?.geography?.join(' / ')} | {acf?.years}
-                </p>
-                <p className='text-gray-700 mb-4'>{acf?.summary}</p>
-                <div className='text-sm text-gray-500 mb-2'>
-                  {acf?.tags?.join(' · ')}
-                </div>
-                <Link
-                  href={createLocalLink(link)}
-                  className='text-wwr_yellow_orange font-medium underline'
-                >
-                  View project →
-                </Link>
-              </div>
-            </div>
-          );
-        })}
+        {filteredProjects
+          .slice(0, visibleCount)
+          .map((project, i) =>
+            viewMode === 'grid' ? (
+              <ProjectGrid key={i} project={project} />
+            ) : (
+              <ProjectList key={i} project={project} />
+            )
+          )}
       </section>
 
       {/* ================= LOAD MORE ================= */}

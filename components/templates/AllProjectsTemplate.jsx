@@ -5,20 +5,38 @@ import {
   getAllProjectAreas,
   getAllProjects,
   getProjectAreaBySlug,
-} from '@/utilities/projects'; // Your CMS fetch function
+} from '@/utilities/projects';
+import { fetchMediaFromId } from '@/utilities/media';
 import ProjectsArchive from '../blogs/ProjectsArchive';
 
-const ProjectsAreaPage = async ({ subSlugs, lang = 'en' }) => {
+const AllProjectsTemplate = async ({ subSlugs, lang = 'en' }) => {
   const projectAreaSlug = subSlugs?.[0] || '';
   let projectArea;
 
   // Fetch projects in the specific area
   const projects = await getAllProjects(lang);
+
   if (projectAreaSlug !== 'all') {
     projectArea = await getProjectAreaBySlug(projectAreaSlug, lang);
   }
+
   const allProjectAreas = await getAllProjectAreas(lang);
+
   if (!projects || projects.length === 0) return notFound();
+
+  // Pre-fetch all banner media for all projects
+  const projectsWithMedia = await Promise.all(
+    projects.map(async (project) => {
+      const bannerMedia = project?.acf?.banner
+        ? await fetchMediaFromId(project.acf.banner)
+        : null;
+
+      return {
+        ...project,
+        bannerMedia,
+      };
+    })
+  );
 
   return (
     <div className='px-8 md:px-16 xl:px-48 py-20'>
@@ -27,7 +45,7 @@ const ProjectsAreaPage = async ({ subSlugs, lang = 'en' }) => {
       </div>
 
       <ProjectsArchive
-        projects={projects}
+        projects={projectsWithMedia}
         projectArea={projectArea}
         projectAreaSlug={projectAreaSlug}
         allProjectAreas={allProjectAreas}
@@ -36,4 +54,4 @@ const ProjectsAreaPage = async ({ subSlugs, lang = 'en' }) => {
   );
 };
 
-export default ProjectsAreaPage;
+export default AllProjectsTemplate;
