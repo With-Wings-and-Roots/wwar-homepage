@@ -5,6 +5,7 @@ import { createLocalLink } from '@/utilities/links';
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/utilities/projects';
 import RelatedEvents from '../publicEvents/relatedEvents';
+import RelatedBlogs from '../blogs/relatedBlogs';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -92,34 +93,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
         </section>
       )}
 
-      {/* ================= OUR APPROACH ================= */}
-      {acf?.our_approach?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
-          <div className='max-w-5xl mx-auto space-y-24'>
-            {acf.our_approach.map((item, i) => (
-              <div key={i} className='grid grid-cols-1 md:grid-cols-3 gap-12'>
-                {/* LEFT — Heading */}
-                <div className='md:col-span-1'>
-                  <h2 className='text-2xl md:text-4xl font-light leading-tight'>
-                    {item.heading}
-                  </h2>
-                </div>
-
-                {/* RIGHT — Rich Text */}
-                <div className='md:col-span-2'>
-                  <div
-                    className='prose prose-lg prose-neutral max-w-none font-light
-                         prose-strong:font-medium
-                         prose-li:leading-relaxed'
-                    dangerouslySetInnerHTML={{ __html: item.text }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* ================= VISUAL STRIP ================= */}
       {(acf?.gallery?.length > 0 || acf?.related_videos?.length > 0) && (
         <section className='px-8 md:px-16 xl:px-48 py-16'>
@@ -165,6 +138,40 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           </div>
         </section>
       )}
+
+      {/* ================= OUR APPROACH ================= */}
+      {acf?.our_approach?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
+          <div className='max-w-5xl mx-auto space-y-24'>
+            {acf.our_approach.map((item, i) => (
+              <div key={i} className='grid grid-cols-1 md:grid-cols-3 gap-12'>
+                {/* LEFT — Heading */}
+                <div className='md:col-span-1'>
+                  <h2 className='text-2xl md:text-4xl font-light leading-tight'>
+                    {item.heading}
+                  </h2>
+                </div>
+
+                {/* RIGHT — Rich Text */}
+                <div className='md:col-span-2'>
+                  <div
+                    className='prose prose-lg prose-neutral max-w-none font-light
+                         prose-strong:font-medium
+                         prose-li:leading-relaxed'
+                    dangerouslySetInnerHTML={{ __html: item.text }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ================= RELATED BLOGS ================= */}
+      {acf?.related_blogs?.length > 0 && (
+        <RelatedBlogs relatedBlogIds={acf.related_blogs} lang={lang} />
+      )}
+
       {/* ================= RELATED EVENTS ================= */}
       {acf?.related_events?.length > 0 && (
         <RelatedEvents

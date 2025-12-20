@@ -9,7 +9,6 @@ const RelatedEvents = async ({ relatedEventIds, lang = 'en' }) => {
   const events = await Promise.all(
     relatedEventIds.map((id) => getPostById(id, lang, 'publicevent'))
   );
-  console.log('Related event IDs:', events);
 
   return (
     <section className='px-8 md:px-16 xl:px-48 py-10 text-black'>
