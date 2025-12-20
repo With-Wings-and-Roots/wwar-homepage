@@ -132,6 +132,12 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
               <ProjectCard key={index} project={project} />
             ))}
           </div>
+          <Link
+            href={createLocalLink(`${data.acf?.explore_all_projects}all`)}
+            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
+          >
+            Explore All Projects
+          </Link>
         </div>
       ) : null}
       {upcomingEvents?.length > 0 ? (

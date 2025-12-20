@@ -32,6 +32,7 @@ import BlogTemplate from '@/components/templates/BlogTemplate';
 import { getAllPosts } from '@/utilities/posts';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
+import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -215,7 +216,7 @@ const Page = async ({ params }) => {
         break;
 
       case 'page_projects.php':
-        template = <ProjectsTemplate data={pageData} />;
+        template = <AllProjectsTemplate subSlugs={subSlugs} />;
         break;
 
       case 'page_home.php':
