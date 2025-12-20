@@ -4,6 +4,7 @@ import { fetchMediaFromId } from '@/utilities/media';
 import { createLocalLink } from '@/utilities/links';
 import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/utilities/projects';
+import RelatedEvents from '../publicEvents/relatedEvents';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -163,6 +164,15 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
             })}
           </div>
         </section>
+      )}
+      {/* ================= RELATED EVENTS ================= */}
+      {acf?.related_events?.length > 0 && (
+        <RelatedEvents
+          relatedEventIds={acf?.related_events}
+          baseLink='/events' // page where events are listed
+          allMedia={[]} // if you want to pass media objects
+          lang={lang}
+        />
       )}
 
       {/* ================= CALL TO ACTION ================= */}

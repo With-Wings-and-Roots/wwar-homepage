@@ -18,3 +18,17 @@ export async function getAllPosts(lang, post_type) {
   }
   return posts;
 }
+
+export async function getPostById(id, lang, post_type) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/${post_type}/${id}?lang=${lang}&acf_format=standard`,
+    {
+      next: {
+        revalidate: 0,
+        cache: 'no-store',
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
+}
