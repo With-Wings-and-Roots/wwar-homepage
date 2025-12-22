@@ -7,11 +7,12 @@ import {
   getProjectAreaBySlug,
 } from '@/utilities/projects';
 import { fetchMediaFromId } from '@/utilities/media';
-import ProjectsArchive from '../blogs/ProjectsArchive';
+import ProjectsArchive from '../projects/ProjectsArchive';
+import ProjectsDiscription from '../projects/projectDiscription';
 
 const AllProjectsTemplate = async ({ subSlugs, lang = 'en' }) => {
   const projectAreaSlug = subSlugs?.[0] || '';
-  let projectArea;
+  let projectArea = [];
 
   // Fetch projects in the specific area
   const projects = await getAllProjects(lang);
@@ -40,9 +41,7 @@ const AllProjectsTemplate = async ({ subSlugs, lang = 'en' }) => {
 
   return (
     <div className='px-8 md:px-16 xl:px-48 py-20'>
-      <div>
-        <h1 className='text-3xl md:text-6xl font-light'>Projects</h1>
-      </div>
+      <ProjectsDiscription projectArea={projectArea[0] || null} lang={lang} />
 
       <ProjectsArchive
         projects={projectsWithMedia}

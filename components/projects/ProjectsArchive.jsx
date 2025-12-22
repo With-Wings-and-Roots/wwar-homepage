@@ -3,20 +3,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
-import ProjectList from '../page/projectList';
-import ProjectGrid from '../page/projectGrid';
+import ProjectList from './projectList';
+import ProjectGrid from './projectGrid';
+import { FiGrid, FiList } from 'react-icons/fi';
 
 const ProjectsArchive = ({
   projects,
   projectArea,
   projectAreaSlug = 'all',
   allProjectAreas = [],
+  lang = 'en',
 }) => {
-  // Use useMemo to stabilize initialFiltered
+  // Initial filtered projects based on project area
   const initialFiltered = useMemo(() => {
-    if (!projectArea || projectAreaSlug === 'all') {
-      return projects;
-    }
+    if (!projectArea || projectAreaSlug === 'all') return projects;
     return projects.filter((p) =>
       Array.isArray(p.acf?.project_area)
         ? p.acf.project_area.includes(projectArea[0]?.id)
@@ -28,24 +28,57 @@ const ProjectsArchive = ({
   const [selectedType, setSelectedType] = useState('All');
   const [viewMode, setViewMode] = useState('list');
   const [visibleCount, setVisibleCount] = useState(6);
+  const [selectedCountry, setSelectedCountry] = useState('All');
+  const [countries, setCountries] = useState([]);
 
+  // Extract unique countries from filteredProjects
+  useEffect(() => {
+    console.log('Extracting countries from projects:', filteredProjects);
+    const countrySet = new Set();
+    filteredProjects.forEach((p) => {
+      const locations = p?.acf?.intro?.[0]?.location;
+      if (locations) {
+        if (Array.isArray(locations)) {
+          locations.forEach((l) => countrySet.add(l));
+        } else {
+          countrySet.add(locations);
+        }
+      }
+    });
+    setCountries(['All', ...Array.from(countrySet)]);
+  }, [filteredProjects]);
+
+  // Filter projects based on type and country
   useEffect(() => {
     let filtered = initialFiltered;
 
+    // Filter by project type
     if (selectedType !== 'All') {
       filtered = filtered.filter((p) =>
         p.acf?.project_type?.includes(selectedType)
       );
     }
 
+    // Filter by country
+    if (selectedCountry !== 'All') {
+      filtered = filtered.filter((p) => {
+        const locations = p?.acf?.intro?.[0]?.location;
+        if (!locations) return false;
+        if (Array.isArray(locations))
+          return locations.includes(selectedCountry);
+        return locations === selectedCountry;
+      });
+    }
+
     setFilteredProjects(filtered);
-  }, [selectedType, initialFiltered]);
+    setVisibleCount(6); // Reset visible count when filter changes
+  }, [selectedType, selectedCountry, initialFiltered]);
 
   return (
     <div>
       {/* ================= FILTER CONTROLS ================= */}
-      <section className='mb-12 space-y-6'>
-        {/* Project Area / Type */}
+      <section className='mb-12 mt-10'>
+        {/* Project Area Tabs */}
         <div>
           <h3 className='uppercase text-sm tracking-wide opacity-80 mb-2 mt-6'>
             Filter by project area
@@ -53,7 +86,6 @@ const ProjectsArchive = ({
           <div className='flex flex-wrap gap-3'>
             {[{ slug: 'all', name: 'All' }, ...allProjectAreas].map((area) => {
               const isActive = area.slug === projectAreaSlug;
-
               return (
                 <Link
                   key={area.slug}
@@ -70,31 +102,46 @@ const ProjectsArchive = ({
           </div>
         </div>
 
-        {/* View Toggle */}
-        <div>
-          <h3 className='uppercase text-sm tracking-wide opacity-80 mb-2'>
-            View mode
-          </h3>
+        {/* Country Filter + View Mode Icons */}
+        <div className='flex justify-between items-center mt-4'>
+          {/* Left: Country Dropdown */}
+          <div>
+            <h3 className='uppercase text-sm tracking-wide opacity-80 mb-2 mt-6'>
+              Filter by Geography
+            </h3>
+            <select
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              className='px-4 py-2 border rounded bg-white text-black'
+            >
+              {countries.map((country, i) => (
+                <option key={i} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* Right: View Mode Icons */}
           <div className='flex gap-3'>
             <button
               onClick={() => setViewMode('grid')}
-              className={`px-4 py-2 border rounded text-sm ${
+              className={`p-2 rounded transition ${
                 viewMode === 'grid'
                   ? 'bg-wwr_yellow_orange text-black'
-                  : 'bg-gray-100 hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
               }`}
             >
-              Grid view
+              <FiGrid size={20} />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-4 py-2 border rounded text-sm ${
+              className={`p-2 rounded transition ${
                 viewMode === 'list'
                   ? 'bg-wwr_yellow_orange text-black'
-                  : 'bg-gray-100 hover:bg-gray-200'
+                  : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
               }`}
             >
-              List view
+              <FiList size={20} />
             </button>
           </div>
         </div>
@@ -126,7 +173,7 @@ const ProjectsArchive = ({
             onClick={() => setVisibleCount((prev) => prev + 6)}
             className='px-8 py-3 bg-wwr_yellow_orange text-black font-medium rounded hover:bg-yellow-500 transition'
           >
-            Load more projects
+            {lang === 'en' ? 'Load more projects' : 'Mehr Projekte laden'}
           </button>
         </div>
       )}

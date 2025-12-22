@@ -20,7 +20,8 @@ import { getAllPages } from '@/utilities/pages';
 import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
-import ProjectCard from '../page/projectCard';
+import { fetchMediaFromId } from '@/utilities/media';
+import ProjectGrid from '../projects/projectGrid';
 
 const HomeTemplate = async ({ data, params, subSlugs }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
@@ -41,6 +42,18 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
   const projects = await getAllProjects(lang);
   const projectsToRender = projects.filter((p) =>
     data.acf?.projects?.map((project) => project)?.includes(p.id)
+  );
+  const projectsWithMedia = await Promise.all(
+    projectsToRender.map(async (project) => {
+      const bannerMedia = project?.acf?.banner
+        ? await fetchMediaFromId(project.acf.banner)
+        : null;
+
+      return {
+        ...project,
+        bannerMedia,
+      };
+    })
   );
   return (
     <div className='-mt-20'>
@@ -121,15 +134,15 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       </div>
-      {projectsToRender?.length > 0 ? (
+      {projectsWithMedia?.length > 0 ? (
         <div className='px-8 md:px-16 xl:px-48 py-20'>
           <h2 className='text-3xl md:text-6xl font-light mb-10'>
             Major Initiatives
           </h2>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-            {projectsToRender.map((project, index) => (
-              <ProjectCard key={index} project={project} />
+            {projectsWithMedia.map((project, index) => (
+              <ProjectGrid key={index} project={project} />
             ))}
           </div>
           <Link

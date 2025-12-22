@@ -1,17 +1,29 @@
 import React from 'react';
 import Image from 'next/image';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import ProjectCard from '../page/projectCard';
 import { getAllProjectAreas, getAllProjects } from '@/utilities/projects';
 import { fetchMediaFromId } from '@/utilities/media';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
+import ProjectGrid from '../projects/projectGrid';
 
 const OurWorkTemplate = async ({ data, lang = 'en' }) => {
   const projects = await getAllProjects(lang);
   const projectAreas = await getAllProjectAreas(lang);
   const projectsToRender = projects.filter((p) =>
     data.acf?.major_projects?.map((project) => project)?.includes(p.id)
+  );
+  const projectsWithMedia = await Promise.all(
+    projectsToRender.map(async (project) => {
+      const bannerMedia = project?.acf?.banner
+        ? await fetchMediaFromId(project.acf.banner)
+        : null;
+
+      return {
+        ...project,
+        bannerMedia,
+      };
+    })
   );
   const headerImage = await fetchMediaFromId(data?.acf?.image);
 
@@ -50,8 +62,8 @@ const OurWorkTemplate = async ({ data, lang = 'en' }) => {
         </h2>
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-          {projectsToRender.map((project, index) => (
-            <ProjectCard key={index} project={project} />
+          {projectsWithMedia.map((project, index) => (
+            <ProjectGrid key={index} project={project} />
           ))}
         </div>
       </div>
