@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/utilities/projects';
 import RelatedEvents from '../publicEvents/relatedEvents';
 import RelatedBlogs from '../blogs/relatedBlogs';
+import VisualStrip from '../projects/visualStrip';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -46,7 +47,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
 
       {/* ================= INTRO ================= */}
       {acf?.intro?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 py-20'>
+        <section className='px-8 md:px-16 xl:px-48 pt-20'>
           {acf.intro.map((intro, i) => (
             <div key={i} className='grid grid-cols-1 md:grid-cols-3 gap-12'>
               {/* LEFT — Overview */}
@@ -57,33 +58,31 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
               </div>
 
               {/* RIGHT — Quick Facts */}
-              <div className='bg-black text-white p-6 space-y-4'>
-                <h3 className='uppercase text-sm tracking-wide opacity-80'>
-                  Quick Facts
-                </h3>
+              <div className='col-span-3 xl:col-span-1 p-8 bg-wwr_yellow_orange flex flex-col lg:hover:scale-105 transition-all'>
+                <h3 className='font-bold text-lg lg:text-2xl'>Quick Facts</h3>
 
                 {intro.location && (
                   <p>
-                    <span className='font-medium'>Location:</span>{' '}
+                    <span className='font-bold'>Location:</span>{' '}
                     {intro.location}
                   </p>
                 )}
 
                 {intro.years && (
                   <p>
-                    <span className='font-medium'>Years:</span> {intro.years}
+                    <span className='font-bold'>Years:</span> {intro.years}
                   </p>
                 )}
 
                 {intro.themes && (
                   <p>
-                    <span className='font-medium'>Themes:</span> {intro.themes}
+                    <span className='font-bold'>Themes:</span> {intro.themes}
                   </p>
                 )}
 
                 {intro.partners?.length > 0 && (
                   <p>
-                    <span className='font-medium'>Partners:</span>{' '}
+                    <span className='font-bold'>Partners:</span>{' '}
                     {intro.partners.map((p) => p.name).join(', ')}
                   </p>
                 )}
@@ -93,49 +92,27 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
         </section>
       )}
 
+      {acf?.call_to_action?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 pb-20'>
+          <div className='flex flex-wrap gap-4'>
+            {acf.call_to_action.map((cta, i) => (
+              <Link
+                key={i}
+                target='_blank'
+                href={createLocalLink(cta.link?.url)}
+                className='bg-wwr_yellow_orange text-black px-6 py-3 uppercase text-sm hover:text-white transition'
+              >
+                {cta.Label || cta.link?.title}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ================= VISUAL STRIP ================= */}
       {(acf?.gallery?.length > 0 || acf?.related_videos?.length > 0) && (
         <section className='px-8 md:px-16 xl:px-48 py-16'>
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            {/* Gallery Images */}
-            {acf?.gallery?.map(async (img, i) => {
-              const media = await fetchMediaFromId(img);
-              return (
-                <div
-                  key={`img-${i}`}
-                  className='relative aspect-video overflow-hidden'
-                >
-                  <Image
-                    src={media.source_url || media.url}
-                    alt={media.alt || ''}
-                    fill
-                    className='object-cover hover:scale-105 transition-transform duration-700'
-                  />
-                  <div className='absolute inset-0 bg-black/10' />
-                </div>
-              );
-            })}
-
-            {/* Related Videos */}
-            {acf?.related_videos?.map((item, i) => {
-              const videoId = item.video?.split('v=')[1]?.split('&')[0];
-
-              return (
-                <div
-                  key={`video-${i}`}
-                  className='relative aspect-video bg-black overflow-hidden'
-                >
-                  <iframe
-                    src={`https://www.youtube.com/embed/${videoId}`}
-                    title='Project video'
-                    className='absolute inset-0 w-full h-full'
-                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                    allowFullScreen
-                  />
-                </div>
-              );
-            })}
-          </div>
+          <VisualStrip acf={acf} />
         </section>
       )}
 
