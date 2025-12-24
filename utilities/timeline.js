@@ -20,11 +20,11 @@ const getTimelineCountryIds = async (lang = 'en') => {
   );
 
   const usData = allCountriesData.find((country) =>
-    ['united-states', 'usa', 'united-states-ed'].includes(country.slug)
+    ['united-states', 'usa', 'usa-ed'].includes(country.slug)
   );
 
   const deData = allCountriesData.find((country) =>
-    ['germany', 'deutschland', 'germany-ed'].includes(country.slug)
+    ['germany', 'deutschland', 'deutschland-ed'].includes(country.slug)
   );
 
   const result = {
