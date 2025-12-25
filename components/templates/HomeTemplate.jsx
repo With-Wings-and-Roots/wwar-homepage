@@ -137,7 +137,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
       {projectsWithMedia?.length > 0 ? (
         <div className='px-8 md:px-16 xl:px-48 py-20'>
           <h2 className='text-3xl md:text-6xl font-light mb-10'>
-            Major Initiatives
+            {lang === 'en' ? 'Major Initiatives' : 'Wichtige Initiativen'}
           </h2>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
@@ -149,7 +149,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
             href={createLocalLink(`${data.acf?.explore_all_projects}all`)}
             className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
           >
-            Explore All Projects
+            {lang === 'en' ? 'Explore All Projects' : 'Alle Projekte entdecken'}
           </Link>
         </div>
       ) : null}

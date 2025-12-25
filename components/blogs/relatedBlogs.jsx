@@ -20,8 +20,8 @@ const RelatedBlogs = async ({ relatedBlogIds, lang = 'en' }) => {
 
   return (
     <section className='px-8 md:px-16 xl:px-48 py-12 bg-yellow-50 text-black'>
-      <h2 className='text-2xl md:text-4xl font-light mb-8 text-center md:text-left'>
-        {lang === 'en' ? 'Related Blogs' : 'Ähnliche Blogs'}
+      <h2 className='text-3xl md:text-5xl font-light mb-8'>
+        {lang === 'en' ? 'Related News & Blogs' : 'Ähnliche Blogs'}
       </h2>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>

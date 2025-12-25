@@ -219,23 +219,20 @@ const Page = async ({ params }) => {
         template = <AllProjectsTemplate subSlugs={subSlugs} />;
         break;
 
+      case 'page_project.php':
+        template = <ProjectTemplate subSlugs={subSlugs} lang={params.lang} />;
+        break;
+      case 'page_ourwork.php':
+        template = <OurWorkTemplate data={pageData} params={params} />;
+        break;
+
       case 'page_home.php':
         template = (
           <HomeTemplate data={pageData} params={params} subSlugs={subSlugs} />
         );
         break;
       default:
-        switch (pageObj.slug) {
-          case 'our-work':
-            template = <OurWorkTemplate data={pageData} />;
-            break;
-
-          case 'project':
-            template = <ProjectTemplate subSlugs={subSlugs} />;
-            break;
-          default:
-            template = <DefaultTemplate data={pageData} />;
-        }
+        template = <DefaultTemplate data={pageData} />;
         break;
     }
   } else {

@@ -7,7 +7,8 @@ import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import ProjectGrid from '../projects/projectGrid';
 
-const OurWorkTemplate = async ({ data, lang = 'en' }) => {
+const OurWorkTemplate = async ({ data, params }) => {
+  const lang = params.lang || 'en';
   const projects = await getAllProjects(lang);
   const projectAreas = await getAllProjectAreas(lang);
   const projectsToRender = projects.filter((p) =>
@@ -25,14 +26,14 @@ const OurWorkTemplate = async ({ data, lang = 'en' }) => {
       };
     })
   );
-  const headerImage = await fetchMediaFromId(data?.acf?.image);
+  const headerImage = await fetchMediaFromId(data?.featured_media);
 
   return (
     <div className='-mt-20'>
       {/* HERO */}
       <div className='h-screen relative'>
         <Image
-          src={data.acf?.image}
+          src={headerImage?.source_url}
           alt={headerImage?.alt_text || 'Our Work Header Image'}
           fill
           className='object-cover'
@@ -57,15 +58,22 @@ const OurWorkTemplate = async ({ data, lang = 'en' }) => {
 
       {/* INITIATIVES GRID */}
       <div className='px-8 md:px-16 xl:px-48 py-20'>
-        <h2 className='text-3xl md:text-6xl font-light mb-10'>
-          Major Initiatives
-        </h2>
+        <h2
+          className='text-3xl md:text-6xl font-light mb-10'
+          dangerouslySetInnerHTML={{ __html: data?.acf?.heading }}
+        />
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
           {projectsWithMedia.map((project, index) => (
             <ProjectGrid key={index} project={project} />
           ))}
         </div>
+        <Link
+          href={createLocalLink(`${data.acf?.more_projects.url}all`)}
+          className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
+        >
+          {data.acf?.more_projects.title}
+        </Link>
       </div>
       {/* PROJECT AREAS */}
       {projectAreas?.length > 0 && (
@@ -102,16 +110,13 @@ const OurWorkTemplate = async ({ data, lang = 'en' }) => {
           {/* LEFT — NARRATIVE */}
           <div className='col-span-6 lg:col-span-3'>
             <h2 className='text-3xl md:text-5xl font-light leading-tight'>
-              Impact that grows
-              <br />
-              through participation
+              {data?.acf?.impact_heading}
             </h2>
 
-            <p className='mt-6 text-lg font-light max-w-md text-black/80'>
-              Our work lives beyond the screen — in classrooms, community
-              spaces, and conversations that continue long after the project
-              ends.
-            </p>
+            <WysiwygContent
+              content={data.acf?.short_text}
+              className='mt-3 font-light text-black/70'
+            />
           </div>
 
           {/* RIGHT — SIGNALS */}
@@ -143,17 +148,16 @@ const OurWorkTemplate = async ({ data, lang = 'en' }) => {
         }}
       >
         <div className='max-w-4xl'>
-          <h2 className='text-3xl md:text-5xl font-light leading-tight'>
-            Want to explore our projects
-            <br className='hidden md:block' />
-            or work with us?
-          </h2>
+          <h2
+            className='text-3xl md:text-5xl font-light leading-tight'
+            dangerouslySetInnerHTML={{ __html: data?.acf?.cta_heading }}
+          />
 
           <div className='flex flex-wrap gap-6 mt-10'>
             {data.acf?.call_to_action?.map((item, i) => (
               <a
                 key={i}
-                href={item.cta.url}
+                href={createLocalLink(item.cta.url)}
                 className={`
             px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
             ${

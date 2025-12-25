@@ -15,12 +15,13 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!project || project.length === 0) return notFound();
 
   const { title, acf } = project[0];
+  console.log('Project Data:', acf);
 
   // Resolve banner image (media ID → URL)
   const bannerImage = acf?.banner ? await fetchMediaFromId(acf.banner) : null;
 
   return (
-    <div className='flex flex-col -mt-20'>
+    <div className='flex flex-col -mt-20 mb-20'>
       {/* ================= HERO ================= */}
       <section className='relative min-h-[70vh] flex items-end'>
         {bannerImage?.source_url && (
@@ -121,7 +122,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
         <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
           <div className='max-w-5xl mx-auto space-y-24'>
             {acf.our_approach.map((item, i) => (
-              <div key={i} className='grid grid-cols-1 md:grid-cols-3 gap-12'>
+              <div key={i} className='grid grid-cols-1 md:grid-cols-2 gap-12'>
                 {/* LEFT — Heading */}
                 <div className='md:col-span-1'>
                   <h2 className='text-2xl md:text-4xl font-light leading-tight'>
@@ -182,7 +183,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
       {acf?.intro[0]?.partners?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>
           <h2 className='text-3xl md:text-5xl font-light mb-12'>
-            Our Partners
+            {lang == 'en' ? 'Our Partners' : 'Unsere Partner'}
           </h2>
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
             {acf?.intro[0]?.partners.map(async (partner, i) => {
@@ -203,6 +204,37 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                     </div>
                   )}
                   <span className='text-lg font-medium'>{partner.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+      {acf?.founders?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 py-20'>
+          <h2
+            className='text-3xl md:text-5xl font-light mb-12'
+            dangerouslySetInnerHTML={{ __html: acf?.founder_heading }}
+          />
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
+            {acf?.founders?.map(async (founder, i) => {
+              const media = await fetchMediaFromId(founder.icon);
+              return (
+                <div
+                  key={i}
+                  className='flex flex-col items-center text-center gap-4'
+                >
+                  {media && (
+                    <div className='relative w-32 h-32'>
+                      <Image
+                        src={media.source_url || media.url}
+                        alt={founder.name}
+                        fill
+                        className='object-contain'
+                      />
+                    </div>
+                  )}
+                  <span className='text-lg font-medium'>{founder.name}</span>
                 </div>
               );
             })}
