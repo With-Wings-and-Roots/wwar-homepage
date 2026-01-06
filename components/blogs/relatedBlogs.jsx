@@ -24,25 +24,28 @@ const RelatedBlogs = async ({ relatedBlogIds, lang = 'en' }) => {
         {lang === 'en' ? 'Related News & Blogs' : 'Ähnliche Blogs'}
       </h2>
 
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 items-stretch'>
         {blogs.map((blog) => (
           <Link
             key={blog?.id}
             href={createLocalLink(`/blog/${blog?.slug}`)}
-            className='block overflow-hidden'
+            className='block h-full overflow-hidden flex flex-col bg-white'
           >
-            {blog.media && (
-              <div className='relative w-full h-40 sm:h-36'>
+            {/* Image wrapper (fixed height for consistency) */}
+            <div className='relative w-full h-40 sm:h-36 bg-gray-200'>
+              {blog.media && (
                 <Image
                   src={blog.media.source_url}
                   alt={blog?.title?.rendered}
                   fill
                   className='object-cover'
                 />
-              </div>
-            )}
-            <div className='p-4 bg-white bg-wwr_yellow_orange'>
-              <h3 className='text-lg font-medium mb-1 text-black'>
+              )}
+            </div>
+
+            {/* Content */}
+            <div className='p-4 bg-wwr_yellow_orange flex-1 flex items-end'>
+              <h3 className='text-lg font-medium text-black line-clamp-2'>
                 {blog?.title?.rendered}
               </h3>
             </div>

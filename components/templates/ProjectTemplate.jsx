@@ -7,6 +7,7 @@ import { getProjectBySlug } from '@/utilities/projects';
 import RelatedEvents from '../publicEvents/relatedEvents';
 import RelatedBlogs from '../blogs/relatedBlogs';
 import VisualStrip from '../projects/visualStrip';
+import WysiwygContent from '../common/WysiwygContent';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -132,12 +133,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
 
                 {/* RIGHT — Rich Text */}
                 <div className='md:col-span-2'>
-                  <div
-                    className='prose prose-lg prose-neutral max-w-none font-light
-                         prose-strong:font-medium
-                         prose-li:leading-relaxed'
-                    dangerouslySetInnerHTML={{ __html: item.text }}
-                  />
+                  <WysiwygContent content={item.text} />
                 </div>
               </div>
             ))}
