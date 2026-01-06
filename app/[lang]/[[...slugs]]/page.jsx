@@ -33,6 +33,8 @@ import { getAllPosts } from '@/utilities/posts';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
+import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
+import { fetchAllCollections } from '@/utilities/collections';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -77,6 +79,7 @@ const Page = async ({ params }) => {
     allMediaEn,
     allPersons,
     topics,
+    collections,
     allMedia,
     timeLineEventsDe,
     timeLineEventsEn,
@@ -95,6 +98,7 @@ const Page = async ({ params }) => {
           allMediaEn,
           allPersons,
           topics,
+          collections,
           timeLineEventsDe,
           timeLineEventsEn,
         ] = await Promise.all([
@@ -104,6 +108,7 @@ const Page = async ({ params }) => {
           getAllMedia('en'),
           getAllPersons(),
           fetchAllTopics(params.lang),
+          fetchAllCollections(params.lang),
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
         ]);
@@ -118,6 +123,7 @@ const Page = async ({ params }) => {
             allMedia={allMedia}
             allPersons={allPersons}
             topics={topics}
+            collections={collections}
             timeLineEventsDe={timeLineEventsDe}
             timeLineEventsEn={timeLineEventsEn}
           />
@@ -218,7 +224,35 @@ const Page = async ({ params }) => {
       case 'page_projects.php':
         template = <AllProjectsTemplate subSlugs={subSlugs} />;
         break;
-
+      case 'page_storytellers.php':
+        [
+          stories,
+          allPersons,
+          allMedia,
+          topics,
+          timeLineEventsDe,
+          timeLineEventsEn,
+        ] = await Promise.all([
+          getAllStories(params.lang),
+          getAllPersons(),
+          getAllMedia(params.lang),
+          fetchAllTopics(params.lang),
+          getTimeline('de', params.lang),
+          getTimeline('us', params.lang),
+        ]);
+        template = (
+          <StorytellersTemplate
+            subSlugs={subSlugs}
+            stories={stories}
+            allPersons={allPersons}
+            allMedia={allMedia}
+            lang={params.lang}
+            topics={topics}
+            allEvents={timeLineEventsDe.concat(timeLineEventsEn)}
+            params={params}
+          />
+        );
+        break;
       case 'page_project.php':
         template = <ProjectTemplate subSlugs={subSlugs} lang={params.lang} />;
         break;

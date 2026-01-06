@@ -17,11 +17,11 @@ const StoryCardContainer = ({
       {storiesToRender &&
         storiesToRender.map((story, index) => {
           const mediaUrl = allMedia.find(
-            (media) => media.id === story.featured_media
+            (media) => media.id === story?.featured_media
           )?.source_url;
 
           const person = allPersons.find(
-            (person) => person.id === story.acf.person
+            (person) => person.id === story?.acf?.person
           );
 
           return (
@@ -37,6 +37,7 @@ const StoryCardContainer = ({
                   personName={person?.name}
                   hoverZoom={hoverZoom}
                   baseLink={baseLink}
+                  isFeatured={story.acf?.featured_story}
                 />
               </React.Fragment>
             )

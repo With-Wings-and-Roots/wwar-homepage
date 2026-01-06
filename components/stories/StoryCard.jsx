@@ -16,6 +16,7 @@ const StoryCard = ({
   mediaUrl,
   hoverZoom,
   baseLink,
+  isFeatured = true,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -47,6 +48,23 @@ const StoryCard = ({
             )} 100%)`,
           }}
         ></div>
+
+        {isFeatured && (
+          <div
+            className='absolute top-4 right-4 z-40 flex items-center justify-center w-10 h-10 rounded-full'
+            style={{ backgroundColor: getHexForColorString(color) }}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              className='w-5 h-5 text-wwr_white'
+            >
+              <path d='M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z' />
+            </svg>
+          </div>
+        )}
+
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}

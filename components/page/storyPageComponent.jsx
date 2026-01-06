@@ -52,7 +52,7 @@ const StoryPageComponent = ({
     stories.find((s) => s.id === id)
   );
   const relatedEvents = (story?.acf?.related_events || []).map((id) =>
-    allEvents.find((e) => e.id === id)
+    allEvents?.find((e) => e.id === id)
   );
 
   return (

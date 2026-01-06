@@ -89,6 +89,13 @@ export async function getPersonById(personId) {
   return allPersons.find((person) => person.id === personId) || null;
 }
 
+export async function getPersonBySlug(personSlug) {
+  const allPersons = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/person?lang=en&per_page=100`
+  );
+  return allPersons.find((person) => person.slug === personSlug) || null;
+}
+
 export const getMenuId = async (_) => {
   const [data] = await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/menu`

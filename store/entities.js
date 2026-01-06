@@ -12,6 +12,9 @@ import headerReducer from './header';
 import rangeSliderReducer from './rangeSlider';
 import timelineReducer from './timeline';
 import timelinesReducer from './timelines';
+import umbrellaReducer from './umbrella';
+import curriculumReducer from './curriculam';
+import collectionsReducer from './collections';
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -25,4 +28,7 @@ export default combineReducers({
   rangeSlider: rangeSliderReducer,
   timeline: timelineReducer,
   timelines: timelinesReducer,
+  umbrella: umbrellaReducer,
+  curriculum: curriculumReducer,
+  collections: collectionsReducer,
 });

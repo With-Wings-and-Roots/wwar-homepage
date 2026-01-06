@@ -1,13 +1,18 @@
+'use client';
+
 import StoriesPageWrapper from '@/components/stories/StoriesPageWrapper';
 import PageComponent from '@/components/page/storyPageComponent';
 import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
+import { resolvePrimaryUmbrella } from '@/utilities/umbrella';
+import { resolvePrimaryCurriculum } from '@/utilities/curriculam';
 
 const StoriesTemplate = ({
   stories,
   allMedia,
   allPersons,
   topics,
+  collections,
   params,
   data,
   subSlugs,
@@ -16,6 +21,35 @@ const StoriesTemplate = ({
   timeLineEventsEn,
 }) => {
   const allEvents = [...(timeLineEventsDe || []), ...(timeLineEventsEn || [])];
+  // Build a map of topic ID → topic name
+  const topicIdMap = {};
+  (topics || []).forEach((t) => {
+    topicIdMap[t.id] = t.name;
+  });
+
+  // Map story topic IDs → objects with name for resolver
+  const storiesWithUmbrella = (stories || []).map((story) => {
+    const storyTopics = (story.acf?.topics || []).map((id) => ({
+      name: topicIdMap[id],
+    }));
+    const theme = story.acf?.theme;
+    return {
+      ...story,
+      primary_umbrella_dimension: resolvePrimaryUmbrella(storyTopics, theme),
+    };
+  });
+  const storiesWithCurriculum = (storiesWithUmbrella || stories || []).map(
+    (story) => {
+      const storyTopics = (story.acf?.topics || []).map((id) => ({
+        name: topicIdMap[id],
+      }));
+      return {
+        ...story,
+        primary_curriculum_dimension: resolvePrimaryCurriculum(storyTopics),
+      };
+    }
+  );
+
   return (
     <div>
       <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative'>
@@ -46,7 +80,7 @@ const StoriesTemplate = ({
           <PageComponent
             lang={params.lang}
             paramsStory={subSlugs[0]}
-            stories={stories}
+            stories={storiesWithCurriculum}
             topics={topics}
             allMedia={allMedia}
             allPersons={allPersons}
@@ -56,11 +90,13 @@ const StoriesTemplate = ({
         )}
       <StoriesPageWrapper
         lang={params.lang}
-        stories={stories}
+        stories={storiesWithCurriculum}
         allMedia={allMedia}
         allPersons={allPersons}
         topics={topics}
+        collections={collections}
         baseLink={baseLink}
+        ctaData={data.acf?.intro.cta_storyteller || []}
       />
     </div>
   );
