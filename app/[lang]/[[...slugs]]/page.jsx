@@ -34,7 +34,11 @@ import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
-import { fetchAllCollections } from '@/utilities/collections';
+import {
+  fetchAllCollections,
+  fetchAllCurriculumPathways,
+} from '@/utilities/collections';
+import path from 'path';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -80,6 +84,7 @@ const Page = async ({ params }) => {
     allPersons,
     topics,
     collections,
+    pathways,
     allMedia,
     timeLineEventsDe,
     timeLineEventsEn,
@@ -99,6 +104,7 @@ const Page = async ({ params }) => {
           allPersons,
           topics,
           collections,
+          pathways,
           timeLineEventsDe,
           timeLineEventsEn,
         ] = await Promise.all([
@@ -109,6 +115,7 @@ const Page = async ({ params }) => {
           getAllPersons(),
           fetchAllTopics(params.lang),
           fetchAllCollections(params.lang),
+          fetchAllCurriculumPathways(params.lang),
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
         ]);
@@ -124,6 +131,7 @@ const Page = async ({ params }) => {
             allPersons={allPersons}
             topics={topics}
             collections={collections}
+            pathways={pathways}
             timeLineEventsDe={timeLineEventsDe}
             timeLineEventsEn={timeLineEventsEn}
           />

@@ -13,6 +13,7 @@ const StoriesTemplate = ({
   allPersons,
   topics,
   collections,
+  pathways,
   params,
   data,
   subSlugs,
@@ -21,6 +22,7 @@ const StoriesTemplate = ({
   timeLineEventsEn,
 }) => {
   const allEvents = [...(timeLineEventsDe || []), ...(timeLineEventsEn || [])];
+  console.log('StoriesTemplate stories count:', pathways);
   // Build a map of topic ID → topic name
   const topicIdMap = {};
   (topics || []).forEach((t) => {
@@ -57,14 +59,8 @@ const StoriesTemplate = ({
           dangerouslySetInnerHTML={{ __html: data.acf?.page_title }}
           className='text-3xl md:text-6xl font-light'
         />
-        <div className='grid grid-cols-5 mt-12 gap-8'>
-          <div className='col-span-5 xl:col-span-3'>
-            <WysiwygContent
-              content={data.acf?.intro?.video}
-              className='video'
-            />
-          </div>
-          <div className='col-span-5 xl:col-span-2'>
+        <div className=' mt-12'>
+          <div className=''>
             <h2 className='text-2xl lg:text-4xl font-thin'>
               {data.acf?.intro?.title}
             </h2>
