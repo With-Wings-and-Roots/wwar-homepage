@@ -1,7 +1,8 @@
+'use client';
 import StoriesPageContainer from '@/components/stories/StoriesPageContainer';
 import UmbrellaCards from './UmbrellaCards';
 
-const StoriesPageWrapper = async ({
+const StoriesPageWrapper = ({
   lang,
   stories,
   allMedia,
