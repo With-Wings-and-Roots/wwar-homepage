@@ -13,6 +13,7 @@ import CollectionsDropdown from './CollectionsDropdown';
 import { collectionsAdded } from '@/store/collections';
 import TabsDropdown from './Tabs';
 import { curriculumAdded } from '@/store/curriculam';
+import { citiesAdded } from '@/store/cities';
 
 const StoriesPageContainer = ({
   stories,
@@ -26,6 +27,7 @@ const StoriesPageContainer = ({
   materialCtaData,
   curriculumData,
   pathways,
+  cities,
 }) => {
   const dispatch = useDispatch();
 
@@ -51,6 +53,9 @@ const StoriesPageContainer = ({
   useEffect(() => {
     dispatch(curriculumAdded({ pathways }));
   }, [pathways, dispatch]);
+  useEffect(() => {
+    dispatch(citiesAdded({ cities }));
+  }, [cities, dispatch]);
   return (
     <>
       <CurriculumPathways

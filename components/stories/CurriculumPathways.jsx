@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setActiveCurriculum } from '@/store/curriculam';
 import { setActiveCollection } from '@/store/collections';
 import { setActiveUmbrella } from '@/store/umbrella';
-import { storySelected } from '@/store/selectedStory';
+import { activatedTopic } from '@/store/topics';
 import Image from 'next/image';
+import { setActiveCity } from '@/store/cities';
+import { storySelected } from '@/store/selectedStory';
 
 const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
   const dispatch = useDispatch();
@@ -23,7 +25,14 @@ const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
     if (mappedCurriculum) dispatch(setActiveCurriculum(mappedCurriculum));
     dispatch(setActiveCollection(''));
     dispatch(setActiveUmbrella(''));
-    dispatch(storySelected(''));
+    dispatch(activatedTopic('all'));
+    dispatch(setActiveCity(null));
+    dispatch(
+      storySelected({
+        selection: 'all',
+        id: 'all',
+      })
+    );
 
     const archive = document.getElementById('archive-browser');
     if (archive) archive.scrollIntoView({ behavior: 'smooth' });

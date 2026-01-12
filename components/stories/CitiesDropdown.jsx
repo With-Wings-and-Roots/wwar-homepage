@@ -6,20 +6,18 @@ import { setActiveCollection } from '@/store/collections';
 import { activatedTopic } from '@/store/topics';
 import { setActiveCurriculum } from '@/store/curriculam';
 import { setActiveUmbrella } from '@/store/umbrella';
+import { set } from 'date-fns';
+import { setActiveCity } from '@/store/cities';
 import { storySelected } from '@/store/selectedStory';
 
-const CollectionsDropdown = ({ lang }) => {
+const CitiesDropdown = ({ lang }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
 
-  const allCollections = useSelector(
-    (state) => state.entities.collections?.allCollections
-  );
+  const allCities = useSelector((state) => state.entities.cities?.allCities);
 
-  const activeCollection = useSelector(
-    (state) => state.entities.collections?.activeCollection
-  );
+  const activeCity = useSelector((state) => state.entities.cities?.activeCity);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -32,8 +30,9 @@ const CollectionsDropdown = ({ lang }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelect = (collection) => {
-    dispatch(setActiveCollection(collection));
+  const handleSelect = (city) => {
+    dispatch(setActiveCity(city));
+    dispatch(setActiveCollection(null));
     dispatch(setActiveCurriculum(null));
     dispatch(activatedTopic('all'));
     dispatch(
@@ -53,41 +52,35 @@ const CollectionsDropdown = ({ lang }) => {
     });
   };
 
-  if (!allCollections?.length) return null;
+  if (!allCities?.length) return null;
 
-  const selectedCollection = allCollections.find((c) => c === activeCollection);
+  const selectedCity = allCities.find((c) => c === activeCity);
 
   return (
-    <section className='py-16 max-w-3xl'>
-      <h2 className='text-2xl md:text-3xl font-light mb-6'>
-        {lang === 'en'
-          ? 'Explore Lived Experiences'
-          : 'Erleben Sie lebendige Erfahrungen'}
-      </h2>
-
+    <section className='py-16 max-w-3xl z-10'>
       {/* 👇 attach ref here */}
       <div className='relative' ref={dropdownRef}>
         <button
           onClick={() => setOpen((prev) => !prev)}
           className='w-full text-left px-4 py-3 bg-wwr_rich_black text-wwr_yellow_orange font-light rounded border border-black/20 flex justify-between items-center cursor-pointer'
         >
-          {selectedCollection
-            ? parse(selectedCollection.name)
+          {selectedCity
+            ? parse(selectedCity)
             : lang === 'en'
-              ? 'Select a collection'
-              : 'Wählen Sie eine Sammlung aus'}
+              ? 'Select a city'
+              : 'Wählen Sie eine Stadt aus'}
           <span className='ml-2'>▼</span>
         </button>
 
         {open && (
-          <div className='absolute w-full mt-1 bg-white border border-black/20 shadow-lg z-10 max-h-60 overflow-y-auto rounded'>
-            {allCollections.map((collection, i) => (
+          <div className='absolute left-0 right-0 mt-1 bg-white border border-black/20 shadow-lg max-h-60 overflow-y-auto rounded z-[9999]'>
+            {allCities.map((city, i) => (
               <div
                 key={i}
-                onClick={() => handleSelect(collection)}
+                onClick={() => handleSelect(city)}
                 className='px-4 py-3 cursor-pointer hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
               >
-                {parse(collection.name)}
+                {parse(city)}
               </div>
             ))}
           </div>
@@ -97,4 +90,4 @@ const CollectionsDropdown = ({ lang }) => {
   );
 };
 
-export default CollectionsDropdown;
+export default CitiesDropdown;

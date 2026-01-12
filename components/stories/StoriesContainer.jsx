@@ -7,6 +7,7 @@ import { activatedStories } from '@/store/stories';
 import StoryCardContainer from './StoryCardContainer';
 import Image from 'next/image';
 import TabsDropdown from './Tabs';
+import CitiesDropdown from './CitiesDropdown';
 
 const STORIES_PER_PAGE = 12;
 
@@ -35,6 +36,7 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
   const activeCollection = useSelector(
     (state) => state.entities.collections.activeCollection
   );
+  const activeCity = useSelector((state) => state.entities.cities.activeCity);
   const storiesToRender = useSelector(
     (state) => state.entities.stories.activeStories
   );
@@ -44,16 +46,13 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
    */
   useEffect(() => {
     let filteredStories = allStories;
-
-    if (selectedTopic === 'featured') {
-      filteredStories = filteredStories.filter(
-        (story) => story.acf?.featured_story === true
-      );
-    } else if (selectedTopic && selectedTopic !== 'all') {
-      filteredStories = filteredStories.filter((story) =>
-        story.acf?.topics?.includes(selectedTopicId)
-      );
-    }
+    console.log('Filtering stories with criteria:', {
+      selectedTopic,
+      activeUmbrella,
+      activeCurriculum,
+      activeCollection,
+      activeCity,
+    });
 
     if (activeUmbrella) {
       filteredStories = filteredStories.filter(
@@ -71,6 +70,20 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
         (story) => story.acf?.collection === activeCollection.id
       );
     }
+    if (activeCity) {
+      filteredStories = filteredStories.filter(
+        (story) => story.acf?.city === activeCity
+      );
+    }
+    if (selectedTopic === 'featured') {
+      filteredStories = filteredStories.filter(
+        (story) => story.acf?.featured_story === true
+      );
+    } else if (selectedTopic && selectedTopic !== 'all') {
+      filteredStories = filteredStories.filter((story) =>
+        story.acf?.topics?.includes(selectedTopicId)
+      );
+    }
 
     setCurrentPage(1);
     dispatch(activatedStories({ stories: filteredStories }));
@@ -80,6 +93,8 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
     activeUmbrella,
     activeCurriculum,
     activeCollection,
+    activeCity,
+
     allStories,
     dispatch,
   ]);
@@ -161,7 +176,9 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
         <div className='w-auto'>
           <TabsDropdown lang={language} />
         </div>
-
+        <div>
+          <CitiesDropdown lang={language} />
+        </div>
         {/* Pagination */}
         {totalPages > 0 && (
           <div className='flex items-center gap-2'>
@@ -201,6 +218,13 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
           baseLink={baseLink}
         />
       </div>
+      {paginatedStories.length === 0 && (
+        <div className='text-center text-wwr_rich_black/70 mt-20'>
+          {language === 'en'
+            ? `No stories found ;(`
+            : 'Keine Geschichten gefunden'}
+        </div>
+      )}
     </div>
   );
 };

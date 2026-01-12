@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { setActiveCollection } from '@/store/collections';
 import { activatedTopic } from '@/store/topics';
 import { setActiveCurriculum } from '@/store/curriculam';
+import { storySelected } from '@/store/selectedStory';
 
 const UmbrellaCards = ({ lang }) => {
   const dispatch = useDispatch();
@@ -21,8 +22,14 @@ const UmbrellaCards = ({ lang }) => {
   const handleClick = (umbrella) => {
     dispatch(setActiveUmbrella(umbrella));
     dispatch(setActiveCollection(null));
-    dispatch(activatedTopic(null));
+    dispatch(activatedTopic('all'));
     dispatch(setActiveCurriculum(null));
+    dispatch(
+      storySelected({
+        selection: 'all',
+        id: 'all',
+      })
+    );
 
     requestAnimationFrame(() => {
       const archive = document.getElementById('archive-browser');

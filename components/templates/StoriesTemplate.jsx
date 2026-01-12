@@ -49,6 +49,10 @@ const StoriesTemplate = ({
       };
     }
   );
+  const cities = (stories || [])
+    .map((story) => story.acf?.city) // extract city from each story
+    .filter(Boolean) // remove undefined/null
+    .filter((city, index, self) => self.indexOf(city) === index); // remove duplicates
 
   return (
     <div>
@@ -94,6 +98,7 @@ const StoriesTemplate = ({
         collections={collections}
         baseLink={baseLink}
         ctaData={data.acf?.intro.cta_storyteller || []}
+        cities={cities}
       />
     </div>
   );
