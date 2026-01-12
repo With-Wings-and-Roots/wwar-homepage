@@ -15,6 +15,7 @@ import timelinesReducer from './timelines';
 import umbrellaReducer from './umbrella';
 import curriculumReducer from './curriculam';
 import collectionsReducer from './collections';
+import citiesReducer from './cities';
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -31,4 +32,5 @@ export default combineReducers({
   umbrella: umbrellaReducer,
   curriculum: curriculumReducer,
   collections: collectionsReducer,
+  cities: citiesReducer,
 });

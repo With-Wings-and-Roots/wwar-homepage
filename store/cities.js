@@ -1,0 +1,30 @@
+'use client';
+
+import { createSlice } from '@reduxjs/toolkit';
+
+const slice = createSlice({
+  name: 'cities',
+  initialState: {
+    allCities: [],
+    activeCity: null, // single value, not array
+  },
+  reducers: {
+    citiesAdded: (state, action) => {
+      state.allCities = action.payload.cities;
+    },
+
+    setActiveCity: (state, action) => {
+      console.log('setActiveCity action.payload:', action.payload);
+      state.activeCity = action.payload;
+    },
+
+    deleteAllCities: (state) => {
+      state.allCities = [];
+      state.activeCity = null;
+    },
+  },
+});
+
+export const { citiesAdded, setActiveCity, deleteAllCities } = slice.actions;
+
+export default slice.reducer;
