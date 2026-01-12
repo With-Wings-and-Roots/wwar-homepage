@@ -11,9 +11,11 @@ const StoriesPageWrapper = ({
   collections,
   baseLink,
   ctaData,
+  materialCtaData,
+  curriculumData,
+  pathways,
 }) => {
   const language = lang || 'en';
-
   return (
     <>
       <UmbrellaCards lang={language} />
@@ -24,6 +26,9 @@ const StoriesPageWrapper = ({
           allPersons={allPersons}
           topics={topics}
           collections={collections}
+          curriculumData={curriculumData}
+          materialCtaData={materialCtaData}
+          pathways={pathways}
           lang={language}
           baseLink={baseLink}
           ctaData={ctaData}

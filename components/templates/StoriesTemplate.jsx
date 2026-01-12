@@ -22,14 +22,12 @@ const StoriesTemplate = ({
   timeLineEventsEn,
 }) => {
   const allEvents = [...(timeLineEventsDe || []), ...(timeLineEventsEn || [])];
-  console.log('StoriesTemplate stories count:', pathways);
-  // Build a map of topic ID → topic name
+
   const topicIdMap = {};
   (topics || []).forEach((t) => {
     topicIdMap[t.id] = t.name;
   });
 
-  // Map story topic IDs → objects with name for resolver
   const storiesWithUmbrella = (stories || []).map((story) => {
     const storyTopics = (story.acf?.topics || []).map((id) => ({
       name: topicIdMap[id],
@@ -86,6 +84,9 @@ const StoriesTemplate = ({
         )}
       <StoriesPageWrapper
         lang={params.lang}
+        pathways={pathways}
+        curriculumData={data.acf?.curriculum_pathways || []}
+        materialCtaData={data.acf?.education_material_link || []}
         stories={storiesWithCurriculum}
         allMedia={allMedia}
         allPersons={allPersons}

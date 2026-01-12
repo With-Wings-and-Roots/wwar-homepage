@@ -1,9 +1,8 @@
 'use client';
 
 import { createSlice } from '@reduxjs/toolkit';
-import { ALL_CURRICULUM } from '@/utilities/curriculam';
 const initialState = {
-  allCurriculum: ALL_CURRICULUM,
+  allCurriculum: [],
   activeCurriculum: null,
 };
 
@@ -11,6 +10,9 @@ const curriculumSlice = createSlice({
   name: 'curriculum',
   initialState,
   reducers: {
+    curriculumAdded: (state, action) => {
+      state.allCurriculum = action.payload.curriculum;
+    },
     setActiveCurriculum(state, action) {
       state.activeCurriculum = action.payload;
     },
@@ -20,7 +22,7 @@ const curriculumSlice = createSlice({
   },
 });
 
-export const { setActiveCurriculum, clearActiveCurriculum } =
+export const { curriculumAdded, setActiveCurriculum, clearActiveCurriculum } =
   curriculumSlice.actions;
 
 export default curriculumSlice.reducer;

@@ -6,7 +6,7 @@ import { createLocalLink } from '@/utilities/links';
 
 const StorytellerCard = ({ person, mediaUrl, lang = 'en' }) => {
   const name = person?.name ?? '';
-  const title = person?.title ?? '';
+  const title = person?.city ?? '';
   const slug = person?.slug ?? '';
 
   const ctaText = lang === 'en' ? 'View Stories' : 'Erzähler ansehen';

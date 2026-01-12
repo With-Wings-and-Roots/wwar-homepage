@@ -27,6 +27,7 @@ module.exports = {
         wwr_turquoise: '#35D0DC',
         wwr_light: '#fff4df',
         wwr_majorelle_blue: '#564AE9',
+        wwr_pink: '#e48da4be',
       },
     },
   },

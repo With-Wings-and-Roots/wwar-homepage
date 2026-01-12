@@ -31,13 +31,16 @@ const StorytellersTemplate = ({
       if (personStories.length === 0) return null;
 
       const firstStory = personStories[0];
+      console.log('First story for person', person.name, firstStory);
       const mediaUrl = firstStory?.featured_media
         ? allMedia.find((m) => m.id === firstStory.featured_media)?.source_url
-        : null;
+        : allMedia.find((m) => m.id === firstStory.acf?.media)?.source_url;
+      const city = firstStory?.acf?.city;
 
       return {
         ...person,
         mediaUrl,
+        city: city || null,
         stories: personStories,
       };
     })

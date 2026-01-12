@@ -32,6 +32,9 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
   const activeCurriculum = useSelector(
     (state) => state.entities.curriculum.activeCurriculum
   );
+  const activeCollection = useSelector(
+    (state) => state.entities.collections.activeCollection
+  );
   const storiesToRender = useSelector(
     (state) => state.entities.stories.activeStories
   );
@@ -52,25 +55,31 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
       );
     }
 
-    if (activeUmbrella && activeUmbrella !== 'all') {
+    if (activeUmbrella) {
       filteredStories = filteredStories.filter(
         (story) => story.primary_umbrella_dimension === activeUmbrella
       );
     }
 
-    if (activeCurriculum && activeCurriculum !== 'all') {
+    if (activeCurriculum) {
       filteredStories = filteredStories.filter(
-        (story) => story.primary_curriculum_dimension === activeCurriculum
+        (story) => story.acf?.curriculum_pathway === activeCurriculum.id
+      );
+    }
+    if (activeCollection) {
+      filteredStories = filteredStories.filter(
+        (story) => story.acf?.collection === activeCollection.id
       );
     }
 
-    setCurrentPage(1); // reset pagination on filter change
+    setCurrentPage(1);
     dispatch(activatedStories({ stories: filteredStories }));
   }, [
     selectedTopic,
     selectedTopicId,
     activeUmbrella,
     activeCurriculum,
+    activeCollection,
     allStories,
     dispatch,
   ]);
@@ -130,6 +139,9 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
 
   return (
     <div className='py-10'>
+      <h2 className='text-2xl md:text-3xl font-light mb-6'>
+        {language === 'en' ? 'Explore the Archive' : 'Entdecken Sie das Archiv'}
+      </h2>
       {/* SEARCH + TABS + PAGINATION */}
       <div className='flex flex-col md:flex-row gap-4 md:gap-6 mb-8 justify-between items-center'>
         {/* Search */}
@@ -151,7 +163,7 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {totalPages > 0 && (
           <div className='flex items-center gap-2'>
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}

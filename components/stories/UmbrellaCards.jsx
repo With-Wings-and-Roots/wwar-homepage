@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setActiveUmbrella } from '@/store/umbrella';
 import gfx_bg_blue from '@/public/bg_blue.png';
 import Image from 'next/image';
+import { setActiveCollection } from '@/store/collections';
+import { activatedTopic } from '@/store/topics';
+import { setActiveCurriculum } from '@/store/curriculam';
 
 const UmbrellaCards = ({ lang }) => {
   const dispatch = useDispatch();
@@ -17,6 +20,9 @@ const UmbrellaCards = ({ lang }) => {
 
   const handleClick = (umbrella) => {
     dispatch(setActiveUmbrella(umbrella));
+    dispatch(setActiveCollection(null));
+    dispatch(activatedTopic(null));
+    dispatch(setActiveCurriculum(null));
 
     requestAnimationFrame(() => {
       const archive = document.getElementById('archive-browser');

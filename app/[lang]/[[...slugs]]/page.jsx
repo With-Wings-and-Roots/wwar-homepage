@@ -236,18 +236,23 @@ const Page = async ({ params }) => {
         [
           stories,
           allPersons,
-          allMedia,
+          allMediaEn,
+          allMediaDe,
+          allMediaEd,
           topics,
           timeLineEventsDe,
           timeLineEventsEn,
         ] = await Promise.all([
           getAllStories(params.lang),
           getAllPersons(),
-          getAllMedia(params.lang),
+          getAllMedia('en'),
+          getAllMedia('de'),
+          getAllMedia('ed'),
           fetchAllTopics(params.lang),
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
         ]);
+        allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
           <StorytellersTemplate
             subSlugs={subSlugs}

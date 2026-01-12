@@ -12,6 +12,7 @@ import Link from 'next/link';
 import CollectionsDropdown from './CollectionsDropdown';
 import { collectionsAdded } from '@/store/collections';
 import TabsDropdown from './Tabs';
+import { curriculumAdded } from '@/store/curriculam';
 
 const StoriesPageContainer = ({
   stories,
@@ -22,6 +23,9 @@ const StoriesPageContainer = ({
   baseLink,
   lang,
   ctaData,
+  materialCtaData,
+  curriculumData,
+  pathways,
 }) => {
   const dispatch = useDispatch();
 
@@ -44,13 +48,31 @@ const StoriesPageContainer = ({
   useEffect(() => {
     dispatch(collectionsAdded({ collections }));
   }, [collections, dispatch]);
+  useEffect(() => {
+    dispatch(curriculumAdded({ pathways }));
+  }, [pathways, dispatch]);
   return (
     <>
-      {/* ✅ Umbrella cards section */}
-      <CurriculumPathways lang={lang} />
-      <CollectionsDropdown lang={lang} />
-      {/* ✅ Topic tabs section */}
-      {/* <Tabs lang={lang} /> */}
+      <CurriculumPathways
+        lang={lang}
+        pathways={pathways}
+        curriculumData={curriculumData}
+      />
+
+      {/* CTA Button */}
+      <div className='flex flex-wrap gap-6 '>
+        {materialCtaData?.url && (
+          <Link
+            href={createLocalLink(materialCtaData.url)}
+            className='
+              px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
+              bg-wwr_yellow_orange text-black hover:text-white
+            '
+          >
+            {materialCtaData?.title}
+          </Link>
+        )}
+      </div>
       <div className='flex flex-wrap gap-6 mt-10'>
         <Link
           key={ctaData?.cta?.title || 'cta'}
@@ -63,6 +85,7 @@ const StoriesPageContainer = ({
           {ctaData?.title}
         </Link>
       </div>
+      <CollectionsDropdown lang={lang} />
 
       {/* ✅ Stories grid / Archive */}
       <StoriesContainer baseLink={baseLink} lang={lang} />
