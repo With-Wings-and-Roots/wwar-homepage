@@ -16,7 +16,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!project || project.length === 0) return notFound();
 
   const { title, acf } = project[0];
-  console.log('Project Data:', acf);
 
   // Resolve banner image (media ID → URL)
   const bannerImage = acf?.banner ? await fetchMediaFromId(acf.banner) : null;

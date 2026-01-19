@@ -58,11 +58,11 @@ const CollectionsDropdown = ({ lang }) => {
   const selectedCollection = allCollections.find((c) => c === activeCollection);
 
   return (
-    <section className='py-16 max-w-3xl'>
+    <section className='py-10 max-w-3xl'>
       <h2 className='text-2xl md:text-3xl font-light mb-6'>
         {lang === 'en'
-          ? 'Explore Lived Experiences'
-          : 'Erleben Sie lebendige Erfahrungen'}
+          ? 'Explore Special Collections'
+          : 'Entdecken Sie spezielle Sammlungen'}
       </h2>
 
       {/* 👇 attach ref here */}

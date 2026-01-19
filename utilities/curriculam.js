@@ -26,17 +26,12 @@ export const TOPIC_TO_CURRICULUM = {
   'Race &amp; Ethnicity': CURRICULUM_DIMENSIONS.RACISM,
   'Gender &amp; Sexuality': CURRICULUM_DIMENSIONS.RACISM,
 
-  // Family, Upbringing &amp; Everyday Life
   'Families &amp; Relationships': CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
   'Growing Up': CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
   Language: CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
-
-  // Sense of Self &amp; Belonging
   'Identity &amp; Belonging': CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
   Culture: CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
   'Religion &amp; Belief': CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
-
-  // Lens / non-driving topic
   'Wings &amp; Roots': CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING,
 };
 
@@ -49,22 +44,16 @@ export const CURRICULAM_PRIORITY = [
 export function resolvePrimaryCurriculum(topics) {
   const candidateCurricula = new Set();
 
-  // Step 1: map topics → curricula
   for (const topic of topics || []) {
     const curriculum = TOPIC_TO_CURRICULUM[topic.name];
     if (curriculum) {
       candidateCurricula.add(curriculum);
     }
   }
-  //   console.log('Candidate Curricula:', candidateCurricula);
-  // Step 2: resolve by priority
   for (const curriculum of CURRICULAM_PRIORITY) {
     if (candidateCurricula.has(curriculum)) {
       return curriculum;
     }
   }
-  //   console.log('No matching curriculum found in priority list.');
-
-  // Step 3: edge-case fallback
   return CURRICULUM_DIMENSIONS.IDENTITY_AND_BELONGING;
 }

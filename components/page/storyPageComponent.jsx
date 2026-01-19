@@ -54,7 +54,6 @@ const StoryPageComponent = ({
   const relatedEvents = (story?.acf?.related_events || []).map((id) =>
     allEvents?.find((e) => e.id === id)
   );
-
   return (
     <div className='fixed left-0 right-0 top-0 bottom-0 z-[500] lg:py-10 overflow-y-auto'>
       <ModalOpenBodyClass />
@@ -117,6 +116,7 @@ const StoryPageComponent = ({
                 allMedia={allMedia}
                 allPersons={allPersons}
                 hoverZoom={false}
+                person={person?.name}
                 baseLink={baseLink}
               />
             )}
@@ -126,6 +126,7 @@ const StoryPageComponent = ({
                 lang={lang}
                 baseLink={baseLink}
                 allMedia={allMedia}
+                person={person?.name}
               />
             )}
           </div>

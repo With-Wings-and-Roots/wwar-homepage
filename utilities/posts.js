@@ -28,8 +28,7 @@ export async function getPostById(id, lang, post_type) {
   );
 
   if (!res.ok) {
-    console.warn(`Post ${id} of type ${post_type} not found`);
-    return null; // return null for missing posts
+    return null;
   }
 
   return await res.json();

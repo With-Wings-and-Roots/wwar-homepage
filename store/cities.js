@@ -14,7 +14,6 @@ const slice = createSlice({
     },
 
     setActiveCity: (state, action) => {
-      console.log('setActiveCity action.payload:', action.payload);
       state.activeCity = action.payload;
     },
 

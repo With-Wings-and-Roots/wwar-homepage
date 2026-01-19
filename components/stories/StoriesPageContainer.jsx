@@ -28,6 +28,7 @@ const StoriesPageContainer = ({
   curriculumData,
   pathways,
   cities,
+  exploreArchiveText,
 }) => {
   const dispatch = useDispatch();
 
@@ -58,6 +59,29 @@ const StoriesPageContainer = ({
   }, [cities, dispatch]);
   return (
     <>
+      <div className='flex flex-col gap-6 mt-10'>
+        <h2 className='text-2xl md:text-3xl font-light'>
+          {lang === 'en'
+            ? 'Explore by Storytellers'
+            : 'Explorar por Narradores'}
+        </h2>
+
+        <Link
+          key={ctaData?.cta?.title || 'cta'}
+          href={createLocalLink(ctaData?.url)}
+          className='
+      self-start
+      px-6 py-3
+      uppercase text-sm md:text-lg tracking-wide
+      transition-all
+      bg-wwr_yellow_orange text-black
+      hover:text-white
+    '
+        >
+          {ctaData?.title}
+        </Link>
+      </div>
+
       <CurriculumPathways
         lang={lang}
         pathways={pathways}
@@ -78,22 +102,31 @@ const StoriesPageContainer = ({
           </Link>
         )}
       </div>
-      <div className='flex flex-wrap gap-6 mt-10'>
+
+      <CollectionsDropdown lang={lang} />
+
+      {/* ✅ Stories grid / Archive */}
+      <StoriesContainer
+        baseLink={baseLink}
+        lang={lang}
+        exploreArchiveText={exploreArchiveText}
+      />
+      <div className='flex justify-center gap-6 m-10'>
         <Link
           key={ctaData?.cta?.title || 'cta'}
           href={createLocalLink(ctaData?.url)}
-          className={`
-                  px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
-                  bg-wwr_yellow_orange text-black hover:text-white
-                `}
+          className='
+      self-start
+      px-6 py-3
+      uppercase text-sm md:text-lg tracking-wide
+      transition-all
+      bg-wwr_yellow_orange text-black
+      hover:text-white
+    '
         >
           {ctaData?.title}
         </Link>
       </div>
-      <CollectionsDropdown lang={lang} />
-
-      {/* ✅ Stories grid / Archive */}
-      <StoriesContainer baseLink={baseLink} lang={lang} />
     </>
   );
 };

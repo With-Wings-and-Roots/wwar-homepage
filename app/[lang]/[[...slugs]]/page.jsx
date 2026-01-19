@@ -19,6 +19,7 @@ import {
   getAllMedia,
   getAllPersons,
   getAllStories,
+  getStoryMedia,
 } from '@/utilities/stories';
 import {
   getTimeline,

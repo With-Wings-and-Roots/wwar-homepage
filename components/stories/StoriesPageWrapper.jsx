@@ -15,6 +15,7 @@ const StoriesPageWrapper = ({
   curriculumData,
   pathways,
   cities,
+  exploreArchiveText,
 }) => {
   const language = lang || 'en';
   return (
@@ -34,6 +35,7 @@ const StoriesPageWrapper = ({
           baseLink={baseLink}
           ctaData={ctaData}
           cities={cities}
+          exploreArchiveText={exploreArchiveText}
         />
       </div>
     </>

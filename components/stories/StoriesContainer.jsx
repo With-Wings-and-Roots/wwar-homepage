@@ -8,19 +8,23 @@ import StoryCardContainer from './StoryCardContainer';
 import Image from 'next/image';
 import TabsDropdown from './Tabs';
 import CitiesDropdown from './CitiesDropdown';
+import WysiwygContent from '../common/WysiwygContent';
+import { set } from 'date-fns';
 
 const STORIES_PER_PAGE = 12;
 
-const StoriesContainer = ({ baseLink, lang: language }) => {
+const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
   const dispatch = useDispatch();
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentFilter, setCurrentFilter] = useState(null);
 
   // Redux selectors
   const allStories = useSelector((state) => state.entities.stories.allStories);
   const allMedia = useSelector((state) => state.entities.media.allMedia);
   const allPersons = useSelector((state) => state.entities.persons.allPersons);
+  const allTopics = useSelector((state) => state.entities.topics);
   const selectedTopic = useSelector(
     (state) => state.entities.selectedStory.selectedStory
   );
@@ -40,48 +44,52 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
   const storiesToRender = useSelector(
     (state) => state.entities.stories.activeStories
   );
+  const storiesCount = useSelector(
+    (state) => state.entities.selectedStory.numberOfSelectedStories
+  );
 
   /**
    * FILTER STORIES
    */
   useEffect(() => {
     let filteredStories = allStories;
-    console.log('Filtering stories with criteria:', {
-      selectedTopic,
-      activeUmbrella,
-      activeCurriculum,
-      activeCollection,
-      activeCity,
-    });
 
     if (activeUmbrella) {
       filteredStories = filteredStories.filter(
         (story) => story.primary_umbrella_dimension === activeUmbrella
       );
+      setCurrentFilter(activeUmbrella);
     }
 
     if (activeCurriculum) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.curriculum_pathway === activeCurriculum.id
       );
+      setCurrentFilter(activeCurriculum.name);
     }
     if (activeCollection) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.collection === activeCollection.id
       );
+      setCurrentFilter(activeCollection.name);
     }
     if (activeCity) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.city === activeCity
       );
+      setCurrentFilter(activeCity);
     }
     if (selectedTopic === 'featured') {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.featured_story === true
       );
+      setCurrentFilter('Featured');
     } else if (selectedTopic && selectedTopic !== 'all') {
       filteredStories = filteredStories.filter((story) =>
         story.acf?.topics?.includes(selectedTopicId)
+      );
+      setCurrentFilter(
+        allTopics.allTopics.find((t) => t.id === selectedTopicId)?.name
       );
     }
 
@@ -157,53 +165,89 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
       <h2 className='text-2xl md:text-3xl font-light mb-6'>
         {language === 'en' ? 'Explore the Archive' : 'Entdecken Sie das Archiv'}
       </h2>
-      {/* SEARCH + TABS + PAGINATION */}
-      <div className='flex flex-col md:flex-row gap-4 md:gap-6 mb-8 justify-between items-center'>
+      <WysiwygContent
+        content={exploreArchiveText}
+        className='font-light md:text-lg mt-4'
+      />
+      {/* SEARCH + TABS + CITIES + PAGINATION */}
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4 items-center'>
         {/* Search */}
-        <div className='flex h-10 border-2 border-wwr_rich_black'>
-          <input
-            className='px-3 py-1 border-0 focus:outline-none'
-            placeholder='Search'
-            type='text'
-            onChange={handleInput}
-          />
-          <div className='bg-wwr_rich_black px-2 flex items-center'>
-            <Image src='/search.svg' width={20} height={20} alt='Search icon' />
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <div className='flex h-10 border-2 border-wwr_rich_black'>
+            <input
+              className='px-3 py-1 border-0 w-full focus:outline-none'
+              placeholder={language === 'en' ? 'Search' : 'Suchen'}
+              type='text'
+              onChange={handleInput}
+            />
+            <div className='bg-wwr_rich_black px-2 flex items-center'>
+              <Image
+                src='/search.svg'
+                width={20}
+                height={20}
+                alt='Search icon'
+              />
+            </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className='w-auto'>
+        <div className='col-span-2 sm:col-span-1 w-full'>
           <TabsDropdown lang={language} />
         </div>
-        <div>
+
+        {/* Cities */}
+        <div className='col-span-2 sm:col-span-1 w-full'>
           <CitiesDropdown lang={language} />
         </div>
+
         {/* Pagination */}
-        {totalPages > 0 && (
-          <div className='flex items-center gap-2'>
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className='px-3 py-1 border border-white/30 disabled:opacity-40'
-            >
-              Prev
-            </button>
+        <div className='col-span-2 sm:col-span-1 flex md:justify-end justify-start items-center gap-2'>
+          {totalPages > 0 && (
+            <>
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                disabled={currentPage === 1}
+                className='px-3 py-1 border border-white/30 disabled:opacity-40'
+              >
+                Prev
+              </button>
 
-            <span className='text-sm'>
-              {currentPage} / {totalPages}
-            </span>
+              <span className='text-sm'>
+                {currentPage} / {totalPages}
+              </span>
 
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className='px-3 py-1 border border-white/30 disabled:opacity-40'
-            >
-              Next
-            </button>
-          </div>
-        )}
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className='px-3 py-1 border border-white/30 disabled:opacity-40'
+              >
+                Next
+              </button>
+            </>
+          )}
+        </div>
       </div>
+
+      {currentFilter && (
+        <div className='text-md md:text-lg text-wwr_rich_black font-medium mb-4 flex justify-between'>
+          <div>
+            {language === 'en'
+              ? 'You are viewing stories based on filter: '
+              : 'Sie sehen Geschichten basierend auf '}
+            <span
+              className='font-bold text-wwr_yellow_orange'
+              dangerouslySetInnerHTML={{ __html: currentFilter }}
+            />
+          </div>
+          <span>
+            {language === 'en' ? 'Stories:' : 'Geschichten:'} {storiesCount} /{' '}
+            {allStories.length}
+          </span>
+        </div>
+      )}
 
       {/* STORIES GRID */}
       <div

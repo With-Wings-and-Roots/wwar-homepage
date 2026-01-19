@@ -99,6 +99,7 @@ const StoriesTemplate = ({
         baseLink={baseLink}
         ctaData={data.acf?.intro.cta_storyteller || []}
         cities={cities}
+        exploreArchiveText={data.acf?.explore_archive_text}
       />
     </div>
   );

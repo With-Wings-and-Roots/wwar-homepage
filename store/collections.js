@@ -14,7 +14,6 @@ const slice = createSlice({
     },
 
     setActiveCollection: (state, action) => {
-      console.log('setActiveCollection action.payload:', action.payload);
       state.activeCollection = action.payload;
     },
 

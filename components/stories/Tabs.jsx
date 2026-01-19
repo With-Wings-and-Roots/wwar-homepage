@@ -14,9 +14,7 @@ const TabsDropdown = ({ lang: language }) => {
   const [open, setOpen] = useState(false);
 
   const allTabData = useSelector((state) => state.entities.topics.allTopics);
-  const storiesCount = useSelector(
-    (state) => state.entities.selectedStory.numberOfSelectedStories
-  );
+
   const selectedTopic = useSelector(
     (state) => state.entities.selectedStory.selectedStory
   );
@@ -64,8 +62,9 @@ const TabsDropdown = ({ lang: language }) => {
     },
   ];
 
-  const selectedOption = options.find((opt) => opt.slug === selectedTopic);
-
+  const selectedOption = selectedTopic
+    ? options.find((opt) => opt.slug === selectedTopic)
+    : null;
   return (
     <div className='flex items-center gap-4'>
       {/* Dropdown */}
@@ -80,11 +79,11 @@ const TabsDropdown = ({ lang: language }) => {
             min-w-[200px]
           '
         >
-          {selectedOption
-            ? selectedOption.label
-            : language === 'en'
-              ? 'Select a topic'
-              : 'Wähle ein Thema'}
+          {!selectedOption || selectedOption.slug === 'all'
+            ? language === 'en'
+              ? 'Select topic'
+              : 'Wähle ein Thema'
+            : selectedOption.label}
           <span className='ml-2'>▼</span>
         </button>
 
@@ -116,11 +115,6 @@ const TabsDropdown = ({ lang: language }) => {
             })}
           </div>
         )}
-      </div>
-
-      {/* Stories count */}
-      <div className='text-md md:text-lg text-wwr_yellow_orange font-medium'>
-        {language === 'en' ? 'Stories:' : 'Geschichten:'} {storiesCount}
       </div>
     </div>
   );

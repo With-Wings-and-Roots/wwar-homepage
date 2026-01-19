@@ -33,7 +33,6 @@ const ProjectsArchive = ({
 
   // Extract unique countries from filteredProjects
   useEffect(() => {
-    console.log('Extracting countries from projects:', filteredProjects);
     const countrySet = new Set();
     filteredProjects.forEach((p) => {
       const locations = p?.acf?.intro?.[0]?.location;

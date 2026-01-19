@@ -19,7 +19,6 @@ const StoryCardContainer = ({
           const mediaUrl = allMedia.find(
             (media) => media.id === story?.featured_media
           )?.source_url;
-
           const person = allPersons.find(
             (person) => person.id === story?.acf?.person
           );
