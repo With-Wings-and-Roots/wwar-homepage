@@ -13,6 +13,12 @@ export const getTimelineEvents = async (lang = 'en') => {
 
   return sortedData;
 };
+export const getTimelineEventById = async (id, lang = 'en') => {
+  const [data] = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event/${id}?lang=${lang}`
+  );
+  return data;
+};
 
 const getTimelineCountryIds = async (lang = 'en') => {
   const allCountriesData = await fetchAllData(

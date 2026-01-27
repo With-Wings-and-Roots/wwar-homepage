@@ -15,7 +15,7 @@ const slice = createSlice({
     },
 
     activatedTopic: (topicsList, action) => {
-      //  const activatedList = topicsList.filter(arrayItem=>{})
+      topicsList.activeTopic = action.payload.topic;
     },
     deleteAllTopics: (topicsList, action) => {
       topicsList.allTopics = [];

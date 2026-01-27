@@ -7,6 +7,12 @@ export async function getFooter(lang = 'en') {
   return data;
 }
 
+export async function getStoryById(id, lang = 'en') {
+  const [data] = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story/${id}?lang=${lang}`
+  );
+  return data;
+}
 export async function getAllStories(lang = 'en') {
   const neededFields = [
     'id',

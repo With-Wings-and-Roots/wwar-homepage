@@ -6,7 +6,7 @@ const slice = createSlice({
   name: 'cities',
   initialState: {
     allCities: [],
-    activeCity: null, // single value, not array
+    activeCity: null,
   },
   reducers: {
     citiesAdded: (state, action) => {

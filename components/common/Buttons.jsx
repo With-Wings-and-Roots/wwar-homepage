@@ -15,7 +15,7 @@ const Buttons = ({ buttons }) => {
     } else if (btn.target[0]?.link) {
       return btn.target[0].link;
     } else if (btn.target[0]?.page) {
-      return createLocalLink(btn.target[0].page);
+      return createLocalLink(btn.target[0].page.url);
     } else if (btn.target[0]?.email) {
       return `mailto:${btn.target[0].email}`;
     }

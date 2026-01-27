@@ -7,8 +7,9 @@ import { setActiveCity } from '@/store/cities';
 import { setActiveCollection } from '@/store/collections';
 import { setActiveCurriculum } from '@/store/curriculam';
 import { setActiveUmbrella } from '@/store/umbrella';
+import { activatedTopic } from '@/store/topics';
 
-const TabsDropdown = ({ lang: language }) => {
+const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -33,6 +34,8 @@ const TabsDropdown = ({ lang: language }) => {
   const handleSelect = (slug) => {
     const selectedTopicId =
       allTopics.allTopics.find((topic) => topic.slug === slug)?.id || null;
+    const selectedTopic =
+      allTopics.allTopics.find((topic) => topic.slug === slug) || null;
 
     dispatch(
       storySelected({
@@ -40,6 +43,7 @@ const TabsDropdown = ({ lang: language }) => {
         id: selectedTopicId,
       })
     );
+    dispatch(activatedTopic({ topic: selectedTopic }));
     dispatch(setActiveCity(null));
     dispatch(setActiveCollection(null));
     dispatch(setActiveCurriculum(null));
@@ -48,17 +52,21 @@ const TabsDropdown = ({ lang: language }) => {
   };
 
   const options = [
-    {
-      slug: 'featured',
-      label: language === 'en' ? 'Featured' : 'Ausgewählte Geschichten',
-    },
+    ...(isFeature
+      ? [
+          {
+            slug: 'featured',
+            label: language === 'en' ? 'Featured' : 'Ausgewählte Geschichten',
+          },
+        ]
+      : []),
     ...allTabData.map((tab) => ({
       slug: tab.slug,
       label: parse(tab.name),
     })),
     {
       slug: 'all',
-      label: language === 'en' ? 'All Stories' : 'Alle Geschichten',
+      label: cptName,
     },
   ];
 
@@ -81,7 +89,7 @@ const TabsDropdown = ({ lang: language }) => {
         >
           {!selectedOption || selectedOption.slug === 'all'
             ? language === 'en'
-              ? 'Select topic'
+              ? 'Select a topic'
               : 'Wähle ein Thema'
             : selectedOption.label}
           <span className='ml-2'>▼</span>

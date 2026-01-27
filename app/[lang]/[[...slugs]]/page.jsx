@@ -19,10 +19,12 @@ import {
   getAllMedia,
   getAllPersons,
   getAllStories,
+  getStoryById,
   getStoryMedia,
 } from '@/utilities/stories';
 import {
   getTimeline,
+  getTimelineEventById,
   getTimelineEvents,
   getTimelineTopics,
 } from '@/utilities/timeline';
@@ -39,7 +41,15 @@ import {
   fetchAllCollections,
   fetchAllCurriculumPathways,
 } from '@/utilities/collections';
-import path from 'path';
+import SingleMaterialTemplate from '@/components/templates/SingleMaterialTemplate';
+import {
+  getAllLanguages,
+  getAllMaterials,
+  getMaterialBySlug,
+  getMaterialCollections,
+  getMaterialTypes,
+} from '@/utilities/materials';
+import { getTeamMemberById } from '@/utilities/team';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -84,9 +94,11 @@ const Page = async ({ params }) => {
     allMediaEn,
     allPersons,
     topics,
+    languages,
     collections,
     pathways,
     allMedia,
+    materials,
     timeLineEventsDe,
     timeLineEventsEn,
     timelineTopics;
@@ -227,7 +239,100 @@ const Page = async ({ params }) => {
         template = <DonateTemplate data={pageData} />;
         break;
       case 'page_materials.php':
-        template = <MaterialsTemplate data={pageData} />;
+        [materials, topics, collections, languages] = await Promise.all([
+          getAllMaterials(params.lang),
+          getMaterialTypes(params.lang),
+          getMaterialCollections(params.lang),
+          getAllLanguages(params.lang),
+        ]);
+        template = (
+          <MaterialsTemplate
+            data={pageData}
+            lang={params.lang}
+            materials={materials}
+            topics={topics}
+            collections={collections}
+            languages={languages}
+          />
+        );
+        break;
+      case 'page_material.php':
+        let material;
+        if (subSlugs.length > 2) {
+          material = await getMaterialBySlug(subSlugs[2], params.lang);
+        } else if (subSlugs.length === 2) {
+          material = await getMaterialBySlug(subSlugs[1], params.lang);
+        } else {
+          material = await getMaterialBySlug(subSlugs[0], params.lang);
+        }
+        // if (!material || material.length === 0) {
+        //   return notFound();
+        // }
+        const relatedStoryIds = material[0]?.acf?.related_stories || [];
+        const relatedEventIds = material[0]?.acf?.related_timelines || [];
+
+        // Fetch stories by ID
+        const relatedStories = relatedStoryIds.length
+          ? (
+              await Promise.all(
+                relatedStoryIds.map((id) =>
+                  getStoryById(id, params.lang).catch(() => null)
+                )
+              )
+            ).filter(Boolean)
+          : [];
+        const relatedEvents = relatedEventIds.length
+          ? (
+              await Promise.all(
+                relatedEventIds.map((id) =>
+                  getTimelineEventById(id, params.lang).catch(() => null)
+                )
+              )
+            ).filter(Boolean)
+          : [];
+        const team = material[0]?.acf?.team || [];
+        const relatedTeams = await Promise.all(
+          team.map(async (team) => {
+            const members = Array.isArray(team.related_memebers)
+              ? (
+                  await Promise.all(
+                    team.related_memebers.map((id) =>
+                      getTeamMemberById(id, params.lang).catch(() => null)
+                    )
+                  )
+                ).filter(Boolean)
+              : [];
+
+            return {
+              team_title: team.team_title,
+              related_members: members,
+            };
+          })
+        );
+
+        [allMediaDe, allMediaEd, allMediaEn, topics, allPersons] =
+          await Promise.all([
+            getAllMedia('de'),
+            getAllMedia('ed'),
+            getAllMedia('en'),
+            fetchAllTopics(params.lang),
+            getAllPersons(),
+          ]);
+        allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
+        template = (
+          <SingleMaterialTemplate
+            subSlugs={subSlugs}
+            lang={params.lang}
+            data={pageData}
+            material={material}
+            relatedStories={relatedStories}
+            allMedia={allMedia}
+            topics={topics}
+            allPersons={allPersons}
+            relatedEvents={relatedEvents}
+            relatedTeams={relatedTeams}
+          />
+        );
         break;
 
       case 'page_projects.php':

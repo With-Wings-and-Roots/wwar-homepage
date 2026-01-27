@@ -41,5 +41,6 @@ export async function getPage(lang, id) {
       },
     }
   );
+
   return await res.json();
 }

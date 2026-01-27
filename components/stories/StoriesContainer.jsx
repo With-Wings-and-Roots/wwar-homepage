@@ -193,12 +193,21 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
 
         {/* Tabs */}
         <div className='col-span-2 sm:col-span-1 w-full'>
-          <TabsDropdown lang={language} />
+          <TabsDropdown
+            lang={language}
+            isFeature={true}
+            cptName={language === 'en' ? 'All Stories' : 'Alle Geschichten'}
+          />
         </div>
 
         {/* Cities */}
         <div className='col-span-2 sm:col-span-1 w-full'>
-          <CitiesDropdown lang={language} />
+          <CitiesDropdown
+            lang={language}
+            cptName={
+              language === 'en' ? 'Select a City' : 'Wählen Sie eine Stadt'
+            }
+          />
         </div>
 
         {/* Pagination */}

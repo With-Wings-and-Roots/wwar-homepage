@@ -102,6 +102,11 @@ const StoriesPageContainer = ({
           </Link>
         )}
       </div>
+      <h2 className='text-2xl md:text-3xl font-light mt-10 py-10'>
+        {lang === 'en'
+          ? 'Explore Special Collections'
+          : 'Entdecken Sie spezielle Sammlungen'}
+      </h2>
 
       <CollectionsDropdown lang={lang} />
 
