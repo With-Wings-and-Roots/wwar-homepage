@@ -153,17 +153,26 @@ const SingleMaterialTemplate = async ({
       {acf.related_videos?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
           <h3 className='text-2xl font-bold mb-4'>Related Videos</h3>
+
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
             {acf.related_videos.map((video, i) => (
-              <div key={i} className='aspect-video w-full'>
-                <iframe
-                  src={`https://player.vimeo.com/video/${video.related_videos
-                    .split('/')
-                    .pop()}`}
-                  className='w-full aspect-video'
-                  allow='autoplay; fullscreen; picture-in-picture'
-                  allowFullScreen
-                />
+              <div key={i} className='w-full'>
+                {/* Video */}
+                <div className='aspect-video w-full mb-3'>
+                  <iframe
+                    src={`https://player.vimeo.com/video/${video.related_videos
+                      ?.split('/')
+                      .pop()}`}
+                    className='w-full h-full'
+                    allow='autoplay; fullscreen; picture-in-picture'
+                    allowFullScreen
+                  />
+                </div>
+
+                {/* Title */}
+                {video.video_title && (
+                  <h4 className='text-lg font-light'>{video.video_title}</h4>
+                )}
               </div>
             ))}
           </div>
@@ -174,6 +183,7 @@ const SingleMaterialTemplate = async ({
       {acf.related_stories?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
           <h3 className='text-2xl font-bold mb-4'>Related Stories</h3>
+          <h4 className='text-lg font-light'>{acf.related_stories_text}</h4>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10'>
             <StoryCardContainer
               storiesToRender={relatedStories}
