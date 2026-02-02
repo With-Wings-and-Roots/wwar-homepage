@@ -139,9 +139,10 @@ const SingleMaterialTemplate = async ({
                 <h3 className='text-2xl font-bold mb-2'>{goal.heading}</h3>
               )}
               {goal.explanation && (
-                <p className='text-lg whitespace-pre-line'>
-                  {goal.explanation}
-                </p>
+                <WysiwygContent
+                  content={goal.explanation}
+                  className='text-lg font-light'
+                />
               )}
             </div>
           ))}
@@ -203,17 +204,19 @@ const SingleMaterialTemplate = async ({
       {/* ================= EDUCATIONAL QUESTIONS ================= */}
       {acf.questions?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
-          <h3 className='text-2xl font-bold mb-4'>Educational Questions</h3>
+          <h3 className='text-2xl font-bold mb-4'>
+            {lang === 'en' ? 'Educational Questions' : 'Preguntas Educativas'}
+          </h3>
+
           {acf.questions.map((q, i) => (
-            <ul key={i} className='list-disc pl-6 space-y-2'>
-              {q.question.split(',\r\n').map((item, idx) => (
-                <li key={idx}>{item.replace(/["]/g, '').trim()}</li>
-              ))}
-            </ul>
+            <WysiwygContent
+              key={i}
+              content={q.question}
+              className='prose max-w-none text-lg font-light'
+            />
           ))}
         </section>
       )}
-
       {/* ================= TEAM ================= */}
       {relatedTeams.map((teamItem, i) => (
         <section key={i} className='px-8 md:px-16 xl:px-48 py-12'>

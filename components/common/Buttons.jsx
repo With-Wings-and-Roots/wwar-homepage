@@ -32,7 +32,6 @@ const Buttons = ({ buttons }) => {
 
     resolveButtons();
   }, [buttons]);
-  console.log(resolvedButtons);
 
   return (
     <>
