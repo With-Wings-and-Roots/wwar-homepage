@@ -17,7 +17,7 @@ const AllProjectsTemplate = async ({ subSlugs, lang = 'en' }) => {
   // Fetch projects in the specific area
   const projects = await getAllProjects(lang);
 
-  if (projectAreaSlug !== 'all') {
+  if (projectAreaSlug !== 'all' && projectAreaSlug !== '') {
     projectArea = await getProjectAreaBySlug(projectAreaSlug, lang);
   }
 

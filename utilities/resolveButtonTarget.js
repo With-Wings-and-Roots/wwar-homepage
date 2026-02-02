@@ -15,7 +15,7 @@ export const resolveButtonTargetUrl = async (btn) => {
     }
 
     case 'page': {
-      return target?.page?.url;
+      return target?.page?.url || target?.page || '#';
     }
 
     case 'external_link':
