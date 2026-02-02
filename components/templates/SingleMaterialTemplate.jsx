@@ -8,7 +8,7 @@ import StoryCardContainer from '../stories/StoryCardContainer';
 import PageComponent from '../page/storyPageComponent';
 import RelatedEvents from '../timelineEvent/relatedEvents';
 import Link from 'next/link';
-// Render image or video for hero / sections
+
 const renderImageVideo = async (obj) => {
   if (!obj) return null;
   if (obj.acf_fc_layout === 'image') {
