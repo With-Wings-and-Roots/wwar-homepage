@@ -11,7 +11,10 @@ const ProjectGrid = ({ project }) => {
   const banner = project?.bannerMedia; // Use pre-fetched media
 
   return (
-    <div className='group bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
+    <Link
+      href={createLocalLink(link)}
+      className='group block bg-wwr_yellow_orange flex flex-col h-full overflow-hidden no-underline cursor-pointer'
+    >
       {/* Image */}
       {banner && (
         <div className='relative aspect-[4/3] overflow-hidden'>
@@ -41,15 +44,12 @@ const ProjectGrid = ({ project }) => {
         </div>
 
         {/* CTA */}
-        <Link
-          href={createLocalLink(link)}
-          className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black hover:text-white transition-colors'
-        >
+        <div className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black group-hover:text-white transition-colors'>
           Learn more
           <span className='block h-px w-6 bg-current' />
-        </Link>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

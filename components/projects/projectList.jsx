@@ -8,14 +8,17 @@ const ProjectList = ({ project }) => {
   const title = project?.title?.rendered ?? '';
   const tagline = project?.acf?.tagline ?? '';
   const link = project?.link;
-  const banner = project?.bannerMedia; // Use pre-fetched media
+  const banner = project?.bannerMedia;
   const projectType = project?.acf?.project_type;
   const geography = project?.acf?.geography;
   const years = project?.acf?.years;
   const tags = project?.acf?.tags;
 
   return (
-    <div className='group bg-wwr_yellow_orange flex flex-col md:flex-row overflow-hidden'>
+    <Link
+      href={createLocalLink(link)}
+      className='group block bg-wwr_yellow_orange flex flex-col md:flex-row overflow-hidden cursor-pointer no-underline'
+    >
       {/* Image */}
       {banner && (
         <div className='relative w-full md:w-1/3 aspect-[4/3] md:aspect-auto overflow-hidden'>
@@ -32,7 +35,6 @@ const ProjectList = ({ project }) => {
       {/* Content */}
       <div className='flex flex-col justify-between p-6 md:p-8 border border-black/10 flex-grow bg-wwr_yellow_orange md:w-2/3'>
         <div>
-          {/* Title */}
           <h3
             className='text-2xl md:text-3xl font-light leading-snug'
             dangerouslySetInnerHTML={{ __html: title }}
@@ -59,15 +61,12 @@ const ProjectList = ({ project }) => {
         </div>
 
         {/* CTA */}
-        <Link
-          href={createLocalLink(link)}
-          className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black hover:text-white transition-colors'
-        >
+        <div className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black group-hover:text-white transition-colors'>
           Learn more
           <span className='block h-px w-6 bg-current' />
-        </Link>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 
