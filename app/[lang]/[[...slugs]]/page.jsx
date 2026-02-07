@@ -11,7 +11,6 @@ import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
-import ProjectsTemplate from '@/components/templates/ProjectsTemplate';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import {
@@ -20,7 +19,6 @@ import {
   getAllPersons,
   getAllStories,
   getStoryById,
-  getStoryMedia,
 } from '@/utilities/stories';
 import {
   getTimeline,
@@ -204,16 +202,25 @@ const Page = async ({ params }) => {
         );
         break;
       case 'page_collaborators.php':
-        const partnerPageObj = pages.find((page) => {
-          const url = new URL(page.link);
-          const urlPageSlug = url
-            .toString()
-            .substring(url.origin.length)
-            .replace(/^\/|\/$/g, '')
-            .replace(/^(de\/|en\/|ed\/)/, '');
-          return urlPageSlug === 'partner' || urlPageSlug === 'partners';
-        });
-        const partnerPageData = await getPage(params.lang, partnerPageObj.id);
+        const customTeam = pageData.acf?.custom_team || [];
+        const teamSections = await Promise.all(
+          customTeam.map(async (section) => {
+            const members = section.team_members?.length
+              ? (
+                  await Promise.all(
+                    section.team_members.map((id) =>
+                      getTeamMemberById(id, params.lang).catch(() => null)
+                    )
+                  )
+                ).filter(Boolean)
+              : [];
+
+            return {
+              title: section.title,
+              members,
+            };
+          })
+        );
 
         template = (
           <>
@@ -221,8 +228,9 @@ const Page = async ({ params }) => {
               data={pageData}
               subSlugs={subSlugs}
               baseLink={pageSlug}
+              teamSections={teamSections}
             />
-            <PartnersTemplate data={partnerPageData} />
+            <PartnersTemplate teamSections={teamSections} />
           </>
         );
         break;

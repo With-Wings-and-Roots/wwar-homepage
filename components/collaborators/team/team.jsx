@@ -1,43 +1,40 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import CloseIcon from '@/components/page/closeIcon';
-import Button from '@/components/page/button';
+import {
+  FacebookIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  WeiboIcon,
+} from 'next-share';
 import { createLocalLink } from '@/utilities/links';
 
-const Team = ({ teamMember, subSlugs, baseLink }) => {
-  const {
-    city,
-    e_mail,
-    facebook_link,
-    image,
-    instagram_link,
-    linkedin_link,
-    twitter_link,
-    name,
-    phone,
-    position,
-    show_lightbox_popup,
-    tags,
-    text,
-    website,
-  } = teamMember;
+const socialIcons = {
+  website: WeiboIcon,
+  youtube: YoutubeIcon,
+  twitter: TwitterIcon,
+  facebook: FacebookIcon,
+  instagram: InstagramIcon,
+  linkedin: LinkedinIcon,
+};
+
+const Team = ({ teamMember, subSlugs, baseLink, profile_icon }) => {
+  const { slug, title, acf } = teamMember;
+  const { city, email, position, description, socials } = acf;
 
   const [active, setActive] = useState(false);
-  const teamMemberSlug = name.replace(/ /g, '-');
 
   useEffect(() => {
-    if (
-      subSlugs?.length === 1 &&
-      subSlugs[0].localeCompare(teamMemberSlug) === 0
-    ) {
+    if (subSlugs?.length === 1 && subSlugs[0].localeCompare(slug) === 0) {
       setActive(true);
     }
-  }, [subSlugs, teamMemberSlug]);
+  }, [subSlugs, slug]);
   useEffect(() => {
     if (active) {
       document.getElementsByTagName('body')[0].style.overflow = 'hidden';
@@ -48,15 +45,18 @@ const Team = ({ teamMember, subSlugs, baseLink }) => {
   return (
     <>
       <Link
-        href={`${createLocalLink(baseLink)}${teamMemberSlug}`}
+        href={`${createLocalLink(baseLink)}${slug}`}
         className='hover:text-wwr_yellow_orange transition-all duration-300 z-20 col-span-6 md:col-span-3 lg:col-span-2'
         scroll={false}
       >
-        <h3 className='text-lg font-light'>{name}</h3>
+        <h3
+          className='text-lg font-light'
+          dangerouslySetInnerHTML={{ __html: title.rendered }}
+        />
         <div className='text-sm font-medium'>
           {position?.length > 0 ? <>{position}</> : null}
           {position?.length > 0 && city?.length > 0 ? <>, </> : null}
-          {city?.length > 0 ? <>{teamMember.city}</> : null}
+          {city?.length > 0 ? <>{teamMember.acf.city}</> : null}
         </div>
       </Link>
 
@@ -81,11 +81,11 @@ const Team = ({ teamMember, subSlugs, baseLink }) => {
                 <div
                   className={`w-[150px] md:w-auto md:min-w-[201px] md:max-w-[300px] lg:min-w-[20vw] shrink-0`}
                 >
-                  {image && (
+                  {profile_icon && (
                     <Image
                       className={'pb-4 w-full aspect-auto'}
-                      src={image}
-                      alt={name}
+                      src={profile_icon.source_url}
+                      alt={title.rendered}
                       width={201}
                       height={201}
                     />
@@ -94,9 +94,8 @@ const Team = ({ teamMember, subSlugs, baseLink }) => {
                     className={
                       'text-[28px] text-left font-light md:text-4xl md:pt-2 md:pb-2'
                     }
-                  >
-                    {name}
-                  </h1>
+                    dangerouslySetInnerHTML={{ __html: title.rendered }}
+                  />
                   <h2
                     className={
                       'text-2xl text-left font-medium leading-tight -mt-2'
@@ -104,58 +103,40 @@ const Team = ({ teamMember, subSlugs, baseLink }) => {
                   >
                     {position}
                   </h2>
-                  {e_mail && (
+                  {email && (
                     <div className={`py-5 min-w-max`}>
                       <div className={`w-full h-px bg-wwr_black`}></div>
-                      <div className={'py-4 text-start text-lg'}>{e_mail}</div>
+                      <div className={'py-4 text-start text-lg'}>{email}</div>
                       <div className={`w-full h-px bg-wwr_black`}></div>
                     </div>
                   )}
                   <div
-                    className={'h-7 flex items-center max-w-max gap-x-7 my-4'}
+                    className={'h-7 flex items-center max-w-max gap-x-4 my-4'}
                   >
-                    <Link href={facebook_link} target={'_blank'}>
-                      <Image
-                        className={'h-7 w-auto'}
-                        src={'/social-icons/facebook-black.svg'}
-                        alt={'Facebook Icon'}
-                        width={40}
-                        height={40}
-                      />
-                    </Link>
-                    <Link href={instagram_link} target={'_blank'}>
-                      <Image
-                        className={'h-7 w-auto'}
-                        src={'/social-icons/instagram-black.svg'}
-                        alt={'Instagram Icon'}
-                        width={40}
-                        height={40}
-                      />
-                    </Link>
-                    <Link href={twitter_link} target={'_blank'}>
-                      <Image
-                        className={'h-7 w-auto'}
-                        src={'/social-icons/twitter-black.svg'}
-                        alt={'Twitter Icon'}
-                        width={40}
-                        height={40}
-                      />
-                    </Link>
+                    {socials?.length > 0 &&
+                      socials.map((social, sI) => {
+                        const Icon = socialIcons[social.type];
+                        if (Icon) {
+                          return (
+                            <Link key={sI} href={social.link} target={'_blank'}>
+                              <Icon
+                                size={45}
+                                round
+                                bgStyle={{ fill: '#ffffff' }}
+                                iconFillColor='#000000'
+                              />
+                            </Link>
+                          );
+                        }
+                      })}
                   </div>
                 </div>
                 <div className='mt-12 md:mt-0'>
                   <div
                     className={`font-thin text-start md:text-lg md:font-light lg:text-xl`}
                   >
-                    {parse(text)}
+                    {parse(description)}
                   </div>
-                  {tags ? (
-                    <div className={'flex gap-4 justify-end mt-5'}>
-                      {tags.map((tag, i) => (
-                        <Button name={tag?.name} textDark={true} key={i} />
-                      ))}
-                    </div>
-                  ) : null}
                 </div>
               </div>
             </div>
