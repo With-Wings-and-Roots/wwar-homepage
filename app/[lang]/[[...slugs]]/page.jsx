@@ -344,7 +344,13 @@ const Page = async ({ params }) => {
         break;
 
       case 'page_projects.php':
-        template = <AllProjectsTemplate subSlugs={subSlugs} />;
+        template = (
+          <AllProjectsTemplate
+            lang={params.lang}
+            data={pageData}
+            subSlugs={subSlugs}
+          />
+        );
         break;
       case 'page_storytellers.php':
         [

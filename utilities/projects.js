@@ -12,6 +12,12 @@ export const getProjectBySlug = async (slug, lang = 'en') => {
   );
   return data;
 };
+export const getProjectById = async (id, lang = 'en') => {
+  const data = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/project/${id}?lang=${lang}`
+  );
+  return data;
+};
 
 export const getProjectsByArea = async (areaSlug, lang = 'en') => {
   const data = await fetchAllData(
