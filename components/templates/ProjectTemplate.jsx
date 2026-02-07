@@ -8,6 +8,7 @@ import RelatedEvents from '../publicEvents/relatedEvents';
 import RelatedBlogs from '../blogs/relatedBlogs';
 import VisualStrip from '../projects/visualStrip';
 import WysiwygContent from '../common/WysiwygContent';
+import { getTeamMemberById } from '@/utilities/team';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -205,32 +206,36 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           </div>
         </section>
       )}
-      {acf?.founders?.length > 0 && (
+      {acf?.funders?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>
           <h2
             className='text-3xl md:text-5xl font-light mb-12'
-            dangerouslySetInnerHTML={{ __html: acf?.founder_heading }}
+            dangerouslySetInnerHTML={{ __html: acf?.funders_heading }}
           />
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
-            {acf?.founders?.map(async (founder, i) => {
-              const media = await fetchMediaFromId(founder.icon);
+            {acf?.funders?.map(async (funderId, i) => {
+              const funder = await getTeamMemberById(funderId);
+              const media = await fetchMediaFromId(funder.acf?.profile_icon);
               return (
-                <div
+                <Link
                   key={i}
                   className='flex flex-col items-center text-center gap-4'
+                  href={funder.acf?.socials?.[0]?.link || '#'}
                 >
                   {media && (
                     <div className='relative w-32 h-32'>
                       <Image
                         src={media.source_url || media.url}
-                        alt={founder.name}
+                        alt={funder.title.rendered}
                         fill
                         className='object-contain'
                       />
                     </div>
                   )}
-                  <span className='text-lg font-medium'>{founder.name}</span>
-                </div>
+                  <span className='text-lg font-medium'>
+                    {funder.title.rendered}
+                  </span>
+                </Link>
               );
             })}
           </div>
