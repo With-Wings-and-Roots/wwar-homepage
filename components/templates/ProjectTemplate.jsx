@@ -175,37 +175,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           </div>
         </section>
       )}
-
-      {acf?.intro[0]?.partners?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 py-20'>
-          <h2 className='text-3xl md:text-5xl font-light mb-12'>
-            {lang == 'en' ? 'Our Partners' : 'Unsere Partner'}
-          </h2>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
-            {acf?.intro[0]?.partners.map(async (partner, i) => {
-              const media = await fetchMediaFromId(partner.icon);
-              return (
-                <div
-                  key={i}
-                  className='flex flex-col items-center text-center gap-4'
-                >
-                  {media && (
-                    <div className='relative w-32 h-32'>
-                      <Image
-                        src={media.source_url || media.url}
-                        alt={partner.name}
-                        fill
-                        className='object-contain'
-                      />
-                    </div>
-                  )}
-                  <span className='text-lg font-medium'>{partner.name}</span>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-      )}
       {acf?.funders?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>
           <h2
