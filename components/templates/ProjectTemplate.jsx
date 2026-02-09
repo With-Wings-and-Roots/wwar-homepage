@@ -9,6 +9,7 @@ import RelatedBlogs from '../blogs/relatedBlogs';
 import VisualStrip from '../projects/visualStrip';
 import WysiwygContent from '../common/WysiwygContent';
 import { getTeamMemberById } from '@/utilities/team';
+import RelatedMaterials from '../materials/RelatedMaterials';
 
 const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
   if (!subSlugs) return notFound();
@@ -155,7 +156,12 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           lang={lang}
         />
       )}
+      {/* ================= MATERIALS GRID ================= */}
 
+      <RelatedMaterials
+        relatedMaterialIds={acf.related_materials}
+        lang={lang}
+      />
       {/* ================= CALL TO ACTION ================= */}
       {acf?.call_to_action?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>

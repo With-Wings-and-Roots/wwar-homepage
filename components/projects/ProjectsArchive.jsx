@@ -15,7 +15,6 @@ const ProjectsArchive = ({
   lang = 'en',
 }) => {
   // Initial filtered projects based on project area
-  console.log('Initial projects:', projectArea);
   const initialFiltered = useMemo(() => {
     if (!projectArea || projectAreaSlug === 'all') return projects;
     return projects.filter((p) =>

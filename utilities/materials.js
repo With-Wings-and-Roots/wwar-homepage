@@ -14,6 +14,14 @@ export const getMaterialBySlug = async (slug, lang) => {
   const data = await res.json();
   return data;
 };
+export const getMaterialById = async (id, lang) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/material/${id}?lang=${lang}`,
+    { cache: 'no-store' }
+  );
+  const data = await res.json();
+  return data;
+};
 export const getMaterialTypes = async (lang) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/material-type?lang=${lang}&per_page=100`,
