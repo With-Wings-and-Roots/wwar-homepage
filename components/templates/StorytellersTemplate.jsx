@@ -6,6 +6,7 @@ import StoryCardContainer from '../stories/StoryCardContainer';
 import StorytellerCard from '../stories/StorytellerCard';
 import { createLocalLink } from '@/utilities/links';
 import PageComponent from '../../components/page/storyPageComponent';
+import Link from 'next/link';
 const StorytellersTemplate = ({
   subSlugs,
   lang = 'en',
@@ -63,6 +64,28 @@ const StorytellersTemplate = ({
 
     return (
       <div className='px-8 md:px-16 xl:px-48 py-20'>
+        <div className='mb-6 text-sm flex flex-wrap items-center gap-2 text-gray-600'>
+          <Link
+            href={`/${params.lang}/${
+              params.lang === 'en' ? 'stories' : 'geschichten'
+            }/`}
+            className='hover:underline text-wwr_rich_black'
+          >
+            {lang === 'en' ? 'Stories' : 'Geschichten'}
+          </Link>
+
+          <span className='mx-1'>/</span>
+          <Link
+            href={`/${params.lang}/${params.slugs[0]}/`}
+            className='hover:underline text-wwr_rich_black'
+          >
+            {lang === 'en' ? 'Storytellers' : 'Erzähler'}
+          </Link>
+          <span className='mx-1'>/</span>
+          <span className='font-medium text-wwr_yellow_orange'>
+            {person.name}
+          </span>
+        </div>
         {subSlugs[1] && (
           <PageComponent
             lang={lang}
@@ -105,6 +128,21 @@ const StorytellersTemplate = ({
    */
   return (
     <div className='px-8 md:px-16 xl:px-48 py-20'>
+      <div className='mb-6 text-sm flex flex-wrap items-center gap-2 text-gray-600'>
+        <Link
+          href={`/${params.lang}/${
+            params.lang === 'en' ? 'stories' : 'geschichten'
+          }/`}
+          className='hover:underline text-wwr_rich_black'
+        >
+          {lang === 'en' ? 'Stories' : 'Geschichten'}
+        </Link>
+
+        <span className='mx-1'>/</span>
+        <span className='font-medium text-wwr_yellow_orange'>
+          {lang === 'en' ? 'Storytellers' : 'Erzähler'}
+        </span>
+      </div>
       <h2 className='text-3xl font-light mb-6'>
         {lang === 'en' ? 'Meet the Storytellers' : 'Unsere Erzähler:innen'}
       </h2>
