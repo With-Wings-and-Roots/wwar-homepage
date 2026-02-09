@@ -85,9 +85,13 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
       );
       setCurrentFilter('Featured');
     } else if (selectedTopic && selectedTopic !== 'all') {
-      filteredStories = filteredStories.filter((story) =>
-        story.acf?.topics?.includes(selectedTopicId)
-      );
+      filteredStories = filteredStories.filter((story) => {
+        const topics = story.acf?.topics;
+        if (!topics) return false; // no topics
+        const topicArray = Array.isArray(topics) ? topics : [topics];
+        return topicArray.includes(selectedTopicId);
+      });
+
       setCurrentFilter(
         allTopics.allTopics.find((t) => t.id === selectedTopicId)?.name
       );

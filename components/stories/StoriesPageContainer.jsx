@@ -9,11 +9,11 @@ import StoriesContainer from './StoriesContainer';
 import CurriculumPathways from './CurriculumPathways';
 import { createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
-import CollectionsDropdown from './CollectionsDropdown';
 import { collectionsAdded } from '@/store/collections';
 import TabsDropdown from './Tabs';
 import { curriculumAdded } from '@/store/curriculam';
 import { citiesAdded } from '@/store/cities';
+import CollectionsChips from './CollectionsDropdown';
 
 const StoriesPageContainer = ({
   stories,
@@ -108,7 +108,7 @@ const StoriesPageContainer = ({
           : 'Entdecken Sie spezielle Sammlungen'}
       </h2>
 
-      <CollectionsDropdown lang={lang} />
+      <CollectionsChips lang={lang} />
 
       {/* ✅ Stories grid / Archive */}
       <StoriesContainer
