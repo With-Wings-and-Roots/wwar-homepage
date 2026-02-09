@@ -148,23 +148,31 @@ const ProjectsArchive = ({
       </section>
 
       {/* ================= PROJECT GRID/LIST ================= */}
-      <section
-        className={`grid gap-8 ${
-          viewMode === 'grid'
-            ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-            : 'grid-cols-1'
-        }`}
-      >
-        {filteredProjects
-          .slice(0, visibleCount)
-          .map((project, i) =>
-            viewMode === 'grid' ? (
-              <ProjectGrid key={i} project={project} />
-            ) : (
-              <ProjectList key={i} project={project} />
-            )
-          )}
-      </section>
+      {filteredProjects.length === 0 ? (
+        <div className='py-20 text-center'>
+          <p className='text-lg font-light opacity-70'>
+            No projects found for the selected filters.
+          </p>
+        </div>
+      ) : (
+        <section
+          className={`grid gap-8 ${
+            viewMode === 'grid'
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+              : 'grid-cols-1'
+          }`}
+        >
+          {filteredProjects
+            .slice(0, visibleCount)
+            .map((project, i) =>
+              viewMode === 'grid' ? (
+                <ProjectGrid key={i} project={project} />
+              ) : (
+                <ProjectList key={i} project={project} />
+              )
+            )}
+        </section>
+      )}
 
       {/* ================= LOAD MORE ================= */}
       {visibleCount < filteredProjects.length && (
