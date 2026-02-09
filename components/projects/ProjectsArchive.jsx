@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import ProjectList from './projectList';
@@ -14,18 +14,28 @@ const ProjectsArchive = ({
   allProjectAreas = [],
   lang = 'en',
 }) => {
-  // Show all projects initially
-  const [filteredProjects, setFilteredProjects] = useState(projects);
+  // Initial filtered projects based on project area
+  console.log('Initial projects:', projectArea);
+  const initialFiltered = useMemo(() => {
+    if (!projectArea || projectAreaSlug === 'all') return projects;
+    return projects.filter((p) =>
+      Array.isArray(p.acf?.project_area)
+        ? p.acf.project_area.includes(projectArea?.id)
+        : p.acf.project_area === projectArea?.id
+    );
+  }, [projects, projectArea, projectAreaSlug]);
+
+  const [filteredProjects, setFilteredProjects] = useState(initialFiltered);
   const [selectedType, setSelectedType] = useState('All');
   const [viewMode, setViewMode] = useState('list');
   const [visibleCount, setVisibleCount] = useState(6);
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [countries, setCountries] = useState([]);
 
-  // Extract unique countries from all projects
+  // Extract unique countries from filteredProjects
   useEffect(() => {
     const countrySet = new Set();
-    projects.forEach((p) => {
+    filteredProjects.forEach((p) => {
       const locations = p?.acf?.intro?.[0]?.location;
       if (locations) {
         if (Array.isArray(locations)) {
@@ -36,11 +46,11 @@ const ProjectsArchive = ({
       }
     });
     setCountries(['All', ...Array.from(countrySet)]);
-  }, [projects]);
+  }, [filteredProjects]);
 
-  // Filter projects when type or country changes
+  // Filter projects based on type and country
   useEffect(() => {
-    let filtered = projects;
+    let filtered = initialFiltered;
 
     // Filter by project type
     if (selectedType !== 'All') {
@@ -61,8 +71,8 @@ const ProjectsArchive = ({
     }
 
     setFilteredProjects(filtered);
-    setVisibleCount(6); // reset visible count when filter changes
-  }, [selectedType, selectedCountry, projects]);
+    setVisibleCount(6); // Reset visible count when filter changes
+  }, [selectedType, selectedCountry, initialFiltered]);
 
   return (
     <div>
@@ -111,7 +121,6 @@ const ProjectsArchive = ({
               ))}
             </select>
           </div>
-
           {/* Right: View Mode Icons */}
           <div className='flex gap-3'>
             <button

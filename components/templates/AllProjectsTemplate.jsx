@@ -56,7 +56,7 @@ const AllProjectsTemplate = async ({ data, subSlugs, lang = 'en' }) => {
 
       <ProjectsArchive
         projects={projectsWithMedia}
-        projectArea={projectArea}
+        projectArea={projectArea[0] || null}
         projectAreaSlug={projectAreaSlug}
         allProjectAreas={allProjectAreas}
       />
