@@ -15,7 +15,7 @@ import {
 } from '@/utilities/stories';
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
-import { getAllPages } from '@/utilities/pages';
+import { getPageListMinimal } from '@/utilities/pages';
 import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
@@ -27,7 +27,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
     getAllPersons(),
     fetchAllTopics(params.lang),
   ]);
-  const pages = await getAllPages(params.lang);
+  const pages = await getPageListMinimal(params.lang);
   const events = await getAllPosts(params.lang, 'publicevent');
   const upcomingEvents = [...events]
     .filter((e) => new Date(e.acf?.date_sorting) > new Date())

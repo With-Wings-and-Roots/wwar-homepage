@@ -1,4 +1,9 @@
-import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
+import {
+  getPageListMinimal,
+  getFrontpageId,
+  getPage,
+  getPageAcf,
+} from '@/utilities/pages';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
@@ -33,7 +38,7 @@ import { getAllPosts } from '@/utilities/posts';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
-  const pages = await getAllPages(params.lang);
+  const pages = await getPageListMinimal(params.lang);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
@@ -238,7 +243,7 @@ export async function generateStaticParams() {
   const languages = ['en', 'de'];
 
   for (const lang of languages) {
-    const pages = await getAllPages(lang);
+    const pages = await getPageListMinimal(lang);
     const stories = await getAllStories(lang);
     const timelineEvents = await getTimelineEvents(lang);
     const posts = await getAllPosts(lang, 'posts');
@@ -285,7 +290,8 @@ export async function generateStaticParams() {
       }
 
       if (page.template === 'page_collaborators.php') {
-        page.acf?.team?.forEach((member) => {
+        const pageAcf = await getPageAcf(lang, page.id);
+        pageAcf?.acf?.team?.forEach((member) => {
           const teamMemberSlug = member?.name?.replace(/ /g, '-');
           paths.push({
             lang,
@@ -300,7 +306,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const pages = await getAllPages(params.lang);
+  const pages = await getPageListMinimal(params.lang);
 
   // find page by slugs
   let pageSlugs = [...(params.slugs ?? [])];
