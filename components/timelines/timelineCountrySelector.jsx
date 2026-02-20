@@ -3,7 +3,6 @@
 import React from 'react';
 import { germanySelected, usaSelected } from '@/store/timeline';
 import { useDispatch, useSelector } from 'react-redux';
-import { rangeDateChanged } from '@/store/rangeSlider';
 
 const TimelineCountry = ({ language }) => {
   const dispatch = useDispatch();

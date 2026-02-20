@@ -1,63 +1,52 @@
-'use client';
-import React, { Suspense, useEffect } from 'react';
-
-import TimelineCardContainer from './timelineCardContainer';
-import TimelineCountry from './timelineCountrySelector';
-import RangeSliderWrapper from '@/components/timelines/rangeSliderWrapper';
 import LearnTimelines from '@/components/timelines/learnTimelines';
-import { useDispatch, useSelector } from 'react-redux';
-import { topicsAdded } from '@/store/topics';
-import {
-  activatedTimeLineDates,
-  activatedTimelines,
-  timelinesAdded,
-  timelinesDatesAdded,
-} from '@/store/timelines';
 
-const TimelinesPageWrapper = ({
-  lang,
-  timeLineEventsDe,
-  timeLineEventsEn,
-  allMedia,
-  baseLink,
-  timelineTopics,
-}) => {
-  const {
-    timeline: { country },
-  } = useSelector((state) => state.entities);
+import TimelineCountriesSection from './TimelineCountriesSection';
+import WhatYouWillFindSection from './wywfSection';
+import HowToUseSection from './howToUseSection';
+import ContributorsSection from './contributorsSection';
+import FooterLinksSection from './footerLinksSection';
+import WysiwygContent from '../common/WysiwygContent';
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(topicsAdded({ topics: timelineTopics }));
-  }, [timelineTopics, dispatch]);
-
-  useEffect(() => {
-    if (country == 'us') {
-      dispatch(timelinesAdded({ timelines: timeLineEventsEn }));
-      dispatch(activatedTimelines({ timelines: timeLineEventsEn }));
-      dispatch(timelinesDatesAdded({ timelines: timeLineEventsEn }));
-      dispatch(activatedTimeLineDates({ timelines: timeLineEventsEn }));
-    } else {
-      dispatch(timelinesAdded({ timelines: timeLineEventsDe }));
-      dispatch(activatedTimelines({ timelines: timeLineEventsDe }));
-      dispatch(timelinesDatesAdded({ timelines: timeLineEventsDe }));
-      dispatch(activatedTimeLineDates({ timelines: timeLineEventsDe }));
-    }
-  }, [timeLineEventsEn, timeLineEventsDe, country, dispatch]);
-
+const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
   return (
     <>
-      <LearnTimelines />
-      <TimelineCountry language={lang} />
-      <TimelineCardContainer
-        allMedia={allMedia}
-        lang={lang}
-        baseLink={baseLink}
-      />
+      <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative mb-6'>
+        <h1
+          dangerouslySetInnerHTML={{ __html: data.acf?.hero_title || '' }}
+          className='text-3xl md:text-6xl font-light'
+        />
+        <WysiwygContent
+          content={data.acf?.intro_text}
+          className='font-light md:text-lg mt-1'
+        />
+      </div>
 
-      <Suspense>
-        <RangeSliderWrapper />
-      </Suspense>
+      <TimelineCountriesSection
+        timelineCountries={timelineCountries}
+        language={lang}
+      />
+      <WhatYouWillFindSection
+        heading={data?.acf?.what_you_will_find_heading}
+        content={data?.acf?.text}
+        previewImage={data?.acf?.image}
+      />
+      <LearnTimelines data={data.acf} />
+      <HowToUseSection
+        heading={data?.acf?.how_to_use_heading}
+        how_to_use={data?.acf?.how_to_use}
+        related_links={data?.acf?.related_links}
+      />
+      <ContributorsSection
+        de_headline={data.acf?.de_headline}
+        us_headline={data?.acf?.us_headline}
+        special_members={data.acf?.special_members}
+        de_contributors={data.acf?.de_contributors}
+        us_contributors={data.acf?.us_contributors}
+      />
+      <FooterLinksSection
+        heading={data?.acf?.footer_links_heading}
+        footer_links={data?.acf?.footer_links}
+      />
     </>
   );
 };

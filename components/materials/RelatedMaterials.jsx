@@ -2,11 +2,11 @@ import MaterialGridCard from '@/components/materials/MaterialGridCard';
 import { getMaterialById } from '@/utilities/materials'; // adjust if your util name differs
 
 const RelatedMaterials = async ({ relatedMaterialIds = [], lang = 'en' }) => {
-  if (!relatedMaterialIds.length) return null;
+  if (!relatedMaterialIds?.length) return null;
 
   // Fetch materials by ID
   const materials = await Promise.all(
-    relatedMaterialIds.map(async (id) => {
+    relatedMaterialIds?.map(async (id) => {
       try {
         return await getMaterialById(id, lang);
       } catch (error) {

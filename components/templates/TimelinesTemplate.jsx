@@ -1,10 +1,26 @@
-import TimelinesPageWrapper from '@/components/timelines/timelinesPageWrapper';
-import React from 'react';
-import WysiwygContent from '@/components/common/WysiwygContent';
-import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
+import { fetchMediaFromId } from '@/utilities/media';
+import TimelineEventPage from '../timelineEvent/timelineEventPage';
+import TimelinesPageWrapper from '../timelines/timelinesPageWrapper';
+import TimelinesWrapper from '../timelines/timelineWrapper';
 import { getAdjacentSlug } from '@/utilities/general';
+import { notFound } from 'next/navigation';
 
-const TimelinesTemplate = ({
+const fetchImageForTimelineContries = async (timelineCountries) => {
+  const countriesWithImages = await Promise.all(
+    timelineCountries.map(async (country) => {
+      const mediaId = country.acf?.image;
+      if (mediaId) {
+        const i = await fetchMediaFromId(mediaId);
+        return { ...country, imageUrl: i.source_url };
+      } else {
+        return { ...country, imageUrl: null };
+      }
+    })
+  );
+  return countriesWithImages;
+};
+
+const TimelinesTemplate = async ({
   params,
   data,
   subSlugs,
@@ -13,113 +29,138 @@ const TimelinesTemplate = ({
   timeLineEventsEn,
   allMedia,
   timelineTopics,
+  timelineEras,
   stories,
   allPersons,
+  timelineCountries,
 }) => {
-  let country = null;
-  let timelineEvents = [...timeLineEventsDe, ...timeLineEventsEn];
-  let timelineEvent = null;
-  let nextSlug = null;
-  let prevSlug = null;
-  let relatedEvents = null;
-  let relatedStories = null;
-
-  if (
-    subSlugs?.length > 0 &&
-    !![...timeLineEventsDe, ...timeLineEventsEn]?.find(
-      (te) => te.slug === subSlugs[0]
-    )
-  ) {
-    const germanIdsArray = timeLineEventsDe.map((timeline) => timeline.id);
-    const usaIdsArray = timeLineEventsEn.map((timeline) => timeline.id);
-    timelineEvent =
-      timelineEvents.find((singleEvent) => singleEvent.slug === subSlugs[0]) ||
-      null;
-
-    const indexInGerman = germanIdsArray.indexOf(timelineEvent.id);
-    const indexInUsa = usaIdsArray.indexOf(timelineEvent.id);
-
-    if (indexInGerman !== -1) {
-      country = 'de';
-    } else if (indexInUsa !== -1) {
-      country = 'us';
-    }
-
-    nextSlug = getAdjacentSlug(
-      (country === 'de' ? indexInGerman : indexInUsa) + 1,
-      country === 'de' ? timeLineEventsDe?.length : timeLineEventsEn?.length,
-      country === 'de' ? timeLineEventsDe : timeLineEventsEn
+  // 1️⃣ Fetch countries with images
+  const timelines = await fetchImageForTimelineContries(timelineCountries);
+  // 2️⃣ Determine what to render
+  if (!subSlugs || subSlugs.length === 0) {
+    // /timelines → Render NEW overview component
+    return (
+      <TimelinesPageWrapper
+        data={data}
+        timelineCountries={timelines}
+        lang={params.lang}
+      />
     );
-    prevSlug = getAdjacentSlug(
-      (country === 'de' ? indexInGerman : indexInUsa) - 1,
-      country === 'de' ? timeLineEventsDe?.length : timeLineEventsEn?.length,
-      country === 'de' ? timeLineEventsDe : timeLineEventsEn
-    );
-
-    const {
-      acf: {
-        basic_info: { related_events },
-      },
-    } = timelineEvent;
-
-    relatedEvents = related_events
-      ? timelineEvents.filter((event) => related_events.includes(event.id))
-      : null;
-
-    const {
-      acf: {
-        basic_info: { related_stories },
-      },
-    } = timelineEvent;
-
-    relatedStories = related_stories
-      ? stories.filter((story) => related_stories.includes(story.id))
-      : null;
   }
-
-  return (
-    <div>
-      <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative'>
-        <h1
-          dangerouslySetInnerHTML={{ __html: data.acf?.page_title || '' }}
-          className='text-3xl md:text-6xl font-light'
-        />
-        <WysiwygContent
-          content={data.acf?.intro_text}
-          className='font-light md:text-lg mt-1'
-        />
-      </div>
-      {subSlugs?.length > 0 &&
-        !![...timeLineEventsDe, ...timeLineEventsEn]?.find(
-          (te) => te.slug === subSlugs[0]
-        ) && (
-          <TimelineEventPage
-            timelineEvent={timelineEvent}
-            nextSlug={nextSlug}
-            prevSlug={prevSlug}
-            country={country}
-            relatedEvents={relatedEvents}
-            relatedStories={relatedStories}
-            lang={params.lang?.toLowerCase()}
-            baseLink={baseLink}
-            timelineTopics={timelineTopics}
-            allMedia={allMedia}
-            stories={stories}
-            allPersons={allPersons}
-          />
-        )}
-      <div className='mt-12'>
-        <TimelinesPageWrapper
-          lang={params.lang?.toLowerCase()}
+  // Handle /timelines/info
+  if (subSlugs[0]?.toLowerCase() === 'info') {
+    return (
+      <TimelinesPageWrapper
+        data={data}
+        timelineCountries={timelines}
+        lang={params.lang}
+      />
+    );
+  }
+  let country;
+  if (subSlugs.length === 1) {
+    country = subSlugs[0].toLowerCase();
+  } else {
+    country = subSlugs[1].toLowerCase();
+  }
+  let selectedCountry = null;
+  if (['united-states', 'usa', 'usa-ed'].includes(country)) {
+    selectedCountry = 'us';
+  } else if (['germany', 'deutschland', 'deutschland-ed'].includes(country)) {
+    selectedCountry = 'de';
+  }
+  const countryData = timelineCountries.find(
+    (c) => c.slug.toLowerCase() === country
+  );
+  if (selectedCountry) {
+    if (subSlugs.length === 1) {
+      const baseLinkModified = `${baseLink}${subSlugs[0]}/`;
+      // /timelines/germany or /timelines/us → Render country timeline listing
+      return (
+        <TimelinesWrapper
+          lang={params.lang}
+          selectedCountry={selectedCountry}
+          timelines={timelines}
           timeLineEventsDe={timeLineEventsDe}
           timeLineEventsEn={timeLineEventsEn}
           allMedia={allMedia}
-          baseLink={baseLink}
           timelineTopics={timelineTopics}
+          baseLink={baseLinkModified}
+          timelineEras={timelineEras}
+          countryData={countryData}
         />
-      </div>
-    </div>
-  );
+      );
+    }
+
+    if (subSlugs.length === 2) {
+      const baseLinkModified = `${baseLink}${subSlugs[1]}/`;
+
+      const eventSlug = subSlugs[0];
+
+      const allEvents = [...timeLineEventsDe, ...timeLineEventsEn];
+      console.log('eventSlug:', eventSlug);
+      const timelineEvent = allEvents.find((te) => te.slug === eventSlug);
+
+      if (!timelineEvent) return notFound();
+
+      // Determine country array for next/prev
+      const isGerman = timeLineEventsDe.some((t) => t.id === timelineEvent.id);
+
+      const eventsArray = isGerman ? timeLineEventsDe : timeLineEventsEn;
+
+      const currentIndex = eventsArray.findIndex(
+        (t) => t.id === timelineEvent.id
+      );
+
+      const nextSlug = getAdjacentSlug(
+        currentIndex + 1,
+        eventsArray.length,
+        eventsArray
+      );
+
+      const prevSlug = getAdjacentSlug(
+        currentIndex - 1,
+        eventsArray.length,
+        eventsArray
+      );
+
+      // Related events from ALL events
+      const relatedEvents =
+        timelineEvent.acf?.basic_info?.related_events?.length > 0
+          ? allEvents.filter((event) =>
+              timelineEvent.acf.basic_info.related_events.includes(event.id)
+            )
+          : null;
+
+      // Related stories from all stories (same as before)
+      const relatedStories =
+        timelineEvent.acf?.basic_info?.related_stories?.length > 0
+          ? stories.filter((story) =>
+              timelineEvent.acf.basic_info.related_stories.includes(story.id)
+            )
+          : null;
+
+      return (
+        <TimelineEventPage
+          timelineEvent={timelineEvent}
+          nextSlug={nextSlug}
+          prevSlug={prevSlug}
+          country={isGerman ? 'de' : 'us'}
+          relatedEvents={relatedEvents}
+          relatedStories={relatedStories}
+          lang={params.lang?.toLowerCase()}
+          baseLink={baseLinkModified}
+          timelineTopics={timelineTopics}
+          allMedia={allMedia}
+          stories={stories}
+          allPersons={allPersons}
+        />
+      );
+    }
+  }
+
+  // Fallback for unknown subSlugs
+  return notFound();
 };
 
 export default TimelinesTemplate;

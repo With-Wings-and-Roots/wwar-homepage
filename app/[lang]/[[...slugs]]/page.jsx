@@ -22,6 +22,8 @@ import {
 } from '@/utilities/stories';
 import {
   getTimeline,
+  getTimelineCountries,
+  getTimelineEras,
   getTimelineEventById,
   getTimelineEvents,
   getTimelineTopics,
@@ -48,6 +50,7 @@ import {
   getMaterialTypes,
 } from '@/utilities/materials';
 import { getTeamMemberById } from '@/utilities/team';
+import { get } from 'http';
 
 const Page = async ({ params }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -97,8 +100,10 @@ const Page = async ({ params }) => {
     pathways,
     allMedia,
     materials,
+    timelineCountries,
     timeLineEventsDe,
     timeLineEventsEn,
+    timelineEras,
     timelineTopics;
 
   // get page
@@ -153,20 +158,24 @@ const Page = async ({ params }) => {
           timeLineEventsDe,
           timeLineEventsEn,
           timelineTopics,
+          timelineEras,
           allMediaDe,
           allMediaEd,
           allMediaEn,
           stories,
           allPersons,
+          timelineCountries,
         ] = await Promise.all([
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
           getTimelineTopics(params.lang),
+          getTimelineEras(params.lang),
           getAllMedia('de'),
           getAllMedia('ed'),
           getAllMedia('en'),
           getAllStories(params.lang),
           getAllPersons(),
+          getTimelineCountries(params.lang),
         ]);
         allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
@@ -179,8 +188,10 @@ const Page = async ({ params }) => {
             timeLineEventsEn={timeLineEventsEn}
             allMedia={allMedia}
             timelineTopics={timelineTopics}
+            timelineEras={timelineEras}
             stories={stories}
             allPersons={allPersons}
+            timelineCountries={timelineCountries}
           />
         );
         break;
@@ -551,7 +562,7 @@ export async function generateMetadata({ params }) {
         description: seoData?._open_graph_description,
         images: [
           {
-            url: seoData._social_image_url,
+            url: seoData?._social_image_url,
           },
         ],
       },
@@ -560,7 +571,7 @@ export async function generateMetadata({ params }) {
         description: seoData?._twitter_description,
         images: [
           {
-            url: seoData._social_image_url,
+            url: seoData?._social_image_url,
           },
         ],
       },

@@ -1,38 +1,50 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import parse from 'html-react-parser';
+import { useSelector } from 'react-redux';
 
 import SingleTabButton from './singleTabButton';
-import { useSelector } from 'react-redux';
 
 const Tabs = ({ lang: language }) => {
   const allTabData = useSelector((state) => state.entities.topics.allTopics);
 
-  const storiesCount = useSelector(
-    (state) => state.entities.selectedStory.numberOfSelectedStories
-  );
+  // State to toggle showing all tabs
+  const [showAll, setShowAll] = useState(false);
+
+  // Decide which tabs to render
+  const tabsToShow = showAll ? allTabData : allTabData.slice(0, 6);
 
   return (
-    <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 my-8 pt-8 pb-8'>
-      {allTabData.map((singleTabData, i) => {
-        return (
-          <React.Fragment key={i}>
-            <SingleTabButton
-              buttonText={parse(singleTabData.name)}
-              slug={singleTabData.slug}
-            />
-          </React.Fragment>
-        );
-      })}
+    <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 pt-4 items-center'>
       <SingleTabButton
         buttonText={language === 'en' ? 'All Events' : 'Alle Ereignisse'}
         slug={'all'}
         lang={language}
       />
 
-      <div className='text-md px-2 py-1 lg:text-xl text-wwr_yellow_orange flex items-center lg:py-2'>
-        Stories: {storiesCount}
-      </div>
+      {tabsToShow.map((singleTabData, i) => (
+        <SingleTabButton
+          key={i}
+          buttonText={parse(singleTabData.name)}
+          slug={singleTabData.slug}
+        />
+      ))}
+
+      {/* Show more / show less button */}
+      {allTabData.length > 6 && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className='ml-2 text-wwr_black font-medium underline hover:text-wwr_yellow_orange transition-colors'
+        >
+          {showAll
+            ? language === 'en'
+              ? 'Show Less'
+              : 'Weniger anzeigen'
+            : language === 'en'
+              ? 'Show All'
+              : 'Alle anzeigen'}
+        </button>
+      )}
     </div>
   );
 };

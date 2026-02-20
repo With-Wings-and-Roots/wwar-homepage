@@ -13,8 +13,6 @@ const MaterialsTemplate = ({
   languages,
 }) => {
   const headerImage = data?.acf?.header_image || null;
-  console.log('MaterialsTemplate data:', data);
-  console.log('MaterialsTemplate materials:', materials);
   return (
     <>
       {/* Hero */}

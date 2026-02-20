@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { storySelected } from '@/store/selectedStory';
+import { activatedEra } from '@/store/timelineEras';
 
 const SingleTabButton = ({ buttonText = '', slug = 'all', lang: language }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const SingleTabButton = ({ buttonText = '', slug = 'all', lang: language }) => {
         id: selectedTopicId ? selectedTopicId : null,
       })
     );
+    dispatch(activatedEra({ era: null }));
   };
 
   return (

@@ -1,3 +1,4 @@
+import { get } from 'http';
 import { fetchAllData } from './general';
 
 export const getTimelineEvents = async (lang = 'en') => {
@@ -40,7 +41,12 @@ const getTimelineCountryIds = async (lang = 'en') => {
 
   return result;
 };
-
+export const getTimelineCountries = async (lang = 'en') => {
+  const data = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
+  );
+  return data;
+};
 export const getTimeline = async (country = 'us', lang = 'en') => {
   const timelineCountryIds = await getTimelineCountryIds(lang);
   const baseUrl =
@@ -90,4 +96,16 @@ export const getTimelineTopics = async (lang = 'en') => {
   return await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event_topic?lang=${lang}`
   );
+};
+export const getTimelineEras = async (lang = 'en') => {
+  return await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline-era?lang=${lang}`
+  );
+};
+export const getTimelineCountryById = async (id, lang = 'en') => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline/${id}?lang=${lang}`
+  );
+  const data = await res.json();
+  return data;
 };

@@ -3,14 +3,22 @@ import TimeLineCard from './timelineCard';
 import Tabs from './tabs';
 import Image from 'next/image';
 import { easeOut, motion } from 'framer-motion';
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { activatedTimeLineDates, activatedTimelines } from '@/store/timelines';
 import { storiesCounted } from '@/store/selectedStory';
+import SearchAndFilter from '../common/search';
+import ErasTabs from './ErasTabs';
+import { activatedEra } from '@/store/timelineEras';
 
-const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
+const TimelineCardContainer = ({
+  allMedia,
+  baseLink,
+  lang,
+  selectedCountry,
+}) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const {
@@ -26,44 +34,46 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
       selectedStory: selectedTopic,
       selectedStoryId: selectedTopicId,
     },
+    timelineEras: { activeEra },
   } = useSelector((state) => state.entities);
 
   useEffect(() => {
-    if (selectedTopic === 'all') {
-      dispatch(activatedTimelines({ timelines: allTimelines }));
-      dispatch(activatedTimeLineDates({ timelines: allTimelines }));
-      dispatch(storiesCounted({ count: allTimelines.length }));
-    }
+    let timelines = allTimelines;
 
+    // Filter by topic
     if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
-      const timelines = allTimelines.filter((story) => {
+      timelines = allTimelines.filter((story) => {
         try {
           return story.acf?.basic_info?.topics?.includes(selectedTopicId);
         } catch {
           return false;
         }
       });
-      dispatch(
-        activatedTimelines({
-          timelines,
-        })
-      );
-      dispatch(activatedTimeLineDates({ timelines }));
-      dispatch(storiesCounted({ count: timelines.length }));
     }
+
+    // Filter by featured
     if (selectedTopic === 'featured') {
-      const timelines = allTimelines.filter(
-        (timeline) => timeline.acf.featured_story === true
+      timelines = allTimelines.filter(
+        (story) => story.acf.featured_story === true
       );
-      dispatch(
-        activatedTimelines({
-          timelines,
-        })
-      );
-      dispatch(activatedTimeLineDates({ timelines }));
-      dispatch(storiesCounted({ count: timelines.length }));
     }
-  }, [selectedTopic, dispatch, allTimelines, selectedTopicId]);
+
+    // Filter by era
+    if (activeEra) {
+      timelines = allTimelines.filter((story) => {
+        try {
+          return story.acf?.basic_info?.timeline_era?.includes(activeEra.id);
+        } catch {
+          return false;
+        }
+      });
+    }
+
+    // Activate filtered timelines
+    dispatch(activatedTimelines({ timelines }));
+    dispatch(activatedTimeLineDates({ timelines }));
+    dispatch(storiesCounted({ count: timelines.length }));
+  }, [selectedTopic, selectedTopicId, allTimelines, activeEra, dispatch]);
 
   const [cardWidth, setCardWidth] = useState(0);
 
@@ -82,50 +92,59 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
     ? 0
     : -Math.min(cardWidthPercentage * dateIndex, maxLeftPositionPercentage);
 
-  const handleInput = (e) => {
-    const searchValue = e.target.value.toLowerCase();
+  const handleFilteredTimelines = useCallback(
+    (filtered) => {
+      dispatch(activatedTimelines({ timelines: filtered }));
+    },
+    [dispatch]
+  );
 
-    if (searchValue.length > 0) {
-      dispatch(
-        activatedTimelines({
-          timelines: allTimelines.filter((timeline) => {
-            return `${timeline.title.rendered}
-            ${timeline.acf?.basic_info?.tags}${
-              timeline?.acf?.basic_info?.keywords
-            }${timeline.acf?.basic_info?.start_date?.slice(0, 4)}`
-              .toLowerCase()
-              .includes(searchValue?.toLowerCase());
-          }),
-        })
-      );
-    } else {
-      dispatch(activatedTimelines({ timelines: allTimelines }));
-    }
-  };
   return (
     <div className='w-full overflow-hidden'>
-      <Tabs lang={lang} />
-      <div className='flex flex-nowrap items-center h-10 border-2 border-wwr_rich_black max-w-max mb-8 ml-8 md:ml-16 xl:ml-48'>
-        <input
-          className='my-4 p-1  h-full border-0 focus:outline-none'
-          placeholder='Search all timelines'
-          type='text'
-          onChange={handleInput}
-        />
-        <div className='text-2xl text-wwr_white cursor-pointer h-full bg-wwr_rich_black px-2  flex items-center p-2'>
-          <Image src='/search.svg' width={24} height={24} alt='Search icon' />
-        </div>
+      <div className='px-8 md:px-16 xl:px-48 mb-4 text-lg lg:text-xl font-medium text-wwr_rich_black'>
+        {lang === 'en'
+          ? 'Search timelines or filter by topics / timeline eras'
+          : 'Zeitstrahlen durchsuchen oder nach Themen / Epochen filtern'}
       </div>
+      <div className='max-w-xl mx-auto mb-4'>
+        <SearchAndFilter
+          items={allTimelines}
+          searchFields={[
+            'title.rendered',
+            'acf.basic_info.title',
+            'acf.basic_info.description',
+            'acf.basic_info.keywords',
+            'acf.basic_info.tags',
+          ]}
+          onFiltered={handleFilteredTimelines}
+          placeholder={
+            lang === 'en' ? 'Search all timelines' : 'Suche nach Ereignissen'
+          }
+        />
+      </div>
+      <Tabs lang={lang} />
+      <ErasTabs lang={lang} allStoriesCount={allTimelines.length} />
+
       <motion.div
         animate={
-          pathname.endsWith('/timelines')
+          pathname.endsWith('/united-states') ||
+          pathname.endsWith('/germany') ||
+          pathname.endsWith('/usa') ||
+          pathname.endsWith('/usa-ed') ||
+          pathname.endsWith('/deutschland') ||
+          pathname.endsWith('/deutschland-ed')
             ? { x: `${leftPositionPercentage}%` }
             : false
         }
         transition={{ duration: 0.8, ease: easeOut }}
         className='flex'
         initial={
-          pathname.endsWith('/timelines')
+          pathname.endsWith('/united-states') ||
+          pathname.endsWith('/germany') ||
+          pathname.endsWith('/usa') ||
+          pathname.endsWith('/usa-ed') ||
+          pathname.endsWith('/deutschland') ||
+          pathname.endsWith('/deutschland-ed')
             ? { x: `${leftPositionPercentage}%` }
             : false
         }
@@ -143,7 +162,7 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
                     setCardWidth={setCardWidth}
                     cardWidth={cardWidth}
                     language={language}
-                    selectedCountry={country}
+                    selectedCountry={selectedCountry}
                     baseLink={baseLink}
                   />
                 </React.Fragment>
@@ -154,7 +173,7 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
 
       <div
         className={`${
-          country === 'de' ? 'bg-wwr_turquoise' : 'bg-wwr_yellow_orange'
+          selectedCountry === 'us' ? 'bg-wwr_yellow_orange' : 'bg-wwr_turquoise'
         } w-full h-5`}
       ></div>
     </div>
