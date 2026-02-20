@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { storiesCounted, storySelected } from '@/store/selectedStory';
 
 import { activatedStories } from '@/store/stories';
+import { getTopicIds } from '@/utilities/general';
 
 import StoryCardContainer from './StoryCardContainer';
 import Image from 'next/image';
@@ -38,7 +39,7 @@ const StoriesContainer = ({ baseLink, lang: language }) => {
       dispatch(
         activatedStories({
           stories: allStories.filter((story) =>
-            story.acf?.topics?.includes(selectedTopicId)
+            getTopicIds(story.acf?.topics).includes(selectedTopicId)
           ),
         })
       );

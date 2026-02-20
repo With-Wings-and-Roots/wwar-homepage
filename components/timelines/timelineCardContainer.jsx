@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { usePathname } from 'next/navigation';
 import { activatedTimeLineDates, activatedTimelines } from '@/store/timelines';
 import { storiesCounted } from '@/store/selectedStory';
+import { getTopicIds } from '@/utilities/general';
 
 const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
   const pathname = usePathname();
@@ -38,7 +39,9 @@ const TimelineCardContainer = ({ allMedia, baseLink, lang }) => {
     if (selectedTopic !== 'all' && selectedTopic !== 'featured') {
       const timelines = allTimelines.filter((story) => {
         try {
-          return story.acf?.basic_info?.topics?.includes(selectedTopicId);
+          return getTopicIds(story.acf?.basic_info?.topics).includes(
+            selectedTopicId
+          );
         } catch {
           return false;
         }

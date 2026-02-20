@@ -9,7 +9,7 @@ import PageTitle from './pageTitle';
 import ClosedCaption from './closedCaption';
 import QuotationMark from './quotationMark';
 import RelatedStoriesContainer from './relatedStoriesContainer';
-import { fetchAllData } from '@/utilities/general';
+import { fetchAllData, getTopicIds } from '@/utilities/general';
 import FullPageBackground from './fullPageBackground';
 import { createLocalLink, createVideoEmbedLink } from '@/utilities/links';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
@@ -30,8 +30,9 @@ const StoryPageComponent = ({
   const personId = story?.acf?.person;
   const person = personId ? allPersons?.find((p) => p.id === personId) : null;
 
+  const storyTopicIds = getTopicIds(story?.acf?.topics);
   const categoriesArray = topics
-    ?.filter((t) => story?.acf?.topics?.includes(t.id))
+    ?.filter((t) => storyTopicIds.includes(t.id))
     ?.map((t) => ({ name: t.name, slug: t.slug }));
 
   const categories = categoriesArray.filter(Boolean);

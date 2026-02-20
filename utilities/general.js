@@ -36,3 +36,15 @@ export function getAdjacentSlug(index, length, array) {
   const adjustedIndex = (index + length) % length;
   return array[adjustedIndex].slug;
 }
+
+/**
+ * Normalizes ACF topic field (array of IDs, array of {id}, or single value) to an array of IDs.
+ * Use before .includes() to avoid "includes is not a function" when the API returns non-array.
+ */
+export function getTopicIds(val) {
+  if (val == null) return [];
+  const arr = Array.isArray(val) ? val : [val];
+  return arr.map((x) =>
+    x && typeof x === 'object' && 'id' in x ? x.id : x
+  );
+}
