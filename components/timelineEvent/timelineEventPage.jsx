@@ -71,8 +71,17 @@ const TimelineEventPage = ({
               />
             </div>
             <div className='px-4 md:px-8 lg:px-20 pb-10'>
-              <YearButton year={year} endYear={endYear} />
-
+              <div className='flex gap-2 flex-wrap md:flex-nowrap'>
+                <Button
+                  color={`turquoise`}
+                  name={
+                    country === 'us'
+                      ? 'United States'
+                      : `${country === 'de' ? 'Germany' : ''}`
+                  }
+                />
+                <YearButton year={year} endYear={endYear} />
+              </div>
               <PageTitle title={title} />
 
               <div className='flex gap-8 flex-wrap md:flex-nowrap'>
@@ -87,14 +96,6 @@ const TimelineEventPage = ({
                     allPersons={allPersons}
                   />
                   <div className={`flex flex-col gap-px mt-10`}>
-                    <Button
-                      color={`turquoise`}
-                      name={
-                        country === 'us'
-                          ? 'United States'
-                          : `${country === 'de' ? 'Germany' : ''}`
-                      }
-                    />
                     <div className={`flex flex-wrap gap-px`}>
                       {topicsArray.map((topicName) => {
                         return (

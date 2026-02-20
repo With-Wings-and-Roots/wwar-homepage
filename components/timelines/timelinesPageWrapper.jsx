@@ -1,11 +1,11 @@
 import LearnTimelines from '@/components/timelines/learnTimelines';
 
-import TimelineCountriesSection from './TimelineCountriesSection';
 import WhatYouWillFindSection from './wywfSection';
 import HowToUseSection from './howToUseSection';
 import ContributorsSection from './contributorsSection';
 import FooterLinksSection from './footerLinksSection';
 import WysiwygContent from '../common/WysiwygContent';
+import TimelineCountriesSection from './timelineCountriesSection';
 
 const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
   return (
