@@ -242,7 +242,7 @@ const Page = async ({ params }) => {
   return (
     <>
       {pageSettings?.google_analytics_id &&
-      pageSettings?.google_analytics_id?.length > 0 ? (
+        pageSettings?.google_analytics_id?.length > 0 ? (
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       ) : null}
       <Header lang={params.lang} />
@@ -344,10 +344,10 @@ export async function generateMetadata({ params }) {
       images:
         seoData?._social_image_url !== ''
           ? [
-              {
-                url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-              },
-            ]
+            {
+              url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
+            },
+          ]
           : [],
     },
     twitter: {
@@ -356,8 +356,8 @@ export async function generateMetadata({ params }) {
       images:
         seoData?._social_image_url !== ''
           ? [
-              `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-            ]
+            `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
+          ]
           : [],
     },
   };
