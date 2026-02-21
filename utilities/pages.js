@@ -1,6 +1,23 @@
 const PAGE_LIST_FIELDS = 'id,link,slug,parent,template';
 
 /**
+ * Resolves URI + lang to database id and type via backend.
+ * @param {string} uri Path without leading slash or lang prefix (e.g. 'about', 'stories/sexual-identity').
+ * @param {string} lang Language code ('en' | 'de').
+ * @returns {Promise<{ id: number, type: string } | null>}
+ */
+export async function resolveUri(uri, lang) {
+  const base = process.env.NEXT_PUBLIC_CMS_URL;
+  const url = `${base}/wp-json/wwarrest/v1/resolve?uri=${encodeURIComponent(uri)}&lang=${encodeURIComponent(lang)}`;
+  const res = await fetch(url, {
+    next: { revalidate: 600 },
+  });
+  if (!res.ok) return null;
+  const data = await res.json();
+  return data && typeof data.id === 'number' && data.type ? data : null;
+}
+
+/**
  * Fetches minimal page list (id, link, slug, parent, template) for path
  * resolution and static params. Use getPage(lang, id) for full page data.
  */
