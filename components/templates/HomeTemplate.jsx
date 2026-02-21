@@ -20,14 +20,14 @@ import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
 
-const HomeTemplate = async ({ data, params, subSlugs }) => {
+const HomeTemplate = async ({ data, params, subSlugs, pages: pagesProp }) => {
   const [stories, allMedia, allPersons, topics] = await Promise.all([
     getAllStories(params.lang),
     getAllMedia(params.lang),
     getAllPersons(),
     fetchAllTopics(params.lang),
   ]);
-  const pages = await getPageListMinimal(params.lang);
+  const pages = pagesProp ?? (await getPageListMinimal(params.lang));
   const events = await getAllPosts(params.lang, 'publicevent');
   const upcomingEvents = [...events]
     .filter((e) => new Date(e.acf?.date_sorting) > new Date())
