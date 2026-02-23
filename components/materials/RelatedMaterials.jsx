@@ -1,7 +1,13 @@
 import MaterialGridCard from '@/components/materials/MaterialGridCard';
-import { getMaterialById } from '@/utilities/materials'; // adjust if your util name differs
-
-const RelatedMaterials = async ({ relatedMaterialIds = [], lang = 'en' }) => {
+import { getMaterialById } from '@/utilities/materials';
+import Image from 'next/image';
+import gfx_bg_blue from '@/public/bg_blue.png';
+const RelatedMaterials = async ({
+  relatedMaterialIds = [],
+  lang = 'en',
+  heading,
+  className,
+}) => {
   if (!relatedMaterialIds?.length) return null;
 
   // Fetch materials by ID
@@ -21,15 +27,26 @@ const RelatedMaterials = async ({ relatedMaterialIds = [], lang = 'en' }) => {
   if (!validMaterials.length) return null;
 
   return (
-    <section className='px-8 md:px-16 xl:px-48 py-12 bg-yellow-50 text-black'>
-      <h2 className='text-3xl md:text-5xl font-light mb-8'>
-        {lang === 'en' ? 'Related Materials' : 'Zugehörige Materialien'}
-      </h2>
+    <section
+      className={`relative overflow-hidden bg-black text-white ${className}`}
+    >
+      {/* Background Image */}
+      <Image
+        src={gfx_bg_blue}
+        alt=''
+        fill
+        className='absolute inset-0 object-cover opacity-40'
+      />
 
-      <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-        {validMaterials.map((material) => (
-          <MaterialGridCard key={material.id} material={material} />
-        ))}
+      {/* Content */}
+      <div className='relative z-10'>
+        <h2 className='text-3xl md:text-5xl font-light mb-8'>{heading}</h2>
+
+        <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+          {validMaterials.map((material) => (
+            <MaterialGridCard key={material.id} material={material} />
+          ))}
+        </div>
       </div>
     </section>
   );

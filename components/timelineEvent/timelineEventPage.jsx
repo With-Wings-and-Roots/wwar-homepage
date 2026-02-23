@@ -15,6 +15,7 @@ import RelatedEvents from '@/components/timelineEvent/relatedEvents';
 import ModalOpenBodyClass from '@/components/common/ModalOpenBodyClass';
 import { createLocalLink } from '@/utilities/links';
 import RelatedStoriesContainer from '../page/relatedStoriesContainer';
+import RelatedMaterials from '../materials/RelatedMaterials';
 
 const TimelineEventPage = ({
   timelineEvent,
@@ -34,6 +35,7 @@ const TimelineEventPage = ({
     timeline_event_topic,
     acf: {
       article: { event_sources, event_resources },
+      added_info: { educational_questions },
     },
   } = timelineEvent;
 
@@ -169,6 +171,53 @@ const TimelineEventPage = ({
                 hoverZoom={false}
                 baseLink={baseLink}
               />
+            )}
+            <RelatedMaterials
+              relatedMaterialIds={
+                timelineEvent?.acf?.added_info?.related_materials
+              }
+              lang={lang}
+              heading={timelineEvent?.acf?.added_info?.related_material_heading}
+              className='px-4 md:px-8 lg:px-20 pb-10 pt-10'
+            />
+            {/* ================= EDUCATIONAL QUESTIONS ================= */}
+            {educational_questions?.length > 0 && (
+              <div className='px-8 sm:px-4 md:px-8 lg:px-20 pb-16 pt-12'>
+                <div className='border-t border-wwr_gray_storm opacity-20 mb-10'></div>
+
+                <h2 className='text-2xl md:text-3xl font-light text-black'>
+                  {lang === 'en'
+                    ? 'Educational Questions'
+                    : 'Fragen für den Unterricht'}
+                </h2>
+
+                <p className='mt-2 text-sm font-light text-gray-500'>
+                  {lang === 'en'
+                    ? 'Use these prompts for discussion, reflection, or research.'
+                    : 'Diese Fragen eignen sich für Diskussion, Reflexion oder Recherche.'}
+                </p>
+
+                <div className='mt-8 space-y-8'>
+                  {educational_questions.map((item, index) => (
+                    <div
+                      key={index}
+                      className='pl-6 border-l border-wwr_gray_storm'
+                    >
+                      {/* Question */}
+                      <h3 className='font-normal text-black leading-relaxed'>
+                        {parse(item.question)}
+                      </h3>
+
+                      {/* Answer (only if exists) */}
+                      {item.answer && (
+                        <div className='mt-3 text-sm text-gray-700 font-light leading-relaxed'>
+                          {parse(item.answer)}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </div>

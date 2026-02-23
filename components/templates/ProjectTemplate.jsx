@@ -161,6 +161,8 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
       <RelatedMaterials
         relatedMaterialIds={acf.related_materials}
         lang={lang}
+        heading={lang === 'en' ? 'Related Materials' : 'Zugehörige Materialien'}
+        className={'px-8 md:px-16 xl:px-48 py-12'}
       />
       {/* ================= CALL TO ACTION ================= */}
       {acf?.call_to_action?.length > 0 && (
