@@ -55,7 +55,7 @@ export const getTimeline = async (country = 'us', lang = 'en') => {
   const data = await fetchAllData(
     `${baseUrl}?timeline=${
       timelineCountryIds[`${country}Id`]
-    }&_fields=${neededFields.join(',')}`
+    }&_fields=${neededFields.join(',')}&skip_cache=1`
   );
 
   return data.sort(
