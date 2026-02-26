@@ -253,7 +253,7 @@ const Page = async ({ params }) => {
 };
 
 // Allow paths not in generateStaticParams (e.g. newly added stories) to be generated on demand
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   let paths = [];
