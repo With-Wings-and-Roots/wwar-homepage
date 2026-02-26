@@ -316,6 +316,7 @@ export async function generateStaticParams() {
       }
     }
   }
+  paths.push({ lang: 'en', slugs: [] });
 
   return paths;
 }
