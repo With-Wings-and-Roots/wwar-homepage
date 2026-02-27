@@ -22,14 +22,33 @@ import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
 import { fetchMediaFromId } from '@/utilities/media';
 import ProjectGrid from '../projects/projectGrid';
-
+import TimelineCountriesSection from '../timelines/timelineCountriesSection';
+import { getTimelineCountries } from '@/utilities/timeline';
+const fetchImageForTimelineContries = async (timelineCountries) => {
+  const countriesWithImages = await Promise.all(
+    timelineCountries.map(async (country) => {
+      const mediaId = country.acf?.image;
+      if (mediaId) {
+        const i = await fetchMediaFromId(mediaId);
+        return { ...country, imageUrl: i.source_url };
+      } else {
+        return { ...country, imageUrl: null };
+      }
+    })
+  );
+  return countriesWithImages;
+};
 const HomeTemplate = async ({ data, params, subSlugs }) => {
-  const [stories, allMedia, allPersons, topics] = await Promise.all([
-    getAllStories(params.lang),
-    getAllMedia(params.lang),
-    getAllPersons(),
-    fetchAllTopics(params.lang),
-  ]);
+  const [stories, allMedia, allPersons, topics, timelineCountries] =
+    await Promise.all([
+      getAllStories(params.lang),
+      getAllMedia(params.lang),
+      getAllPersons(),
+      fetchAllTopics(params.lang),
+      getTimelineCountries(params.lang),
+    ]);
+  const timelineCountriesWithImages =
+    await fetchImageForTimelineContries(timelineCountries);
   const pages = await getAllPages(params.lang);
   const events = await getAllPosts(params.lang, 'publicevent');
   const upcomingEvents = [...events]
@@ -56,7 +75,17 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
     })
   );
   return (
-    <div className='-mt-20'>
+    <div className='relative -mt-20 min-h-screen'>
+      {/* Texture Background */}
+      <div className='fixed inset-0 -z-10'>
+        <Image
+          src={gfx_bg_blue}
+          alt=''
+          fill
+          priority
+          className='object-cover object-center opacity-40'
+        />
+      </div>
       {subSlugs?.length > 1 &&
         subSlugs[0] === 'story' &&
         !!stories?.find((s) => s.slug === subSlugs[1]) && (
@@ -105,11 +134,6 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
         }}
         id='fromHere'
       >
-        <Image
-          src={gfx_bg_blue}
-          alt=''
-          className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-50'
-        />
         <div className='grid grid-cols-2 gap-12'>
           <div className='col-span-2 lg:col-span-1'>
             <div
@@ -174,7 +198,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           </div>
         </div>
       ) : null}
-      <div className='px-8 md:px-16 xl:px-48 py-20'>
+      <div className='px-8 md:px-16 xl:px-48 py-20 bg-wwr_light'>
         <h2
           dangerouslySetInnerHTML={{ __html: data.acf?.stories_title }}
           className='text-3xl md:text-6xl font-light'
@@ -213,18 +237,10 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
           className='font-light md:text-lg mt-1'
         />
         <div className='flex mt-6 gap-x-4'>
-          <Link
-            href={createLocalLink(data.acf?.timelines_page)}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-          >
-            {data.acf?.timelines_us_button_label}
-          </Link>
-          <Link
-            href={createLocalLink(data.acf?.timelines_page)}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-          >
-            {data.acf?.timelines_german_button_label}
-          </Link>
+          <TimelineCountriesSection
+            timelineCountries={timelineCountriesWithImages}
+            language={lang}
+          />
         </div>
       </div>
       <div className='relative min-h-screen'>
