@@ -69,7 +69,7 @@ const RangeSlider = ({
   if (!hasMounted) return null;
 
   return (
-    <div className='pb-20 pt-4'>
+    <div className='pb-40 pt-4'>
       <div className='flex w-9/12 m-auto items-center'>
         <div className='flex'>
           <DateText date={timeLineEventDatesArray[0]} />
