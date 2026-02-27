@@ -28,12 +28,31 @@ const TimelinesWrapper = ({
 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(topicsAdded({ topics: timelineTopics }));
-  }, [timelineTopics, dispatch]);
+    if (!timelineTopics?.length) return;
+
+    const sortedTopics = [...timelineTopics].sort((a, b) => {
+      const priorityA = Number(a.acf?.priority) || 0;
+      const priorityB = Number(b.acf?.priority) || 0;
+      return priorityB - priorityA;
+    });
+
+    dispatch(topicsAdded({ topics: sortedTopics }));
+  }, [dispatch, timelineTopics]);
 
   useEffect(() => {
-    dispatch(erasAdded({ eras: timelineEras }));
-  }, [dispatch, timelineEras]);
+    if (!timelineEras?.length) return;
+
+    const filteredAndSorted = timelineEras
+      .filter((era) => era.acf?.timeline === selectedCountry)
+      .slice()
+      .sort((a, b) => {
+        const priorityA = Number(a.acf?.priority) || 0;
+        const priorityB = Number(b.acf?.priority) || 0;
+        return priorityA - priorityB; // ascending
+      });
+
+    dispatch(erasAdded({ eras: filteredAndSorted }));
+  }, [dispatch, timelineEras, selectedCountry]);
 
   useEffect(() => {
     if (selectedCountry == 'us') {

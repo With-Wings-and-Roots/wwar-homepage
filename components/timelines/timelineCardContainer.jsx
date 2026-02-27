@@ -106,7 +106,10 @@ const TimelineCardContainer = ({
           ? 'Search timelines or filter by topics / timeline eras'
           : 'Zeitstrahlen durchsuchen oder nach Themen / Epochen filtern'}
       </div>
-      <div className='max-w-xl mx-auto mb-4'>
+
+      <Tabs lang={lang} />
+      <ErasTabs lang={lang} allStoriesCount={allTimelines.length} />
+      <div className='px-8 md:px-16 xl:px-48'>
         <SearchAndFilter
           items={allTimelines}
           searchFields={[
@@ -118,13 +121,10 @@ const TimelineCardContainer = ({
           ]}
           onFiltered={handleFilteredTimelines}
           placeholder={
-            lang === 'en' ? 'Search all timelines' : 'Suche nach Ereignissen'
+            lang === 'en' ? 'Search all events' : 'Suche nach Ereignissen'
           }
         />
       </div>
-      <Tabs lang={lang} />
-      <ErasTabs lang={lang} allStoriesCount={allTimelines.length} />
-
       <motion.div
         animate={
           pathname.endsWith('/united-states') ||
@@ -173,7 +173,7 @@ const TimelineCardContainer = ({
 
       <div
         className={`${
-          selectedCountry === 'us' ? 'bg-wwr_yellow_orange' : 'bg-wwr_turquoise'
+          selectedCountry === 'us' ? 'bg-wwr_yellow_orange' : 'bg-wwr_teal'
         } w-full h-5`}
       ></div>
     </div>

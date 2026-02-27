@@ -28,6 +28,8 @@ module.exports = {
         wwr_light: '#fff4df',
         wwr_majorelle_blue: '#564AE9',
         wwr_pink: '#e48da4be',
+        wwr_teal: '#3A6F73',
+        wwr_teal_hovered: '#224345',
       },
     },
   },
