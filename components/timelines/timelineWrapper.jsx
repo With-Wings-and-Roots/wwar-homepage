@@ -93,7 +93,7 @@ const TimelinesWrapper = ({
           </span>
         </div>
         {/* PAGE HEADER */}
-        <h1 className='text-3xl md:text-5xl font-light mb-2 mt-10'>
+        <h1 className='text-3xl md:text-5xl font-light mb-4 mt-10'>
           {`${countryData?.name} ${
             lang === 'en'
               ? 'Immigration History Timeline'
