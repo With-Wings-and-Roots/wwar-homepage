@@ -1,50 +1,115 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import parse from 'html-react-parser';
-import { useSelector } from 'react-redux';
-
-import SingleTabButton from './singleTabButton';
+import { useSelector, useDispatch } from 'react-redux';
+import { storySelected } from '@/store/selectedStory';
+import { activatedTopic } from '@/store/topics';
 
 const Tabs = ({ lang: language }) => {
+  const dispatch = useDispatch();
+  const dropdownRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
   const allTabData = useSelector((state) => state.entities.topics.allTopics);
 
-  // State to toggle showing all tabs
-  const [showAll, setShowAll] = useState(false);
+  const selectedTopicSlug = useSelector(
+    (state) => state.entities.selectedStory.selectedStory
+  );
 
-  // Decide which tabs to render
-  const tabsToShow = showAll ? allTabData : allTabData.slice(0, 6);
+  const allTopics = useSelector((state) => state.entities.topics);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = (slug) => {
+    const selectedTopicObj =
+      allTopics.allTopics.find((topic) => topic.slug === slug) || null;
+
+    dispatch(
+      storySelected({
+        selection: slug,
+        id: selectedTopicObj?.id || null,
+      })
+    );
+
+    dispatch(activatedTopic({ topic: selectedTopicObj }));
+    setOpen(false);
+  };
+
+  const options = [
+    {
+      slug: 'all',
+      label: language === 'en' ? 'All Topics' : 'Alle Themen',
+    },
+    ...allTabData.map((tab) => ({
+      slug: tab.slug,
+      label: parse(tab.name),
+    })),
+  ];
+
+  const selectedOption =
+    options.find((opt) => opt.slug === selectedTopicSlug) || null;
 
   return (
-    <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 pt-4 items-center'>
-      <SingleTabButton
-        buttonText={language === 'en' ? 'All Events' : 'Alle Ereignisse'}
-        slug={'all'}
-        lang={language}
-      />
-
-      {tabsToShow.map((singleTabData, i) => (
-        <SingleTabButton
-          key={i}
-          buttonText={parse(singleTabData.name)}
-          slug={singleTabData.slug}
-        />
-      ))}
-
-      {/* Show more / show less button */}
-      {allTabData.length > 6 && (
+    <div className='flex px-8 md:px-16 xl:px-48 pt-4'>
+      <div className='relative min-w-[240px]' ref={dropdownRef}>
+        {/* Trigger Button */}
         <button
-          onClick={() => setShowAll(!showAll)}
-          className='ml-2 text-wwr_black font-medium underline hover:text-wwr_yellow_orange transition-colors'
+          onClick={() => setOpen((prev) => !prev)}
+          className='
+            w-full text-left px-4 py-3
+            bg-wwr_rich_black text-wwr_yellow_orange
+            font-light rounded
+            flex justify-between items-center cursor-pointer
+          '
         >
-          {showAll
+          {!selectedOption || selectedOption.slug === 'all'
             ? language === 'en'
-              ? 'Show Less'
-              : 'Weniger anzeigen'
-            : language === 'en'
-              ? 'Show All'
-              : 'Alle anzeigen'}
+              ? 'Select a topic'
+              : 'Wähle ein Thema'
+            : selectedOption.label}
+
+          <span className='ml-2'>▼</span>
         </button>
-      )}
+
+        {/* Dropdown Menu */}
+        {open && (
+          <div
+            className='
+              absolute w-full mt-1 bg-white border border-black/20 shadow-lg
+              z-[9999] max-h-60 overflow-y-auto rounded
+            '
+          >
+            {options.map((opt, i) => {
+              const isActive = selectedTopicSlug === opt.slug;
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => handleSelect(opt.slug)}
+                  className={`
+                    px-4 py-3 cursor-pointer transition-colors duration-200
+                    ${
+                      isActive
+                        ? 'bg-wwr_yellow_orange text-wwr_rich_black font-semibold'
+                        : 'hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
+                    }
+                  `}
+                >
+                  {opt.label}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

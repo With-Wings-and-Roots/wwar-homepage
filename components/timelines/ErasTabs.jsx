@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
 import { activatedEra } from '@/store/timelineEras';
@@ -32,44 +32,16 @@ const SingleEraButton = ({ era, lang: language }) => {
   );
 };
 
-const ErasTabs = ({ lang: language, allStoriesCount }) => {
+const ErasTabs = ({ lang: language }) => {
   const allEras = useSelector((state) => state.entities.timelineEras.allEras);
-  const storiesCount = useSelector(
-    (state) => state.entities.selectedStory.numberOfSelectedStories
-  );
-
-  const [showAll, setShowAll] = useState(false);
-
-  const erasToShow = showAll ? allEras : allEras.slice(0, 3);
 
   return (
     <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 my-8 pb-4 items-center'>
       <SingleEraButton era={null} lang={language} />
-      {erasToShow.map((era, i) => (
+
+      {allEras.map((era, i) => (
         <SingleEraButton key={i} era={era} lang={language} />
       ))}
-
-      {/* Show All / Show Less button */}
-      {allEras.length > 6 && (
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className='ml-2 text-wwr_black font-medium underline hover:text-wwr_yellow_orange transition-colors'
-        >
-          {showAll
-            ? language === 'en'
-              ? 'Show Less'
-              : 'Weniger anzeigen'
-            : language === 'en'
-              ? 'Show All'
-              : 'Alle anzeigen'}
-        </button>
-      )}
-
-      {/* Story count */}
-      <div className='text-md lg:text-xl text-wwr_yellow_orange ml-4'>
-        {language === 'en' ? 'Stories:' : 'Geschichten:'} {storiesCount}/
-        {allStoriesCount}
-      </div>
     </div>
   );
 };
