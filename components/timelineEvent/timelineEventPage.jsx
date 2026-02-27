@@ -170,6 +170,9 @@ const TimelineEventPage = ({
                 allPersons={allPersons}
                 hoverZoom={false}
                 baseLink={baseLink}
+                heading={
+                  lang === 'en' ? 'Related Stories' : 'Verwandte Geschichten'
+                }
               />
             )}
             <RelatedMaterials
