@@ -107,23 +107,26 @@ const TimelineCardContainer = ({
           : 'Zeitstrahlen durchsuchen oder nach Themen / Epochen filtern'}
       </div>
 
-      <Tabs lang={lang} />
       <ErasTabs lang={lang} allStoriesCount={allTimelines.length} />
       <div className='px-8 md:px-16 xl:px-48'>
-        <SearchAndFilter
-          items={allTimelines}
-          searchFields={[
-            'title.rendered',
-            'acf.basic_info.title',
-            'acf.basic_info.description',
-            'acf.basic_info.keywords',
-            'acf.basic_info.tags',
-          ]}
-          onFiltered={handleFilteredTimelines}
-          placeholder={
-            lang === 'en' ? 'Search all events' : 'Suche nach Ereignissen'
-          }
-        />
+        <div className='flex flex-col lg:flex-row  gap-4'>
+          <Tabs lang={lang} />
+
+          <SearchAndFilter
+            items={allTimelines}
+            searchFields={[
+              'title.rendered',
+              'acf.basic_info.title',
+              'acf.basic_info.description',
+              'acf.basic_info.keywords',
+              'acf.basic_info.tags',
+            ]}
+            onFiltered={handleFilteredTimelines}
+            placeholder={
+              lang === 'en' ? 'Search all events' : 'Suche nach Ereignissen'
+            }
+          />
+        </div>
       </div>
       <motion.div
         animate={

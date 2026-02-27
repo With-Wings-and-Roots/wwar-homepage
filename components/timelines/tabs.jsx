@@ -58,13 +58,13 @@ const Tabs = ({ lang: language }) => {
     options.find((opt) => opt.slug === selectedTopicSlug) || null;
 
   return (
-    <div className='flex px-8 md:px-16 xl:px-48 pt-4'>
+    <div className='flex'>
       <div className='relative min-w-[240px]' ref={dropdownRef}>
         {/* Trigger Button */}
         <button
           onClick={() => setOpen((prev) => !prev)}
           className='
-            w-full text-left px-4 py-3
+            w-full text-left px-4 py-2
             bg-wwr_rich_black text-wwr_yellow_orange
             font-light rounded
             flex justify-between items-center cursor-pointer
