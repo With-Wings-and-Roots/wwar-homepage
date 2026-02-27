@@ -38,11 +38,7 @@ const TimelineCardInternal = ({
         }`}
       >
         <div
-          className={`scale-90 font-extralight tracking-wider mb-2  w-max px-2 py-1 transition-all duration-300 ${
-            selectedCountry === 'de'
-              ? 'bg-wwr_turquoise'
-              : 'bg-wwr_yellow_orange'
-          }`}
+          className={`scale-90 font-extralight tracking-wider mb-2  w-max px-2 py-1 transition-all duration-300 bg-wwr_yellow_orange text-wwr_black `}
         >
           {timeLineEvent?.acf?.basic_info?.start_date?.slice(0, 4)}
         </div>
