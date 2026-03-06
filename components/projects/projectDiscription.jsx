@@ -18,7 +18,7 @@ const ProjectsDiscription = ({ projectArea, lang = 'en' }) => {
       </p>
       {projectArea?.name && (
         <h1
-          className='text-3xl md:text-4xl font-light'
+          className='text-xl md:text-2xl font-medium'
           dangerouslySetInnerHTML={{ __html: projectArea?.name }}
         />
       )}

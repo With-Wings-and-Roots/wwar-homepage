@@ -120,7 +120,7 @@ const OurWorkTemplate = async ({ data, params }) => {
       )}
 
       {/* IMPACT */}
-      <div className='px-8 md:px-16 xl:px-48 py-24 bg-wwr_teal'>
+      <div className='px-8 md:px-16 xl:px-48 py-24 bg-wwr_light'>
         <div className='grid grid-cols-6 gap-12 items-start'>
           {/* LEFT — NARRATIVE */}
           <div className='col-span-6 lg:col-span-3'>
@@ -142,10 +142,10 @@ const OurWorkTemplate = async ({ data, params }) => {
                   key={i}
                   className='flex items-baseline gap-6 border-b border-black/10 pb-4'
                 >
-                  <div className='text-4xl md:text-5xl font-light text-black shrink-0'>
+                  <div className='text-4xl md:text-5xl font-medium text-black shrink-0'>
                     {item.value}
                   </div>
-                  <div className='text-sm md:text-base uppercase tracking-wide text-black/70'>
+                  <div className='text-sm md:text-base uppercase font-medium  tracking-wide text-black/70'>
                     {item.impact}
                   </div>
                 </div>

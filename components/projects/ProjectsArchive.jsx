@@ -111,7 +111,7 @@ const ProjectsArchive = ({
             Filter by project area
           </h3>
 
-          <div className='flex flex-wrap gap-3'>
+          <div className='flex flex-wrap gap-0.5 mt-2'>
             {[{ slug: 'all', name: 'All' }, ...allProjectAreas].map((area) => {
               const isActive = area.slug === projectAreaSlug;
 
@@ -119,11 +119,19 @@ const ProjectsArchive = ({
                 <Link
                   key={area.slug}
                   href={createLocalLink(`/projects/${area.slug}`)}
-                  className={`px-4 py-2 border rounded-full text-sm font-medium transition ${
-                    isActive
-                      ? 'bg-wwr_yellow_orange text-black'
-                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                  }`}
+                  className={`
+          text-sm lg:text-xl
+          w-max
+          px-3 py-1.5 lg:py-3
+          transition-all duration-300
+          font-extralight
+          rounded-lg
+          ${
+            isActive
+              ? 'bg-wwr_rich_black text-wwr_yellow_orange'
+              : 'bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered text-wwr_rich_black hover:text-white'
+          }
+        `}
                   dangerouslySetInnerHTML={{ __html: area.name }}
                 />
               );
