@@ -6,6 +6,7 @@ import { fetchMediaFromId } from '@/utilities/media';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import ProjectGrid from '../projects/projectGrid';
+import gfx_bg_blue from '@/public/bg_orange.png';
 
 const OurWorkTemplate = async ({ data, params }) => {
   const lang = params.lang || 'en';
@@ -30,8 +31,18 @@ const OurWorkTemplate = async ({ data, params }) => {
 
   return (
     <div className='-mt-20'>
+      <div className='fixed inset-0 -z-10'>
+        <Image
+          src={gfx_bg_blue}
+          alt=''
+          fill
+          priority
+          className='object-cover object-center opacity-25'
+        />
+      </div>
+
       {/* HERO */}
-      <div className='h-screen relative'>
+      <div className='h-[90vh] relative'>
         <Image
           src={headerImage?.source_url}
           alt={headerImage?.alt_text || 'Our Work Header Image'}
@@ -45,7 +56,11 @@ const OurWorkTemplate = async ({ data, params }) => {
       </div>
 
       {/* INTRO */}
-      <div className='px-8 md:px-16 xl:px-48 py-20 bg-white relative'>
+      <div className='px-8 md:px-16 xl:px-48 py-20  relative'>
+        <h2 className='font-medium text-xl lg:text-3xl mb-10'>
+          {data.acf?.title}
+        </h2>
+
         <div className='grid grid-cols-6 gap-12'>
           <div className='col-span-6 lg:col-span-4'>
             <WysiwygContent
@@ -57,28 +72,28 @@ const OurWorkTemplate = async ({ data, params }) => {
       </div>
 
       {/* INITIATIVES GRID */}
-      <div className='px-8 md:px-16 xl:px-48 py-20'>
+      <div className='px-8 md:px-16 xl:px-48 py-20 bg-white'>
         <h2
-          className='text-3xl md:text-6xl font-light mb-10'
+          className='font-medium text-xl lg:text-3xl mb-10'
           dangerouslySetInnerHTML={{ __html: data?.acf?.heading }}
         />
 
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-10'>
           {projectsWithMedia.map((project, index) => (
             <ProjectGrid key={index} project={project} />
           ))}
         </div>
         <Link
           href={createLocalLink(`${data.acf?.more_projects.url}all`)}
-          className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
+          className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
         >
           {data.acf?.more_projects.title}
         </Link>
       </div>
       {/* PROJECT AREAS */}
       {projectAreas?.length > 0 && (
-        <div className='px-8 md:px-16 xl:px-48 py-20 bg-white'>
-          <h2 className='text-3xl md:text-6xl font-light mb-10'>
+        <div className='px-8 md:px-16 xl:px-48 pb-20 bg-white'>
+          <h2 className='font-medium text-xl lg:text-3xl mb-10'>
             Project Areas
           </h2>
 
@@ -87,7 +102,7 @@ const OurWorkTemplate = async ({ data, params }) => {
               <Link
                 key={i}
                 href={createLocalLink(`/projects/${area.slug}`)}
-                className='group border-t border-black/20 pt-6 block'
+                className='group pt-6 block p-4 border-t-2 border-wwr_teal shadow-[0_-2px_8px_rgba(0,180,170,0.4)]'
               >
                 <h3
                   className='text-lg lg:text-xl font-medium group-hover:text-wwr_yellow_orange transition-colors'
@@ -105,11 +120,11 @@ const OurWorkTemplate = async ({ data, params }) => {
       )}
 
       {/* IMPACT */}
-      <div className='px-8 md:px-16 xl:px-48 py-24 bg-wwr_gray_storm/5'>
+      <div className='px-8 md:px-16 xl:px-48 py-24 bg-wwr_teal'>
         <div className='grid grid-cols-6 gap-12 items-start'>
           {/* LEFT — NARRATIVE */}
           <div className='col-span-6 lg:col-span-3'>
-            <h2 className='text-3xl md:text-5xl font-light leading-tight'>
+            <h2 className='font-medium text-xl lg:text-3xl leading-tight'>
               {data?.acf?.impact_heading}
             </h2>
 
@@ -127,7 +142,7 @@ const OurWorkTemplate = async ({ data, params }) => {
                   key={i}
                   className='flex items-baseline gap-6 border-b border-black/10 pb-4'
                 >
-                  <div className='text-4xl md:text-5xl font-light text-wwr_yellow_orange shrink-0'>
+                  <div className='text-4xl md:text-5xl font-light text-black shrink-0'>
                     {item.value}
                   </div>
                   <div className='text-sm md:text-base uppercase tracking-wide text-black/70'>
@@ -142,14 +157,14 @@ const OurWorkTemplate = async ({ data, params }) => {
 
       {/* OUR WORK CTA */}
       <div
-        className='px-8 md:px-16 xl:px-48 py-24'
+        className='px-8 md:px-16 xl:px-48 py-24 bg-white'
         style={{
           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
         }}
       >
         <div className='max-w-4xl'>
           <h2
-            className='text-3xl md:text-5xl font-light leading-tight'
+            className='font-medium text-xl lg:text-3xl leading-tight'
             dangerouslySetInnerHTML={{ __html: data?.acf?.cta_heading }}
           />
 
@@ -158,14 +173,7 @@ const OurWorkTemplate = async ({ data, params }) => {
               <a
                 key={i}
                 href={createLocalLink(item.cta.url)}
-                className={`
-            px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
-            ${
-              i === 0
-                ? 'bg-wwr_yellow_orange text-black hover:text-white'
-                : 'border border-white hover:bg-white hover:text-black'
-            }
-          `}
+                className='px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
               >
                 {item.cta.title}
               </a>

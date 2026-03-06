@@ -17,7 +17,7 @@ const ProjectList = ({ project }) => {
   return (
     <Link
       href={createLocalLink(link)}
-      className='group block bg-wwr_yellow_orange flex flex-col md:flex-row overflow-hidden cursor-pointer no-underline'
+      className='group rounded-lg block bg-wwr_yellow_orange flex flex-col md:flex-row overflow-hidden cursor-pointer no-underline'
     >
       {/* Image */}
       {banner && (

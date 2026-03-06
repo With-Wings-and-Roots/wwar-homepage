@@ -13,7 +13,7 @@ const ProjectGrid = ({ project }) => {
   return (
     <Link
       href={createLocalLink(link)}
-      className='group block bg-wwr_yellow_orange flex flex-col h-full overflow-hidden no-underline cursor-pointer'
+      className='group block bg-wwr_yellow_orange flex flex-col h-full overflow-hidden no-underline cursor-pointer rounded-lg '
     >
       {/* Image */}
       {banner && (

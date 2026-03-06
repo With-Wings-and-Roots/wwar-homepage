@@ -6,12 +6,13 @@ import Card from '../common/Card';
 export default function TimelineCountriesSection({
   timelineCountries = [],
   language,
+  className,
 }) {
   if (!timelineCountries.length) return null;
   const link = createLocalLink(`/${language}/timelines/`);
 
   return (
-    <div className='px-20 md:px-16 xl:px-48 relative pb-16'>
+    <div className={`relative pb-16 ${className || ''}`}>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
         {timelineCountries.map((timeline) => (
           <Card

@@ -24,6 +24,7 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
       <TimelineCountriesSection
         timelineCountries={timelineCountries}
         language={lang}
+        className={'px-20 md:px-16 xl:px-48'}
       />
       <WhatYouWillFindSection
         heading={data?.acf?.what_you_will_find_heading}

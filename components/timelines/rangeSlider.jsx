@@ -14,8 +14,8 @@ const RangeSlider = ({
     rangeSlider: { date: selectedDate },
   } = useSelector((state) => state.entities);
   const dispatch = useDispatch();
-  const [value, setValue] = useState(timeLineEventDatesArray[0]);
-  const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0]);
+  const [value, setValue] = useState(timeLineEventDatesArray[0] || 0);
+  const [rangeValue, setRangeValue] = useState(timeLineEventDatesArray[0] || 0);
   const [grab, setGrab] = useState(false);
   const [activeArrows, setActiveArrows] = useState({
     left: false,
