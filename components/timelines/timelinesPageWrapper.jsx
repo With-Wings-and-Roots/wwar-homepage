@@ -13,11 +13,11 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
       <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative mb-6'>
         <h1
           dangerouslySetInnerHTML={{ __html: data.acf?.hero_title || '' }}
-          className='text-3xl md:text-6xl font-light'
+          className='text-3xl md:text-6xl font-light mb-10'
         />
         <WysiwygContent
           content={data.acf?.intro_text}
-          className='font-light md:text-lg mt-1'
+          className='font-light md:text-lg mb-10'
         />
       </div>
 

@@ -14,13 +14,13 @@ export default function WhatYouWillFindSection({
 
   return (
     <>
-      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16'>
+      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 bg-wwr_teal'>
         {/* Section Heading */}
         <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-10'>
           {heading}
         </h2>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-12 mb-10'>
           {/* LEFT COLUMN */}
           <WysiwygContent
             className='prose max-w-none text-gray-800'

@@ -56,11 +56,11 @@ export default async function ContributorsSection({
   );
 
   return (
-    <section className='px-8 md:px-16 xl:px-48 py-20'>
+    <section className='px-8 md:px-16 xl:px-48 py-20 bg-wwr_light'>
       {/* Germany */}
       {germanyMembers.length > 0 && (
         <div className='mb-16'>
-          <h2 className='text-3xl md:text-5xl font-light mb-12'>
+          <h2 className='font-medium text-xl lg:text-3xl mb-12'>
             {de_headline}
           </h2>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 items-center'>
@@ -74,7 +74,7 @@ export default async function ContributorsSection({
       {/* USA */}
       {usaMembers.length > 0 && (
         <div className='mb-16'>
-          <h2 className='text-3xl md:text-5xl font-light mb-12'>
+          <h2 className='font-medium text-xl lg:text-3xl mb-12'>
             {us_headline}
           </h2>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 items-center'>
@@ -88,7 +88,7 @@ export default async function ContributorsSection({
       {/* Special Members */}
       {specialMembers.length > 0 && (
         <div className='mb-16'>
-          <h2 className='text-3xl md:text-5xl font-light mb-12'>
+          <h2 className='font-medium text-xl lg:text-3xl mb-12'>
             Special Members
           </h2>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 items-center'>

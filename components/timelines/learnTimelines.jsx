@@ -19,8 +19,8 @@ const LearnTimelines = ({ data }) => {
   return (
     <>
       {/* Button to open overlay */}
-      <Link href='./timelines/info'>
-        <div className='flex global_width justify-center gap-2 text-base text-wwr_gray_storm cursor-pointer '>
+      <Link href='./timelines/info' className='mt-10'>
+        <div className='flex global_width justify-center gap-2 text-xl text-wwr_teal cursor-pointer '>
           <div>{pc_button_label || 'Learn how these timelines were made'}</div>
           <div className='rotate-180 w-5'>
             <RangeArrowSVG fill={'#46464d'} />
