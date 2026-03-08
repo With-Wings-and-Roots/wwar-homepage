@@ -63,6 +63,9 @@ const StoriesPageContainer = ({
         lang={lang}
         pathways={pathways}
         curriculumData={curriculumData}
+        baseLink={
+          materialCtaData.url ? createLocalLink(materialCtaData.url) : '#'
+        }
       />
 
       {/* CTA Button */}

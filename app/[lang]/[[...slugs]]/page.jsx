@@ -131,7 +131,7 @@ const Page = async ({ params }) => {
           getAllPersons(),
           fetchAllTopics(params.lang),
           fetchAllCollections(params.lang),
-          fetchAllCurriculumPathways(params.lang),
+          getMaterialCollections(params.lang),
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
         ]);

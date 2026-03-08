@@ -1,43 +1,9 @@
-'use client';
-
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setActiveCurriculum } from '@/store/curriculam';
-import { setActiveCollection } from '@/store/collections';
-import { setActiveUmbrella } from '@/store/umbrella';
-import { activatedTopic } from '@/store/topics';
 import Image from 'next/image';
-import { setActiveCity } from '@/store/cities';
-import { storySelected } from '@/store/selectedStory';
+import Link from 'next/link';
+import path from 'path';
 
-const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
-  const dispatch = useDispatch();
-
-  const activeCurriculum = useSelector(
-    (state) => state.entities.curriculum?.activeCurriculum
-  );
-
-  const handleClick = (curriculum) => {
-    const mappedCurriculum = pathways.find(
-      (item) => item.id === curriculum.pathway
-    );
-
-    if (mappedCurriculum) dispatch(setActiveCurriculum(mappedCurriculum));
-    dispatch(setActiveCollection(''));
-    dispatch(setActiveUmbrella(''));
-    dispatch(activatedTopic('all'));
-    dispatch(setActiveCity(null));
-    dispatch(
-      storySelected({
-        selection: 'all',
-        id: 'all',
-      })
-    );
-
-    const archive = document.getElementById('archive-browser');
-    if (archive) archive.scrollIntoView({ behavior: 'smooth' });
-  };
-
+const CurriculumPathways = ({ lang, pathways, curriculumData, baseLink }) => {
   return (
     <section className='py-16'>
       <h3 className='text-2xl md:text-3xl font-light mb-6'>
@@ -46,30 +12,29 @@ const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
           : 'Für Lehrkräfte: Curriculum-Pfade'}
       </h3>
 
-      {/* STACKED ROWS */}
       <div className='flex flex-col gap-6'>
         {curriculumData.map((curriculum, i) => {
-          const isActive = activeCurriculum?.id === curriculum.pathway;
+          const mappedCurriculum = pathways.find(
+            (item) => item.id === curriculum.pathway.term_id
+          );
+
+          const link = `${baseLink}?pathway=${mappedCurriculum?.slug}`;
 
           return (
-            <div
+            <Link
               key={i}
-              onClick={() => handleClick(curriculum)}
-              className={`
+              href={link}
+              className='
                 group
                 cursor-pointer
                 flex flex-col md:flex-row
                 border rounded-lg overflow-hidden
                 transition-all duration-300
                 min-h-[160px] md:min-h-[200px]
-                ${
-                  isActive
-                    ? 'bg-wwr_pink'
-                    : 'bg-wwr_pink/20 hover:bg-wwr_pink/30'
-                }
-              `}
+                bg-wwr_pink/20 hover:bg-wwr_pink/30
+              '
             >
-              {/* IMAGE — 1/3 */}
+              {/* IMAGE */}
               {curriculum.thumbnail && (
                 <div className='relative w-full md:w-1/3'>
                   <Image
@@ -82,7 +47,7 @@ const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
                 </div>
               )}
 
-              {/* CONTENT — 2/3 */}
+              {/* CONTENT */}
               <div className='w-full md:w-2/3 p-6 flex flex-col justify-between'>
                 <div>
                   <h4 className='text-lg md:text-xl font-light mb-2'>
@@ -96,7 +61,6 @@ const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
                   )}
                 </div>
 
-                {/* VIEW STORIES CTA */}
                 <div
                   className='
                     mt-4
@@ -110,10 +74,10 @@ const CurriculumPathways = ({ lang, pathways, curriculumData }) => {
                     group-hover:scale-105
                   '
                 >
-                  {lang === 'en' ? 'View stories →' : 'Ver Geschichten →'}
+                  {lang === 'en' ? 'View Materials →' : 'Ver Materialien →'}
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
