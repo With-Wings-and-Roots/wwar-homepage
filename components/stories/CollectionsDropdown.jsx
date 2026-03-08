@@ -12,10 +12,6 @@ const CollectionsChips = () => {
     (state) => state.entities.collections?.activeCollection
   );
 
-  const storiesCount = useSelector(
-    (state) => state.entities.selectedStory.numberOfSelectedStories
-  );
-
   if (!allCollections?.length) return null;
 
   return (
@@ -27,10 +23,6 @@ const CollectionsChips = () => {
           isActive={activeCollection === collection}
         />
       ))}
-
-      <div className='text-md px-2 py-1 lg:text-xl text-wwr_yellow_orange flex items-center lg:py-2'>
-        Stories: {storiesCount}
-      </div>
     </div>
   );
 };

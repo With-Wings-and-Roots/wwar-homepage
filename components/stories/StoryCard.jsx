@@ -25,7 +25,7 @@ const StoryCard = ({
       <div
         className={`${
           hoverZoom ? 'hover:scale-105 ' : ' '
-        } relative aspect-square cursor-pointer transition-all duration-500 w-full px-4 py-4 md:px-5 md:py-6 font-light text-wwr_white overflow-hidden`}
+        } relative aspect-square cursor-pointer transition-all duration-500 rounded-lg w-full px-4 py-4 md:px-5 md:py-6 font-light text-wwr_white overflow-hidden`}
       >
         <div className={`absolute left-0 top-0 h-full w-full`}>
           <Image
@@ -44,15 +44,15 @@ const StoryCard = ({
           className='absolute left-0 top-0 w-full h-full opacity-40'
           style={{
             background: `linear-gradient(to bottom, transparent 0%, ${getHexForColorString(
-              color
+              'black'
             )} 100%)`,
           }}
         ></div>
 
         {isFeatured && (
           <div
-            className='absolute top-4 right-4 z-40 flex items-center justify-center w-10 h-10 rounded-full'
-            style={{ backgroundColor: getHexForColorString(color) }}
+            className='absolute top-4 right-4 z-40 flex items-center justify-center w-8 h-8 rounded-full'
+            style={{ backgroundColor: getHexForColorString('yellow') }}
           >
             <svg
               xmlns='http://www.w3.org/2000/svg'

@@ -53,49 +53,55 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
    */
   useEffect(() => {
     let filteredStories = allStories;
+    let newFilter = null; // start with null
 
     if (activeUmbrella) {
       filteredStories = filteredStories.filter(
         (story) => story.primary_umbrella_dimension === activeUmbrella
       );
-      setCurrentFilter(activeUmbrella);
+      newFilter = activeUmbrella;
     }
 
     if (activeCurriculum) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.curriculum_pathway === activeCurriculum.id
       );
-      setCurrentFilter(activeCurriculum.name);
+      newFilter = activeCurriculum.name;
     }
+
     if (activeCollection) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.collection === activeCollection.id
       );
-      setCurrentFilter(activeCollection.name);
+      newFilter = activeCollection.name;
     }
+
     if (activeCity) {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.city === activeCity
       );
-      setCurrentFilter(activeCity);
+      newFilter = activeCity;
     }
+
     if (selectedTopic === 'featured') {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.featured_story === true
       );
-      setCurrentFilter('Featured');
+      newFilter = 'Featured';
     } else if (selectedTopic && selectedTopic !== 'all') {
       filteredStories = filteredStories.filter((story) => {
         const topics = story.acf?.topics;
-        if (!topics) return false; // no topics
+        if (!topics) return false;
         const topicArray = Array.isArray(topics) ? topics : [topics];
         return topicArray.includes(selectedTopicId);
       });
-
-      setCurrentFilter(
-        allTopics.allTopics.find((t) => t.id === selectedTopicId)?.name
-      );
+      newFilter = allTopics.allTopics.find(
+        (t) => t.id === selectedTopicId
+      )?.name;
     }
+
+    // If everything is cleared (All Stories), newFilter stays null
+    setCurrentFilter(newFilter);
 
     setCurrentPage(1);
     dispatch(activatedStories({ stories: filteredStories }));
@@ -106,7 +112,6 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
     activeCurriculum,
     activeCollection,
     activeCity,
-
     allStories,
     dispatch,
   ]);
@@ -175,6 +180,24 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
       />
       {/* SEARCH + TABS + CITIES + PAGINATION */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4 items-center'>
+        {/* Tabs */}
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <TabsDropdown
+            lang={language}
+            isFeature={true}
+            cptName={language === 'en' ? 'All Stories' : 'Alle Geschichten'}
+          />
+        </div>
+
+        {/* Cities */}
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <CitiesDropdown
+            lang={language}
+            cptName={
+              language === 'en' ? 'Select a City' : 'Wählen Sie eine Stadt'
+            }
+          />
+        </div>
         {/* Search */}
         <div className='col-span-2 sm:col-span-1 w-full'>
           <div className='flex h-10 border-2 border-wwr_rich_black'>
@@ -194,26 +217,6 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
             </div>
           </div>
         </div>
-
-        {/* Tabs */}
-        <div className='col-span-2 sm:col-span-1 w-full'>
-          <TabsDropdown
-            lang={language}
-            isFeature={true}
-            cptName={language === 'en' ? 'All Stories' : 'Alle Geschichten'}
-          />
-        </div>
-
-        {/* Cities */}
-        <div className='col-span-2 sm:col-span-1 w-full'>
-          <CitiesDropdown
-            lang={language}
-            cptName={
-              language === 'en' ? 'Select a City' : 'Wählen Sie eine Stadt'
-            }
-          />
-        </div>
-
         {/* Pagination */}
         <div className='col-span-2 sm:col-span-1 flex md:justify-end justify-start items-center gap-2'>
           {totalPages > 0 && (
@@ -244,23 +247,35 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
         </div>
       </div>
 
-      {currentFilter && (
-        <div className='text-md md:text-lg text-wwr_rich_black font-medium mb-4 flex justify-between'>
-          <div>
-            {language === 'en'
-              ? 'You are viewing stories based on filter: '
-              : 'Sie sehen Geschichten basierend auf '}
-            <span
-              className='font-bold text-wwr_yellow_orange'
-              dangerouslySetInnerHTML={{ __html: currentFilter }}
-            />
-          </div>
-          <span>
-            {language === 'en' ? 'Stories:' : 'Geschichten:'} {storiesCount} /{' '}
-            {allStories.length}
-          </span>
+      <div className='text-md md:text-lg text-wwr_rich_black font-medium mb-4 flex justify-between'>
+        <div>
+          {currentFilter ? (
+            <>
+              {language === 'en'
+                ? 'You are viewing stories based on filter: '
+                : 'Sie sehen Geschichten basierend auf: '}
+
+              <span
+                className='font-bold text-wwr_yellow_orange ml-1'
+                dangerouslySetInnerHTML={{
+                  __html: currentFilter,
+                }}
+              />
+            </>
+          ) : (
+            <span>
+              {language === 'en'
+                ? 'All Featured Stories'
+                : 'Alle Hervorgehobenen Geschichten'}
+            </span>
+          )}
         </div>
-      )}
+
+        <span>
+          {language === 'en' ? 'Stories:' : 'Geschichten:'} {storiesCount} /{' '}
+          {allStories.length}
+        </span>
+      </div>
 
       {/* STORIES GRID */}
       <div

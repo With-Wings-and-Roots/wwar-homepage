@@ -163,6 +163,22 @@ const StoriesTemplate = ({
         cities={cities}
         exploreArchiveText={data.acf?.explore_archive_text}
       />
+      <div className='flex justify-center gap-6 m-10'>
+        <Link
+          key={ctaData?.cta?.title || 'cta'}
+          href={createLocalLink(ctaData?.url)}
+          className='
+      self-start
+      px-6 py-3
+      uppercase text-sm md:text-lg tracking-wide
+      transition-all
+      bg-wwr_yellow_orange text-black
+      hover:text-white
+    '
+        >
+          {ctaData?.title}
+        </Link>
+      </div>
     </div>
   );
 };

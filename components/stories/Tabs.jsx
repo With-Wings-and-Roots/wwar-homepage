@@ -32,18 +32,23 @@ const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
   }, []);
 
   const handleSelect = (slug) => {
-    const selectedTopicId =
-      allTopics.allTopics.find((topic) => topic.slug === slug)?.id || null;
-    const selectedTopic =
-      allTopics.allTopics.find((topic) => topic.slug === slug) || null;
+    let selectedTopicId = null;
+    let selectedTopicObj = null;
+
+    if (slug !== 'all') {
+      selectedTopicObj =
+        allTopics.allTopics.find((topic) => topic.slug === slug) || null;
+      selectedTopicId = selectedTopicObj?.id || null;
+    }
 
     dispatch(
       storySelected({
-        selection: slug,
-        id: selectedTopicId,
+        selection: slug, // 'all' or topic slug
+        id: selectedTopicId, // null if 'all'
       })
     );
-    dispatch(activatedTopic({ topic: selectedTopic }));
+
+    dispatch(activatedTopic({ topic: selectedTopicObj }));
     dispatch(setActiveCity(null));
     dispatch(setActiveCollection(null));
     dispatch(setActiveCurriculum(null));
@@ -74,18 +79,17 @@ const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
     ? options.find((opt) => opt.slug === selectedTopic)
     : null;
   return (
-    <div className='flex items-center gap-4'>
-      {/* Dropdown */}
-      <div className='relative' ref={dropdownRef}>
+    <div className='w-full'>
+      <div className='relative w-full' ref={dropdownRef}>
         <button
           onClick={() => setOpen((prev) => !prev)}
           className='
-            w-full text-left px-4 py-3
-            bg-wwr_rich_black text-wwr_yellow_orange
-            font-light rounded border border-black/20
-            flex justify-between items-center cursor-pointer
-            min-w-[200px]
-          '
+        w-full text-left px-4 py-3
+        bg-wwr_rich_black text-wwr_yellow_orange
+        font-light rounded border border-black/20
+        flex justify-between items-center cursor-pointer
+        min-w-[200px]
+      '
         >
           {!selectedOption || selectedOption.slug === 'all'
             ? language === 'en'
@@ -98,9 +102,9 @@ const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
         {open && (
           <div
             className='
-            absolute w-full mt-1 bg-white border border-black/20 shadow-lg
-            z-[9999] max-h-60 overflow-y-auto rounded
-          '
+          absolute left-0 right-0 mt-1 bg-white border border-black/20 shadow-lg
+          z-[9999] max-h-60 overflow-y-auto rounded
+        '
           >
             {options.map((opt, i) => {
               const isActive = selectedTopic === opt.slug;
@@ -109,13 +113,13 @@ const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
                   key={i}
                   onClick={() => handleSelect(opt.slug)}
                   className={`
-                    px-4 py-3 cursor-pointer transition-colors duration-200
-                    ${
-                      isActive
-                        ? 'bg-wwr_yellow_orange text-wwr_rich_black font-semibold'
-                        : 'hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
-                    }
-                  `}
+                px-4 py-3 cursor-pointer transition-colors duration-200
+                ${
+                  isActive
+                    ? 'bg-wwr_yellow_orange text-wwr_rich_black font-semibold'
+                    : 'hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
+                }
+              `}
                 >
                   {opt.label}
                 </div>
