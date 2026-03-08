@@ -30,6 +30,7 @@ module.exports = {
         wwr_pink: '#e48da4be',
         wwr_teal: '#3A6F73',
         wwr_teal_hovered: '#224345',
+        wwr_offwhite: '#faf9f6',
       },
     },
   },

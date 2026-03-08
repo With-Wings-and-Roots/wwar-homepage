@@ -43,7 +43,7 @@ const UmbrellaCards = ({ lang }) => {
 
   return (
     <div
-      className='px-8 md:px-16 xl:px-48 relative bg-black text-white py-20'
+      className='px-8 md:px-16 xl:px-48 relative bg-wwr_teal text-white py-20'
       style={{
         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
       }}
@@ -78,7 +78,7 @@ const UmbrellaCards = ({ lang }) => {
                 focus:outline-none focus:ring-2 focus:ring-wwr_yellow_orange
                 ${
                   isActive
-                    ? 'text-wwr_yellow_orange bg-wwr_rich_black'
+                    ? 'text-wwr_yellow_orange bg-wwr_teal font-medium'
                     : 'text-white hover:bg-white/10 hover:text-wwr_yellow_orange'
                 }
               `}

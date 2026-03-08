@@ -10,7 +10,6 @@ const StoriesPageWrapper = ({
   topics,
   collections,
   baseLink,
-  ctaData,
   materialCtaData,
   curriculumData,
   pathways,
@@ -33,7 +32,6 @@ const StoriesPageWrapper = ({
           pathways={pathways}
           lang={language}
           baseLink={baseLink}
-          ctaData={ctaData}
           cities={cities}
           exploreArchiveText={exploreArchiveText}
         />
