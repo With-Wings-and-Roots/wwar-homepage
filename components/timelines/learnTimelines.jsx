@@ -19,15 +19,17 @@ const LearnTimelines = ({ data }) => {
   return (
     <>
       {/* Button to open overlay */}
-      <Link href='./timelines/info' className='mt-10'>
-        <div className='flex global_width justify-center gap-2 text-xl text-wwr_teal cursor-pointer '>
-          <div>{pc_button_label || 'Learn how these timelines were made'}</div>
-          <div className='rotate-180 w-5'>
+      <Link href='./timelines/info' className='mt-10 block group'>
+        <div className='flex global_width justify-center items-center gap-2 text-xl text-wwr_teal cursor-pointer transition-all duration-300'>
+          <div className='transition-transform duration-300 group-hover:-translate-x-1'>
+            {pc_button_label || 'Learn how these timelines were made'}
+          </div>
+
+          <div className='rotate-180 w-5 transition-transform duration-300 group-hover:-translate-x-2'>
             <RangeArrowSVG fill={'#46464d'} />
           </div>
         </div>
       </Link>
-
       {/* Overlay */}
       {pathName.endsWith('/timelines/info') && (
         <div className='w-screen min-h-screen h-screen fixed overflow-y-scroll left-0 top-0 z-[9999]'>

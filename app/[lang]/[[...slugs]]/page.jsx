@@ -37,10 +37,7 @@ import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
-import {
-  fetchAllCollections,
-  fetchAllCurriculumPathways,
-} from '@/utilities/collections';
+import { fetchAllCollections } from '@/utilities/collections';
 import SingleMaterialTemplate from '@/components/templates/SingleMaterialTemplate';
 import {
   getAllLanguages,
@@ -50,9 +47,8 @@ import {
   getMaterialTypes,
 } from '@/utilities/materials';
 import { getTeamMemberById } from '@/utilities/team';
-import { get } from 'http';
 
-const Page = async ({ params }) => {
+const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
 
   const pages = await getAllPages(params.lang);
@@ -272,6 +268,7 @@ const Page = async ({ params }) => {
             topics={topics}
             collections={collections}
             languages={languages}
+            params={searchParams}
           />
         );
         break;

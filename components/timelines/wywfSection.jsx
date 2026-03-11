@@ -14,18 +14,21 @@ export default function WhatYouWillFindSection({
 
   return (
     <>
-      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 bg-wwr_teal text-white'>
+      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 mb-10 bg-wwr_teal text-white'>
         {/* Section Heading */}
-        <h2 className='text-3xl md:text-4xl font-bold text-gray-900 mb-10 text-white'>
-          {heading}
-        </h2>
 
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-12 mb-10 text-white'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-12  text-white'>
           {/* LEFT COLUMN */}
-          <WysiwygContent
-            className='prose max-w-none text-white'
-            content={content}
-          />
+          <div>
+            <h2 className='font-medium text-xl lg:text-3xl mb-6 text-white'>
+              {heading}
+            </h2>
+
+            <WysiwygContent
+              className='prose max-w-none text-white'
+              content={content}
+            />
+          </div>
 
           {/* RIGHT COLUMN: Clickable Image */}
           {previewImage && (

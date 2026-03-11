@@ -76,3 +76,15 @@ p + p {
 .WysiwygContent a {
   color: #564ae9;
 }
+@keyframes scrollContributors {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scrollContributors 40s linear infinite;
+}

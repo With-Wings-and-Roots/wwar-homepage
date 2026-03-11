@@ -38,8 +38,7 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
         related_links={data?.acf?.related_links}
       />
       <ContributorsSection
-        de_headline={data.acf?.de_headline}
-        us_headline={data?.acf?.us_headline}
+        headline={lang === 'en' ? 'Contributors' : 'Mitwirkende'}
         special_members={data.acf?.special_members}
         de_contributors={data.acf?.de_contributors}
         us_contributors={data.acf?.us_contributors}
