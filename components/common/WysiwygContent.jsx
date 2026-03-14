@@ -1,29 +1,44 @@
 'use client';
 
+import { createLocalLink } from '@/utilities/links';
 import { useState } from 'react';
+
+const processLinks = (html) => {
+  if (!html) return html;
+
+  return html.replace(
+    /<a\s+([^>]*href="([^"]+)"[^>]*)>/gi,
+    (match, attrs, href) => {
+      const newHref = createLocalLink(href);
+      return `<a ${attrs.replace(href, newHref)}>`;
+    }
+  );
+};
 
 const WysiwygContent = ({ content, className = '', ...otherProps }) => {
   const [expanded, setExpanded] = useState(false);
 
   if (!content) return null;
 
-  // Split content at WordPress <!--more--> tag
   const [beforeMore, afterMore] = content.split('<!--more-->');
+
+  const processedBefore = processLinks(beforeMore);
+  const processedAfter = processLinks(afterMore);
 
   return (
     <div className={`WysiwygContent ${className}`} {...otherProps}>
-      <div dangerouslySetInnerHTML={{ __html: beforeMore }} />
+      <div dangerouslySetInnerHTML={{ __html: processedBefore }} />
 
       {afterMore && (
         <div>
-          {expanded && <div dangerouslySetInnerHTML={{ __html: afterMore }} />}
+          {expanded && (
+            <div dangerouslySetInnerHTML={{ __html: processedAfter }} />
+          )}
+
           <span
             onClick={() => setExpanded(!expanded)}
             style={{
               cursor: 'pointer',
-              fontWeight: 'inherit',
-              fontSize: 'inherit',
-              color: 'inherit',
               textDecoration: 'underline',
               display: 'inline-block',
               marginTop: '0.25em',

@@ -31,7 +31,7 @@ const CurriculumPathways = ({ lang, pathways, curriculumData, baseLink }) => {
                 border rounded-lg overflow-hidden
                 transition-all duration-300
                 min-h-[160px] md:min-h-[200px]
-                bg-wwr_pink/20 hover:bg-wwr_pink/30
+                bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered
               '
             >
               {/* IMAGE */}

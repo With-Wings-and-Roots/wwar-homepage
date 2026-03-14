@@ -15,7 +15,7 @@ const CollectionsChips = () => {
   if (!allCollections?.length) return null;
 
   return (
-    <div className='flex flex-wrap gap-2 px-4 md:px-0 my-8'>
+    <div className='flex flex-wrap gap-2 px-4 md:px-0 my-4'>
       {allCollections.map((collection, i) => (
         <SingleCollectionButton
           key={i}

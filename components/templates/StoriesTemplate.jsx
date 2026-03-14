@@ -96,6 +96,7 @@ const StoriesTemplate = ({
       transition-all
       bg-wwr_yellow_orange text-black
       hover:text-white
+      rounded-lg
     '
           target='_blank'
         >
@@ -117,7 +118,7 @@ const StoriesTemplate = ({
             <Link
               key={ctaData?.title || 'cta'}
               href={createLocalLink(ctaData?.url)}
-              className='inline-block mt-8 px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
+              className='inline-block rounded-lg mt-8 px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
             >
               {ctaData?.title}
             </Link>
@@ -174,6 +175,7 @@ const StoriesTemplate = ({
       transition-all
       bg-wwr_yellow_orange text-black
       hover:text-white
+      rounded-lg
     '
         >
           {ctaData?.title}

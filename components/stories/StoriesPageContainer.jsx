@@ -13,7 +13,7 @@ import { collectionsAdded } from '@/store/collections';
 import TabsDropdown from './Tabs';
 import { curriculumAdded } from '@/store/curriculam';
 import { citiesAdded } from '@/store/cities';
-import CollectionsChips from './CollectionsDropdown';
+import CollectionsChips from './CollectionTabs';
 
 const StoriesPageContainer = ({
   stories,
@@ -75,20 +75,22 @@ const StoriesPageContainer = ({
             href={createLocalLink(materialCtaData.url)}
             className='
               px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all
-              bg-wwr_yellow_orange text-black hover:text-white
+              bg-wwr_yellow_orange text-black hover:text-white rounded-lg
             '
           >
             {materialCtaData?.title}
           </Link>
         )}
       </div>
-      <h2 className='text-2xl md:text-3xl font-light mt-10 py-10'>
-        {lang === 'en'
-          ? 'Explore Special Collections'
-          : 'Entdecken Sie spezielle Sammlungen'}
-      </h2>
+      <div className='my-16'>
+        <h2 className='text-2xl md:text-3xl font-light mt-16 py-10'>
+          {lang === 'en'
+            ? 'Explore Special Collections'
+            : 'Entdecken Sie spezielle Sammlungen'}
+        </h2>
 
-      <CollectionsChips lang={lang} />
+        <CollectionsChips lang={lang} />
+      </div>
 
       {/* ✅ Stories grid / Archive */}
       <StoriesContainer

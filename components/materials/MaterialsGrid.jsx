@@ -1,31 +1,13 @@
 'use client';
+
 import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MaterialGridCard from './MaterialGridCard';
 import TabsDropdown from '../stories/Tabs';
-import CollectionsDropdown from '../stories/CollectionsDropdown';
+import CollectionsDropdown from '../stories/CollectionTabs';
 import LanguagesDropdown from './LanguagesDropdown';
 
 const MaterialsGrid = ({ materials, lang = 'en' }) => {
-  const dispatch = useDispatch();
-
-  // Search state
-  const [inputValue, setInputValue] = useState('');
-  const [search, setSearch] = useState('');
-  const [filteredMaterials, setFilteredMaterials] = useState(materials);
-
-  const handleSearch = () => setSearch(inputValue.trim());
-
-  const handleClearSearch = () => {
-    setInputValue('');
-    setSearch('');
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleSearch();
-    if (e.key === 'Escape') handleClearSearch();
-  };
-
   // Redux selectors
   const activeTopic = useSelector((state) => state.entities.topics.activeTopic);
   const activeCollection = useSelector(
@@ -35,15 +17,21 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
     (state) => state.entities.cities.activeCity
   );
 
-  // Filtering logic
-  useEffect(() => {
+  const [filteredMaterials, setFilteredMaterials] = useState(materials);
+
+  /**
+   * SEARCH
+   */
+  const handleInput = (e) => {
+    const searchValue = e.target.value.toLowerCase();
+
     const filtered = materials.filter((material) => {
       const title = material?.acf?.title?.toLowerCase() || '';
       const materialTopics = material?.acf?.material_type || [];
       const materialCollection = material?.acf?.material_collection || [];
       const materialLanguage = material?.acf?.language || [];
 
-      if (search && !title.includes(search.toLowerCase())) return false;
+      if (searchValue && !title.includes(searchValue)) return false;
 
       if (
         activeTopic &&
@@ -62,45 +50,59 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
     });
 
     setFilteredMaterials(filtered);
-  }, [materials, search, activeTopic, activeCollection, activeLanguage]);
+  };
+
+  /**
+   * FILTERING
+   */
+  useEffect(() => {
+    const filtered = materials.filter((material) => {
+      const materialTopics = material?.acf?.material_type || [];
+      const materialCollection = material?.acf?.material_collection || [];
+      const materialLanguage = material?.acf?.language || [];
+
+      if (
+        activeTopic &&
+        activeTopic?.id &&
+        !materialTopics.includes(activeTopic.id)
+      )
+        return false;
+
+      if (activeCollection && !materialCollection.includes(activeCollection.id))
+        return false;
+
+      if (activeLanguage && !materialLanguage.includes(activeLanguage.id))
+        return false;
+
+      return true;
+    });
+
+    setFilteredMaterials(filtered);
+  }, [materials, activeTopic, activeCollection, activeLanguage]);
 
   return (
     <div className='mt-16'>
-      {/* Search */}
-      <div className='relative max-w-xl mx-auto mb-10'>
-        <div className='relative rounded-full p-[2px] bg-gradient-to-r from-wwr_yellow_orange to-black'>
-          <input
-            type='text'
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={
-              lang === 'en' ? 'Search materials' : 'Rechercher des matériaux'
-            }
-            className='
-              w-full
-              bg-white
-              rounded-full
-              px-6
-              py-4
-              pr-20
-              text-xl
-              focus:outline-none
-              focus:ring-0
-              placeholder:text-gray-400
-            '
-          />
+      <div className='mb-4 text-lg lg:text-xl font-medium text-wwr_rich_black'>
+        {lang === 'en'
+          ? 'Search Materials or filter by Materials Collection / format'
+          : 'Zeitstrahle durchsuchen oder nach Materialsammlung / Format filtern'}
+      </div>
+      <CollectionsDropdown lang={lang} />
 
-          {/* Clear (X) */}
-          {inputValue && (
-            <button
-              type='button'
-              onClick={handleClearSearch}
-              className='absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-wwr_rich_black'
-              aria-label='Clear search'
-            >
+      {/* Filters (Aligned like Stories) */}
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 items-center'>
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <div className='flex h-12 border-2 border-wwr_rich_black rounded-lg'>
+            <input
+              className='px-3 py-1 border-0 w-full focus:outline-none rounded-lg'
+              placeholder={lang === 'en' ? 'Search materials' : 'Rechercher'}
+              type='text'
+              onChange={handleInput}
+            />
+
+            <div className='bg-wwr_rich_black px-2 flex items-center'>
               <svg
-                className='w-5 h-5'
+                className='w-6 h-6 text-white'
                 fill='none'
                 stroke='currentColor'
                 strokeWidth='2'
@@ -109,50 +111,35 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  d='M6 18L18 6M6 6l12 12'
+                  d='M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z'
                 />
               </svg>
-            </button>
-          )}
-
-          {/* Search icon */}
-          <button
-            type='button'
-            onClick={handleSearch}
-            className='absolute right-4 top-1/2 -translate-y-1/2 text-wwr_yellow_orange hover:opacity-80'
-            aria-label='Search'
-          >
-            <svg
-              className='w-6 h-6'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='2'
-              viewBox='0 0 24 24'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.35z'
-              />
-            </svg>
-          </button>
+            </div>
+          </div>
         </div>
-      </div>
+        {/* Topics */}
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <TabsDropdown
+            lang={lang}
+            isFeature={false}
+            cptName={lang === 'en' ? 'All Materials' : 'Alle Materialien'}
+          />
+        </div>
 
-      {/* Filters */}
-      <div className='flex flex-wrap gap-4 mb-8 relative max-w-3xl mx-auto justify-center'>
-        <TabsDropdown
-          lang={lang}
-          isFeature={false}
-          cptName={lang === 'en' ? 'All Materials' : 'Alle Materialien'}
-        />
-        <CollectionsDropdown lang={lang} />
-        <LanguagesDropdown
-          lang={lang}
-          cptName={
-            lang === 'en' ? 'Select a Language' : 'Wählen Sie eine Sprache'
-          }
-        />
+        {/* Collections */}
+
+        {/* Languages */}
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <LanguagesDropdown
+            lang={lang}
+            cptName={
+              lang === 'en' ? 'Select a Language' : 'Wählen Sie eine Sprache'
+            }
+          />
+        </div>
+
+        {/* Empty column to match Stories layout */}
+        <div className='hidden md:block'></div>
       </div>
 
       {/* Materials Grid */}

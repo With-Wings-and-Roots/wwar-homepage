@@ -141,7 +141,7 @@ const SingleMaterialTemplate = async ({
               {goal.explanation && (
                 <WysiwygContent
                   content={goal.explanation}
-                  className='text-lg font-light'
+                  className='text-lg prose font-light'
                 />
               )}
             </div>

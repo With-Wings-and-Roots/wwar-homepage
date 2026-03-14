@@ -173,7 +173,7 @@ const OurWorkTemplate = async ({ data, params }) => {
               <a
                 key={i}
                 href={createLocalLink(item.cta.url)}
-                className='px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
+                className='px-6 py-3 rounded-lg uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
               >
                 {item.cta.title}
               </a>

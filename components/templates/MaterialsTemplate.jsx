@@ -32,7 +32,11 @@ const MaterialsTemplate = ({
           className='fixed left-0 top-0 w-screen h-screen object-cover -z-10 opacity-10'
         />
 
-        <div className='text-center text-lg font-light xl:px-16 mt-6'>
+        <div className='text-lg font-light  mt-6'>
+          <h1 className='text-3xl md:text-6xl font-bold mb-6'>
+            {data?.title?.rendered || data?.acf?.title}
+          </h1>
+
           <WysiwygContent content={data?.acf?.intro} />
         </div>
 
