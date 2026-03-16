@@ -1,8 +1,8 @@
 'use client';
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { topicsAdded } from '@/store/topics';
-import { collectionsAdded } from '@/store/collections';
+import { collectionsAdded, setActiveCollection } from '@/store/collections';
 import { citiesAdded } from '@/store/cities';
 import MaterialsGrid from './MaterialsGrid';
 
@@ -12,9 +12,11 @@ const MaterialsWrapper = ({
   topics,
   collections,
   languages,
+  params,
 }) => {
   const dispatch = useDispatch();
   // Dispatch topics
+
   useEffect(() => {
     if (topics) {
       dispatch(topicsAdded({ topics }));
@@ -38,6 +40,17 @@ const MaterialsWrapper = ({
       dispatch(citiesAdded({ cities: cityNames }));
     }
   }, [languages, dispatch]);
+  useEffect(() => {
+    if (!params?.pathway || !collections) return;
+
+    const activeCollection = collections.find(
+      (collection) => collection.slug === params.pathway
+    );
+
+    if (activeCollection) {
+      dispatch(setActiveCollection(activeCollection));
+    }
+  }, [params?.pathway, collections, dispatch]);
 
   return (
     <>

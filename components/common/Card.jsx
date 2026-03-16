@@ -6,7 +6,7 @@ export default function Card({ title, description, image, href }) {
   return (
     <Link
       href={href}
-      className='group block bg-wwr_yellow_orange transition hover:bg-wwr_yellow_orange_hovered hover:text-white'
+      className='group block bg-wwr_yellow_orange rounded-lg overflow-hidden transition hover:bg-wwr_yellow_orange_hovered hover:text-white'
     >
       {/* Image */}
       {image && (

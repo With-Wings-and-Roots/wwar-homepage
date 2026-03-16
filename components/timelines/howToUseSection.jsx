@@ -23,7 +23,7 @@ export default function HowToUseSection({
           {how_to_use.map((item, index) => (
             <li
               key={index}
-              className='py-6 transition-all duration-200 hover:bg-gray-50 px-2 md:px-4'
+              className='py-6 transition-all duration-200 hover:bg-wwr_teal px-2 md:px-4'
             >
               <div className='flex flex-col gap-3'>
                 {/* WYSIWYG Content */}

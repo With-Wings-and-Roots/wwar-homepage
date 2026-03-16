@@ -23,7 +23,7 @@ const StorytellerCard = ({
   );
 
   return (
-    <div className='group bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
+    <div className='group rounded-lg bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
       {/* Image */}
       {mediaUrl && (
         <div className='relative aspect-[4/3] overflow-hidden'>

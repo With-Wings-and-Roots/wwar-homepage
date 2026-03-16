@@ -9,7 +9,12 @@ import { setActiveCurriculum } from '@/store/curriculam';
 import { setActiveUmbrella } from '@/store/umbrella';
 import { activatedTopic } from '@/store/topics';
 
-const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
+const TabsDropdown = ({
+  lang: language,
+  cptName,
+  isFeature,
+  heading = 'Select a topic',
+}) => {
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -92,9 +97,7 @@ const TabsDropdown = ({ lang: language, cptName, isFeature }) => {
       '
         >
           {!selectedOption || selectedOption.slug === 'all'
-            ? language === 'en'
-              ? 'Select a topic'
-              : 'Wähle ein Thema'
+            ? heading
             : selectedOption.label}
           <span className='ml-2'>▼</span>
         </button>

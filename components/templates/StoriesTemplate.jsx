@@ -81,14 +81,16 @@ const StoriesTemplate = ({
           </div>
         </div>
       </div>
-      <div className='px-8 md:px-16 xl:px-48 relative bg-wwr_light text-black py-20'>
-        <p className='font-light md:text-lg mt-6'>
-          {data.acf?.intro?.have_a_story_cta.title}
-        </p>
-        <Link
-          key={data.acf?.intro?.have_a_story_cta.url || 'cta_url'}
-          href={createLocalLink(data.acf?.intro?.have_a_story_cta.url)}
-          className='inline-block
+      {/* CTA Section */}
+      {data.acf?.intro?.have_a_story_cta && (
+        <div className='px-8 md:px-16 xl:px-48 relative bg-wwr_light text-black py-20'>
+          <p className='font-light md:text-lg mt-6'>
+            {data.acf?.intro?.have_a_story_cta?.title}
+          </p>
+          <Link
+            key={data.acf?.intro?.have_a_story_cta?.url || 'cta_url'}
+            href={createLocalLink(data.acf?.intro?.have_a_story_cta?.url)}
+            className='inline-block
       self-start
       mt-8
       px-6 py-3
@@ -98,13 +100,14 @@ const StoriesTemplate = ({
       hover:text-white
       rounded-lg
     '
-          target='_blank'
-        >
-          {params?.lang === 'en'
-            ? 'Share Your Story'
-            : 'Teile deine Geschichte'}
-        </Link>
-      </div>
+            target='_blank'
+          >
+            {params?.lang === 'en'
+              ? 'Share Your Story'
+              : 'Teile deine Geschichte'}
+          </Link>
+        </div>
+      )}
       <div className='px-8 md:px-16 xl:px-48 bg-wwr_offwhite text-black py-20'>
         <div className='flex flex-col lg:flex-row items-center gap-12'>
           {/* Text + CTA */}

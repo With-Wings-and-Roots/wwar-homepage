@@ -100,7 +100,7 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
               onChange={handleInput}
             />
 
-            <div className='bg-wwr_rich_black px-2 flex items-center'>
+            <div className='bg-wwr_rich_black px-3 flex items-center'>
               <svg
                 className='w-6 h-6 text-white'
                 fill='none'
@@ -123,6 +123,7 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
             lang={lang}
             isFeature={false}
             cptName={lang === 'en' ? 'All Materials' : 'Alle Materialien'}
+            heading={lang === 'en' ? 'Select a format' : 'Wähle ein Format'}
           />
         </div>
 

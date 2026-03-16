@@ -19,7 +19,7 @@ export default function FooterLinksSection({ footer_links = [], heading }) {
               key={i}
               href={createLocalLink(link.url) || '#'}
               target={link.target || '_self'}
-              className='bg-wwr_yellow_orange text-black px-6 py-3 uppercase text-sm hover:text-white transition'
+              className='bg-wwr_yellow_orange rounded-lg text-black px-6 py-3 uppercase text-sm hover:text-white transition'
             >
               {link.title || 'Learn More'}
             </Link>

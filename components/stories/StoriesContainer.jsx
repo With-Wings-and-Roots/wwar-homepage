@@ -179,13 +179,14 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
         className='font-light md:text-lg mt-4'
       />
       {/* SEARCH + TABS + CITIES + PAGINATION */}
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-4 items-center'>
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6  items-center my-10'>
         {/* Tabs */}
         <div className='col-span-2 sm:col-span-1 w-full'>
           <TabsDropdown
             lang={language}
             isFeature={true}
             cptName={language === 'en' ? 'All Stories' : 'Alle Geschichten'}
+            heading={language === 'en' ? 'Select a topic' : 'Wähle ein Thema'}
           />
         </div>
 
@@ -200,14 +201,14 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
         </div>
         {/* Search */}
         <div className='col-span-2 sm:col-span-1 w-full'>
-          <div className='flex h-10 border-2 border-wwr_rich_black'>
+          <div className='flex h-12 border-2 border-wwr_rich_black'>
             <input
               className='px-3 py-1 border-0 w-full focus:outline-none'
               placeholder={language === 'en' ? 'Search' : 'Suchen'}
               type='text'
               onChange={handleInput}
             />
-            <div className='bg-wwr_rich_black px-2 flex items-center'>
+            <div className='bg-wwr_rich_black px-4 flex items-center'>
               <Image
                 src='/search.svg'
                 width={20}
@@ -218,7 +219,7 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
           </div>
         </div>
         {/* Pagination */}
-        <div className='col-span-2 sm:col-span-1 flex md:justify-end justify-start items-center gap-2'>
+        <div className='col-span-2 sm:col-span-1 flex justify-end items-center gap-2'>
           {totalPages > 0 && (
             <>
               <button
@@ -238,7 +239,7 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
                   setCurrentPage((p) => Math.min(p + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
-                className='px-3 py-1 border border-white/30 disabled:opacity-40'
+                className='pl-3 py-1 border border-white/30 disabled:opacity-40'
               >
                 Next
               </button>

@@ -11,6 +11,7 @@ const MaterialsTemplate = ({
   topics,
   collections,
   languages,
+  params,
 }) => {
   const headerImage = data?.acf?.header_image || null;
   return (
@@ -46,6 +47,7 @@ const MaterialsTemplate = ({
           topics={topics}
           collections={collections}
           languages={languages}
+          params={params}
         />
       </div>
     </>

@@ -15,7 +15,7 @@ const CurriculumPathways = ({ lang, pathways, curriculumData, baseLink }) => {
       <div className='flex flex-col gap-6'>
         {curriculumData.map((curriculum, i) => {
           const mappedCurriculum = pathways.find(
-            (item) => item.id === curriculum.pathway.term_id
+            (item) => item.id === curriculum?.pathway?.term_id
           );
 
           const link = `${baseLink}?pathway=${mappedCurriculum?.slug}`;

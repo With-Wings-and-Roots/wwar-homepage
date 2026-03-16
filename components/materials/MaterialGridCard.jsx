@@ -29,7 +29,7 @@ const MaterialGridCard = ({ material }) => {
   return (
     <Link
       href={createLocalLink(material?.link)}
-      className='group block h-full focus:outline-none'
+      className='group block h-full focus:outline-none rounded-lg overflow-hidden '
     >
       <div className='bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
         {/* Media */}

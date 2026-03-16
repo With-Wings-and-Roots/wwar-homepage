@@ -51,7 +51,7 @@ const CitiesDropdown = ({ lang, cptName }) => {
   const selectedCityLabel = activeCity === null ? cptName : parse(activeCity);
 
   return (
-    <section className='py-16 max-w-3xl z-10'>
+    <section className=' max-w-3xl z-10'>
       <div className='relative' ref={dropdownRef}>
         <button
           onClick={() => setOpen((prev) => !prev)}

@@ -82,15 +82,17 @@ const StoriesPageContainer = ({
           </Link>
         )}
       </div>
-      <div className='my-16'>
-        <h2 className='text-2xl md:text-3xl font-light mt-16 py-10'>
-          {lang === 'en'
-            ? 'Explore Special Collections'
-            : 'Entdecken Sie spezielle Sammlungen'}
-        </h2>
+      {collections?.length > 0 && (
+        <div className='my-16'>
+          <h2 className='text-2xl md:text-3xl font-light mt-16 py-10'>
+            {lang === 'en'
+              ? 'Explore Special Collections'
+              : 'Entdecken Sie spezielle Sammlungen'}
+          </h2>
 
-        <CollectionsChips lang={lang} />
-      </div>
+          <CollectionsChips lang={lang} />
+        </div>
+      )}
 
       {/* ✅ Stories grid / Archive */}
       <StoriesContainer
