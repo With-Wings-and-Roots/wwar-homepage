@@ -13,19 +13,18 @@ const RelatedEvents = ({
 }) => {
   const [eventsWithLinks, setEventsWithLinks] = useState([]);
   const link = createLocalLink(`/${lang}/timelines`);
-
   useEffect(() => {
     const enrichEvents = async () => {
       const updatedEvents = (
         await Promise.all(
           relatedEvents.map(async (event) => {
-            if (!event) return null; // skip undefined events
+            if (!event) return null;
 
             const timelineId = event?.acf?.basic_info?.timelines?.[0];
-            if (!timelineId) return null; // skip events without timeline
+            if (!timelineId) return null;
 
             const timeline = await getTimelineCountryById(timelineId, lang);
-            if (!timeline) return null; // skip if timeline fetch failed
+            if (!timeline) return null;
 
             const timelineSlug = timeline.slug;
             const eventLink = `${link}/${timelineSlug}/${event?.slug}`;
@@ -33,7 +32,15 @@ const RelatedEvents = ({
             return { ...event, link: eventLink };
           })
         )
-      ).filter(Boolean); // remove nulls
+      ).filter(Boolean);
+
+      updatedEvents.sort((a, b) => {
+        const yearA =
+          parseInt(a?.acf?.basic_info?.start_date?.slice(0, 4)) || 0;
+        const yearB =
+          parseInt(b?.acf?.basic_info?.start_date?.slice(0, 4)) || 0;
+        return yearA - yearB;
+      });
 
       setEventsWithLinks(updatedEvents);
     };
