@@ -182,7 +182,9 @@ const SingleMaterialTemplate = async ({
       {/* ================= RELATED STORIES ================= */}
       {acf.related_stories?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
-          <h3 className='text-2xl font-bold mb-4'>Related Stories</h3>
+          <h3 className='text-2xl font-bold mb-4'>
+            {lang === 'en' ? 'Stories' : 'Geschichten'}
+          </h3>
           <h4 className='text-lg font-light'>{acf.related_stories_text}</h4>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10'>
             <StoryCardContainer
@@ -201,12 +203,16 @@ const SingleMaterialTemplate = async ({
       {/* ================= RELATED TIMELINES ================= */}
       {acf.related_timelines?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
+          <h3 className='text-2xl font-bold mb-4'>
+            {lang === 'en' ? 'Events' : 'Ereignisse'}
+          </h3>
           <RelatedEvents
             relatedEvents={relatedEvents}
             lang={lang}
             baseLink={createLocalLink(`/${lang}/timelines/`)}
             allMedia={allMedia}
             person={''}
+            showHeading={false}
           />
         </section>
       )}
@@ -215,7 +221,7 @@ const SingleMaterialTemplate = async ({
       {acf.questions?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-12'>
           <h3 className='text-2xl font-bold mb-4'>
-            {lang === 'en' ? 'Educational Questions' : 'Preguntas Educativas'}
+            {lang === 'en' ? 'Educational Questions' : 'Leitfragen'}
           </h3>
 
           {acf.questions.map((q, i) => (

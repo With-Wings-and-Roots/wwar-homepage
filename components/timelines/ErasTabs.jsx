@@ -25,7 +25,7 @@ const SingleEraButton = ({ era, lang: language }) => {
         isActive
           ? 'bg-wwr_rich_black text-wwr_yellow_orange'
           : 'bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered text-wwr_rich_black hover:text-wwr_white'
-      } text-sm lg:text-xl w-max px-3 py-1.5 lg:py-3 hover:cursor-pointer transition-all duration-300 font-extralight`}
+      }  w-max px-3 py-1.5 lg:py-3 hover:cursor-pointer transition-all duration-300 font-extralight`}
     >
       {era ? parse(era.name) : language === 'en' ? 'All Eras' : 'Alle Epochen'}
     </div>

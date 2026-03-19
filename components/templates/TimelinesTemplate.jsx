@@ -98,7 +98,6 @@ const TimelinesTemplate = async ({
       const eventSlug = subSlugs[0];
 
       const allEvents = [...timeLineEventsDe, ...timeLineEventsEn];
-      console.log('eventSlug:', eventSlug);
       const timelineEvent = allEvents.find((te) => te.slug === eventSlug);
 
       if (!timelineEvent) return notFound();

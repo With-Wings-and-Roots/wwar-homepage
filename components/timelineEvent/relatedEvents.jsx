@@ -4,7 +4,13 @@ import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 import { getTimelineCountryById } from '@/utilities/timeline';
 
-const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
+const RelatedEvents = ({
+  relatedEvents,
+  baseLink,
+  allMedia,
+  lang,
+  showHeading = true,
+}) => {
   const [eventsWithLinks, setEventsWithLinks] = useState([]);
   const link = createLocalLink(`/${lang}/timelines`);
 
@@ -40,10 +46,12 @@ const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
   if (eventsWithLinks.length === 0) return null; // nothing to show
 
   return (
-    <div className='w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 pb-10'>
-      <div className='py-6 text-wwr_white text-xl font-light'>
-        {lang === 'en' ? 'Related Events' : 'Ähnliche Ereignisse'}
-      </div>
+    <div className='w-full bg-wwr_yellow_orange px-4 md:px-8 lg:px-20 p-10'>
+      {showHeading && (
+        <div className='pb-6 pt-4 text-wwr_white text-xl font-light'>
+          {lang === 'en' ? 'Related Events' : 'Ähnliche Ereignisse'}
+        </div>
+      )}
 
       <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
         {eventsWithLinks.map((event, index) => {

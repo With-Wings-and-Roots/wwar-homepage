@@ -76,6 +76,7 @@ p + p {
 .WysiwygContent a {
   color: #564ae9;
 }
+
 @keyframes scrollContributors {
   from {
     transform: translateX(0);
@@ -84,7 +85,10 @@ p + p {
     transform: translateX(-50%);
   }
 }
+.scroll-track {
+  display: flex;
+  gap: 3rem;
 
-.animate-scroll {
-  animation: scrollContributors 40s linear infinite;
+  width: max-content;
+  animation: scrollContributors 60s linear infinite;
 }

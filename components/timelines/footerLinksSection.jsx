@@ -6,8 +6,8 @@ export default function FooterLinksSection({ footer_links = [], heading }) {
   if (!footer_links.length) return null;
 
   return (
-    <section className='px-8 md:px-16 xl:px-48 py-20'>
-      <h2 className='font-medium text-xl lg:text-3xl mb-8'>{heading}</h2>
+    <section className='px-8 md:px-16 xl:px-48 mb-10'>
+      <h2 className='font-medium text-xl lg:text-3xl mb-6'>{heading}</h2>
 
       <div className='flex flex-wrap gap-4'>
         {footer_links.map((item, i) => {

@@ -12,7 +12,9 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
     <>
       <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative mb-6'>
         <h1
-          dangerouslySetInnerHTML={{ __html: data.acf?.hero_title || '' }}
+          dangerouslySetInnerHTML={{
+            __html: data.acf?.hero_title || 'Timelines',
+          }}
           className='text-3xl md:text-6xl font-light mb-10'
         />
         <WysiwygContent
@@ -37,11 +39,10 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
         how_to_use={data?.acf?.how_to_use}
         related_links={data?.acf?.related_links}
       />
+
       <ContributorsSection
-        headline={lang === 'en' ? 'Contributors' : 'Mitwirkende'}
-        special_members={data.acf?.special_members}
-        de_contributors={data.acf?.de_contributors}
-        us_contributors={data.acf?.us_contributors}
+        headline={data?.acf?.headline}
+        contributors={data.acf?.contributors}
       />
       <FooterLinksSection
         heading={data?.acf?.footer_links_heading}

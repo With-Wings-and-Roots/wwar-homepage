@@ -14,7 +14,7 @@ export default function WhatYouWillFindSection({
 
   return (
     <>
-      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 mb-10 bg-wwr_teal text-white'>
+      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 my-16 bg-wwr_teal text-white'>
         {/* Section Heading */}
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-12  text-white'>
