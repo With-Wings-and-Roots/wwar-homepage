@@ -281,31 +281,7 @@ const Page = async ({ params, searchParams }) => {
         } else {
           material = await getMaterialBySlug(subSlugs[0], params.lang);
         }
-        // if (!material || material.length === 0) {
-        //   return notFound();
-        // }
-        const relatedStoryIds = material[0]?.acf?.related_stories || [];
-        const relatedEventIds = material[0]?.acf?.related_timelines || [];
 
-        // Fetch stories by ID
-        const relatedStories = relatedStoryIds.length
-          ? (
-              await Promise.all(
-                relatedStoryIds.map((id) =>
-                  getStoryById(id, params.lang).catch(() => null)
-                )
-              )
-            ).filter(Boolean)
-          : [];
-        const relatedEvents = relatedEventIds.length
-          ? (
-              await Promise.all(
-                relatedEventIds.map((id) =>
-                  getTimelineEventById(id, params.lang).catch(() => null)
-                )
-              )
-            ).filter(Boolean)
-          : [];
         const team = material[0]?.acf?.team || [];
         const relatedTeams = await Promise.all(
           team.map(async (team) => {
@@ -341,11 +317,9 @@ const Page = async ({ params, searchParams }) => {
             lang={params.lang}
             data={pageData}
             material={material}
-            relatedStories={relatedStories}
             allMedia={allMedia}
             topics={topics}
             allPersons={allPersons}
-            relatedEvents={relatedEvents}
             relatedTeams={relatedTeams}
           />
         );
