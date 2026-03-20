@@ -26,9 +26,11 @@ const WysiwygContent = ({ content, className = '', ...otherProps }) => {
   const processedAfter = processLinks(afterMore);
 
   return (
-    <div className={`WysiwygContent ${className}`} {...otherProps}>
+    <div
+      className={`WysiwygContent ${className} [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5`}
+      {...otherProps}
+    >
       <div dangerouslySetInnerHTML={{ __html: processedBefore }} />
-
       {afterMore && (
         <div>
           {expanded && (
