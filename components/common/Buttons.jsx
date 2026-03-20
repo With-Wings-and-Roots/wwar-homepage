@@ -45,7 +45,7 @@ const Buttons = ({ buttons }) => {
                 setSelectedFile(btn);
                 setOpenModal(true);
               }}
-              className='bg-wwr_yellow_orange text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+              className='bg-wwr_yellow_orange text-sm rounded-lg lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
             >
               {btn.label}
             </button>

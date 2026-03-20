@@ -110,7 +110,7 @@ const SingleMaterialTemplate = async ({
       {/* ================= QUICK FACTS ================= */}
       {acf.quick_facts?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 pt-12'>
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 bg-wwr_yellow_orange p-8 rounded-lg'>
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 bg-wwr_teal text-wwr_white p-8 rounded-lg'>
             {acf.quick_facts.map((fact, i) => (
               <div key={i}>
                 <h4 className='font-bold uppercase text-sm'>{fact.title}</h4>
@@ -234,65 +234,66 @@ const SingleMaterialTemplate = async ({
         </section>
       )}
       {/* ================= TEAM ================= */}
-      {relatedTeams.map((teamItem, i) => (
-        <section key={i} className='px-8 md:px-16 xl:px-48 py-12'>
-          <h4 className='text-xl font-semibold mb-6 text-center xl:text-left'>
-            {teamItem.team_title}
-          </h4>
+      {relatedTeams.length > 0 &&
+        relatedTeams.map((teamItem, i) => (
+          <section key={i} className='px-8 md:px-16 xl:px-48 py-12'>
+            <h4 className='text-xl font-semibold mb-6 text-center xl:text-left'>
+              {teamItem.team_title}
+            </h4>
 
-          <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
-            {teamItem.related_members.map((member) => {
-              const mediaUrl = allMedia?.find(
-                (media) => media.id === member?.acf?.profile_icon
-              )?.source_url;
+            <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
+              {teamItem.related_members.map((member) => {
+                const mediaUrl = allMedia?.find(
+                  (media) => media.id === member?.acf?.profile_icon
+                )?.source_url;
 
-              return (
-                <li key={member.id} className='flex justify-center'>
-                  <Link
-                    href={member.acf?.external_link || '#'}
-                    target='_blank'
-                    className='group flex flex-col items-center text-center'
-                  >
-                    {/* Profile Icon */}
-                    <div className='w-40 h-40 rounded-full overflow-hidden border border-gray-200 group-hover:border-wwr_yellow_orange transition-colors duration-200'>
-                      {mediaUrl ? (
-                        <Image
-                          src={mediaUrl}
-                          alt={member.title?.rendered || ''}
-                          width={160}
-                          height={160}
-                          className='w-full h-full object-contain p-2 bg-white'
-                        />
-                      ) : (
-                        <div className='w-full h-full flex items-center justify-center bg-gray-100 text-gray-400'>
-                          <svg
-                            className='w-8 h-8'
-                            fill='none'
-                            stroke='currentColor'
-                            strokeWidth='1.5'
-                            viewBox='0 0 24 24'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0'
-                            />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
+                return (
+                  <li key={member.id} className='flex justify-center'>
+                    <Link
+                      href={member?.acf?.socials?.[0]?.link ?? '/'}
+                      target='_blank'
+                      className='group flex flex-col items-center text-center'
+                    >
+                      {/* Profile Icon */}
+                      <div className='w-40 h-40 rounded-full overflow-hidden border border-gray-200 group-hover:border-wwr_yellow_orange transition-colors duration-200'>
+                        {mediaUrl ? (
+                          <Image
+                            src={mediaUrl}
+                            alt={member.title?.rendered || ''}
+                            width={160}
+                            height={160}
+                            className='w-full h-full object-contain p-2 bg-white'
+                          />
+                        ) : (
+                          <div className='w-full h-full flex items-center justify-center bg-gray-100 text-gray-400'>
+                            <svg
+                              className='w-8 h-8'
+                              fill='none'
+                              stroke='currentColor'
+                              strokeWidth='1.5'
+                              viewBox='0 0 24 24'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0'
+                              />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
 
-                    {/* Name */}
-                    <p className='mt-3 text-sm font-light leading-snug group-hover:text-wwr_yellow_orange transition-colors duration-200'>
-                      {member.title?.rendered}
-                    </p>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      ))}
+                      {/* Name */}
+                      <p className='mt-3 text-sm font-light leading-snug group-hover:text-wwr_yellow_orange transition-colors duration-200'>
+                        {member.title?.rendered}
+                      </p>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
     </div>
   );
 };
