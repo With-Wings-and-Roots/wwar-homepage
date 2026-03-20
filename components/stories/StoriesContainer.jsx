@@ -9,7 +9,6 @@ import Image from 'next/image';
 import TabsDropdown from './Tabs';
 import CitiesDropdown from './CitiesDropdown';
 import WysiwygContent from '../common/WysiwygContent';
-import { set } from 'date-fns';
 
 const STORIES_PER_PAGE = 12;
 
@@ -265,8 +264,9 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
             </>
           ) : (
             <span>
+              <StarIcon />
               {language === 'en'
-                ? 'All Featured Stories'
+                ? 'means all Featured Stories'
                 : 'Alle Hervorgehobenen Geschichten'}
             </span>
           )}
@@ -303,3 +303,19 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
 };
 
 export default StoriesContainer;
+// ⭐ Star Icon (same style as StoryCard)
+const StarIcon = () => (
+  <span
+    title='⭐ Indicates Featured Stories — our top picks!'
+    className='inline-flex items-center justify-center w-5 h-5 rounded-full bg-wwr_yellow_orange mr-2'
+  >
+    <svg
+      xmlns='http://www.w3.org/2000/svg'
+      viewBox='0 0 24 24'
+      fill='currentColor'
+      className='w-3 h-3 text-white'
+    >
+      <path d='M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z' />
+    </svg>
+  </span>
+);

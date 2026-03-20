@@ -4,6 +4,7 @@ import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
 import { storySelected } from '@/store/selectedStory';
 import { activatedTopic } from '@/store/topics';
+import { activatedEra } from '@/store/timelineEras';
 
 const Tabs = ({ lang: language }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const Tabs = ({ lang: language }) => {
     );
 
     dispatch(activatedTopic({ topic: selectedTopicObj }));
+    dispatch(activatedEra({ era: null }));
     setOpen(false);
   };
 

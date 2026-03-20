@@ -14,6 +14,7 @@ import TabsDropdown from './Tabs';
 import { curriculumAdded } from '@/store/curriculam';
 import { citiesAdded } from '@/store/cities';
 import CollectionsChips from './CollectionTabs';
+import { storySelected } from '@/store/selectedStory';
 
 const StoriesPageContainer = ({
   stories,
@@ -57,6 +58,10 @@ const StoriesPageContainer = ({
   useEffect(() => {
     dispatch(citiesAdded({ cities }));
   }, [cities, dispatch]);
+  useEffect(() => {
+    dispatch(storySelected({ selection: 'all', id: null }));
+  }, [storySelected, dispatch]);
+
   return (
     <>
       <CurriculumPathways
