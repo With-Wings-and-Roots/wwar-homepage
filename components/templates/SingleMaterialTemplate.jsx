@@ -301,11 +301,13 @@ const SingleMaterialTemplate = async ({
                     const mediaUrl = allMedia?.find(
                       (media) => media.id === member?.acf?.profile_icon
                     )?.source_url;
-
+                    let link;
+                    const openFullProfile = member?.acf?.Team?.includes('913'); // ID of "Full Team" team;
+                    if (openFullProfile) link = `/${lang}/team/${member.slug}/`;
                     return (
                       <li key={member.id} className='flex justify-center'>
                         <Link
-                          href={member?.acf?.socials?.[0]?.link ?? '/'}
+                          href={link || member?.acf?.socials?.[0]?.link || '/'}
                           target='_blank'
                           className='group flex flex-col items-center text-center'
                         >
