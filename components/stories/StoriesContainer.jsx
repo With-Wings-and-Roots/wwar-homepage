@@ -266,8 +266,8 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
             <span>
               <StarIcon />
               {language === 'en'
-                ? 'means all Featured Stories'
-                : 'Alle Hervorgehobenen Geschichten'}
+                ? 'Featured Stories'
+                : 'Ausgewählte Geschichten'}
             </span>
           )}
         </div>
