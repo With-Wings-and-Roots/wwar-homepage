@@ -113,19 +113,20 @@ const ProjectsArchive = ({
 
           <div className='flex flex-wrap gap-0.5 mt-2'>
             {[{ slug: 'all', name: 'All' }, ...allProjectAreas].map((area) => {
-              const isActive = area.slug === projectAreaSlug;
+              // If projectAreaSlug is null/undefined/empty, treat 'all' as active
+              const isActive = !projectAreaSlug
+                ? area.slug === 'all'
+                : area.slug === projectAreaSlug;
 
               return (
                 <Link
                   key={area.slug}
                   href={createLocalLink(`/projects/${area.slug}`)}
                   className={`
-          text-sm lg:text-xl
           w-max
           px-3 py-1.5 lg:py-3
           transition-all duration-300
           font-extralight
-          rounded-lg
           ${
             isActive
               ? 'bg-wwr_rich_black text-wwr_yellow_orange'

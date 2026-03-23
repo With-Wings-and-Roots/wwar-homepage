@@ -96,7 +96,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
       )}
 
       {acf?.call_to_action?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 pb-20'>
+        <section className='px-8 md:px-16 xl:px-48 py-20'>
           <div className='flex flex-wrap gap-4'>
             {acf.call_to_action.map((cta, i) => (
               <Link
@@ -154,6 +154,9 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           baseLink='/events' // page where events are listed
           allMedia={[]} // if you want to pass media objects
           lang={lang}
+          heading={
+            lang === 'en' ? 'Related Events' : 'Verwandte Veranstaltungen'
+          }
         />
       )}
       {/* ================= MATERIALS GRID ================= */}

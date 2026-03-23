@@ -3,7 +3,12 @@ import Image from 'next/image';
 import { getPostById } from '@/utilities/posts';
 import EventsList from './EventsList';
 
-const RelatedEvents = async ({ relatedEventIds, lang = 'en', person }) => {
+const RelatedEvents = async ({
+  relatedEventIds,
+  lang = 'en',
+  person,
+  heading,
+}) => {
   if (!relatedEventIds?.length) return null;
 
   const events = await Promise.all(
@@ -13,7 +18,7 @@ const RelatedEvents = async ({ relatedEventIds, lang = 'en', person }) => {
   return (
     <section className='px-8 md:px-16 xl:px-48 py-10 text-black'>
       <h2 className='text-3xl md:text-5xl font-light mb-8'>
-        {lang === 'en' ? 'More from ' : 'Mehr von '}
+        {heading || (lang === 'en' ? 'More from ' : 'Mehr von ')}
         {person}
       </h2>
       <div>
