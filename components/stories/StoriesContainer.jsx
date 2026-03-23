@@ -76,7 +76,8 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
       filteredStories = filteredStories.filter(
         (story) => story.acf?.featured_story === true
       );
-      newFilter = 'Featured';
+      newFilter =
+        language === 'en' ? 'Featured Stories' : 'Ausgewählte Geschichten';
     } else if (selectedTopic && selectedTopic !== 'all') {
       filteredStories = filteredStories.filter((story) => {
         const topics = story.acf?.topics;
