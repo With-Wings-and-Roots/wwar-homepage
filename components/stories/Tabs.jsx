@@ -116,8 +116,10 @@ const TabsDropdown = ({
             min-w-[200px]
           '
         >
-          {!selectedOption ? heading : selectedOption.label}
-          <span className='ml-2'>▼</span>
+          <span className='truncate block'>
+            {!selectedOption ? heading : selectedOption.label}
+          </span>
+          <span className='ml-2 shrink-0'>▼</span>
         </button>
 
         {/* Dropdown */}

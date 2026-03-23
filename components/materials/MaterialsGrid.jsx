@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import MaterialGridCard from './MaterialGridCard';
 import TabsDropdown from '../stories/Tabs';
-import CollectionsDropdown from '../stories/CollectionTabs';
+import CollectionsDropdown from './CollectionDropdown';
 import LanguagesDropdown from './LanguagesDropdown';
 
 const MaterialsGrid = ({ materials, lang = 'en' }) => {
@@ -87,7 +87,6 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
           ? 'Search Materials or filter by Materials Collection / format'
           : 'Zeitstrahle durchsuchen oder nach Materialsammlung / Format filtern'}
       </div>
-      <CollectionsDropdown lang={lang} />
 
       {/* Filters (Aligned like Stories) */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 items-center'>
@@ -128,7 +127,9 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
         </div>
 
         {/* Collections */}
-
+        <div className='col-span-2 sm:col-span-1 w-full'>
+          <CollectionsDropdown lang={lang} />
+        </div>
         {/* Languages */}
         <div className='col-span-2 sm:col-span-1 w-full'>
           <LanguagesDropdown

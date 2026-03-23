@@ -5,10 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
 import { fetchMediaFromId } from '@/utilities/media';
+import WysiwygContent from '../common/WysiwygContent';
 
 const MaterialGridCard = ({ material }) => {
   const title = material?.title?.rendered ?? '';
   const media = material?.acf?.imagevideo?.[0];
+  const text = material?.acf?.text ?? '';
 
   const isImage = media?.acf_fc_layout === 'image';
   const isVideo = media?.acf_fc_layout === 'video';
@@ -63,6 +65,7 @@ const MaterialGridCard = ({ material }) => {
             className='text-xl md:text-2xl font-light leading-snug'
             dangerouslySetInnerHTML={{ __html: title }}
           />
+          <WysiwygContent content={text} className='text-sm line-clamp-2' />
 
           <span className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black group-hover:text-white transition-colors'>
             View material

@@ -16,17 +16,8 @@ const MaterialsTemplate = ({
   const headerImage = data?.acf?.header_image || null;
   return (
     <>
-      {/* Hero */}
-      <div className='-mt-10 h-screen relative'>
-        <ImagePlusHeading
-          image={headerImage}
-          heading={data?.title?.rendered}
-          intro={data?.acf?.heading}
-        />
-      </div>
-
       {/* Content */}
-      <div className='px-8 md:px-16 xl:px-48 py-16 relative'>
+      <div className='px-8 md:px-16 xl:px-48 py-16 relative -mt-10 '>
         <Image
           src={gfx_bg_orange}
           alt=''

@@ -48,13 +48,15 @@ const LanguagesDropdown = ({ cptName = 'All Languages' }) => {
   if (!allLanguages?.length) return null;
 
   return (
-    <section className='py-16 max-w-3xl z-10'>
+    <section className=' max-w-3xl z-10'>
       <div className='relative' ref={dropdownRef}>
         <button
           onClick={() => setOpen((prev) => !prev)}
           className='w-full text-left px-4 py-3 bg-wwr_rich_black text-wwr_yellow_orange font-light rounded border border-black/20 flex justify-between items-center cursor-pointer'
         >
-          {activeLanguage ? activeLanguage.name : cptName}
+          <span className='truncate block'>
+            {activeLanguage ? activeLanguage.name : cptName}
+          </span>
           <span className='ml-2'>▼</span>
         </button>
 
