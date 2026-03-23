@@ -12,7 +12,6 @@ const StoriesPageWrapper = ({
   baseLink,
   materialCtaData,
   curriculumData,
-  pathways,
   cities,
   exploreArchiveText,
 }) => {
@@ -29,7 +28,6 @@ const StoriesPageWrapper = ({
           collections={collections}
           curriculumData={curriculumData}
           materialCtaData={materialCtaData}
-          pathways={pathways}
           lang={language}
           baseLink={baseLink}
           cities={cities}

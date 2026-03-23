@@ -16,7 +16,6 @@ const StoriesTemplate = ({
   allPersons,
   topics,
   collections,
-  pathways,
   params,
   data,
   subSlugs,
@@ -41,17 +40,6 @@ const StoriesTemplate = ({
       primary_umbrella_dimension: resolvePrimaryUmbrella(storyTopics, theme),
     };
   });
-  const storiesWithCurriculum = (storiesWithUmbrella || stories || []).map(
-    (story) => {
-      const storyTopics = (story.acf?.topics || []).map((id) => ({
-        name: topicIdMap[id],
-      }));
-      return {
-        ...story,
-        primary_curriculum_dimension: resolvePrimaryCurriculum(storyTopics),
-      };
-    }
-  );
   const cities = (stories || [])
     .map((story) => story.acf?.city) // extract city from each story
     .filter(Boolean) // remove undefined/null
@@ -157,10 +145,9 @@ const StoriesTemplate = ({
         )}
       <StoriesPageWrapper
         lang={params.lang}
-        pathways={pathways}
         curriculumData={data.acf?.curriculum_pathways || []}
         materialCtaData={data.acf?.education_material_link || []}
-        stories={storiesWithCurriculum}
+        stories={storiesWithUmbrella}
         allMedia={allMedia}
         allPersons={allPersons}
         topics={topics}

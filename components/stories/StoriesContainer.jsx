@@ -33,9 +33,6 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
   const activeUmbrella = useSelector(
     (state) => state.entities.umbrella.activeUmbrella
   );
-  const activeCurriculum = useSelector(
-    (state) => state.entities.curriculum.activeCurriculum
-  );
   const activeCollection = useSelector(
     (state) => state.entities.collections.activeCollection
   );
@@ -59,13 +56,6 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
         (story) => story.primary_umbrella_dimension === activeUmbrella
       );
       newFilter = activeUmbrella;
-    }
-
-    if (activeCurriculum) {
-      filteredStories = filteredStories.filter(
-        (story) => story.acf?.curriculum_pathway === activeCurriculum.id
-      );
-      newFilter = activeCurriculum.name;
     }
 
     if (activeCollection) {
@@ -108,7 +98,6 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
     selectedTopic,
     selectedTopicId,
     activeUmbrella,
-    activeCurriculum,
     activeCollection,
     activeCity,
     allStories,

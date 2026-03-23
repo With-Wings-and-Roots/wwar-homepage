@@ -94,7 +94,6 @@ const Page = async ({ params, searchParams }) => {
     topics,
     languages,
     collections,
-    pathways,
     allMedia,
     materials,
     timelineCountries,
@@ -117,7 +116,6 @@ const Page = async ({ params, searchParams }) => {
           allPersons,
           topics,
           collections,
-          pathways,
           timeLineEventsDe,
           timeLineEventsEn,
         ] = await Promise.all([
@@ -128,7 +126,6 @@ const Page = async ({ params, searchParams }) => {
           getAllPersons(),
           fetchAllTopics(params.lang),
           fetchAllCollections(params.lang),
-          getMaterialCollections(params.lang),
           getTimeline('de', params.lang),
           getTimeline('us', params.lang),
         ]);
@@ -144,7 +141,6 @@ const Page = async ({ params, searchParams }) => {
             allPersons={allPersons}
             topics={topics}
             collections={collections}
-            pathways={pathways}
             timeLineEventsDe={timeLineEventsDe}
             timeLineEventsEn={timeLineEventsEn}
           />

@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import path from 'path';
-import { create } from 'domain';
 import { createLocalLink } from '@/utilities/links';
 
 const CurriculumPathways = ({ lang, curriculumData, baseLink }) => {
