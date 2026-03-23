@@ -19,7 +19,7 @@ const LearnTimelines = ({ data }) => {
   return (
     <>
       {/* Button to open overlay */}
-      <Link href='./timelines/info' className='mt-10 block group'>
+      <Link href='./timelines/info' className='my-10 block group'>
         <div className='flex global_width justify-center items-center gap-2 text-xl text-wwr_teal cursor-pointer transition-all duration-300'>
           <div className='transition-transform duration-300 group-hover:-translate-x-1'>
             {pc_button_label || 'Learn how these timelines were made'}

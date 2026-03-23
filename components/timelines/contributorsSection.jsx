@@ -29,7 +29,7 @@ export default async function ContributorsSection({
   const allMembers = [...members, ...members, ...members];
 
   return (
-    <section className='px-8 md:px-16 xl:px-48 py-20 border-t border-b border-wwr_teal overflow-hidden'>
+    <section className='px-8 md:px-16 xl:px-48 py-20 overflow-hidden'>
       <h2 className='font-medium text-xl lg:text-3xl mb-12 '>{headline}</h2>
 
       <div className='flex  scroll-track flex-nowrap'>
