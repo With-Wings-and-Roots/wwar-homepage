@@ -109,15 +109,17 @@ const StoriesTemplate = ({
         </div>
       )}
       <div className='px-8 md:px-16 xl:px-48 bg-wwr_offwhite text-black py-20'>
-        <div className='flex flex-col lg:flex-row items-center gap-12'>
+        <div className='flex flex-col lg:flex-row items-start gap-12'>
           {/* Text + CTA */}
-          <div className='lg:w-1/2'>
-            <h2 className='text-2xl md:text-3xl font-light'>
+          <div className='lg:w-1/2 '>
+            <h2 className='text-2xl md:text-3xl font-light mb-8'>
               {params?.lang === 'en'
                 ? 'Explore by Storytellers'
                 : 'Explorar por Narradores'}
             </h2>
-
+            <p className='font-light md:text-lg mt-6'>
+              {data.acf?.intro?.storyteller_cta_description}
+            </p>
             <Link
               key={ctaData?.title || 'cta'}
               href={createLocalLink(ctaData?.url)}

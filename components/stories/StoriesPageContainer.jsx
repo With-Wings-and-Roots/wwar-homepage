@@ -10,8 +10,6 @@ import CurriculumPathways from './CurriculumPathways';
 import { createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
 import { collectionsAdded } from '@/store/collections';
-import TabsDropdown from './Tabs';
-import { curriculumAdded } from '@/store/curriculam';
 import { citiesAdded } from '@/store/cities';
 import CollectionsChips from './CollectionTabs';
 import { storySelected } from '@/store/selectedStory';
@@ -24,10 +22,8 @@ const StoriesPageContainer = ({
   collections,
   baseLink,
   lang,
-  ctaData,
   materialCtaData,
   curriculumData,
-  pathways,
   cities,
   exploreArchiveText,
 }) => {
@@ -52,9 +48,7 @@ const StoriesPageContainer = ({
   useEffect(() => {
     dispatch(collectionsAdded({ collections }));
   }, [collections, dispatch]);
-  useEffect(() => {
-    dispatch(curriculumAdded({ pathways }));
-  }, [pathways, dispatch]);
+
   useEffect(() => {
     dispatch(citiesAdded({ cities }));
   }, [cities, dispatch]);
@@ -66,7 +60,6 @@ const StoriesPageContainer = ({
     <>
       <CurriculumPathways
         lang={lang}
-        pathways={pathways}
         curriculumData={curriculumData}
         baseLink={
           materialCtaData.url ? createLocalLink(materialCtaData.url) : '#'

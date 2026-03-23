@@ -47,6 +47,7 @@ import {
   getMaterialTypes,
 } from '@/utilities/materials';
 import { getTeamMemberById } from '@/utilities/team';
+import NewsletterFlyout from '@/components/common/NewsletterFlyout';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -395,7 +396,10 @@ const Page = async ({ params, searchParams }) => {
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       ) : null}
       <Header lang={params.lang} />
+      <NewsletterFlyout lang={params.lang} />
+
       {template}
+
       <Footer lang={params.lang} />
     </>
   );

@@ -2,8 +2,10 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import path from 'path';
+import { create } from 'domain';
+import { createLocalLink } from '@/utilities/links';
 
-const CurriculumPathways = ({ lang, pathways, curriculumData, baseLink }) => {
+const CurriculumPathways = ({ lang, curriculumData, baseLink }) => {
   return (
     <section className='py-16'>
       <h3 className='text-2xl md:text-3xl font-light mb-6'>
@@ -14,16 +16,10 @@ const CurriculumPathways = ({ lang, pathways, curriculumData, baseLink }) => {
 
       <div className='flex flex-col gap-6'>
         {curriculumData.map((curriculum, i) => {
-          const mappedCurriculum = pathways.find(
-            (item) => item.id === curriculum?.pathway?.term_id
-          );
-
-          const link = `${baseLink}?pathway=${mappedCurriculum?.slug}`;
-
           return (
             <Link
               key={i}
-              href={link}
+              href={createLocalLink(curriculum.material_page_link?.url)}
               className='
                 group
                 cursor-pointer
