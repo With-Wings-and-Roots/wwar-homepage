@@ -10,6 +10,7 @@ import RelatedEvents from '../timelineEvent/relatedEvents';
 import Link from 'next/link';
 import { getTimelineEventById } from '@/utilities/timeline';
 import { getStoryById } from '@/utilities/stories';
+import Team from '../common/TeamModal';
 
 const renderImageVideo = async (obj) => {
   if (!obj) return null;
@@ -94,7 +95,6 @@ const SingleMaterialTemplate = async ({
         })
       )
     : [];
-  console.log('Processing content:', processedContent);
 
   // Fetch hero media if it's an image
   const heroMedia = acf.imagevideo?.[0];
@@ -301,51 +301,13 @@ const SingleMaterialTemplate = async ({
                     const mediaUrl = allMedia?.find(
                       (media) => media.id === member?.acf?.profile_icon
                     )?.source_url;
-                    let link;
-                    const openFullProfile = member?.acf?.Team?.includes('913'); // ID of "Full Team" team;
-                    if (openFullProfile) link = `/${lang}/team/${member.slug}/`;
+                    const openFullProfile = member?.acf?.team?.includes(913); // ID of "Full Team" team;
                     return (
-                      <li key={member.id} className='flex justify-center'>
-                        <Link
-                          href={link || member?.acf?.socials?.[0]?.link || '/'}
-                          target='_blank'
-                          className='group flex flex-col items-center text-center'
-                        >
-                          {/* Profile Icon */}
-                          <div className='w-40 h-40 rounded-full overflow-hidden border border-gray-200 group-hover:border-wwr_yellow_orange transition-colors duration-200'>
-                            {mediaUrl ? (
-                              <Image
-                                src={mediaUrl}
-                                alt={member.title?.rendered || ''}
-                                width={160}
-                                height={160}
-                                className='w-full h-full object-contain p-2 bg-white'
-                              />
-                            ) : (
-                              <div className='w-full h-full flex items-center justify-center bg-gray-100 text-gray-400'>
-                                <svg
-                                  className='w-8 h-8'
-                                  fill='none'
-                                  stroke='currentColor'
-                                  strokeWidth='1.5'
-                                  viewBox='0 0 24 24'
-                                >
-                                  <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a7.5 7.5 0 0115 0'
-                                  />
-                                </svg>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Name */}
-                          <p className='mt-3 text-sm font-light leading-snug group-hover:text-wwr_yellow_orange transition-colors duration-200'>
-                            {member.title?.rendered}
-                          </p>
-                        </Link>
-                      </li>
+                      <Team
+                        member={member}
+                        mediaUrl={mediaUrl}
+                        baseLink={`/${lang}/team/`}
+                      ></Team>
                     );
                   })}
                 </ul>
