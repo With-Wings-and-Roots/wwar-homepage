@@ -33,25 +33,38 @@ const NewsletterFlyout = ({ lang }) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    const params = new URLSearchParams();
-    formData.forEach((value, key) => params.append(key, value));
+    const email = formData.get('EMAIL');
 
     try {
-      await fetch(
-        'https://fromherefilm.us2.list-manage.com/subscribe/post?u=40662e5abd8c9438fbcbc8c40&id=0eeb9c281b&c=?',
-        {
-          method: 'POST',
-          mode: 'no-cors', // Mailchimp doesn’t allow CORS
-          body: params,
-        }
-      );
+      // ✅ CASE 1: English → Mailchimp
+      if (lang === 'en') {
+        const params = new URLSearchParams();
+        formData.forEach((value, key) => params.append(key, value));
 
-      // Success
+        await fetch(
+          'https://fromherefilm.us2.list-manage.com/subscribe/post?u=40662e5abd8c9438fbcbc8c40&id=0eeb9c281b&c=?',
+          {
+            method: 'POST',
+            mode: 'no-cors',
+            body: params,
+          }
+        );
+      }
+
+      // ✅ CASE 2: Other languages → Brevo
+      else {
+        // Brevo (other languages)
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, lang: 'German' }),
+        });
+      }
+      // ✅ Success UI
       setSubscribed(true);
       setShowThanks(true);
       localStorage.setItem('newsletter-subscribed', 'true');
 
-      // Auto-close after 3 sec
       setTimeout(() => setOpen(false), 5000);
     } catch (err) {
       console.error(err);
