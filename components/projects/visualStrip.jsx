@@ -15,6 +15,7 @@ const VisualStrip = ({ acf }) => {
       if (acf?.gallery?.length) {
         for (let img of acf.gallery) {
           const media = await fetchMediaFromId(img);
+          console.log('Fetched media:', media);
           mediaArray.push({
             type: 'image',
             src: media.source_url || media.url,
@@ -41,8 +42,12 @@ const VisualStrip = ({ acf }) => {
 
   const featured = allMedia[featuredIndex];
 
+  const goPrev = () =>
+    setFeaturedIndex((prev) => (prev - 1 + allMedia.length) % allMedia.length);
+  const goNext = () => setFeaturedIndex((prev) => (prev + 1) % allMedia.length);
+
   return (
-    <>
+    <div className='relative'>
       {/* Featured Media */}
       <div className='relative aspect-video overflow-hidden mb-4 cursor-pointer group'>
         {featured.type === 'image' ? (
@@ -62,6 +67,22 @@ const VisualStrip = ({ acf }) => {
             allowFullScreen
           />
         )}
+
+        {/* Left Arrow */}
+        <button
+          onClick={goPrev}
+          className='absolute top-1/2 left-2 -translate-y-1/2 z-10'
+        >
+          <Image src='/arrow-left.svg' alt='Previous' width={32} height={32} />
+        </button>
+
+        {/* Right Arrow */}
+        <button
+          onClick={goNext}
+          className='absolute top-1/2 right-2 -translate-y-1/2 z-10'
+        >
+          <Image src='/arrow-right.svg' alt='Next' width={32} height={32} />
+        </button>
       </div>
 
       {/* Thumbnails */}
@@ -96,7 +117,7 @@ const VisualStrip = ({ acf }) => {
       <div className='mt-2 text-center text-sm text-black/60'>
         {featuredIndex + 1} / {allMedia.length}
       </div>
-    </>
+    </div>
   );
 };
 
