@@ -48,6 +48,9 @@ import {
 } from '@/utilities/materials';
 import { getTeamMemberById } from '@/utilities/team';
 import NewsletterFlyout from '@/components/common/NewsletterFlyout';
+import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
+import { getAllFilms, getFilmBySlug } from '@/utilities/films';
+import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -100,7 +103,8 @@ const Page = async ({ params, searchParams }) => {
     timeLineEventsDe,
     timeLineEventsEn,
     timelineEras,
-    timelineTopics;
+    timelineTopics,
+    AllFilms;
 
   // get page
   let template;
@@ -371,7 +375,46 @@ const Page = async ({ params, searchParams }) => {
       case 'page_ourwork.php':
         template = <OurWorkTemplate data={pageData} params={params} />;
         break;
-
+      case 'page_films.php':
+        let film;
+        if (subSlugs.length > 0) {
+          if (subSlugs.length > 2) {
+            film = await getFilmBySlug(subSlugs[2], params.lang);
+          } else {
+            film = await getFilmBySlug(subSlugs[0], params.lang);
+          }
+          const [allMediaDe, allMediaEd, allMediaEn, allPersons, topics] =
+            await Promise.all([
+              getAllMedia('de'),
+              getAllMedia('ed'),
+              getAllMedia('en'),
+              getAllPersons(),
+              fetchAllTopics(params.lang),
+            ]);
+          allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
+          template = (
+            <SingleFilmTemplate
+              lang={params.lang}
+              data={pageData}
+              film={film}
+              subSlugs={subSlugs}
+              allMedia={allMedia}
+              allPersons={allPersons}
+              topics={topics}
+            />
+          );
+        } else {
+          const films = await getAllFilms(params.lang);
+          template = (
+            <AllFilmsTemplate
+              lang={params.lang}
+              data={pageData}
+              subSlugs={subSlugs}
+              films={films}
+            />
+          );
+        }
+        break;
       case 'page_home.php':
         template = (
           <HomeTemplate data={pageData} params={params} subSlugs={subSlugs} />

@@ -15,7 +15,6 @@ const VisualStrip = ({ acf }) => {
       if (acf?.gallery?.length) {
         for (let img of acf.gallery) {
           const media = await fetchMediaFromId(img);
-          console.log('Fetched media:', media);
           mediaArray.push({
             type: 'image',
             src: media.source_url || media.url,
