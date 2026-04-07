@@ -49,7 +49,13 @@ import {
 import { getTeamMemberById } from '@/utilities/team';
 import NewsletterFlyout from '@/components/common/NewsletterFlyout';
 import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
-import { getAllFilms, getFilmBySlug } from '@/utilities/films';
+import {
+  getAllFilms,
+  getFilmBySlug,
+  getFilmLanguages,
+  getFilmProductionTypes,
+  getFilmTypes,
+} from '@/utilities/films';
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 
 const Page = async ({ params, searchParams }) => {
@@ -104,6 +110,7 @@ const Page = async ({ params, searchParams }) => {
     timeLineEventsEn,
     timelineEras,
     timelineTopics,
+    filmProductionTypes,
     AllFilms;
 
   // get page
@@ -405,12 +412,18 @@ const Page = async ({ params, searchParams }) => {
           );
         } else {
           const films = await getAllFilms(params.lang);
+          filmProductionTypes = await getFilmProductionTypes(params.lang);
+          const languages = await getFilmLanguages(params.lang);
+          const filmTypes = await getFilmTypes(params.lang);
           template = (
             <AllFilmsTemplate
               lang={params.lang}
               data={pageData}
               subSlugs={subSlugs}
               films={films}
+              filmProductionTypes={filmProductionTypes}
+              filmLanguages={languages}
+              filmTypes={filmTypes}
             />
           );
         }
