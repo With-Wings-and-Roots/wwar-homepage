@@ -455,7 +455,7 @@ const Page = async ({ params, searchParams }) => {
         );
         break;
       default:
-        template = <DefaultTemplate data={pageData} />;
+        template = <DefaultTemplate data={pageData} params={params} />;
         break;
     }
   } else {

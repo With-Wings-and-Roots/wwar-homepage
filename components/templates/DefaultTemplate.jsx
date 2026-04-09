@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
+import ContactForm from '../common/contactForm';
 
-const DefaultTemplate = ({ data }) => {
+const DefaultTemplate = ({ data, params }) => {
+  console.log('DefaultTemplate params:', params);
   return (
     <div
       className='px-8 md:px-16 xl:px-48 pb-16 relative'
@@ -37,6 +39,7 @@ const DefaultTemplate = ({ data }) => {
           />
         )}
       </div>
+      {params.slugs[0] === 'contact' && <ContactForm />}
     </div>
   );
 };
