@@ -123,7 +123,7 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
     if (searchValue.length > 0) {
       const searchedStories = allStories.filter((story) => {
         const person = allPersons.find((p) => p.id === story.acf.person);
-        return `${story.title.rendered}${person?.name}`
+        return `${story.title.rendered}${person?.name}${story.acf.city}${story.acf.keywords}`
           .toLowerCase()
           .includes(searchValue);
       });
