@@ -7,6 +7,7 @@ import { getStoryById } from '@/utilities/stories';
 import StoryPageComponent from '../page/storyPageComponent';
 import StoryCardContainer from '../stories/StoryCardContainer';
 import { createLocalLink } from '@/utilities/links';
+import Team from '../common/TeamModal';
 
 const getEmbedUrl = (url) => {
   if (!url) return null;
@@ -44,9 +45,14 @@ const SingleFilmTemplate = async ({
   allPersons,
   subSlugs,
   topics,
+  relatedTeams,
 }) => {
   const acf = film?.acf || {};
   const embedUrl = getEmbedUrl(acf.trailer);
+  const formattedTeams = relatedTeams.map((team) => ({
+    team_title: team.team_title.replace(/\r\n/g, ' ').trim(),
+    member: team.related_members?.[0] || null,
+  }));
 
   // ✅ FETCH ALL MEDIA BEFORE RENDER
   const heroMedia = await resolveMedia(acf.hero_image);
@@ -126,7 +132,7 @@ const SingleFilmTemplate = async ({
               {embedUrl && (
                 <a
                   href='#trailer'
-                  className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+                  className='bg-wwr_yellow_orange text-black text-sm rounded-lg lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                 >
                   Watch Trailer
                 </a>
@@ -139,7 +145,7 @@ const SingleFilmTemplate = async ({
                     href={cta?.link?.url}
                     target={cta?.link?.target || '_self'}
                     rel='noopener noreferrer'
-                    className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+                    className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                   >
                     {cta?.link?.title}
                   </a>
@@ -163,6 +169,21 @@ const SingleFilmTemplate = async ({
               className='w-full aspect-video'
               allowFullScreen
             />
+            {acf.get_screening_cta?.url && (
+              <>
+                <p className='font-light text-lg my-4'>
+                  {lang === 'en'
+                    ? 'Interested in screening this film in your community?'
+                    : 'Interessiert daran, diesen Film in Ihrer Gemeinde zu zeigen?'}
+                </p>
+                <a
+                  href={acf.get_screening_cta.url}
+                  className=' rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+                >
+                  {acf.get_screening_cta.title || 'Request Screening'}
+                </a>
+              </>
+            )}
           </div>
         </section>
       )}
@@ -172,13 +193,13 @@ const SingleFilmTemplate = async ({
         <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
           {lang === 'en' ? 'About the Film' : 'Über den Film'}
         </h2>
-        <div className='grid md:grid-cols-2 mb-6'>
+        <div className='grid md:grid-cols-2 mb-6 gap-4 items-center'>
           {posterMedia?.source_url && (
             <Image
               src={posterMedia.source_url}
               alt='Poster'
-              width={400}
-              height={600}
+              width={500}
+              height={400}
             />
           )}
 
@@ -199,12 +220,12 @@ const SingleFilmTemplate = async ({
       {/* 4. DIRECTOR */}
       {acf.director_statment && (
         <section className='px-8 md:px-16 xl:px-48'>
-          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+          <h2 className='text-2xl lg:text-4xl font-medium'>
             {lang === 'en'
               ? `Director's Statement`
               : 'Statement des Regisseurs'}
           </h2>
-          <div className='grid md:grid-cols-3 gap-8 items-center'>
+          <div className='grid md:grid-cols-3 gap-8 items-center mt-12'>
             {directorMedia?.source_url && (
               <Image
                 src={directorMedia.source_url}
@@ -238,7 +259,12 @@ const SingleFilmTemplate = async ({
       {/* 5. GALLERY */}
       {galleryMedia.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-16'>
-          <VisualStrip acf={acf} />
+          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+            {lang === 'en' ? `Film Stills` : 'Filmszenen'}
+          </h2>
+          <div className='w-full md:w-[70%] mx-auto'>
+            <VisualStrip acf={acf} lang={lang} />
+          </div>
         </section>
       )}
 
@@ -250,9 +276,9 @@ const SingleFilmTemplate = async ({
           </h2>
           <div className='grid md:grid-cols-2 gap-8'>
             {peopleMedia.map((p, i) => (
-              <div key={i} className='flex items-center flex-col gap-4'>
+              <div key={i} className='flex items-center flex-col'>
                 {p?.media?.source_url && (
-                  <div className='w-40 h-40 relative'>
+                  <div className='w-[300px] h-[300px] relative'>
                     {p?.media?.source_url && (
                       <Image
                         src={p?.media?.source_url}
@@ -263,11 +289,11 @@ const SingleFilmTemplate = async ({
                     )}
                   </div>
                 )}
-                <h3>{p?.name}</h3>
-                <p>{p?.role}</p>
+                <h3 className='text-lg font-light'>{p?.name}</h3>
+                <p className='text-sm font-medium'>{p?.role}</p>
                 <WysiwygContent
                   content={p?.short_text}
-                  className='text-sm font-light'
+                  className='text-sm font-light mt-2'
                 />
               </div>
             ))}
@@ -280,8 +306,8 @@ const SingleFilmTemplate = async ({
         acf?.award_laurals?.length > 0 ||
         acf?.screening_list?.length > 0) && (
         <section className='bg-wwr_yellow_orange pt-6'>
-          <section className='px-8 md:px-16 xl:px-48  '>
-            <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+          <section className='px-8 md:px-16 xl:px-48 '>
+            <h2 className='text-2xl lg:text-4xl font-medium pt-12 mb-6'>
               {lang === 'en'
                 ? ' Awards & Festivals'
                 : 'Auszeichnungen & Festivals'}
@@ -299,7 +325,7 @@ const SingleFilmTemplate = async ({
               ))}
             </div>
             {acf?.award_laurals?.length > 0 && (
-              <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+              <h2 className='text-2xl lg:text-4xl font-medium pt-12 mb-6'>
                 {lang === 'en' ? 'Laurals' : 'Auszeichnungen'}
               </h2>
             )}
@@ -310,9 +336,9 @@ const SingleFilmTemplate = async ({
                   return (
                     <Image
                       src={media.source_url}
-                      alt={media.alt || ''}
-                      width={media.media_details?.width || undefined}
-                      height={media.media_details?.height || undefined}
+                      alt={media.alt}
+                      width={media.width || 160}
+                      height={media.height || 160}
                       className='object-contain'
                     />
                   );
@@ -320,12 +346,12 @@ const SingleFilmTemplate = async ({
               </div>
             )}
             {acf?.screening_list?.length > 0 && (
-              <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+              <h2 className='text-2xl lg:text-4xl font-medium pt-12 mb-6'>
                 {lang === 'en' ? 'Screenings' : 'Vorführungen'}
               </h2>
             )}
             {acf?.screening_list?.length > 0 && (
-              <div className=' mb-6'>
+              <div className='mb-6 pb-12'>
                 {acf?.screening_list?.map(async (screening, i) => {
                   return (
                     <p key={i} className='text-sm font-light'>
@@ -353,7 +379,7 @@ const SingleFilmTemplate = async ({
               href={item.source_link || '#'}
               target='_blank'
               rel='noopener noreferrer'
-              className='group block text-black p-6 rounded-lg bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered transition'
+              className='group rounded-lg block text-black p-6 rounded-lg bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered transition'
             >
               <div className='flex items-start gap-4'>
                 <div>
@@ -371,7 +397,7 @@ const SingleFilmTemplate = async ({
       </section>
 
       {/* 9. WATCH */}
-      {acf.watch_now_cta?.url && (
+      {acf.watch_now_ctas?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48'>
           <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
             {acf?.avaiability_text ||
@@ -391,12 +417,20 @@ const SingleFilmTemplate = async ({
           <p className='text-sm font-medium mb-4 text-wwr_teal'>
             {acf?.region_note}
           </p>
-          <a
-            href={acf.watch_now_cta.url}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-          >
-            {acf.watch_now_cta.title || 'Watch Now'}
-          </a>
+          {acf?.watch_now_ctas?.length > 0 && (
+            <div className='mb-4'>
+              {acf?.watch_now_ctas?.map(async (cta, i) => {
+                return (
+                  <a
+                    href={cta.cta.url}
+                    className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal mr-4 px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+                  >
+                    {cta.cta.title || 'Watch Now'}
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </section>
       )}
 
@@ -406,10 +440,38 @@ const SingleFilmTemplate = async ({
           <p className='font-light text-lg mb-4'>{acf.short_text}</p>
           <a
             href={acf.get_screening_cta.url}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+            className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
           >
             {acf.get_screening_cta.title || 'Request Screening'}
           </a>
+        </section>
+      )}
+
+      {formattedTeams.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48'>
+          <ul className='flex flex-wrap gap-8 justify-center xl:justify-start'>
+            {formattedTeams.map((teamItem, i) => {
+              const member = teamItem.member;
+
+              const mediaUrl = allMedia?.find(
+                (media) => media.id === member?.acf?.profile_icon
+              )?.source_url;
+
+              return (
+                <li key={i} className='flex flex-col items-center'>
+                  <Team
+                    member={member}
+                    mediaUrl={mediaUrl}
+                    baseLink={`/${lang}/team/`}
+                  />
+
+                  <p className='font-light text-lg mb-4'>
+                    {teamItem.team_title}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       )}
 

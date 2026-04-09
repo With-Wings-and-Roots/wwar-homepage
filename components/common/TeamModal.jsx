@@ -29,7 +29,7 @@ const Team = ({ member, mediaUrl, baseLink }) => {
 
   const [active, setActive] = useState(false);
   let link;
-  const openFullProfile = member?.acf?.team?.includes(913); // ID of "Full Team" team;
+  const openFullProfile = member?.acf?.description.length > 5; // ID of "Full Team" team;
   if (openFullProfile) {
     link = `${baseLink}${member.slug}/`;
   }
@@ -54,7 +54,7 @@ const Team = ({ member, mediaUrl, baseLink }) => {
               alt={member.title?.rendered || ''}
               width={160}
               height={160}
-              className='w-full h-full object-contain bg-white'
+              className='w-full h-full object-cover'
             />
           ) : (
             <div className='w-full h-full flex items-center justify-center bg-gray-100 text-gray-400'>

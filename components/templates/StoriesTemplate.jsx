@@ -135,7 +135,7 @@ const StoriesTemplate = ({
           <PageComponent
             lang={params.lang}
             paramsStory={subSlugs[0]}
-            stories={storiesWithCurriculum}
+            stories={storiesWithUmbrella}
             topics={topics}
             allMedia={allMedia}
             allPersons={allPersons}

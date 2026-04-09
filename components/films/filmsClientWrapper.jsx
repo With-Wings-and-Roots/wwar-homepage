@@ -15,7 +15,9 @@ const FilmsClientWrapper = ({
   filmTypes = [],
   lang = 'en',
 }) => {
-  const [activeType, setActiveType] = useState(null);
+  const [activeType, setActiveType] = useState(
+    filmProductionTypes.length > 0 ? filmProductionTypes[0].id : null
+  );
   const [activeLanguage, setActiveLanguage] = useState(null);
   const [activeFilmType, setActiveFilmType] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -159,11 +161,15 @@ const FilmsClientWrapper = ({
       </div>
 
       {/* 🔥 Clear Filters */}
-      {(activeType || activeLanguage || activeFilmType || searchTerm) && (
+      {(activeLanguage || activeFilmType || searchTerm) && (
         <div className='mb-8 flex justify-end'>
           <button
             onClick={() => {
-              setActiveType(null);
+              setActiveType(
+                filmProductionTypes.length > 0
+                  ? filmProductionTypes[0].id
+                  : null
+              );
               setActiveLanguage(null);
               setActiveFilmType(null);
               setSearchTerm('');

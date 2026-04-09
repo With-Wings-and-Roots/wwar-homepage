@@ -390,6 +390,25 @@ const Page = async ({ params, searchParams }) => {
           } else {
             film = await getFilmBySlug(subSlugs[0], params.lang);
           }
+          const team = film?.acf?.team || [];
+          const relatedTeams = await Promise.all(
+            team.map(async (team) => {
+              const members = Array.isArray(team.team_member)
+                ? (
+                    await Promise.all(
+                      team.team_member.map((id) =>
+                        getTeamMemberById(id, params.lang).catch(() => null)
+                      )
+                    )
+                  ).filter(Boolean)
+                : [];
+
+              return {
+                team_title: team.role,
+                related_members: members,
+              };
+            })
+          );
           const [allMediaDe, allMediaEd, allMediaEn, allPersons, topics] =
             await Promise.all([
               getAllMedia('de'),
@@ -399,6 +418,7 @@ const Page = async ({ params, searchParams }) => {
               fetchAllTopics(params.lang),
             ]);
           allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
+
           template = (
             <SingleFilmTemplate
               lang={params.lang}
@@ -408,6 +428,7 @@ const Page = async ({ params, searchParams }) => {
               allMedia={allMedia}
               allPersons={allPersons}
               topics={topics}
+              relatedTeams={relatedTeams}
             />
           );
         } else {

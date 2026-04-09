@@ -46,7 +46,7 @@ const WysiwygContent = ({ content, className = '', ...otherProps }) => {
               marginTop: '0.25em',
             }}
           >
-            {expanded ? 'See Less' : 'See Full'}
+            {expanded ? 'Read Less ↑' : 'Read More ↓'}
           </span>
         </div>
       )}
