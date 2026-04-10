@@ -365,36 +365,38 @@ const SingleFilmTemplate = async ({
         </section>
       )}
       {/* 8. Selected Press */}
-      <section className='bg-wwr_black text-white py-16 -mt-24 px-8 md:px-16 xl:px-48'>
-        <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
-          {lang === 'en'
-            ? 'Selected Press & Feedback'
-            : 'Ausgewählte Presse & Feedback'}
-        </h2>
+      {acf?.selected_press?.length > 0 && (
+        <section className='bg-wwr_black text-white py-16 -mt-24 px-8 md:px-16 xl:px-48'>
+          <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
+            {lang === 'en'
+              ? 'Selected Press & Feedback'
+              : 'Ausgewählte Presse & Feedback'}
+          </h2>
 
-        <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-          {acf?.selected_press.map((item, i) => (
-            <a
-              key={i}
-              href={item.source_link || '#'}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='group rounded-lg block text-black p-6 rounded-lg bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered transition'
-            >
-              <div className='flex items-start gap-4'>
-                <div>
-                  <p className='font-light text-lg mb-2'>{item.quote}</p>
-                  {item.news_outlet && (
-                    <span className='text-sm font-semibold'>
-                      — {item.news_outlet}
-                    </span>
-                  )}
+          <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+            {acf?.selected_press.map((item, i) => (
+              <a
+                key={i}
+                href={item.source_link || '#'}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='group rounded-lg block text-black p-6 rounded-lg bg-wwr_yellow_orange hover:bg-wwr_yellow_orange_hovered transition'
+              >
+                <div className='flex items-start gap-4'>
+                  <div>
+                    <p className='font-light text-lg mb-2'>{item.quote}</p>
+                    {item.news_outlet && (
+                      <span className='text-sm font-semibold'>
+                        — {item.news_outlet}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 9. WATCH */}
       {acf.watch_now_ctas?.length > 0 && (
@@ -422,10 +424,10 @@ const SingleFilmTemplate = async ({
               {acf?.watch_now_ctas?.map(async (cta, i) => {
                 return (
                   <a
-                    href={cta.cta.url}
+                    href={cta.cta?.url}
                     className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal mr-4 px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                   >
-                    {cta.cta.title || 'Watch Now'}
+                    {cta.cta?.title || 'Watch Now'}
                   </a>
                 );
               })}
@@ -458,7 +460,7 @@ const SingleFilmTemplate = async ({
               )?.source_url;
 
               return (
-                <li key={i} className='flex flex-col items-center'>
+                <div key={i} className='flex flex-col items-center'>
                   <Team
                     member={member}
                     mediaUrl={mediaUrl}
@@ -468,7 +470,7 @@ const SingleFilmTemplate = async ({
                   <p className='font-light text-lg mb-4'>
                     {teamItem.team_title}
                   </p>
-                </li>
+                </div>
               );
             })}
           </ul>
