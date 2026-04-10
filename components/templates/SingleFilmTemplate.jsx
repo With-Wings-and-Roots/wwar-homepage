@@ -189,33 +189,40 @@ const SingleFilmTemplate = async ({
       )}
 
       {/* 3. ABOUT */}
-      <section className=' px-8 md:px-16 xl:px-48'>
-        <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
-          {lang === 'en' ? 'About the Film' : 'Über den Film'}
-        </h2>
-        <div className='grid md:grid-cols-2 mb-6 gap-4 items-center'>
-          {posterMedia?.source_url && (
-            <Image
-              src={posterMedia.source_url}
-              alt='Poster'
-              width={500}
-              height={400}
-            />
-          )}
+      {acf.short_synopsis && (
+        <section className=' px-8 md:px-16 xl:px-48'>
+          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+            {lang === 'en' ? 'About the Film' : 'Über den Film'}
+          </h2>
+          <div className='grid md:grid-cols-2 mb-6 gap-4 items-center'>
+            {posterMedia?.source_url && (
+              <Image
+                src={posterMedia.source_url}
+                alt='Poster'
+                width={500}
+                height={400}
+              />
+            )}
 
-          <WysiwygContent
-            className='font-light text-lg mb-2'
-            content={acf.short_synopsis}
-          />
-        </div>
-        <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
-          {lang === 'en' ? 'Full Synopsis' : 'Vollständige Synopsis'}
-        </h2>
-        <WysiwygContent
-          className='font-light text-lg mb-2'
-          content={acf.full_synopsis}
-        />
-      </section>
+            <WysiwygContent
+              className='font-light text-lg mb-2'
+              content={acf.short_synopsis}
+            />
+          </div>
+          {acf.full_synopsis.length > 0 && (
+            <>
+              {' '}
+              <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+                {lang === 'en' ? 'Full Synopsis' : 'Vollständige Synopsis'}
+              </h2>
+              <WysiwygContent
+                className='font-light text-lg mb-2'
+                content={acf.full_synopsis}
+              />
+            </>
+          )}
+        </section>
+      )}
 
       {/* 4. DIRECTOR */}
       {acf.director_statment && (
@@ -326,7 +333,7 @@ const SingleFilmTemplate = async ({
             </div>
             {acf?.award_laurals?.length > 0 && (
               <h2 className='text-2xl lg:text-4xl font-medium pt-12 mb-6'>
-                {lang === 'en' ? 'Laurals' : 'Auszeichnungen'}
+                {lang === 'en' ? 'Laurels' : 'Lorbeeren'}
               </h2>
             )}
             {acf?.award_laurals?.length > 0 && (
@@ -451,6 +458,9 @@ const SingleFilmTemplate = async ({
 
       {formattedTeams.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48'>
+          <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
+            {acf?.avaiability_text || (lang === 'en' ? 'Team' : 'Team')}
+          </h2>
           <ul className='flex flex-wrap gap-8 justify-center xl:justify-start'>
             {formattedTeams.map((teamItem, i) => {
               const member = teamItem.member;
