@@ -4,7 +4,6 @@ import WysiwygContent from '@/components/common/WysiwygContent';
 import ContactForm from '../common/contactForm';
 
 const DefaultTemplate = ({ data, params }) => {
-  console.log('DefaultTemplate params:', params);
   return (
     <div
       className='px-8 md:px-16 xl:px-48 pb-16 relative'

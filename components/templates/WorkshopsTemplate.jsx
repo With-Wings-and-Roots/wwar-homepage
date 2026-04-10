@@ -3,8 +3,31 @@ import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import gfx_quote from '@/public/quote-black.svg';
 import WorkshopQuotes from '@/components/workshops/WorkshopQuotes';
+import WorkshopsClientWrapper from '../workshops/WorkshopsClientWrapper';
+import { fetchMediaFromId } from '@/utilities/media';
 
-const WorkshopsTemplate = ({ data }) => {
+const WorkshopsTemplate = async ({
+  data,
+  workshopProductionTypes,
+  workshopAudience,
+  workshopTopics,
+  workshops,
+  lang = 'en',
+}) => {
+  const workshopsWithImages = await Promise.all(
+    workshops.map(async (workshop) => {
+      let poster = workshop?.acf?.hero_image || workshop?.acf?.poster_image;
+
+      if (typeof poster === 'number') {
+        poster = await fetchMediaFromId(poster);
+      }
+
+      return {
+        ...workshop,
+        posterUrl: poster?.source_url || poster?.url || null,
+      };
+    })
+  );
   return (
     <div>
       <div className='h-screen -mt-20 relative'>
@@ -77,86 +100,18 @@ const WorkshopsTemplate = ({ data }) => {
         </div>
       </div>
       <div className='px-8 md:px-16 xl:px-48 py-16 relative bg-white'>
-        <h2 className='font-medium text-xl lg:text-3xl'>
-          {data.acf?.workshops_title}
-        </h2>
-        <div className='grid grid-cols-3 gap-8 mt-6'>
-          {data.acf?.workshops?.map((workshop, wI) => (
-            <div
-              key={wI}
-              className='col-span-3 xl:col-span-1 p-8 bg-wwr_yellow_orange flex flex-col lg:hover:scale-105 transition-all'
-            >
-              <h3 className='font-bold text-lg lg:text-2xl'>
-                {workshop.title}
-              </h3>
-              <div className='border-b border-black pt-3 mb-3' />
-              <div className='lg:text-lg font-light'>
-                {workshop.description}
-              </div>
-              <div className='mt-4 font-light'>
-                <div>
-                  <b>For:</b> {workshop.for}
-                </div>
-                <div>
-                  <b>Duration:</b> {workshop.duration}
-                </div>
-                <div>
-                  <b>Type:</b> {workshop.type}
-                </div>
-              </div>
-              <div className='mt-auto pt-6 flex'>
-                <a
-                  href={workshop.link_to_booking_form?.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  className='bg-black text-wwr_yellow_orange_hovered hover:text-white px-4 py-2 transition-all uppercase text-xl'
-                >
-                  {workshop.link_to_booking_form?.label}
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className='border-b border-black pt-16 mb-8' />
-        <h2 className='font-medium text-xl lg:text-3xl'>
-          {data.acf?.past_workshops_title}
-        </h2>
-        {data.acf?.past_workshops?.map((workshop, wI) => (
-          <div key={wI} className='mt-4'>
-            <h3 className='text-lg lg:text-xl font-medium'>{workshop.title}</h3>
-            <div className='lg:text-lg font-light'>
-              <WysiwygContent content={workshop.text} />
-            </div>
-          </div>
-        ))}
-        <div className='grid grid-cols-3 gap-8 mt-8'>
-          {data.acf?.videos?.map((video, vI) => (
-            <div key={vI} className='col-span-3 md:col-span-1'>
-              <div
-                dangerouslySetInnerHTML={{ __html: video.video }}
-                className='video'
-              />
-              <div className='font-light mt-2'>{video.caption}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className='px-8 md:px-16 xl:px-48 relative bg-wwr_light'>
-        <div className='grid grid-cols-6 gap-8'>
-          <div className='col-span-6 lg:col-span-3 xl:col-span-4 lg:order-2 relative'>
-            <div className='-mx-8 md:-mx-16 lg:ml-0 lg:-mr-64 h-[300px] lg:h-full relative'>
-              <Image
-                src={data.acf?.info_image}
-                alt=''
-                fill={true}
-                className='object-cover object-left'
-              />
-            </div>
-          </div>
-          <div className='col-span-6 lg:col-span-3 xl:col-span-2 py-12'>
-            <WysiwygContent content={data.acf?.info_text} />
-          </div>
-        </div>
+        <h1 className='text-xl md:text-2xl font-bold mb-6'>
+          {lang === 'en' ? 'All Workshops' : 'Alle Workshops'}
+        </h1>
+
+        {/* Workshop Grid */}
+        <WorkshopsClientWrapper
+          workshops={workshopsWithImages}
+          workshopProductionTypes={workshopProductionTypes}
+          lang={lang}
+          workshopAudience={workshopAudience}
+          workshopsTopics={workshopTopics}
+        />
       </div>
     </div>
   );

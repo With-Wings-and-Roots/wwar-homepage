@@ -57,6 +57,14 @@ import {
   getFilmTypes,
 } from '@/utilities/films';
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
+import {
+  getAllWorkshops,
+  getWorkshopAudience,
+  getWorkshopBySlug,
+  getWorkshopProductionTypes,
+  getWorkshopTopics,
+} from '@/utilities/workshops';
+import SingleWorkshopTemplate from '@/components/templates/SingleWorkshopTemplate';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -253,7 +261,73 @@ const Page = async ({ params, searchParams }) => {
         template = <EventsTemplate data={pageData} params={params} />;
         break;
       case 'page_workshops.php':
-        template = <WorkshopsTemplate data={pageData} />;
+        let workshop;
+        if (subSlugs.length > 0) {
+          if (subSlugs.length > 2) {
+            workshop = await getWorkshopBySlug(subSlugs[2], params.lang);
+          } else {
+            workshop = await getWorkshopBySlug(subSlugs[0], params.lang);
+          }
+          // const team = film?.acf?.team || [];
+          // const relatedTeams = await Promise.all(
+          //   team.map(async (team) => {
+          //     const members = Array.isArray(team.team_member)
+          //       ? (
+          //           await Promise.all(
+          //             team.team_member.map((id) =>
+          //               getTeamMemberById(id, params.lang).catch(() => null)
+          //             )
+          //           )
+          //         ).filter(Boolean)
+          //       : [];
+
+          //     return {
+          //       team_title: team.role,
+          //       related_members: members,
+          //     };
+          //   })
+          // );
+          const [allMediaDe, allMediaEd, allMediaEn, allPersons, topics] =
+            await Promise.all([
+              getAllMedia('de'),
+              getAllMedia('ed'),
+              getAllMedia('en'),
+              getAllPersons(),
+              fetchAllTopics(params.lang),
+            ]);
+          allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
+
+          template = (
+            <SingleWorkshopTemplate
+              lang={params.lang}
+              data={pageData}
+              workshop={workshop}
+              subSlugs={subSlugs}
+              allMedia={allMedia}
+              allPersons={allPersons}
+              topics={topics}
+              // relatedTeams={relatedTeams}
+            />
+          );
+        } else {
+          const workshops = await getAllWorkshops(params.lang);
+          const workshopProductionTypes = await getWorkshopProductionTypes(
+            params.lang
+          );
+          const audience = await getWorkshopAudience(params.lang);
+          const workshopTopics = await getWorkshopTopics(params.lang);
+          template = (
+            <WorkshopsTemplate
+              lang={params.lang}
+              data={pageData}
+              subSlugs={subSlugs}
+              workshops={workshops}
+              workshopProductionTypes={workshopProductionTypes}
+              workshopAudience={audience}
+              workshopTopics={workshopTopics}
+            />
+          );
+        }
         break;
       case 'page_takePart.php':
         template = <TakePartTemplate data={pageData} />;
