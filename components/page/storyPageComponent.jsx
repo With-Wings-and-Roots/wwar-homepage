@@ -33,9 +33,13 @@ const StoryPageComponent = ({
   const person = personId ? allPersons?.find((p) => p.id === personId) : null;
 
   const storyTopicIds = getTopicIds(story?.acf?.topics);
-  const categoriesArray = topics
-    ?.filter((t) => storyTopicIds.includes(t.id))
-    ?.map((t) => ({ name: t.name, slug: t.slug }));
+  const categoriesArray =
+    topics
+      ?.filter(
+        (t) =>
+          Array.isArray(story?.acf?.topics) && story.acf.topics.includes(t.id)
+      )
+      ?.map((t) => ({ name: t.name, slug: t.slug })) || [];
 
   const categories = categoriesArray.filter(Boolean);
 

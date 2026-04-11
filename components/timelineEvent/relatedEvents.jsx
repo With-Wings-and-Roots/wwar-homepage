@@ -3,6 +3,7 @@ import TimelineCardInternal from '@/components/timelines/timelineCardInternal';
 import { createLocalLink } from '@/utilities/links';
 
 const RelatedEvents = ({ relatedEvents, baseLink, allMedia, lang }) => {
+  if (!relatedEvents || relatedEvents.length === 0) return null;
   const modifiedBaseLink = baseLink.replace('/stories/', '/timelines/');
 
   return (

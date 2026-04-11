@@ -30,6 +30,7 @@ const TimelineEventPage = ({
   allPersons,
   lang,
 }) => {
+  if (!timelineEvent) return null;
   const {
     timeline_event_topic,
     acf: {

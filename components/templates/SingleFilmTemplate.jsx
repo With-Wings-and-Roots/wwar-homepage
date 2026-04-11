@@ -89,6 +89,7 @@ const SingleFilmTemplate = async ({
             topics={topics}
             allMedia={allMedia}
             allPersons={allPersons}
+            allEvents={[]}
             baseLink={createLocalLink(
               `/${lang}/${data?.slug}/${subSlugs[1]}/story/`
             )}
