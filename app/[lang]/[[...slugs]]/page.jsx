@@ -24,6 +24,7 @@ import {
   getAllMedia,
   getAllPersons,
   getAllStories,
+  getStoryById,
 } from '@/utilities/stories';
 import {
   getTimeline,
@@ -36,9 +37,21 @@ import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import { getAllPosts } from '@/utilities/posts';
 import { createLocalLink } from '@/utilities/links';
+import {
+  getAllFilms,
+  getFilmBySlug,
+  getFilmLanguages,
+  getFilmProductionTypes,
+  getFilmTypes,
+} from '@/utilities/films';
+import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
+import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
+import { getTeamMemberById } from '@/utilities/teams';
 
 function buildBaseLink(lang, baseSlugs) {
-  const path = baseSlugs.length ? `/${lang}/${baseSlugs.join('/')}/` : `/${lang}`;
+  const path = baseSlugs.length
+    ? `/${lang}/${baseSlugs.join('/')}/`
+    : `/${lang}`;
   return createLocalLink(path);
 }
 
@@ -69,9 +82,11 @@ const Page = async ({ params }) => {
   if (type === 'page') {
     pageData = await getPage(params.lang, id);
     templateKey = pageData.template ?? pageData.meta?.template ?? 'default';
-    if (templateKey && !templateKey.endsWith('.php')) templateKey = `${templateKey}.php`;
+    if (templateKey && !templateKey.endsWith('.php'))
+      templateKey = `${templateKey}.php`;
     baseSlugs = slugs;
-    subSlugs = [];
+    subSlugs = slugs;
+
     baseLink = buildBaseLink(params.lang, baseSlugs);
   } else {
     // type === 'story' | 'timeline_event' | 'post': resolve parent page
@@ -80,7 +95,8 @@ const Page = async ({ params }) => {
     if (!parentResolved || parentResolved.type !== 'page') return notFound();
     pageData = await getPage(params.lang, parentResolved.id);
     templateKey = pageData.template ?? pageData.meta?.template ?? 'default';
-    if (templateKey && !templateKey.endsWith('.php')) templateKey = `${templateKey}.php`;
+    if (templateKey && !templateKey.endsWith('.php'))
+      templateKey = `${templateKey}.php`;
     baseSlugs = slugs.slice(0, -1);
     subSlugs = slugs.length ? [slugs[slugs.length - 1]] : [];
     baseLink = buildBaseLink(params.lang, baseSlugs);
@@ -94,7 +110,9 @@ const Page = async ({ params }) => {
     allMedia,
     timeLineEventsDe,
     timeLineEventsEn,
-    timelineTopics;
+    timelineTopics,
+    filmProductionTypes,
+    AllFilms;
   let template;
 
   switch (templateKey) {
@@ -222,6 +240,73 @@ const Page = async ({ params }) => {
     case 'page_projects.php':
       template = <ProjectsTemplate data={pageData} />;
       break;
+    case 'page_films.php':
+      let film;
+      if (subSlugs.length > 1) {
+        if (subSlugs.length > 2) {
+          film = await getFilmBySlug(subSlugs[1], params.lang);
+        } else {
+          film = await getFilmBySlug(subSlugs[1], params.lang);
+        }
+        const team = film?.acf?.team || [];
+        const relatedTeams = await Promise.all(
+          team.map(async (team) => {
+            const members = Array.isArray(team.team_member)
+              ? (
+                  await Promise.all(
+                    team.team_member.map((id) =>
+                      getTeamMemberById(id, params.lang).catch(() => null)
+                    )
+                  )
+                ).filter(Boolean)
+              : [];
+
+            return {
+              team_title: team.role,
+              related_members: members,
+            };
+          })
+        );
+        const [allMediaDe, allMediaEd, allMediaEn, allPersons, topics] =
+          await Promise.all([
+            getAllMedia('de'),
+            getAllMedia('ed'),
+            getAllMedia('en'),
+            getAllPersons(),
+            fetchAllTopics(params.lang),
+          ]);
+        allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
+
+        template = (
+          <SingleFilmTemplate
+            lang={params.lang}
+            data={pageData}
+            film={film}
+            subSlugs={subSlugs}
+            allMedia={allMedia}
+            allPersons={allPersons}
+            topics={topics}
+            relatedTeams={relatedTeams}
+          />
+        );
+      } else {
+        const films = await getAllFilms(params.lang);
+        filmProductionTypes = await getFilmProductionTypes(params.lang);
+        const languages = await getFilmLanguages(params.lang);
+        const filmTypes = await getFilmTypes(params.lang);
+        template = (
+          <AllFilmsTemplate
+            lang={params.lang}
+            data={pageData}
+            subSlugs={subSlugs}
+            films={films}
+            filmProductionTypes={filmProductionTypes}
+            filmLanguages={languages}
+            filmTypes={filmTypes}
+          />
+        );
+      }
+      break;
     case 'page_home.php': {
       const pages = await getPageListMinimal(params.lang);
       template = (
@@ -242,7 +327,7 @@ const Page = async ({ params }) => {
   return (
     <>
       {pageSettings?.google_analytics_id &&
-        pageSettings?.google_analytics_id?.length > 0 ? (
+      pageSettings?.google_analytics_id?.length > 0 ? (
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       ) : null}
       <Header lang={params.lang} />
@@ -314,6 +399,37 @@ export async function generateStaticParams() {
           });
         });
       }
+      if (page.template === 'page_films.php') {
+        const films = await getAllFilms(lang);
+
+        for (const film of films) {
+          // ✅ Film page
+          paths.push({
+            lang,
+            slugs: [...baseSlugs, film.slug],
+          });
+
+          // ✅ Related stories inside film
+          const relatedStoryIds = film?.acf?.related_stories || [];
+
+          if (relatedStoryIds.length > 0) {
+            const relatedStories = (
+              await Promise.all(
+                relatedStoryIds.map((id) =>
+                  getStoryById(id, lang).catch(() => null)
+                )
+              )
+            ).filter(Boolean);
+
+            relatedStories.forEach((story) => {
+              paths.push({
+                lang,
+                slugs: [...baseSlugs, film.slug, 'story', story.slug],
+              });
+            });
+          }
+        }
+      }
     }
   }
   paths.push({ lang: 'en', slugs: [] });
@@ -348,10 +464,10 @@ export async function generateMetadata({ params }) {
       images:
         seoData?._social_image_url !== ''
           ? [
-            {
-              url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-            },
-          ]
+              {
+                url: `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
+              },
+            ]
           : [],
     },
     twitter: {
@@ -359,9 +475,7 @@ export async function generateMetadata({ params }) {
       description: seoData?._twitter_description,
       images:
         seoData?._social_image_url !== ''
-          ? [
-            `${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`,
-          ]
+          ? [`${process.env.NEXT_PUBLIC_CMS_URL}${seoData?._social_image_url}`]
           : [],
     },
   };

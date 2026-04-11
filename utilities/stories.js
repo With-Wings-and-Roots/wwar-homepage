@@ -96,7 +96,12 @@ export const getMenuId = async (_) => {
 
   return data.primary;
 };
-
+export async function getStoryById(id, lang = 'en') {
+  const [data] = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story/${id}?lang=${lang}`
+  );
+  return data;
+}
 export const getMenuItems = async (id) => {
   return await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/menu/${id}`

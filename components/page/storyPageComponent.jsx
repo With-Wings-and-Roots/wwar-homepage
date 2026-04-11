@@ -23,6 +23,7 @@ const StoryPageComponent = ({
   allMedia,
   allPersons,
   baseLink,
+  backLink,
   allEvents,
 }) => {
   const story = stories.find((s) => s.slug === paramsStory) || null;
@@ -53,7 +54,7 @@ const StoryPageComponent = ({
     stories.find((s) => s.id === id)
   );
   const relatedEvents = (story?.acf?.related_events || []).map((id) =>
-    allEvents.find((e) => e.id === id)
+    allEvents?.find((e) => e.id === id)
   );
 
   return (
@@ -70,7 +71,7 @@ const StoryPageComponent = ({
         <div className='w-full sm:w-4/5 xl:w-full max-w-[1200px]'>
           <div className='bg-white sm:my-10 md:my-8'>
             <div className='flex w-full p-4 justify-end text-4xl'>
-              <CloseIcon closeLink={createLocalLink(baseLink)} />
+              <CloseIcon closeLink={createLocalLink(backLink || baseLink)} />
             </div>
 
             <div className='px-4 md:px-8 lg:px-20 pb-10'>
