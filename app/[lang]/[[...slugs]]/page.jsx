@@ -241,9 +241,10 @@ const Page = async ({ params }) => {
       template = <ProjectsTemplate data={pageData} />;
       break;
     case 'page_films.php':
-      let film;
+      let film = [];
       if (subSlugs.length > 1) {
         film = await getFilmBySlug(subSlugs[1], params.lang);
+        if (!film) return notFound();
 
         const team = film?.acf?.team || [];
         const relatedTeams = await Promise.all(

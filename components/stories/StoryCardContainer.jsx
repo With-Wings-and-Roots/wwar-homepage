@@ -12,6 +12,8 @@ const StoryCardContainer = ({
   hoverZoom = true,
   baseLink,
 }) => {
+  if (!storiesToRender?.length) return null;
+
   return (
     <>
       {storiesToRender &&
