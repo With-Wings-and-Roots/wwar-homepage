@@ -243,14 +243,8 @@ const Page = async ({ params }) => {
     case 'page_films.php':
       let film;
       if (subSlugs.length > 1) {
-        film = await getFilmBySlug(
-          subSlugs.length > 2 ? subSlugs[2] : subSlugs[0],
-          params.lang
-        );
+        film = await getFilmBySlug(subSlugs[1], params.lang);
 
-        if (!film) {
-          return notFound(); // ✅ CRITICAL FIX
-        }
         const team = film?.acf?.team || [];
         const relatedTeams = await Promise.all(
           team.map(async (team) => {
