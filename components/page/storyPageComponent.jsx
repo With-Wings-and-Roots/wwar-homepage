@@ -27,6 +27,7 @@ const StoryPageComponent = ({
   allEvents,
 }) => {
   const story = stories.find((s) => s.slug === paramsStory) || null;
+  if (!story) return notFound();
 
   const personId = story?.acf?.person;
   const person = personId ? allPersons?.find((p) => p.id === personId) : null;

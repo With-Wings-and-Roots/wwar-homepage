@@ -47,7 +47,9 @@ const TimelineCardInternal = ({
           {timeLineEvent?.acf?.basic_info?.start_date?.slice(0, 4)}
         </div>
 
-        <div className='font-light'>{parse(timeLineEvent?.title.rendered)}</div>
+        <div className='font-light'>
+          {parse(timeLineEvent?.title?.rendered)}
+        </div>
       </div>
     </Link>
   );
