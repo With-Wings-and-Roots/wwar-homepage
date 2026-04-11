@@ -24,6 +24,7 @@ const socialIcons = {
 };
 
 const Team = ({ member, mediaUrl, baseLink }) => {
+  if (!member) return null;
   const { title, acf } = member;
   const { city, email, position, description, socials } = acf;
 
