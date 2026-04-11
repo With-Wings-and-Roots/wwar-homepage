@@ -247,11 +247,11 @@ const Page = async ({ params }) => {
 
         const team = film?.acf?.team || [];
         const relatedTeams = await Promise.all(
-          team.map(async (team) => {
-            const members = Array.isArray(team.team_member)
+          team?.map(async (team) => {
+            const members = Array.isArray(team?.team_member)
               ? (
                   await Promise.all(
-                    team.team_member.map((id) =>
+                    team?.team_member?.map((id) =>
                       getTeamMemberById(id, params.lang).catch(() => null)
                     )
                   )
@@ -259,7 +259,7 @@ const Page = async ({ params }) => {
               : [];
 
             return {
-              team_title: team.role,
+              team_title: team?.role,
               related_members: members,
             };
           })

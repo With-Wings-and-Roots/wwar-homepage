@@ -50,8 +50,8 @@ const SingleFilmTemplate = async ({
   const acf = film?.acf || {};
   const embedUrl = getEmbedUrl(acf.trailer);
   const formattedTeams = relatedTeams.map((team) => ({
-    team_title: team.team_title.replace(/\r\n/g, ' ').trim(),
-    member: team.related_members?.[0] || null,
+    team_title: team?.team_title.replace(/\r\n/g, ' ').trim(),
+    member: team?.related_members?.[0] || null,
   }));
 
   // ✅ FETCH ALL MEDIA BEFORE RENDER
@@ -147,7 +147,7 @@ const SingleFilmTemplate = async ({
                     rel='noopener noreferrer'
                     className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                   >
-                    {cta?.link?.title}
+                    {cta?.link?.title || 'Learn More'}
                   </a>
                 ))}
             </div>
@@ -180,7 +180,7 @@ const SingleFilmTemplate = async ({
                   href={acf.get_screening_cta.url}
                   className=' rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
                 >
-                  {acf.get_screening_cta.title || 'Request Screening'}
+                  {acf?.get_screening_cta?.title || 'Request Screening'}
                 </a>
               </>
             )}
@@ -206,10 +206,10 @@ const SingleFilmTemplate = async ({
 
             <WysiwygContent
               className='font-light text-lg mb-2'
-              content={acf.short_synopsis}
+              content={acf?.short_synopsis}
             />
           </div>
-          {acf.full_synopsis.length > 0 && (
+          {acf?.full_synopsis?.length > 0 && (
             <>
               {' '}
               <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
@@ -217,7 +217,7 @@ const SingleFilmTemplate = async ({
               </h2>
               <WysiwygContent
                 className='font-light text-lg mb-2'
-                content={acf.full_synopsis}
+                content={acf?.full_synopsis}
               />
             </>
           )}
@@ -451,7 +451,7 @@ const SingleFilmTemplate = async ({
             href={acf.get_screening_cta.url}
             className='rounded-lg bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
           >
-            {acf.get_screening_cta.title || 'Request Screening'}
+            {acf?.get_screening_cta?.title || 'Request Screening'}
           </a>
         </section>
       )}
@@ -463,7 +463,7 @@ const SingleFilmTemplate = async ({
           </h2>
           <ul className='flex flex-wrap gap-8 justify-center xl:justify-start'>
             {formattedTeams.map((teamItem, i) => {
-              const member = teamItem.member;
+              const member = teamItem?.member;
 
               const mediaUrl = allMedia?.find(
                 (media) => media.id === member?.acf?.profile_icon
@@ -478,7 +478,7 @@ const SingleFilmTemplate = async ({
                   />
 
                   <p className='font-light text-lg mb-4'>
-                    {teamItem.team_title}
+                    {teamItem?.team_title}
                   </p>
                 </div>
               );
