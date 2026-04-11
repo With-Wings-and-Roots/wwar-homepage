@@ -243,10 +243,13 @@ const Page = async ({ params }) => {
     case 'page_films.php':
       let film;
       if (subSlugs.length > 1) {
-        if (subSlugs.length > 2) {
-          film = await getFilmBySlug(subSlugs[1], params.lang);
-        } else {
-          film = await getFilmBySlug(subSlugs[1], params.lang);
+        film = await getFilmBySlug(
+          subSlugs.length > 2 ? subSlugs[2] : subSlugs[0],
+          params.lang
+        );
+
+        if (!film) {
+          return notFound(); // ✅ CRITICAL FIX
         }
         const team = film?.acf?.team || [];
         const relatedTeams = await Promise.all(
