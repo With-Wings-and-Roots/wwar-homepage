@@ -16,6 +16,14 @@ export const getWorkshopBySlug = async (slug, lang = 'en') => {
   return Array.isArray(data) ? data[0] : data;
 };
 
+export const getWorkshopById = async (id, lang = 'en') => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/workshop/${id}?lang=${lang}`,
+    { cache: 'no-store' }
+  );
+  const data = await res.json();
+  return data;
+};
 // ✅ Production Types (taxonomy)
 export const getWorkshopProductionTypes = async (lang = 'en') => {
   return await fetchAllData(
@@ -35,4 +43,12 @@ export const getWorkshopTopics = async (lang = 'en') => {
   return await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/workshop-topic?lang=${lang}&per_page=100`
   );
+};
+export const getWorkshopTypeById = async (id, lang) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/workshop-type/${id}?lang=${lang}`,
+    { cache: 'no-store' }
+  );
+  const data = await res.json();
+  return data;
 };

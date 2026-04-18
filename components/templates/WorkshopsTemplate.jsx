@@ -14,8 +14,14 @@ const WorkshopsTemplate = async ({
   workshops,
   lang = 'en',
 }) => {
+  const visibleWorkshops = workshops.filter((workshop) => {
+    const hide = workshop?.acf?.hide_from_archive;
+
+    // handle both boolean + string cases from WP
+    return hide === 'no';
+  });
   const workshopsWithImages = await Promise.all(
-    workshops.map(async (workshop) => {
+    visibleWorkshops.map(async (workshop) => {
       let poster = workshop?.acf?.hero_image || workshop?.acf?.poster_image;
 
       if (typeof poster === 'number') {

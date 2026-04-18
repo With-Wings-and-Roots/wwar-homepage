@@ -14,6 +14,11 @@ const MaterialsTemplate = ({
   params,
 }) => {
   const headerImage = data?.acf?.header_image || null;
+  const visibleMaterials = materials.filter((material) => {
+    const hide = material?.acf?.hide_from_archive;
+
+    return hide === 'no' || hide === false; // handle both string and boolean cases
+  });
   return (
     <>
       {/* Content */}
@@ -33,7 +38,7 @@ const MaterialsTemplate = ({
         </div>
 
         <MaterialsWrapper
-          materials={materials}
+          materials={visibleMaterials}
           lang={lang}
           topics={topics}
           collections={collections}

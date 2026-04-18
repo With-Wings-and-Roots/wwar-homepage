@@ -65,6 +65,7 @@ import {
   getWorkshopTopics,
 } from '@/utilities/workshops';
 import SingleWorkshopTemplate from '@/components/templates/SingleWorkshopTemplate';
+import ForEducatorsTemplate from '@/components/templates/ForEducatorsTemplate';
 
 const Page = async ({ params, searchParams }) => {
   const pageSettings = await getPageSettings(params.lang);
@@ -260,6 +261,9 @@ const Page = async ({ params, searchParams }) => {
       case 'page_events.php':
         template = <EventsTemplate data={pageData} params={params} />;
         break;
+      case 'page_educators.php':
+        template = <ForEducatorsTemplate data={pageData} lang={params.lang} />;
+        break;
       case 'page_workshops.php':
         let workshop;
         if (subSlugs.length > 0) {
@@ -267,6 +271,9 @@ const Page = async ({ params, searchParams }) => {
             workshop = await getWorkshopBySlug(subSlugs[2], params.lang);
           } else {
             workshop = await getWorkshopBySlug(subSlugs[0], params.lang);
+          }
+          if (!workshop || workshop.length === 0) {
+            return notFound();
           }
           // const team = film?.acf?.team || [];
           // const relatedTeams = await Promise.all(

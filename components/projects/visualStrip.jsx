@@ -11,29 +11,87 @@ const VisualStrip = ({ acf, lang }) => {
     const prepareMedia = async () => {
       const mediaArray = [];
 
-      // Images
+      // ----------------------------
+      // IMAGES (ID OR URL SUPPORT)
+      // ----------------------------
       if (acf?.gallery?.length) {
         for (let img of acf.gallery) {
-          const media = await fetchMediaFromId(img);
-          mediaArray.push({
-            type: 'image',
-            src: media.source_url || media.url,
-            alt: media.alt || '',
-            caption: media.caption.rendered || '',
-            credit: media.acf?.credit || '',
-          });
+          try {
+            // CASE 1: direct URL
+            if (typeof img === 'string') {
+              mediaArray.push({
+                type: 'image',
+                src: img,
+                alt: '',
+                caption: '',
+                credit: '',
+                isExternal: true,
+              });
+              continue;
+            }
+
+            // CASE 2: WordPress media ID
+            if (typeof img === 'number') {
+              const media = await fetchMediaFromId(img);
+
+              if (!media) continue;
+
+              mediaArray.push({
+                type: 'image',
+                src: media.source_url || media.url,
+                alt: media.alt || '',
+                caption: media?.caption?.rendered || '',
+                credit: media?.acf?.credit || '',
+                isExternal: false,
+              });
+            }
+
+            // CASE 3: object format (future-proof)
+            if (typeof img === 'object' && img?.url) {
+              mediaArray.push({
+                type: 'image',
+                src: img.url,
+                alt: img.alt || '',
+                caption: img.caption || '',
+                credit: img.credit || '',
+                isExternal: true,
+              });
+            }
+          } catch (e) {}
         }
       }
 
-      // Videos
+      // ----------------------------
+      // VIDEOS
+      // ----------------------------
       if (acf?.related_videos?.length) {
         for (let video of acf.related_videos) {
-          const videoId = video.video?.split('v=')[1]?.split('&')[0];
-          mediaArray.push({ type: 'video', src: videoId });
+          const rawUrl = video?.video;
+
+          if (!rawUrl) continue;
+
+          let videoId = null;
+
+          // YouTube full URL handling
+          if (rawUrl.includes('youtube.com') || rawUrl.includes('youtu.be')) {
+            videoId = rawUrl.includes('youtu.be')
+              ? rawUrl.split('/').pop()
+              : new URL(rawUrl).searchParams.get('v');
+          } else {
+            videoId = rawUrl;
+          }
+
+          if (videoId) {
+            mediaArray.push({
+              type: 'video',
+              src: videoId,
+            });
+          }
         }
       }
 
       setAllMedia(mediaArray);
+      setFeaturedIndex(0);
     };
 
     prepareMedia();
@@ -45,12 +103,14 @@ const VisualStrip = ({ acf, lang }) => {
 
   const goPrev = () =>
     setFeaturedIndex((prev) => (prev - 1 + allMedia.length) % allMedia.length);
+
   const goNext = () => setFeaturedIndex((prev) => (prev + 1) % allMedia.length);
 
   return (
     <div>
+      {/* MAIN VIEW */}
       <div className='flex items-start gap-4'>
-        {/* Left Arrow */}
+        {/* LEFT ARROW */}
         <button onClick={goPrev} className='flex-shrink-0 self-center'>
           <Image
             src='/arrow-left-circle.svg'
@@ -60,22 +120,26 @@ const VisualStrip = ({ acf, lang }) => {
           />
         </button>
 
-        {/* Featured Media + Pagination */}
+        {/* FEATURED MEDIA */}
         <div className='flex-1'>
-          {/* Featured Media */}
           <div className='relative aspect-video overflow-hidden mb-4 cursor-pointer group'>
-            {featured.type === 'image' ? (
+            {/* IMAGE */}
+            {featured.type === 'image' && (
               <Image
                 src={featured.src}
-                alt={featured.alt}
+                alt={featured.alt || ''}
                 fill
+                unoptimized={featured.isExternal}
                 className='object-cover transition-transform duration-500 group-hover:scale-105'
                 onClick={() => window.open(featured.src, '_blank')}
               />
-            ) : (
+            )}
+
+            {/* VIDEO */}
+            {featured.type === 'video' && (
               <iframe
                 src={`https://www.youtube.com/embed/${featured.src}`}
-                title='Project video'
+                title='Video'
                 className='absolute inset-0 w-full h-full'
                 allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                 allowFullScreen
@@ -83,7 +147,7 @@ const VisualStrip = ({ acf, lang }) => {
             )}
           </div>
 
-          {/* Caption */}
+          {/* CAPTION */}
           {featured.caption && (
             <p
               className='text-center text-sm text-black/60 mb-2'
@@ -91,7 +155,7 @@ const VisualStrip = ({ acf, lang }) => {
             />
           )}
 
-          {/* Credit */}
+          {/* CREDIT */}
           {featured.credit && (
             <p className='text-center text-sm text-black/60 mb-4'>
               {lang === 'en' ? 'Media Credit:' : 'Medien-Credit:'}{' '}
@@ -100,7 +164,7 @@ const VisualStrip = ({ acf, lang }) => {
           )}
         </div>
 
-        {/* Right Arrow */}
+        {/* RIGHT ARROW */}
         <button onClick={goNext} className='flex-shrink-0 self-center'>
           <Image
             src='/arrow-left-circle.svg'
@@ -110,39 +174,42 @@ const VisualStrip = ({ acf, lang }) => {
             className='scale-x-[-1]'
           />
         </button>
-      </div>{' '}
-      {/* Thumbnails */}
+      </div>
+
+      {/* THUMBNAILS */}
       <div className='flex flex-wrap gap-3 justify-center'>
         {allMedia.map((media, i) => (
           <div
             key={i}
             className={`
-            relative flex-shrink-0 w-28 h-16 cursor-pointer border
-            transition-transform duration-300
-            ${
-              i === featuredIndex
-                ? 'border-wwr_yellow_orange scale-110 z-10'
-                : 'border-black/20 hover:scale-105'
-            }
-          `}
+              relative flex-shrink-0 w-28 h-16 cursor-pointer border
+              transition-transform duration-300
+              ${
+                i === featuredIndex
+                  ? 'border-wwr_yellow_orange scale-110 z-10'
+                  : 'border-black/20 hover:scale-105'
+              }
+            `}
             onClick={() => setFeaturedIndex(i)}
           >
             {media.type === 'image' ? (
               <Image
                 src={media.src}
-                alt={media.alt}
+                alt={media.alt || ''}
                 fill
-                className='object-cover transition-transform duration-300'
+                unoptimized={media.isExternal}
+                className='object-cover'
               />
             ) : (
-              <div className='relative w-full h-full bg-black flex items-center justify-center text-white text-lg'>
+              <div className='w-full h-full bg-black flex items-center justify-center text-white text-lg'>
                 ▶
               </div>
             )}
           </div>
         ))}
       </div>
-      {/* Pagination */}
+
+      {/* PAGINATION */}
       <div className='mt-2 text-center text-sm text-black/60'>
         {featuredIndex + 1} / {allMedia.length}
       </div>
