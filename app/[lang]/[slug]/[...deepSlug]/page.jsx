@@ -8,57 +8,56 @@ import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 
-import { getAllPages, getPage } from '@/utilities/pages';
+import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
 
 import { getAllStories } from '@/utilities/stories';
 
 import { getTimeline } from '@/utilities/timeline';
 
 import { getAllPosts } from '@/utilities/posts';
+import HomeTemplate from '@/components/templates/HomeTemplate';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
 export const revalidate = 0;
 
-/**
- * 🔥 FULLY DYNAMIC CATCH-ALL ROUTE
- * /[lang]/[slug]/[...slug]
- */
 const Page = async ({ params }) => {
   const { lang, slug } = params;
+
   console.log('Params:', params);
 
   const deepSlugs = Array.isArray(params.deepSlug)
     ? params.deepSlug
     : [params.deepSlug];
-
-  /**
-   * ----------------------------------------------------
-   * STEP 1: GET BASE PAGE (FIRST SLUG)
-   * ----------------------------------------------------
-   */
-  const pages = await getAllPages(lang);
-
   const baseSlug = slug;
-  console.log('baseSlug:', baseSlug);
+  let pageObj;
+  let pageData;
 
-  const pageObj = pages.find((page) => {
-    const url = new URL(page.link);
+  if (baseSlug === 'story') {
+    const frontpageId = await getFrontpageId(lang);
 
-    const pageSlug = url.pathname
-      .replace(/^\/|\/$/g, '')
-      .replace(/^(de\/|en\/)/, '')
-      .split('/')
-      .filter(Boolean)
-      .pop();
+    pageObj = { template: 'page_home.php' }; // 👈 FAKE TEMPLATE
+    pageData = await getPage(lang, frontpageId);
+  } else {
+    const pages = await getAllPages(lang);
 
-    return pageSlug === baseSlug;
-  });
+    pageObj = pages.find((page) => {
+      const url = new URL(page.link);
 
-  if (!pageObj) return notFound();
+      const pageSlug = url.pathname
+        .replace(/^\/|\/$/g, '')
+        .replace(/^(de\/|en\/)/, '')
+        .split('/')
+        .filter(Boolean)
+        .pop();
 
-  const pageData = await getPage(lang, pageObj.id);
+      return pageSlug === baseSlug;
+    });
 
+    if (!pageObj) return notFound();
+
+    pageData = await getPage(lang, pageObj.id);
+  }
   const lastSlug = deepSlugs[deepSlugs.length - 1];
 
   let template;
@@ -108,6 +107,16 @@ const Page = async ({ params }) => {
       if (!post) return notFound();
 
       template = <BlogTemplate data={post} mode='single' />;
+      break;
+    }
+    case 'page_home.php': {
+      template = (
+        <HomeTemplate
+          data={pageData}
+          params={params}
+          subSlug={deepSlugs?.[0]}
+        />
+      );
       break;
     }
 

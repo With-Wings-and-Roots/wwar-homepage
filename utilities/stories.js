@@ -1,12 +1,5 @@
 import { fetchAllData } from './general';
 
-export async function getFooter(lang = 'en') {
-  const [data] = await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/options?lang=${lang}`
-  );
-  return data;
-}
-
 export async function getAllStories(lang = 'en') {
   const neededFields = [
     'id',
@@ -52,20 +45,6 @@ export async function getAllPersons() {
   );
 }
 
-export async function getStoryMedia(lang = 'en', slug) {
-  const [data] = fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story?lang=${lang}&slug=${slug}`
-  );
-  return data.featured_media;
-}
-
-export async function getStoryMediaByMediaId(lang, mediaId) {
-  const data = await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/media/${mediaId}?lang=${lang}`
-  );
-  return data.source_url;
-}
-
 export async function getTopicStories(lang, topicId) {
   return await fetchAllData(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story?story_topic=${topicId}&lang=${lang}&per_page=100`
@@ -75,30 +54,37 @@ export async function getTopicStories(lang, topicId) {
 export function findIndexBySlug(array, slugTerm) {
   return array.findIndex((item) => item.slug === slugTerm);
 }
+export async function fetchStoriesByIds(ids = [], lang = 'en') {
+  const base = process.env.NEXT_PUBLIC_CMS_URL;
 
-export async function getTopicId(lang, topicSlug) {
-  const allTopics = await fetchAllTopics(lang);
-  const selectedTopic = allTopics.find((topic) => topic.slug === topicSlug);
-  return selectedTopic?.id || null;
+  try {
+    const stories = await Promise.all(
+      ids.map((id) =>
+        fetch(`${base}/wp-json/wp/v2/story/${id}?lang=${lang}`).then((r) =>
+          r.ok ? r.json() : null
+        )
+      )
+    );
+
+    return stories.filter(Boolean);
+  } catch {
+    return [];
+  }
 }
+export async function fetchPersonsByIds(ids = [], lang = 'en') {
+  const base = process.env.NEXT_PUBLIC_CMS_URL;
 
-export async function getPersonById(personId) {
-  const allPersons = await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/person?lang=en&per_page=100`
-  );
-  return allPersons.find((person) => person.id === personId) || null;
+  try {
+    const persons = await Promise.all(
+      ids.map((id) =>
+        fetch(`${base}/wp-json/wp/v2/person/${id}?lang=${lang}`).then((r) =>
+          r.ok ? r.json() : null
+        )
+      )
+    );
+
+    return persons.filter(Boolean);
+  } catch {
+    return [];
+  }
 }
-
-export const getMenuId = async (_) => {
-  const [data] = await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/menu`
-  );
-
-  return data.primary;
-};
-
-export const getMenuItems = async (id) => {
-  return await fetchAllData(
-    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/menu/${id}`
-  );
-};

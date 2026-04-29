@@ -9,6 +9,9 @@ import React from 'react';
 import Link from 'next/link';
 import {
   fetchAllTopics,
+  fetchPersonsByIds,
+  fetchStoriesByIds,
+  fetchStoryWithRelations,
   getAllMedia,
   getAllPersons,
   getAllStories,
@@ -19,14 +22,54 @@ import { getAllPages } from '@/utilities/pages';
 import { getAllPosts } from '@/utilities/posts';
 import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
+import { sub } from 'date-fns';
+import { link } from 'node:fs';
+import { fetchMediaByIds } from '@/utilities/media';
+import { getTimeline, getTimelinesByIds } from '@/utilities/timeline';
 
-const HomeTemplate = async ({ data, params, subSlugs }) => {
-  const [stories, allMedia, allPersons, topics] = await Promise.all([
-    getAllStories(params.lang),
-    getAllMedia(params.lang),
-    getAllPersons(),
-    fetchAllTopics(params.lang),
-  ]);
+const HomeTemplate = async ({ data, params, subSlug }) => {
+  const linkedStoryIds =
+    data.acf?.stories_linked_stories?.map((s) => s.story) || [];
+
+  const linkedStories = await fetchStoriesByIds(linkedStoryIds, params.lang);
+  const mediaIds = [
+    ...new Set(
+      linkedStories?.map((story) => story?.featured_media).filter(Boolean)
+    ),
+  ];
+
+  const allMedia = await fetchMediaByIds(mediaIds);
+  const personIds = [
+    ...new Set(
+      linkedStories?.map((story) => story?.acf?.person).filter(Boolean)
+    ),
+  ];
+
+  const allPersons = await fetchPersonsByIds(personIds, params.lang);
+  const timelineIds = [
+    ...new Set(
+      linkedStories
+        ?.map((story) => story?.acf?.related_events || [])
+        .filter(Boolean)
+    ),
+  ];
+  const allTimelines = await getTimelinesByIds(timelineIds, params.lang);
+  const relatedStoryIds = [
+    ...new Set(
+      linkedStories
+        ?.map((story) => story?.acf?.related_stories || [])
+        .filter(Boolean)
+    ),
+  ];
+  const relatedStories = await fetchStoriesByIds(relatedStoryIds, params.lang);
+  console.log('relatedStories', relatedStories);
+  const stories = [
+    ...new Map(
+      [...linkedStories, ...relatedStories].map((s) => [s.id, s])
+    ).values(),
+  ];
+  const topics = await fetchAllTopics(params.lang);
+
   const pages = await getAllPages(params.lang);
   const events = await getAllPosts(params.lang, 'publicevent');
   const upcomingEvents = [...events]
@@ -38,23 +81,18 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
 
   return (
     <div className='-mt-20'>
-      {subSlugs?.length > 1 &&
-        subSlugs[0] === 'story' &&
-        !!stories?.find((s) => s.slug === subSlugs[1]) && (
-          <PageComponent
-            lang={params.lang}
-            paramsStory={subSlugs[1]}
-            stories={stories.filter((story) =>
-              data.acf?.stories_linked_stories
-                ?.map((sts) => sts.story?.ID)
-                ?.includes(story.id)
-            )}
-            topics={topics}
-            allMedia={allMedia}
-            allPersons={allPersons}
-            baseLink={createLocalLink('/story/')}
-          />
-        )}
+      {subSlug && !!linkedStories?.find((s) => s.slug === subSlug) && (
+        <PageComponent
+          lang={params.lang}
+          paramsStory={subSlug}
+          stories={stories}
+          allMedia={allMedia}
+          allPersons={allPersons}
+          topics={topics}
+          allEvents={allTimelines}
+          baseLink={createLocalLink('/story/')}
+        />
+      )}
       <PersonImageSlider
         imageUrls={data.acf?.images?.map((i) => i.image)}
         height={100}
@@ -99,7 +137,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
               className='font-light text-lg mt-4'
             />
             <Link
-              href={data.acf?.film_button?.url}
+              href={createLocalLink(data.acf?.film_button?.url)}
               target='_blank'
               rel='noopener noreferrer'
               className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex mt-6'
@@ -155,11 +193,7 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
         </Link>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-10'>
           <StoryCardContainer
-            storiesToRender={stories.filter((story) =>
-              data.acf?.stories_linked_stories
-                ?.map((sts) => sts.story?.ID)
-                ?.includes(story.id)
-            )}
+            storiesToRender={linkedStories}
             lang={params.lang}
             allMedia={allMedia}
             allPersons={allPersons}

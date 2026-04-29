@@ -83,3 +83,19 @@ export const getTimelineTopics = async (lang = 'en') => {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event_topic?lang=${lang}`
   );
 };
+
+export const getTimelinesByIds = async (ids = [], lang = 'en') => {
+  const base = process.env.NEXT_PUBLIC_CMS_URL;
+  try {
+    const timelines = await Promise.all(
+      ids.map((id) =>
+        fetch(`${base}/wp-json/wp/v2/timeline_event/${id}?lang=${lang}`).then(
+          (r) => (r.ok ? r.json() : null)
+        )
+      )
+    );
+    return timelines.filter(Boolean);
+  } catch {
+    return [];
+  }
+};
