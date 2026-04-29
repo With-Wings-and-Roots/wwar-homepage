@@ -115,3 +115,10 @@ export async function fetchTimelinesByIds(ids = [], lang = 'en') {
     return [];
   }
 }
+export async function getTimelineEvent(slug, lang = 'en') {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event?slug=${slug}&lang=${lang}&acf_format=standard`
+  );
+  const data = await res.json();
+  return data.length > 0 ? data[0] : null;
+}

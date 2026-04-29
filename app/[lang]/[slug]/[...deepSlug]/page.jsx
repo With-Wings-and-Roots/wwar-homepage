@@ -8,11 +8,16 @@ import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 
-import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
+import {
+  getAllPages,
+  getFrontpageId,
+  getPage,
+  getPageBySlug,
+} from '@/utilities/pages';
 
 import { getAllStories, getStoryBySlug } from '@/utilities/stories';
 
-import { getTimeline } from '@/utilities/timeline';
+import { getTimeline, getTimelineEvent } from '@/utilities/timeline';
 
 import { getAllPosts } from '@/utilities/posts';
 import HomeTemplate from '@/components/templates/HomeTemplate';
@@ -38,24 +43,8 @@ const Page = async ({ params }) => {
     pageObj = { template: 'page_home.php' }; // 👈 FAKE TEMPLATE
     pageData = await getPage(lang, frontpageId);
   } else {
-    const pages = await getAllPages(lang);
-
-    pageObj = pages.find((page) => {
-      const url = new URL(page.link);
-
-      const pageSlug = url.pathname
-        .replace(/^\/|\/$/g, '')
-        .replace(/^(de\/|en\/)/, '')
-        .split('/')
-        .filter(Boolean)
-        .pop();
-
-      return pageSlug === baseSlug;
-    });
-
-    if (!pageObj) return notFound();
-
-    pageData = await getPage(lang, pageObj.id);
+    pageData = await getPageBySlug(lang, slug);
+    if (!pageData) return notFound();
   }
   const lastSlug = deepSlugs[deepSlugs.length - 1];
 
@@ -66,7 +55,7 @@ const Page = async ({ params }) => {
    * STEP 2: SWITCH BASED ON TEMPLATE
    * ----------------------------------------------------
    */
-  switch (pageObj.template) {
+  switch (pageData.template) {
     /**
      * STORIES
      */
@@ -83,6 +72,9 @@ const Page = async ({ params }) => {
      * TIMELINES
      */
     case 'page_timelines.php': {
+      const event = await getTimelineEvent(lastSlug, params.lang);
+
+      if (!event) return notFound();
       template = <TimelinesTemplate data={pageData} params={params} />;
       break;
     }
