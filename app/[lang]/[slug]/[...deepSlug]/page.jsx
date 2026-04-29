@@ -12,6 +12,7 @@ import HomeTemplate from '@/components/templates/HomeTemplate';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
 import { getStoryBySlug } from '@/utilities/stories';
 import { getPostBySlug } from '@/utilities/posts';
+import { getTeamMemberById, getTeamMemberBySlug } from '@/utilities/team';
 
 export const dynamicParams = true;
 
@@ -86,16 +87,13 @@ const Page = async ({ params }) => {
       break;
     }
     case 'page_collaborators.php': {
+      const teamMember = await getTeamMemberBySlug(lastSlug, params.lang);
+      if (!teamMember) return notFound();
       template = <TeamsTemplate data={pageData} params={params} />;
       break;
     }
-
-    /**
-     * DEFAULT CMS PAGE (no deep content)
-     */
     default: {
       notFound();
-      break;
     }
   }
 
