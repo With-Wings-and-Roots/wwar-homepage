@@ -7,77 +7,59 @@ import { createLocalLink } from '@/utilities/links';
 import ScrollToElementButton from '@/components/common/ScrollToElementButton';
 import React from 'react';
 import Link from 'next/link';
-import {
-  fetchAllTopics,
-  fetchPersonsByIds,
-  fetchStoriesByIds,
-  fetchStoryWithRelations,
-  getAllMedia,
-  getAllPersons,
-  getAllStories,
-} from '@/utilities/stories';
+import { fetchPersonsByIds, fetchStoriesByIds } from '@/utilities/stories';
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
-import { getAllPages } from '@/utilities/pages';
-import { getAllPosts } from '@/utilities/posts';
-import EventsList from '@/components/publicEvents/EventsList';
 import FlexibleContent from '@/components/home/flexibleContent';
-import { sub } from 'date-fns';
-import { link } from 'node:fs';
 import { fetchMediaByIds } from '@/utilities/media';
-import { getTimeline, getTimelinesByIds } from '@/utilities/timeline';
+import { getTimelinesByIds } from '@/utilities/timeline';
+import { fetchPagesByIds } from '@/utilities/pages';
 
 const HomeTemplate = async ({ data, params, subSlug }) => {
   const linkedStoryIds =
     data.acf?.stories_linked_stories?.map((s) => s.story) || [];
 
-  const linkedStories = await fetchStoriesByIds(linkedStoryIds, params.lang);
+  const linkedPagesIds =
+    data.acf?.resources_pages?.map((r) => r.linked_page) || [];
+
+  // Step 1: fetch independent core data in parallel
+  const [linkedStories, pages] = await Promise.all([
+    fetchStoriesByIds(linkedStoryIds, params.lang),
+    fetchPagesByIds(linkedPagesIds, params.lang),
+  ]);
+
+  // Step 2: derive IDs
   const mediaIds = [
-    ...new Set(
-      linkedStories?.map((story) => story?.featured_media).filter(Boolean)
-    ),
+    ...new Set(linkedStories.map((s) => s?.featured_media).filter(Boolean)),
   ];
 
-  const allMedia = await fetchMediaByIds(mediaIds);
   const personIds = [
-    ...new Set(
-      linkedStories?.map((story) => story?.acf?.person).filter(Boolean)
-    ),
+    ...new Set(linkedStories.map((s) => s?.acf?.person).filter(Boolean)),
   ];
 
-  const allPersons = await fetchPersonsByIds(personIds, params.lang);
   const timelineIds = [
-    ...new Set(
-      linkedStories
-        ?.map((story) => story?.acf?.related_events || [])
-        .filter(Boolean)
-    ),
+    ...new Set(linkedStories.flatMap((s) => s?.acf?.related_events || [])),
   ];
-  const allTimelines = await getTimelinesByIds(timelineIds, params.lang);
+
   const relatedStoryIds = [
-    ...new Set(
-      linkedStories
-        ?.map((story) => story?.acf?.related_stories || [])
-        .filter(Boolean)
-    ),
+    ...new Set(linkedStories.flatMap((s) => s?.acf?.related_stories || [])),
   ];
-  const relatedStories = await fetchStoriesByIds(relatedStoryIds, params.lang);
+
+  // Step 3: fetch dependent data in parallel
+  const [allMedia, allPersons, allTimelines, relatedStories] =
+    await Promise.all([
+      fetchMediaByIds(mediaIds),
+      fetchPersonsByIds(personIds, params.lang),
+      getTimelinesByIds(timelineIds, params.lang),
+      fetchStoriesByIds(relatedStoryIds, params.lang),
+    ]);
+
+  // Step 4: merge stories
   const stories = [
     ...new Map(
       [...linkedStories, ...relatedStories].map((s) => [s.id, s])
     ).values(),
   ];
-  const topics = await fetchAllTopics(params.lang);
-
-  const pages = await getAllPages(params.lang);
-  const events = await getAllPosts(params.lang, 'publicevent');
-  const upcomingEvents = [...events]
-    .filter((e) => new Date(e.acf?.date_sorting) > new Date())
-    ?.sort(
-      (a, b) => new Date(a.acf?.date_sorting) - new Date(b.acf?.date_sorting)
-    )
-    ?.slice(0, 3);
-
   return (
     <div className='-mt-20'>
       {subSlug && !!linkedStories?.find((s) => s.slug === subSlug) && (
@@ -87,7 +69,7 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
           stories={stories}
           allMedia={allMedia}
           allPersons={allPersons}
-          topics={topics}
+          topics={[]}
           allEvents={allTimelines}
           baseLink={createLocalLink(`/${params.lang}/story/`)}
           closeLink={createLocalLink(`/${params.lang}/`)}
@@ -155,27 +137,22 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
           />
         </div>
       ) : null}
-      {upcomingEvents?.length > 0 ? (
-        <div className='px-8 md:px-16 xl:px-48 pt-20'>
-          <h2
-            dangerouslySetInnerHTML={{
-              __html: data.acf?.upcoming_events_title,
-            }}
-            className='text-3xl md:text-6xl font-light'
-          />
-          <div>
-            <EventsList events={upcomingEvents} />
-          </div>
-          <div>
-            <Link
-              href={createLocalLink(data.acf?.upcoming_events_linked_page?.url)}
-              className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-            >
-              {data.acf?.upcoming_events_linked_page?.title}
-            </Link>
-          </div>
+      <div className='px-8 md:px-16 xl:px-48 pt-20'>
+        <h2
+          dangerouslySetInnerHTML={{
+            __html: data.acf?.upcoming_events_title,
+          }}
+          className='text-3xl md:text-6xl font-light'
+        />
+        <div>
+          <Link
+            href={createLocalLink(data.acf?.upcoming_events_linked_page?.url)}
+            className='mt-6 bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {data.acf?.upcoming_events_linked_page?.title}
+          </Link>
         </div>
-      ) : null}
+      </div>
       <div className='px-8 md:px-16 xl:px-48 py-20'>
         <h2
           dangerouslySetInnerHTML={{ __html: data.acf?.stories_title }}
@@ -229,7 +206,9 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
         <Image
           src={data.acf?.resources_image}
           alt=''
-          fill={true}
+          fill
+          priority
+          sizes='100vw'
           className='object-cover'
         />
         <div className='px-8 md:px-16 xl:px-48 py-20 relative'>
@@ -244,17 +223,23 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
                 className='font-medium md:text-lg mt-1'
               />
               <div className='flex flex-col mt-6 gap-y-4 items-start'>
-                {data.acf?.resources_pages?.map((page, pI) => (
-                  <Link
-                    key={pI}
-                    href={createLocalLink(
-                      pages.find((p) => p.id === page.linked_page.ID)?.link
-                    )}
-                    className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
-                  >
-                    {page.linked_page.post_title}
-                  </Link>
-                ))}
+                {data.acf?.resources_pages?.map((page, pI) => {
+                  const matchedPage = pages?.find(
+                    (p) => p.id === page?.linked_page
+                  );
+
+                  if (!matchedPage) return null;
+
+                  return (
+                    <Link
+                      key={pI}
+                      href={createLocalLink(matchedPage?.link || '/')}
+                      className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2 transition-all uppercase inline-flex'
+                    >
+                      {matchedPage?.title?.rendered || 'Untitled'}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           </div>

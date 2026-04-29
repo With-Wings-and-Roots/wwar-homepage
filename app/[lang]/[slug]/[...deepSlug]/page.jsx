@@ -1,31 +1,19 @@
 import { notFound } from 'next/navigation';
 
-import Header from '@/components/header/header';
-import Footer from '@/components/footer/footer';
-
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 
-import {
-  getAllPages,
-  getFrontpageId,
-  getPage,
-  getPageBySlug,
-} from '@/utilities/pages';
+import { getFrontpageId, getPage, getPageBySlug } from '@/utilities/pages';
+import { getTimelineEvent } from '@/utilities/timeline';
 
-import { getAllStories, getStoryBySlug } from '@/utilities/stories';
-
-import { getTimeline, getTimelineEvent } from '@/utilities/timeline';
-
-import { getAllPosts } from '@/utilities/posts';
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
+import { getStoryBySlug } from '@/utilities/stories';
+import { getPostBySlug } from '@/utilities/posts';
 
-export const dynamic = 'force-dynamic';
-export const fetchCache = 'force-no-store';
-export const revalidate = 0;
+export const dynamicParams = true;
 
 const Page = async ({ params }) => {
   const { lang, slug } = params;
@@ -33,14 +21,13 @@ const Page = async ({ params }) => {
   const deepSlugs = Array.isArray(params.deepSlug)
     ? params.deepSlug
     : [params.deepSlug];
+  if (deepSlugs.length > 1) return notFound();
   const baseSlug = slug;
-  let pageObj;
   let pageData;
 
   if (baseSlug === 'story') {
     const frontpageId = await getFrontpageId(lang);
 
-    pageObj = { template: 'page_home.php' }; // 👈 FAKE TEMPLATE
     pageData = await getPage(lang, frontpageId);
   } else {
     pageData = await getPageBySlug(lang, slug);
@@ -83,6 +70,8 @@ const Page = async ({ params }) => {
      * BLOG
      */
     case 'page_blog.php': {
+      const post = await getPostBySlug(params.lang, lastSlug, 'posts');
+      if (!post) return notFound();
       template = <BlogTemplate data={pageData} params={params} />;
       break;
     }
@@ -105,18 +94,12 @@ const Page = async ({ params }) => {
      * DEFAULT CMS PAGE (no deep content)
      */
     default: {
-      template = <DefaultTemplate data={pageData} />;
+      notFound();
       break;
     }
   }
 
-  return (
-    <>
-      <Header lang={lang} />
-      {template}
-      <Footer lang={lang} />
-    </>
-  );
+  return template;
 };
 
 export default Page;

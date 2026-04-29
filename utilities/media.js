@@ -17,9 +17,11 @@ export async function fetchMediaByIds(ids = [], lang = 'en') {
   try {
     const media = await Promise.all(
       ids.map((id) =>
-        fetch(`${base}/wp-json/wp/v2/media/${id}?lang=${lang}`).then((r) =>
-          r.ok ? r.json() : null
-        )
+        fetch(`${base}/wp-json/wp/v2/media/${id}?lang=${lang}`, {
+          next: {
+            revalidate: 600, // cache for 10 min
+          },
+        }).then((r) => (r.ok ? r.json() : null))
       )
     );
 

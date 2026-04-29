@@ -4,7 +4,7 @@ import HomeTemplate from '@/components/templates/HomeTemplate';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const revalidate = 600; // ISR: 10 minutes
-
+export const dynamicParams = false;
 export async function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'de' }];
 }

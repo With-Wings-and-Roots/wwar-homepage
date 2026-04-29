@@ -21,7 +21,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
 
 export const revalidate = 600;
-
+export const dynamicParams = false;
 /**
  * ONLY: /[lang]/[slug]
  * ONLY WordPress "pages"
@@ -29,9 +29,9 @@ export const revalidate = 600;
 const Page = async ({ params }) => {
   const { lang, slug } = params;
 
-  const pageSettings = await getPageSettings(lang);
   const pageData = await getPageBySlug(lang, slug);
   if (!pageData) return notFound();
+  const pageSettings = await getPageSettings(lang);
 
   let template;
 
@@ -91,9 +91,7 @@ const Page = async ({ params }) => {
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       )}
 
-      <Header lang={lang} />
       {template}
-      <Footer lang={lang} />
     </>
   );
 };
@@ -112,14 +110,7 @@ export async function generateStaticParams() {
     const pages = await getAllPages(lang);
 
     for (const page of pages) {
-      const url = new URL(page.link);
-
-      const slug = url.pathname
-        .replace(/^\/|\/$/g, '')
-        .replace(/^(de\/|en\/)/, '')
-        .split('/')
-        .filter(Boolean)
-        .pop();
+      const slug = page.slug;
 
       if (slug) {
         paths.push({
@@ -140,14 +131,7 @@ export async function generateMetadata({ params }) {
   const pages = await getAllPages(params.lang);
 
   const pageObj = pages.find((page) => {
-    const url = new URL(page.link);
-
-    const pageSlug = url.pathname
-      .replace(/^\/|\/$/g, '')
-      .replace(/^(de\/|en\/)/, '')
-      .split('/')
-      .filter(Boolean)
-      .pop();
+    const pageSlug = page.slug;
 
     return pageSlug === params.slug;
   });
