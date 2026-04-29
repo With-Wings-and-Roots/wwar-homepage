@@ -41,3 +41,11 @@ export async function getPage(lang, id) {
   );
   return await res.json();
 }
+export async function getPageBySlug(lang, slug) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/pages?slug=${slug}&lang=${lang}&acf_format=standard`,
+    { next: { revalidate: 600 } }
+  );
+  const data = await res.json();
+  return data.length > 0 ? data[0] : null;
+}

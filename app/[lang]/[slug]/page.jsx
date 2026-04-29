@@ -1,4 +1,4 @@
-import { getAllPages, getPage } from '@/utilities/pages';
+import { getAllPages, getPage, getPageBySlug } from '@/utilities/pages';
 import { notFound } from 'next/navigation';
 
 import Footer from '@/components/footer/footer';
@@ -7,7 +7,6 @@ import Header from '@/components/header/header';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
-import CollaboratorsTemplate from '@/components/templates/CollaboratorsTemplate';
 import EventsTemplate from '@/components/templates/EventsTemplate';
 import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
@@ -19,6 +18,7 @@ import BlogTemplate from '@/components/templates/BlogTemplate';
 
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import TeamsTemplate from '@/components/templates/TeamsTemplate';
 
 export const revalidate = 600;
 
@@ -30,31 +30,12 @@ const Page = async ({ params }) => {
   const { lang, slug } = params;
 
   const pageSettings = await getPageSettings(lang);
-  const pages = await getAllPages(lang);
-
-  /**
-   * STRICT MATCH: ONLY ONE SLUG LEVEL
-   */
-  const pageObj = pages.find((page) => {
-    const url = new URL(page.link);
-
-    const pageSlug = url.pathname
-      .replace(/^\/|\/$/g, '')
-      .replace(/^(de\/|en\/)/, '')
-      .split('/')
-      .filter(Boolean)
-      .pop();
-
-    return pageSlug === slug;
-  });
-
-  if (!pageObj) return notFound();
-
-  const pageData = await getPage(lang, pageObj.id);
+  const pageData = await getPageBySlug(lang, slug);
+  if (!pageData) return notFound();
 
   let template;
 
-  switch (pageObj.template) {
+  switch (pageData.template) {
     case 'page_stories.php':
       template = <StoriesTemplate data={pageData} />;
       break;
@@ -68,15 +49,15 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_blog.php':
-      template = <BlogTemplate data={pageData} />;
+      template = <BlogTemplate data={pageData} params={params} />;
       break;
 
     case 'page_collaborators.php':
-      template = <CollaboratorsTemplate data={pageData} />;
+      template = <TeamsTemplate data={pageData} params={params} />;
       break;
 
     case 'page_events.php':
-      template = <EventsTemplate data={pageData} />;
+      template = <EventsTemplate data={pageData} params={params} />;
       break;
 
     case 'page_workshops.php':

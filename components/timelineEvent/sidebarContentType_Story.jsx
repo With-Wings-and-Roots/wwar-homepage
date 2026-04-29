@@ -1,18 +1,16 @@
 import React from 'react';
 import QuotationMark from '@/components/page/quotationMark';
 import Excerpt from '@/components/page/excerpt';
-import { createVideoEmbedLink } from '@/utilities/links';
+import { getPerson, getStory } from '@/utilities/stories';
 
-const SidebarContentTypeStory = async ({ content, stories, allPersons }) => {
+const SidebarContentTypeStory = async ({ content, lang }) => {
   const story =
     Array.isArray(content.sidebar_content_featured_story) &&
-    content.sidebar_content_featured_story?.length > 0
-      ? stories?.find(
-          (s) => s.id === content.sidebar_content_featured_story[0]?.ID
-        )
+    content.sidebar_content_featured_story.length > 0
+      ? await getStory(content.sidebar_content_featured_story[0]?.ID, lang)
       : null;
   const personId = story?.person?.[0];
-  const person = personId ? allPersons?.find((p) => p.id === personId) : null;
+  const person = await getPerson(personId, lang);
 
   return story ? (
     <div>
@@ -23,10 +21,13 @@ const SidebarContentTypeStory = async ({ content, stories, allPersons }) => {
       <div
         className={`w-full h-40 my-6 bg-green-100 flex items-center justify-center`}
       >
-        <iframe
-          className='w-full aspect-video'
-          src={createVideoEmbedLink(story?.acf?.video_embed)}
-        />
+        <div className='w-full aspect-video [&_iframe]:w-full [&_iframe]:h-full'>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: story?.acf?.video_embed,
+            }}
+          />
+        </div>
       </div>
       <div className={`w-12 pb-2`}>
         {' '}

@@ -16,6 +16,7 @@ import { getTimeline } from '@/utilities/timeline';
 
 import { getAllPosts } from '@/utilities/posts';
 import HomeTemplate from '@/components/templates/HomeTemplate';
+import TeamsTemplate from '@/components/templates/TeamsTemplate';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -23,8 +24,6 @@ export const revalidate = 0;
 
 const Page = async ({ params }) => {
   const { lang, slug } = params;
-
-  console.log('Params:', params);
 
   const deepSlugs = Array.isArray(params.deepSlug)
     ? params.deepSlug
@@ -100,13 +99,7 @@ const Page = async ({ params }) => {
      * BLOG
      */
     case 'page_blog.php': {
-      const posts = await getAllPosts(lang, 'posts');
-
-      const post = posts.find((p) => p.slug === lastSlug);
-
-      if (!post) return notFound();
-
-      template = <BlogTemplate data={post} mode='single' />;
+      template = <BlogTemplate data={pageData} params={params} />;
       break;
     }
     case 'page_home.php': {
@@ -117,6 +110,10 @@ const Page = async ({ params }) => {
           subSlug={deepSlugs?.[0]}
         />
       );
+      break;
+    }
+    case 'page_collaborators.php': {
+      template = <TeamsTemplate data={pageData} params={params} />;
       break;
     }
 

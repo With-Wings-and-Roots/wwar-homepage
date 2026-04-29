@@ -7,7 +7,7 @@ import SidebarContentType_Quote from '@/components/timelineEvent/sidebarContentT
 
 // type: sidenote, story, image, video, quote, none-selected, undefined
 
-const Sidebar = ({ sidebarContent, stories, allPersons }) => {
+const Sidebar = ({ sidebarContent, lang }) => {
   return (
     <div className='flex flex-col gap-y-6'>
       {sidebarContent?.map((content, index) => {
@@ -15,17 +15,13 @@ const Sidebar = ({ sidebarContent, stories, allPersons }) => {
         return (
           <React.Fragment key={index}>
             {type.includes('image') && (
-              <SidebarContentTypeImage content={content} />
+              <SidebarContentTypeImage content={content} lang={lang} />
             )}
             {type.includes('video') && (
               <SidebarContentTypeVideo content={content} />
             )}
             {type.includes('story') && (
-              <SidebarContentTypeStory
-                content={content}
-                stories={stories}
-                allPersons={allPersons}
-              />
+              <SidebarContentTypeStory content={content} />
             )}
             {type.includes('sidenote') && (
               <SidebarContentTypeSideNote content={content} />

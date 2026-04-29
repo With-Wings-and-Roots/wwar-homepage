@@ -10,12 +10,12 @@ import Sidebar from '@/components/timelineEvent/sidebar';
 import React from 'react';
 import { decode } from 'html-entities';
 
-const BlogTemplate = async ({ params, data, stories, allPersons }) => {
+const BlogTemplate = async ({ params, data }) => {
   const posts = await getAllPosts(params.lang, 'posts');
 
   let blogPost = null;
-  if (params.slugs.length === 2) {
-    blogPost = posts.find((p) => p.slug === params.slugs[1]);
+  if (params.deepSlug) {
+    blogPost = posts.find((p) => p.slug == params.deepSlug);
   }
 
   return (
@@ -28,7 +28,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
         alt=''
         className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-10'
       />
-      {params.slugs.length === 2 ? (
+      {params.deepSlug ? (
         <>
           <div className='grid grid-cols-12 gap-8'>
             <div className='col-span-12 md:col-span-8 xl:col-span-9'>
@@ -63,8 +63,7 @@ const BlogTemplate = async ({ params, data, stories, allPersons }) => {
                 <div className='mt-6'>
                   <Sidebar
                     sidebarContent={blogPost.acf?.sidebar_content}
-                    stories={stories}
-                    allPersons={allPersons}
+                    lang={params.lang}
                   />
                 </div>
               )}

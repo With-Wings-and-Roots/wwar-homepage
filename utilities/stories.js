@@ -88,3 +88,16 @@ export async function fetchPersonsByIds(ids = [], lang = 'en') {
     return [];
   }
 }
+
+export async function getStory(id, lang = 'en') {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story/${id}?lang=${lang}&acf_format=standard`
+  );
+  return await res.json();
+}
+export async function getPerson(id, lang = 'en') {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/person/${id}?lang=${lang}`
+  );
+  return await res.json();
+}

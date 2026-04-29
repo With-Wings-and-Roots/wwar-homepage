@@ -62,7 +62,6 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
     ),
   ];
   const relatedStories = await fetchStoriesByIds(relatedStoryIds, params.lang);
-  console.log('relatedStories', relatedStories);
   const stories = [
     ...new Map(
       [...linkedStories, ...relatedStories].map((s) => [s.id, s])
@@ -90,7 +89,8 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
           allPersons={allPersons}
           topics={topics}
           allEvents={allTimelines}
-          baseLink={createLocalLink('/story/')}
+          baseLink={createLocalLink(`/${params.lang}/story/`)}
+          closeLink={createLocalLink(`/${params.lang}/`)}
         />
       )}
       <PersonImageSlider
@@ -197,7 +197,7 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
             lang={params.lang}
             allMedia={allMedia}
             allPersons={allPersons}
-            baseLink={createLocalLink('/story/')}
+            baseLink={createLocalLink(`/${params.lang}/story/`)}
           />
         </div>
       </div>
