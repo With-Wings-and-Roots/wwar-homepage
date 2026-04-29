@@ -101,3 +101,10 @@ export async function getPerson(id, lang = 'en') {
   );
   return await res.json();
 }
+export async function getStoryBySlug(slug, lang = 'en') {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story?slug=${slug}&lang=${lang}&acf_format=standard`
+  );
+  const data = await res.json();
+  return data.length > 0 ? data[0] : null;
+}

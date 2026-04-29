@@ -25,7 +25,7 @@ const StoryPageComponent = ({
   closeLink,
   allEvents,
 }) => {
-  const story = stories.find((s) => s.slug === paramsStory) || null;
+  const story = stories.find((s) => s.slug == paramsStory) || null;
 
   const personId = story?.acf?.person;
   const person = personId ? allPersons?.find((p) => p.id === personId) : null;

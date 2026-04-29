@@ -10,7 +10,7 @@ import DefaultTemplate from '@/components/templates/DefaultTemplate';
 
 import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
 
-import { getAllStories } from '@/utilities/stories';
+import { getAllStories, getStoryBySlug } from '@/utilities/stories';
 
 import { getTimeline } from '@/utilities/timeline';
 
@@ -71,13 +71,11 @@ const Page = async ({ params }) => {
      * STORIES
      */
     case 'page_stories.php': {
-      const stories = await getAllStories(lang);
-
-      const story = stories.find((s) => s.slug === lastSlug);
+      const story = await getStoryBySlug(lastSlug, params.lang);
 
       if (!story) return notFound();
 
-      template = <StoriesTemplate data={story} mode='single' />;
+      template = <StoriesTemplate data={pageData} params={params} />;
       break;
     }
 
@@ -85,13 +83,7 @@ const Page = async ({ params }) => {
      * TIMELINES
      */
     case 'page_timelines.php': {
-      const events = await getTimeline('de', lang);
-
-      const event = events.find((e) => e.slug === lastSlug);
-
-      if (!event) return notFound();
-
-      template = <TimelinesTemplate data={event} mode='single' />;
+      template = <TimelinesTemplate data={pageData} params={params} />;
       break;
     }
 

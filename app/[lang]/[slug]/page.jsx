@@ -37,11 +37,11 @@ const Page = async ({ params }) => {
 
   switch (pageData.template) {
     case 'page_stories.php':
-      template = <StoriesTemplate data={pageData} />;
+      template = <StoriesTemplate data={pageData} params={params} />;
       break;
 
     case 'page_timelines.php':
-      template = <TimelinesTemplate data={pageData} />;
+      template = <TimelinesTemplate data={pageData} params={params} />;
       break;
 
     case 'page_about.php':

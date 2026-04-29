@@ -3,38 +3,59 @@ import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import TimelineEventPage from '@/components/timelineEvent/timelineEventPage';
 import { getAdjacentSlug } from '@/utilities/general';
+import { getTimeline, getTimelineTopics } from '@/utilities/timeline';
+import { fetchPersonsByIds, fetchStoriesByIds } from '@/utilities/stories';
+import { fetchMediaByIds } from '@/utilities/media';
 
-const TimelinesTemplate = ({
-  params,
-  data,
-  subSlugs,
-  baseLink,
-  timeLineEventsDe,
-  timeLineEventsEn,
-  allMedia,
-  timelineTopics,
-  stories,
-  allPersons,
-}) => {
+const TimelinesTemplate = async ({ data, params }) => {
+  const baseLink = `/${params.lang}/${params.slug}/`;
+  const [timeLineEventsDe, timeLineEventsEn, timelineTopics] =
+    await Promise.all([
+      getTimeline('de', params.lang),
+      getTimeline('us', params.lang),
+      getTimelineTopics(params.lang),
+    ]);
   let country = null;
   let timelineEvents = [...timeLineEventsDe, ...timeLineEventsEn];
   let timelineEvent = null;
   let nextSlug = null;
   let prevSlug = null;
   let relatedEvents = null;
+  let allRelatedStories = null;
   let relatedStories = null;
+  const relatedStoryIds = [
+    ...new Set(
+      timelineEvents
+        .flatMap((e) => e?.acf?.basic_info?.related_stories || [])
+        .filter(Boolean)
+    ),
+  ];
+  allRelatedStories = await fetchStoriesByIds(relatedStoryIds, params.lang);
+  const personIds = [
+    ...new Set(
+      allRelatedStories?.map((story) => story?.acf?.person).filter(Boolean)
+    ),
+  ];
+  const allPersons = await fetchPersonsByIds(personIds, params.lang);
+  const mediaIds = [
+    ...new Set([
+      ...timelineEvents.map((e) => e?.featured_media).filter(Boolean),
+
+      ...allRelatedStories.map((s) => s?.featured_media).filter(Boolean),
+    ]),
+  ];
+  const allMedia = await fetchMediaByIds(mediaIds, params.lang);
 
   if (
-    subSlugs?.length > 0 &&
-    !![...timeLineEventsDe, ...timeLineEventsEn]?.find(
-      (te) => te.slug === subSlugs[0]
-    )
+    params?.deepSlug &&
+    timelineEvents?.find((te) => te.slug == params.deepSlug)
   ) {
     const germanIdsArray = timeLineEventsDe.map((timeline) => timeline.id);
     const usaIdsArray = timeLineEventsEn.map((timeline) => timeline.id);
     timelineEvent =
-      timelineEvents.find((singleEvent) => singleEvent.slug === subSlugs[0]) ||
-      null;
+      timelineEvents.find(
+        (singleEvent) => singleEvent.slug == params.deepSlug
+      ) || null;
 
     const indexInGerman = germanIdsArray.indexOf(timelineEvent.id);
     const indexInUsa = usaIdsArray.indexOf(timelineEvent.id);
@@ -65,16 +86,12 @@ const TimelinesTemplate = ({
     relatedEvents = related_events
       ? timelineEvents.filter((event) => related_events.includes(event.id))
       : null;
-
-    const {
-      acf: {
-        basic_info: { related_stories },
-      },
-    } = timelineEvent;
-
-    relatedStories = related_stories
-      ? stories.filter((story) => related_stories.includes(story.id))
-      : null;
+    relatedStories =
+      timelineEvent?.acf?.basic_info?.related_stories?.length > 0
+        ? allRelatedStories.filter((story) =>
+            timelineEvent.acf.basic_info.related_stories.includes(story.id)
+          )
+        : null;
   }
 
   return (
@@ -89,10 +106,8 @@ const TimelinesTemplate = ({
           className='font-light md:text-lg mt-1'
         />
       </div>
-      {subSlugs?.length > 0 &&
-        !![...timeLineEventsDe, ...timeLineEventsEn]?.find(
-          (te) => te.slug === subSlugs[0]
-        ) && (
+      {params?.deepSlug &&
+        timelineEvents?.find((te) => te.slug == params.deepSlug) && (
           <TimelineEventPage
             timelineEvent={timelineEvent}
             nextSlug={nextSlug}
@@ -104,7 +119,7 @@ const TimelinesTemplate = ({
             baseLink={baseLink}
             timelineTopics={timelineTopics}
             allMedia={allMedia}
-            stories={stories}
+            stories={relatedStories}
             allPersons={allPersons}
           />
         )}

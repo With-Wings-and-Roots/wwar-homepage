@@ -11,13 +11,13 @@ export const fetchMediaFromId = async (mediaId) => {
   const data = await res.json();
   return data;
 };
-export async function fetchMediaByIds(ids = []) {
+export async function fetchMediaByIds(ids = [], lang = 'en') {
   const base = process.env.NEXT_PUBLIC_CMS_URL;
 
   try {
     const media = await Promise.all(
       ids.map((id) =>
-        fetch(`${base}/wp-json/wp/v2/media/${id}`).then((r) =>
+        fetch(`${base}/wp-json/wp/v2/media/${id}?lang=${lang}`).then((r) =>
           r.ok ? r.json() : null
         )
       )

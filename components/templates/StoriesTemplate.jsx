@@ -2,20 +2,39 @@ import StoriesPageWrapper from '@/components/stories/StoriesPageWrapper';
 import PageComponent from '@/components/page/storyPageComponent';
 import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
+import {
+  fetchAllTopics,
+  getAllPersons,
+  getAllStories,
+} from '@/utilities/stories';
+import { fetchTimelinesByIds, getTimeline } from '@/utilities/timeline';
+import { fetchMediaByIds } from '@/utilities/media';
 
-const StoriesTemplate = ({
-  stories,
-  allMedia,
-  allPersons,
-  topics,
-  params,
-  data,
-  subSlugs,
-  baseLink,
-  timeLineEventsDe,
-  timeLineEventsEn,
-}) => {
-  const allEvents = [...(timeLineEventsDe || []), ...(timeLineEventsEn || [])];
+const StoriesTemplate = async ({ params, data }) => {
+  const currentSlug = params.deepSlug?.[0];
+  const [stories, allPersons, topics] = await Promise.all([
+    getAllStories(params.lang),
+    getAllPersons(),
+    fetchAllTopics(params.lang),
+  ]);
+  const relatedEventsIds = [
+    ...new Set(
+      stories.flatMap((e) => e?.acf?.related_events || []).filter(Boolean)
+    ),
+  ];
+  const allRelatedEvents = await fetchTimelinesByIds(
+    relatedEventsIds,
+    params.lang
+  );
+  const mediaIds = [
+    ...new Set([
+      ...stories.map((e) => e?.featured_media).filter(Boolean),
+
+      ...allRelatedEvents.map((s) => s?.featured_media).filter(Boolean),
+    ]),
+  ];
+  const allMedia = await fetchMediaByIds(mediaIds, params.lang);
+
   return (
     <div>
       <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative'>
@@ -41,26 +60,26 @@ const StoriesTemplate = ({
           </div>
         </div>
       </div>
-      {subSlugs?.length > 0 &&
-        !!stories?.find((s) => s.slug === subSlugs[0]) && (
-          <PageComponent
-            lang={params.lang}
-            paramsStory={subSlugs[0]}
-            stories={stories}
-            topics={topics}
-            allMedia={allMedia}
-            allPersons={allPersons}
-            baseLink={baseLink}
-            allEvents={allEvents}
-          />
-        )}
+      {currentSlug && !!stories?.find((s) => s.slug == currentSlug) && (
+        <PageComponent
+          lang={params.lang}
+          paramsStory={currentSlug}
+          stories={stories}
+          topics={topics}
+          allMedia={allMedia}
+          allPersons={allPersons}
+          baseLink={`/${params.lang}/${params.slug}/`}
+          closeLink={`/${params.lang}/${params.slug}/`}
+          allEvents={allRelatedEvents}
+        />
+      )}
       <StoriesPageWrapper
         lang={params.lang}
         stories={stories}
         allMedia={allMedia}
         allPersons={allPersons}
         topics={topics}
-        baseLink={baseLink}
+        baseLink={`/${params.lang}/${params.slug}/`}
       />
     </div>
   );
