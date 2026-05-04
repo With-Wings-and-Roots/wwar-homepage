@@ -7,7 +7,7 @@ const SidebarContentTypeStory = async ({ content, lang }) => {
   const story =
     Array.isArray(content.sidebar_content_featured_story) &&
     content.sidebar_content_featured_story.length > 0
-      ? await getStory(content.sidebar_content_featured_story[0]?.ID, lang)
+      ? await getStory(content.sidebar_content_featured_story[0], lang)
       : null;
   const personId = story?.person?.[0];
   const person = await getPerson(personId, lang);
@@ -24,7 +24,7 @@ const SidebarContentTypeStory = async ({ content, lang }) => {
         <div className='w-full aspect-video [&_iframe]:w-full [&_iframe]:h-full'>
           <div
             dangerouslySetInnerHTML={{
-              __html: story?.acf?.video_embed,
+              __html: story?.acf?.video_embed || '',
             }}
           />
         </div>
