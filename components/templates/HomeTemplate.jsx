@@ -262,17 +262,23 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
                 className='font-medium md:text-lg mt-1'
               />
               <div className='flex flex-col mt-6 gap-y-4 items-start'>
-                {data.acf?.resources_pages?.map((page, pI) => (
-                  <Link
-                    key={pI}
-                    href={createLocalLink(
-                      pages.find((p) => p.id === page.linked_page.ID)?.link
-                    )}
-                    className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
-                  >
-                    {page.linked_page.post_title}
-                  </Link>
-                ))}
+                {data.acf?.resources_pages?.map((page, pI) => {
+                  const matchedPage = pages?.find(
+                    (p) => p.id === page?.linked_page
+                  );
+
+                  if (!matchedPage) return null;
+
+                  return (
+                    <Link
+                      key={pI}
+                      href={createLocalLink(matchedPage?.link || '/')}
+                      className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2 transition-all uppercase inline-flex'
+                    >
+                      {matchedPage?.title?.rendered || 'Untitled'}
+                    </Link>
+                  );
+                })}
                 <Link
                   key={'for-educators'}
                   href={'/'}

@@ -18,13 +18,11 @@ import {
   getAllMedia,
   getAllPersons,
   getAllStories,
-  getStoryById,
 } from '@/utilities/stories';
 import {
   getTimeline,
   getTimelineCountries,
   getTimelineEras,
-  getTimelineEventById,
   getTimelineEvents,
   getTimelineTopics,
 } from '@/utilities/timeline';
@@ -558,154 +556,5 @@ const Page = async ({ params, searchParams }) => {
     </>
   );
 };
-
-export async function generateStaticParams() {
-  let paths = [];
-  const languages = ['en', 'de', 'ed'];
-
-  for (const lang of languages) {
-    const pages = await getAllPages(lang);
-    const stories = await getAllStories(lang);
-    const timelineEvents = await getTimelineEvents(lang);
-    const posts = await getAllPosts(lang, 'posts');
-
-    for (const page of pages) {
-      const url = new URL(page.link);
-      let urlPageSlug = url.pathname
-        .replace(/^\/|\/$/g, '')
-        .replace(/^(de\/|en\/|ed\/)/, '');
-
-      if (urlPageSlug === 'de' || urlPageSlug === 'ed') {
-        urlPageSlug = '';
-      }
-
-      const baseSlugs = urlPageSlug.split('/').filter(Boolean);
-
-      // Add the base page path
-      paths.push({ lang, slugs: baseSlugs });
-
-      // Conditionally add paths for stories, timeline events, and posts
-      if (page.template === 'page_stories.php') {
-        stories.forEach((story) => {
-          paths.push({
-            lang,
-            slugs: [...baseSlugs, story.slug],
-          });
-        });
-      }
-
-      if (page.template === 'page_timelines.php') {
-        timelineEvents.forEach((event) => {
-          paths.push({ lang, slugs: [...baseSlugs, event.slug] });
-        });
-        paths.push({ lang, slugs: [...baseSlugs, 'info'] });
-      }
-
-      if (page.template === 'page_blog.php') {
-        posts.forEach((post) => {
-          paths.push({
-            lang,
-            slugs: [...baseSlugs, post.slug],
-          });
-        });
-      }
-
-      if (page.template === 'page_collaborators.php') {
-        page.acf?.team?.forEach((member) => {
-          const teamMemberSlug = member?.name?.replace(/ /g, '-');
-          paths.push({
-            lang,
-            slugs: [...baseSlugs, teamMemberSlug],
-          });
-        });
-      }
-    }
-  }
-
-  return paths;
-}
-
-export async function generateMetadata({ params }) {
-  const pages = await getAllPages(params.lang);
-
-  // find page by slugs
-  let pageSlugs = [...(params.slugs ?? [])];
-  let pageSlug = '';
-  let subSlugs = [];
-  let pageObj;
-  let pageData;
-  if (pageSlugs.length > 0) {
-    while (pageSlugs.length > 0) {
-      pageObj = pages.find((page) => {
-        const url = new URL(page.link);
-        const urlPageSlug = url
-          .toString()
-          .substring(url.origin.length)
-          .replace(/^\/|\/$/g, '')
-          .replace(/^(de\/|en\/|ed\/)/, '');
-        return urlPageSlug === pageSlugs?.join('/');
-      });
-      if (pageObj) {
-        pageSlug = pageObj.link;
-        break;
-      }
-      subSlugs = [...subSlugs, pageSlugs.pop()];
-    }
-    if (!pageObj) {
-      const frontpageId = await getFrontpageId(params.lang);
-      pageObj = pages.find((page) => page.id === parseInt(frontpageId));
-    }
-  } else {
-    const frontpageId = await getFrontpageId(params.lang);
-    pageObj = pages.find((page) => page.id === parseInt(frontpageId));
-  }
-
-  // get page
-  if (pageObj) {
-    let seoData;
-
-    //Check if its timeline or story, because these pages are not handled by get all pages func
-    const isTimelineEvent =
-      pageObj?.template === 'page_timelines.php' && params.slugs?.length > 1;
-    const isStory =
-      pageObj?.template === 'page_stories.php' && params.slugs?.length > 1;
-
-    if (isTimelineEvent) {
-      const allEvents = await getTimelineEvents(params.lang);
-      const timelineEvent = allEvents.find((e) => e.slug === params.slugs[1]);
-      seoData = timelineEvent?.seo;
-    } else if (isStory) {
-      const allStories = await getAllStories(params.lang);
-      const story = allStories.find((e) => e.slug === params.slugs[1]);
-      seoData = story?.seo;
-    } else {
-      pageData = await getPage(params.lang, pageObj.id);
-      seoData = pageData.seo;
-    }
-
-    return {
-      metadataBase: process.env.PUBLIC_URL,
-      description: seoData?._genesis_description,
-      openGraph: {
-        title: seoData?._open_graph_title,
-        description: seoData?._open_graph_description,
-        images: [
-          {
-            url: seoData?._social_image_url,
-          },
-        ],
-      },
-      twitter: {
-        title: seoData?._twitter_title,
-        description: seoData?._twitter_description,
-        images: [
-          {
-            url: seoData?._social_image_url,
-          },
-        ],
-      },
-    };
-  }
-}
 
 export default Page;
