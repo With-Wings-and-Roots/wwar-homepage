@@ -8,6 +8,7 @@ import { setActiveCollection } from '@/store/collections';
 import { activatedTopic } from '@/store/topics';
 import { setActiveCurriculum } from '@/store/curriculam';
 import { storySelected } from '@/store/selectedStory';
+import { getTranslatedUmbrella } from '@/utilities/umbrella';
 
 const UmbrellaCards = ({ lang }) => {
   const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const UmbrellaCards = ({ lang }) => {
   const allUmbrellas = useSelector(
     (state) => state.entities.umbrella?.allUmbrellas
   );
+  console.log('All umbrellas from store:', allUmbrellas);
   const activeUmbrella = useSelector(
     (state) => state.entities.umbrella?.activeUmbrella
   );
@@ -55,7 +57,9 @@ const UmbrellaCards = ({ lang }) => {
         className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-50'
       />
 
-      <h2 className='text-2xl md:text-3xl font-light mb-6'>Explore by Theme</h2>
+      <h2 className='text-2xl md:text-3xl font-light mb-6'>
+        {lang === 'en' ? 'Explore by Theme' : 'Entdecken Sie nach Themen'}
+      </h2>
 
       {/* Table of contents list */}
       <ul className='flex flex-col divide-y divide-white/20'>
@@ -83,7 +87,7 @@ const UmbrellaCards = ({ lang }) => {
                 }
               `}
             >
-              {i + 1} : {umbrella}
+              {i + 1} : {getTranslatedUmbrella(umbrella, lang)}{' '}
             </li>
           );
         })}

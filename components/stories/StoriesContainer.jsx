@@ -168,7 +168,10 @@ const StoriesContainer = ({ baseLink, lang: language, exploreArchiveText }) => {
         className='font-light md:text-lg mt-4'
       />
       {/* SEARCH + TABS + CITIES + PAGINATION */}
-      <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6  items-center my-10'>
+      <div
+        className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6  items-center my-10'
+        id='stories-archive'
+      >
         {/* Tabs */}
         <div className='col-span-2 sm:col-span-1 w-full'>
           <TabsDropdown

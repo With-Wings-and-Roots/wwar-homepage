@@ -13,6 +13,7 @@ import { collectionsAdded } from '@/store/collections';
 import { citiesAdded } from '@/store/cities';
 import CollectionsChips from './CollectionTabs';
 import { storySelected } from '@/store/selectedStory';
+import Image from 'next/image';
 
 const StoriesPageContainer = ({
   stories,
@@ -26,8 +27,10 @@ const StoriesPageContainer = ({
   curriculumData,
   cities,
   exploreArchiveText,
+  data,
 }) => {
   const dispatch = useDispatch();
+  const ctaData = data?.acf?.intro.cta_storyteller || [];
 
   useEffect(() => {
     dispatch(storiesAdded({ stories }));
@@ -58,6 +61,45 @@ const StoriesPageContainer = ({
 
   return (
     <>
+      {/* ✅ Stories grid / Archive */}
+      <StoriesContainer
+        baseLink={baseLink}
+        lang={lang}
+        exploreArchiveText={exploreArchiveText}
+      />
+      <div className=' bg-wwr_offwhite text-black py-20'>
+        <div className='flex flex-col lg:flex-row items-start gap-12'>
+          {/* Text + CTA */}
+          <div className='lg:w-1/2 '>
+            <h2 className='text-2xl md:text-3xl font-light mb-8'>
+              {lang === 'en'
+                ? 'Explore by Storytellers'
+                : 'Explorar por Narradores'}
+            </h2>
+            <p className='font-light md:text-lg mt-6'>
+              {data.acf?.intro?.storyteller_cta_description}
+            </p>
+            <Link
+              key={ctaData?.title || 'cta'}
+              href={createLocalLink(ctaData?.url)}
+              className='inline-block rounded-lg mt-8 px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
+            >
+              {ctaData?.title}
+            </Link>
+          </div>
+
+          {/* Image */}
+          <div className='lg:w-1/2'>
+            <Image
+              src={data.acf?.intro?.storyteller_image}
+              alt='Storyteller'
+              width={600}
+              height={400}
+              className='w-full h-[350px] object-cover rounded'
+            />
+          </div>
+        </div>
+      </div>
       <CurriculumPathways
         lang={lang}
         curriculumData={curriculumData}
@@ -80,8 +122,9 @@ const StoriesPageContainer = ({
           </Link>
         )}
       </div>
+
       {collections?.length > 0 && (
-        <div className='my-16'>
+        <div className='my-16' id='special-collections'>
           <h2 className='text-2xl md:text-3xl font-light mt-16 py-10'>
             {lang === 'en'
               ? 'Explore Special Collections'
@@ -91,13 +134,6 @@ const StoriesPageContainer = ({
           <CollectionsChips lang={lang} />
         </div>
       )}
-
-      {/* ✅ Stories grid / Archive */}
-      <StoriesContainer
-        baseLink={baseLink}
-        lang={lang}
-        exploreArchiveText={exploreArchiveText}
-      />
     </>
   );
 };

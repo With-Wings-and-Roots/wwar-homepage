@@ -103,25 +103,6 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
         </div>
       </section>
 
-      {/* STATS */}
-      <section className=''>
-        <div
-          className='px-8 md:px-16 xl:px-48 relative bg-black'
-          style={{
-            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-          }}
-        >
-          <Image
-            src={gfx_bg_orange}
-            alt=''
-            className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-10'
-          />
-          <div className='text-wwr_yellow_orange text-xl lg:text-3xl xl:text-5xl text-center py-14 leading-relaxed'>
-            <WysiwygContent content={data.acf?.info_title} />
-          </div>
-        </div>
-      </section>
-
       {/* WHAT WE OFFER */}
       <section className='px-8 md:px-16 xl:px-48'>
         <h2 className='text-3xl font-medium mb-10'>What We Offer</h2>
@@ -161,6 +142,25 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* STATS */}
+      <section className=''>
+        <div
+          className='px-8 md:px-16 xl:px-48 relative bg-black'
+          style={{
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+          }}
+        >
+          <Image
+            src={gfx_bg_orange}
+            alt=''
+            className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-10'
+          />
+          <div className='text-wwr_yellow_orange text-xl lg:text-3xl xl:text-5xl text-center py-14 leading-relaxed'>
+            <WysiwygContent content={data.acf?.info_title} />
+          </div>
         </div>
       </section>
 
@@ -209,6 +209,15 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
               </div>
             </Link>
           ))}
+        </div>
+        {/* CTA */}
+        <div className='mt-12 flex justify-center'>
+          <a
+            href={createLocalLink('/workshops')}
+            className='inline-block bg-wwr_teal text-white px-6 py-3 rounded-lg hover:scale-105 transition-transform duration-200'
+          >
+            {lang === 'en' ? 'View All Workshops' : 'Alle Workshops ansehen'}
+          </a>
         </div>
       </section>
 

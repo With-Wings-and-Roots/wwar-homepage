@@ -72,3 +72,22 @@ export function resolvePrimaryUmbrella(topics, theme) {
   // STEP 3: final fallback
   return UMBRELLA_DIMENSIONS.SENSE_OF_SELF_BELONGING;
 }
+const UMBRELLA_TRANSLATIONS = {
+  en: {
+    'Difference, Power & Exclusion': 'Difference, Power & Exclusion',
+    'Movement, Status & Borders': 'Movement, Status & Borders',
+    'Voice, Action & Resistance': 'Voice, Action & Resistance',
+    'Family, Upbringing & Everyday Life': 'Family, Upbringing & Everyday Life',
+    'Sense of Self & Belonging': 'Sense of Self & Belonging',
+  },
+  de: {
+    'Difference, Power & Exclusion': 'Differenz, Macht & Ausgrenzung',
+    'Movement, Status & Borders': 'Bewegung, Status & Grenzen',
+    'Voice, Action & Resistance': 'Stimme, Aktion & Widerstand',
+    'Family, Upbringing & Everyday Life': 'Familie, Erziehung & Alltag',
+    'Sense of Self & Belonging': 'Selbstbild & Zugehörigkeit',
+  },
+};
+export const getTranslatedUmbrella = (umbrella, lang) => {
+  return UMBRELLA_TRANSLATIONS[lang]?.[umbrella] || umbrella;
+};

@@ -5,10 +5,8 @@ import PageComponent from '@/components/page/storyPageComponent';
 import React from 'react';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import { resolvePrimaryUmbrella } from '@/utilities/umbrella';
-import { resolvePrimaryCurriculum } from '@/utilities/curriculam';
 import Link from 'next/link';
 import { createLocalLink } from '@/utilities/links';
-import Image from 'next/image';
 
 const StoriesTemplate = ({
   stories,
@@ -40,6 +38,13 @@ const StoriesTemplate = ({
       primary_umbrella_dimension: resolvePrimaryUmbrella(storyTopics, theme),
     };
   });
+  // console.table(
+  //   (stories || []).map((story) => ({
+  //     title: story.title?.rendered,
+  //     theme: story.acf?.theme,
+  //     lang: params?.lang,
+  //   }))
+  // );
   const cities = (stories || [])
     .map((story) => story.acf?.city) // extract city from each story
     .filter(Boolean) // remove undefined/null
@@ -47,28 +52,106 @@ const StoriesTemplate = ({
   const ctaData = data?.acf?.intro.cta_storyteller || [];
 
   return (
-    <div>
-      <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative bg-wwr_offwhite'>
+    <div className='bg-wwr_offwhite  mt-[-16px] md:mt-[-24px]'>
+      <div className='px-8 md:px-16 xl:px-48 pt-16 lg:pt-24 relative bg-wwr_offwhit'>
         <h1
           dangerouslySetInnerHTML={{ __html: data.acf?.page_title }}
           className='text-3xl md:text-6xl font-light'
         />
-        <WysiwygContent
-          content={data.acf?.intro?.video}
-          className='video mt-12'
-        />
-        <div className=' mt-12'>
-          <div className=''>
+        <div className='grid grid-cols-5 mt-12 gap-8'>
+          <div className='col-span-5 xl:col-span-3'>
+            <WysiwygContent
+              content={data.acf?.intro?.video}
+              className='video'
+            />
+          </div>
+          <div className='col-span-5 xl:col-span-2'>
             <h2 className='text-2xl lg:text-4xl font-thin'>
               {data.acf?.intro?.title}
             </h2>
             <WysiwygContent
               content={data.acf?.intro?.text}
-              className='font-light md:text-lg mt-6'
+              className='font-light md:text-lg mt-4'
             />
           </div>
         </div>
       </div>
+      <div className='flex gap-6 px-8 md:px-16 xl:px-48  pb-16'>
+        <Link
+          href='#stories-archive'
+          className='
+    self-start
+    px-6 py-3
+    uppercase text-md tracking-wide
+    transition-all
+    bg-wwr_yellow_orange text-black
+    hover:text-white
+    rounded-lg
+  '
+        >
+          {params?.lang === 'en'
+            ? 'Browse Full Archive'
+            : 'Gesamtes Archiv durchsuchen'}
+        </Link>
+        <Link
+          key={ctaData?.cta?.title || 'cta'}
+          href={createLocalLink(ctaData?.url)}
+          className='
+      self-start
+      px-6 py-3
+      uppercase text-md tracking-wide
+      transition-all
+      bg-wwr_yellow_orange text-black
+      hover:text-white
+      rounded-lg
+    '
+        >
+          {ctaData?.title}
+        </Link>
+        <Link
+          href='#special-collections'
+          className='
+      self-start
+    px-6 py-3
+    uppercase text-md tracking-wide
+    transition-all
+    bg-wwr_yellow_orange text-black
+    hover:text-white
+    rounded-lg
+    '
+        >
+          {params?.lang === 'en'
+            ? 'Explore Special Collections'
+            : 'Sondersammlungen entdecken'}
+        </Link>
+      </div>
+      {subSlugs?.length > 0 &&
+        !!stories?.find((s) => s.slug === subSlugs[0]) && (
+          <PageComponent
+            lang={params.lang}
+            paramsStory={subSlugs[0]}
+            stories={storiesWithUmbrella}
+            topics={topics}
+            allMedia={allMedia}
+            allPersons={allPersons}
+            baseLink={baseLink}
+            allEvents={allEvents}
+          />
+        )}
+      <StoriesPageWrapper
+        lang={params.lang}
+        data={data}
+        curriculumData={data.acf?.curriculum_pathways || []}
+        materialCtaData={data.acf?.education_material_link || []}
+        stories={storiesWithUmbrella}
+        allMedia={allMedia}
+        allPersons={allPersons}
+        topics={topics}
+        collections={collections}
+        baseLink={baseLink}
+        cities={cities}
+        exploreArchiveText={data.acf?.explore_archive_text}
+      />
       {/* CTA Section */}
       {data.acf?.intro?.have_a_story_cta && (
         <div className='px-8 md:px-16 xl:px-48 relative bg-wwr_light text-black py-20'>
@@ -96,83 +179,6 @@ const StoriesTemplate = ({
           </Link>
         </div>
       )}
-      <div className='px-8 md:px-16 xl:px-48 bg-wwr_offwhite text-black py-20'>
-        <div className='flex flex-col lg:flex-row items-start gap-12'>
-          {/* Text + CTA */}
-          <div className='lg:w-1/2 '>
-            <h2 className='text-2xl md:text-3xl font-light mb-8'>
-              {params?.lang === 'en'
-                ? 'Explore by Storytellers'
-                : 'Explorar por Narradores'}
-            </h2>
-            <p className='font-light md:text-lg mt-6'>
-              {data.acf?.intro?.storyteller_cta_description}
-            </p>
-            <Link
-              key={ctaData?.title || 'cta'}
-              href={createLocalLink(ctaData?.url)}
-              className='inline-block rounded-lg mt-8 px-6 py-3 uppercase text-sm md:text-lg tracking-wide transition-all bg-wwr_yellow_orange text-black hover:text-white'
-            >
-              {ctaData?.title}
-            </Link>
-          </div>
-
-          {/* Image */}
-          <div className='lg:w-1/2'>
-            <Image
-              src={data.acf?.intro?.storyteller_image}
-              alt='Storyteller'
-              width={600}
-              height={400}
-              className='w-full h-[350px] object-cover rounded'
-            />
-          </div>
-        </div>
-      </div>
-
-      {subSlugs?.length > 0 &&
-        !!stories?.find((s) => s.slug === subSlugs[0]) && (
-          <PageComponent
-            lang={params.lang}
-            paramsStory={subSlugs[0]}
-            stories={storiesWithUmbrella}
-            topics={topics}
-            allMedia={allMedia}
-            allPersons={allPersons}
-            baseLink={baseLink}
-            allEvents={allEvents}
-          />
-        )}
-      <StoriesPageWrapper
-        lang={params.lang}
-        curriculumData={data.acf?.curriculum_pathways || []}
-        materialCtaData={data.acf?.education_material_link || []}
-        stories={storiesWithUmbrella}
-        allMedia={allMedia}
-        allPersons={allPersons}
-        topics={topics}
-        collections={collections}
-        baseLink={baseLink}
-        cities={cities}
-        exploreArchiveText={data.acf?.explore_archive_text}
-      />
-      <div className='flex justify-center gap-6 m-10'>
-        <Link
-          key={ctaData?.cta?.title || 'cta'}
-          href={createLocalLink(ctaData?.url)}
-          className='
-      self-start
-      px-6 py-3
-      uppercase text-sm md:text-lg tracking-wide
-      transition-all
-      bg-wwr_yellow_orange text-black
-      hover:text-white
-      rounded-lg
-    '
-        >
-          {ctaData?.title}
-        </Link>
-      </div>
     </div>
   );
 };

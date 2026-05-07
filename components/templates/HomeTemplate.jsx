@@ -279,13 +279,6 @@ const HomeTemplate = async ({ data, params, subSlugs }) => {
                     </Link>
                   );
                 })}
-                <Link
-                  key={'for-educators'}
-                  href={'/'}
-                  className='bg-black hover:bg-wwr_yellow_orange_hovered text-wwr_yellow_orange hover:text-black text-sm lg:text-lg font-normal px-5 py-2  transition-all uppercase inline-flex'
-                >
-                  For Educators
-                </Link>
               </div>
             </div>
           </div>

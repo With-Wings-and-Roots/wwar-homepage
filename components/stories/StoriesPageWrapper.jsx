@@ -13,6 +13,7 @@ const StoriesPageWrapper = ({
   materialCtaData,
   curriculumData,
   cities,
+  data,
   exploreArchiveText,
 }) => {
   const language = lang || 'en';
@@ -31,6 +32,7 @@ const StoriesPageWrapper = ({
           lang={language}
           baseLink={baseLink}
           cities={cities}
+          data={data}
           exploreArchiveText={exploreArchiveText}
         />
       </div>
