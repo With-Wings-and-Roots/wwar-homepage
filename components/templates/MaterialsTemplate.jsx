@@ -17,7 +17,11 @@ const MaterialsTemplate = ({
   const visibleMaterials = materials.filter((material) => {
     const hide = material?.acf?.hide_from_archive;
 
-    return hide === 'no' || hide === false; // handle both string and boolean cases
+    if (Array.isArray(hide)) {
+      return !hide.includes('yes');
+    }
+
+    return hide !== 'yes';
   });
   return (
     <>
