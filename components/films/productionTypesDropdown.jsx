@@ -1,0 +1,99 @@
+'use client';
+import React, { useState, useRef, useEffect } from 'react';
+
+const ProductionTypesDropdown = ({
+  productionTypes = [],
+  activeType,
+  onChange,
+  heading = 'Select a production type',
+  allLabel = 'All Films',
+}) => {
+  const dropdownRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Build options
+  const options = [
+    {
+      id: null,
+      label: allLabel,
+    },
+    ...productionTypes.map((type) => ({
+      id: type.id,
+      label: type.name,
+    })),
+  ];
+
+  const selectedOption = options.find((opt) => opt.id === activeType);
+
+  const handleSelect = (id) => {
+    onChange(id);
+    setOpen(false);
+  };
+
+  return (
+    <div className='w-full'>
+      <div className='relative w-full' ref={dropdownRef}>
+        {/* Button */}
+        <button
+          onClick={() => setOpen((prev) => !prev)}
+          className='
+            w-full text-left px-4 py-3
+            bg-wwr_rich_black text-wwr_yellow_orange
+            font-light rounded border border-black/20
+            flex justify-between items-center cursor-pointer
+            min-w-[200px]
+          '
+        >
+          <span className='truncate block'>
+            {!selectedOption ? heading : selectedOption.label}
+          </span>
+          <span className='ml-2 shrink-0'>▼</span>
+        </button>
+
+        {/* Dropdown */}
+        {open && (
+          <div
+            className='
+              absolute left-0 right-0 mt-1 bg-white border border-black/20 shadow-lg
+              z-[9999] max-h-60 overflow-y-auto rounded
+            '
+          >
+            {options.map((opt, i) => {
+              const isActive = activeType === opt.id;
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => handleSelect(opt.id)}
+                  className={`
+                    px-4 py-3 cursor-pointer transition-colors duration-200
+                    ${
+                      isActive
+                        ? 'bg-wwr_yellow_orange text-wwr_rich_black font-semibold'
+                        : 'hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
+                    }
+                  `}
+                >
+                  {opt.label}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductionTypesDropdown;

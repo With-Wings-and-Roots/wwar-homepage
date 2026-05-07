@@ -108,3 +108,10 @@ export async function getStoryBySlug(slug, lang = 'en') {
   const data = await res.json();
   return data.length > 0 ? data[0] : null;
 }
+
+export async function getStoryById(id, lang = 'en') {
+  const [data] = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/story/${id}?lang=${lang}`
+  );
+  return data;
+}

@@ -13,6 +13,8 @@ import TeamsTemplate from '@/components/templates/TeamsTemplate';
 import { getStoryBySlug } from '@/utilities/stories';
 import { getPostBySlug } from '@/utilities/posts';
 import { getTeamMemberById, getTeamMemberBySlug } from '@/utilities/team';
+import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
+import { getFilmBySlug } from '@/utilities/films';
 
 export const dynamicParams = true;
 
@@ -90,6 +92,14 @@ const Page = async ({ params }) => {
       const teamMember = await getTeamMemberBySlug(lastSlug, params.lang);
       if (!teamMember) return notFound();
       template = <TeamsTemplate data={pageData} params={params} />;
+      break;
+    }
+    case 'page_films.php': {
+      const film = await getFilmBySlug(lastSlug, params.lang);
+      if (lastSlug && !film) return notFound();
+      template = (
+        <SingleFilmTemplate data={pageData} params={params} film={film} />
+      );
       break;
     }
     default: {

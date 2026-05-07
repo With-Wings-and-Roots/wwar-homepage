@@ -19,6 +19,7 @@ import BlogTemplate from '@/components/templates/BlogTemplate';
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
+import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
 
 export const revalidate = 600;
 export const dynamicParams = false;
@@ -78,6 +79,9 @@ const Page = async ({ params }) => {
 
     case 'page_projects.php':
       template = <ProjectsTemplate data={pageData} />;
+      break;
+    case 'page_films.php':
+      template = <AllFilmsTemplate data={pageData} params={params} />;
       break;
 
     default:

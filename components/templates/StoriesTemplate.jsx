@@ -7,7 +7,7 @@ import {
   getAllPersons,
   getAllStories,
 } from '@/utilities/stories';
-import { fetchTimelinesByIds, getTimeline } from '@/utilities/timeline';
+import { fetchTimelinesByIds } from '@/utilities/timeline';
 import { fetchMediaByIds } from '@/utilities/media';
 
 const StoriesTemplate = async ({ params, data }) => {
