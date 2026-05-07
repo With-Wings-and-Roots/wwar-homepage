@@ -21,7 +21,7 @@ const StoryCardContainer = ({
           )?.source_url;
 
           const person = allPersons.find(
-            (person) => person.id === story.acf.person
+            (person) => person.id === story?.acf?.person
           );
 
           return (
