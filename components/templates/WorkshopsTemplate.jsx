@@ -17,8 +17,11 @@ const WorkshopsTemplate = async ({
   const visibleWorkshops = workshops.filter((workshop) => {
     const hide = workshop?.acf?.hide_from_archive;
 
-    // handle both boolean + string cases from WP
-    return hide === 'no';
+    const isHidden = Array.isArray(hide)
+      ? hide.includes('yes')
+      : hide === 'yes' || hide === true;
+
+    return !isHidden;
   });
   const workshopsWithImages = await Promise.all(
     visibleWorkshops.map(async (workshop) => {

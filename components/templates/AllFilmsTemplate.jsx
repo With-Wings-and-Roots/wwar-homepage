@@ -28,10 +28,19 @@ const AllFilmsTemplate = async ({
       featuredMedia = featuredFilm.acf.hero_image;
     }
   }
+  const visibleFilms = films.filter((film) => {
+    const hide = film?.acf?.hide_from_archive;
+
+    const isHidden = Array.isArray(hide)
+      ? hide.includes('yes')
+      : hide === 'yes';
+
+    return !isHidden;
+  });
 
   // Fetch posters
   const filmsWithMedia = await Promise.all(
-    films.map(async (film) => {
+    visibleFilms.map(async (film) => {
       let poster = film?.acf?.hero_image || film?.acf?.poster_image;
 
       if (typeof poster === 'number') {
