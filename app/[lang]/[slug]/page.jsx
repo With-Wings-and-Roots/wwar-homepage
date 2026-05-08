@@ -85,7 +85,7 @@ const Page = async ({ params }) => {
       break;
 
     default:
-      template = <DefaultTemplate data={pageData} />;
+      template = <DefaultTemplate data={pageData} params={params} />;
       break;
   }
 
