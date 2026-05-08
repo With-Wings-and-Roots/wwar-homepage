@@ -20,6 +20,7 @@ import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
 import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
+import NewsletterFlyout from '@/components/common/NewsletterFlyout';
 
 export const revalidate = 600;
 export const dynamicParams = false;
@@ -94,6 +95,7 @@ const Page = async ({ params }) => {
       {pageSettings?.google_analytics_id && (
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       )}
+      <NewsletterFlyout lang={lang} />
 
       {template}
     </>
