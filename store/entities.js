@@ -12,6 +12,7 @@ import headerReducer from './header';
 import rangeSliderReducer from './rangeSlider';
 import timelineReducer from './timeline';
 import timelinesReducer from './timelines';
+import timelineErasReducer from './timelineEras';
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   rangeSlider: rangeSliderReducer,
   timeline: timelineReducer,
   timelines: timelinesReducer,
+  timelineEras: timelineErasReducer,
 });

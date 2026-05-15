@@ -8,7 +8,7 @@ import { storySelected } from '@/store/selectedStory';
 const SingleEraButton = ({ era, lang: language }) => {
   const dispatch = useDispatch();
   const selectedEra = useSelector(
-    (state) => state.entities.timelineEras.activeEra
+    (state) => state.entities.timelineEras?.activeEra
   );
 
   const selectEra = () => {
@@ -33,8 +33,9 @@ const SingleEraButton = ({ era, lang: language }) => {
 };
 
 const ErasTabs = ({ lang: language }) => {
-  const allEras = useSelector((state) => state.entities.timelineEras.allEras);
-
+  const allEras = useSelector(
+    (state) => state.entities.timelineEras?.allEras || []
+  );
   return (
     <div className='flex px-8 md:px-16 xl:px-48 relative flex-wrap gap-0.5 my-8 pb-4 items-center'>
       <SingleEraButton era={null} lang={language} />

@@ -6,7 +6,11 @@ import BlogTemplate from '@/components/templates/BlogTemplate';
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 
 import { getFrontpageId, getPage, getPageBySlug } from '@/utilities/pages';
-import { getTimelineEvent } from '@/utilities/timeline';
+import {
+  getTimelineCountries,
+  getTimelineCountryBySlug,
+  getTimelineEvent,
+} from '@/utilities/timeline';
 
 import HomeTemplate from '@/components/templates/HomeTemplate';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
@@ -15,6 +19,7 @@ import { getPostBySlug } from '@/utilities/posts';
 import { getTeamMemberById, getTeamMemberBySlug } from '@/utilities/team';
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 import { getFilmBySlug } from '@/utilities/films';
+import TimelineLandingTemplate from '@/components/templates/TimelineLandingTemplate';
 
 export const dynamicParams = true;
 
@@ -62,10 +67,15 @@ const Page = async ({ params }) => {
      * TIMELINES
      */
     case 'page_timelines.php': {
-      const event = await getTimelineEvent(lastSlug, params.lang);
+      if (lastSlug === 'info') {
+        template = <TimelineLandingTemplate data={pageData} params={params} />;
+      } else {
+        const country = await getTimelineCountryBySlug(lastSlug, params.lang);
 
-      if (!event) return notFound();
-      template = <TimelinesTemplate data={pageData} params={params} />;
+        if (!country) return notFound();
+
+        template = <TimelinesTemplate data={pageData} params={params} />;
+      }
       break;
     }
 
