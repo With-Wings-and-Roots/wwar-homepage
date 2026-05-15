@@ -29,6 +29,7 @@ const TimelineEventPage = ({
   stories,
   allPersons,
   lang,
+  baseLinkForRelated,
 }) => {
   const {
     timeline_event_topic,
@@ -163,10 +164,10 @@ const TimelineEventPage = ({
               <RelatedStoriesContainer
                 relatedStories={relatedStories}
                 lang={lang}
+                baseLink={baseLinkForRelated}
                 allMedia={allMedia}
                 allPersons={allPersons}
                 hoverZoom={false}
-                baseLink={baseLink}
               />
             )}
           </div>

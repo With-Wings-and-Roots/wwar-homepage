@@ -11,7 +11,7 @@ import { fetchTimelinesByIds } from '@/utilities/timeline';
 import { fetchMediaByIds } from '@/utilities/media';
 
 const StoriesTemplate = async ({ params, data }) => {
-  const currentSlug = params.deepSlug?.[0];
+  const currentSlug = params.deepSlug;
   const [stories, allPersons, topics] = await Promise.all([
     getAllStories(params.lang),
     getAllPersons(),
@@ -34,7 +34,6 @@ const StoriesTemplate = async ({ params, data }) => {
     ]),
   ];
   const allMedia = await fetchMediaByIds(mediaIds, params.lang);
-
   return (
     <div>
       <div className='px-8 md:px-16 xl:px-48 py-16 lg:pt-24 relative'>

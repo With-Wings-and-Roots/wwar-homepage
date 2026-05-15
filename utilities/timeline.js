@@ -1,4 +1,3 @@
-import { get } from 'http';
 import { fetchAllData } from './general';
 
 export const getTimelineEvents = async (lang = 'en') => {
@@ -117,3 +116,25 @@ export const getTimelineCountryBySlug = async (slug, lang = 'en') => {
   const data = await res.json();
   return data.length > 0 ? data[0] : null;
 };
+export async function getTimelineEvent(slug, lang = 'en') {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline_event?slug=${slug}&lang=${lang}&acf_format=standard`
+  );
+  const data = await res.json();
+  return data.length > 0 ? data[0] : null;
+}
+export async function fetchTimelinesByIds(ids = [], lang = 'en') {
+  const base = process.env.NEXT_PUBLIC_CMS_URL;
+  try {
+    const timelines = await Promise.all(
+      ids.map((id) =>
+        fetch(`${base}/wp-json/wp/v2/timeline_event/${id}?lang=${lang}`).then(
+          (r) => (r.ok ? r.json() : null)
+        )
+      )
+    );
+    return timelines.filter(Boolean);
+  } catch {
+    return [];
+  }
+}

@@ -4,6 +4,8 @@ import { getFrontpageId, getPage, getPageBySlug } from '@/utilities/pages';
 
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 import { getFilmBySlug } from '@/utilities/films';
+import { getTimelineEvent } from '@/utilities/timeline';
+import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 
 export const dynamicParams = true;
 
@@ -41,6 +43,12 @@ const Page = async ({ params }) => {
           film={film}
         />
       );
+      break;
+    }
+    case 'page_timelines.php': {
+      const event = await getTimelineEvent(relatedSlug, params.lang);
+      if (relatedSlug && !event) return notFound();
+      template = <TimelinesTemplate data={pageData} params={params} />;
       break;
     }
     default: {

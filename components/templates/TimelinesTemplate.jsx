@@ -105,7 +105,7 @@ const TimelinesTemplate = async ({ params, data }) => {
   // =========================
 
   if (params.relatedPosts) {
-    const eventSlug = params.relatedPosts;
+    const eventSlug = params.relatedPosts[0];
 
     const timelineEvent = timelineEvents.find((e) => e.slug === eventSlug);
 
@@ -143,7 +143,7 @@ const TimelinesTemplate = async ({ params, data }) => {
             timelineEvent.acf.basic_info.related_stories.includes(story.id)
           )
         : null;
-
+    const baseLinkForRelated = `/${params.lang}/${params.slug}/`;
     return (
       <TimelineEventPage
         timelineEvent={timelineEvent}
@@ -154,6 +154,7 @@ const TimelinesTemplate = async ({ params, data }) => {
         relatedStories={relatedStories}
         lang={params.lang?.toLowerCase()}
         baseLink={baseLink}
+        baseLinkForRelated={baseLinkForRelated}
         timelineTopics={timelineTopics}
         allMedia={allMedia}
         stories={relatedStories}
