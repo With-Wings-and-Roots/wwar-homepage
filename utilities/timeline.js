@@ -122,3 +122,9 @@ export async function getTimelineEvent(slug, lang = 'en') {
   const data = await res.json();
   return data.length > 0 ? data[0] : null;
 }
+export const getTimelineCountries = async (lang = 'en') => {
+  const data = await fetchAllData(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/timeline?lang=${lang}`
+  );
+  return data;
+};

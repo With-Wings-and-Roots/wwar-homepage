@@ -21,6 +21,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import TeamsTemplate from '@/components/templates/TeamsTemplate';
 import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
 import NewsletterFlyout from '@/components/common/NewsletterFlyout';
+import TimelineLandingTemplate from '@/components/templates/TimelineLandingTemplate';
 
 export const revalidate = 600;
 export const dynamicParams = false;
@@ -43,7 +44,7 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_timelines.php':
-      template = <TimelinesTemplate data={pageData} params={params} />;
+      template = <TimelineLandingTemplate data={pageData} params={params} />;
       break;
 
     case 'page_about.php':
