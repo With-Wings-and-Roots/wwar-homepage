@@ -11,9 +11,27 @@ import { fetchPersonsByIds, fetchStoriesByIds } from '@/utilities/stories';
 import StoryCardContainer from '@/components/stories/StoryCardContainer';
 import PageComponent from '@/components/page/storyPageComponent';
 import FlexibleContent from '@/components/home/flexibleContent';
-import { fetchMediaByIds } from '@/utilities/media';
-import { getTimelinesByIds } from '@/utilities/timeline';
+import { fetchMediaByIds, fetchMediaFromId } from '@/utilities/media';
+import {
+  fetchTimelinesByIds,
+  getTimelineCountries,
+} from '@/utilities/timeline';
 import { fetchPagesByIds } from '@/utilities/pages';
+import TimelineCountriesSection from '../timelines/timelineCountriesSection';
+const fetchImageForTimelineContries = async (timelineCountries) => {
+  const countriesWithImages = await Promise.all(
+    timelineCountries.map(async (country) => {
+      const mediaId = country.acf?.image;
+      if (mediaId) {
+        const i = await fetchMediaFromId(mediaId);
+        return { ...country, imageUrl: i.source_url };
+      } else {
+        return { ...country, imageUrl: null };
+      }
+    })
+  );
+  return countriesWithImages;
+};
 
 const HomeTemplate = async ({ data, params, subSlug }) => {
   const linkedStoryIds =
@@ -46,13 +64,21 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
   ];
 
   // Step 3: fetch dependent data in parallel
-  const [allMedia, allPersons, allTimelines, relatedStories] =
-    await Promise.all([
-      fetchMediaByIds(mediaIds),
-      fetchPersonsByIds(personIds, params.lang),
-      getTimelinesByIds(timelineIds, params.lang),
-      fetchStoriesByIds(relatedStoryIds, params.lang),
-    ]);
+  const [
+    allMedia,
+    allPersons,
+    allTimelines,
+    relatedStories,
+    timelineCountries,
+  ] = await Promise.all([
+    fetchMediaByIds(mediaIds),
+    fetchPersonsByIds(personIds, params.lang),
+    fetchTimelinesByIds(timelineIds, params.lang),
+    fetchStoriesByIds(relatedStoryIds, params.lang),
+    getTimelineCountries(params.lang),
+  ]);
+  const timelineCountriesWithImages =
+    await fetchImageForTimelineContries(timelineCountries);
 
   // Step 4: merge stories
   const stories = [
@@ -188,18 +214,10 @@ const HomeTemplate = async ({ data, params, subSlug }) => {
           className='font-light md:text-lg mt-1'
         />
         <div className='flex mt-6 gap-x-4'>
-          <Link
-            href={createLocalLink(data.acf?.timelines_page)}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-          >
-            {data.acf?.timelines_us_button_label}
-          </Link>
-          <Link
-            href={createLocalLink(data.acf?.timelines_page)}
-            className='bg-wwr_yellow_orange text-black text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
-          >
-            {data.acf?.timelines_german_button_label}
-          </Link>
+          <TimelineCountriesSection
+            timelineCountries={timelineCountriesWithImages}
+            language={params.lang}
+          />
         </div>
       </div>
       <div className='relative min-h-screen'>
