@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/with-wings-and-roots/wwar-homepage:renderomg-v2-test
+          tags: ghcr.io/with-wings-and-roots/wwar-homepage:rendering-v2-test
           build-args: |
               NEXT_PUBLIC_CMS_URL=${{ vars.NEXT_PUBLIC_CMS_URL }}
               PUBLIC_URL=${{ vars.PUBLIC_URL }}
