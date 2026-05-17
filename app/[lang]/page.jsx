@@ -7,7 +7,7 @@ import NewsletterFlyout from '@/components/common/NewsletterFlyout';
 export const revalidate = 600; // ISR: 10 minutes
 export const dynamicParams = false;
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'de' }];
+  return [{ lang: 'en' }, { lang: 'de' }, { lang: 'ed' }];
 }
 
 const Page = async ({ params }) => {

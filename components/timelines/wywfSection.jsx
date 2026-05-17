@@ -1,78 +1,30 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import WysiwygContent from '../common/WysiwygContent';
 
 export default function WhatYouWillFindSection({
   heading,
   content,
-  previewImage,
-  previewAlt = 'Timeline preview',
+  previewVideo, // 👈 ANY URL (must already be embeddable)
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-
   return (
-    <>
-      <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 my-8'>
-        {/* Section Heading */}
-
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-12 '>
-          {/* LEFT COLUMN */}
-          <div>
-            <h2 className='font-medium text-xl lg:text-3xl mb-6 '>{heading}</h2>
-
-            <WysiwygContent className='prose max-w-none' content={content} />
-          </div>
-
-          {/* RIGHT COLUMN: Clickable Image */}
-          {previewImage && (
-            <div
-              onClick={() => setIsOpen(true)}
-              className='relative h-96 w-full border border-gray-200 overflow-hidden cursor-pointer group'
-            >
-              <Image
-                src={previewImage}
-                alt={previewAlt}
-                fill
-                className='object-cover group-hover:scale-105 transition-transform duration-300'
-              />
-
-              {/* Tooltip Overlay */}
-              <div className='absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center'>
-                <div className='mb-4 px-4 py-2 bg-black/70 text-white text-sm rounded-full'>
-                  Click to enlarge
-                </div>
-              </div>
-            </div>
-          )}
+    <section className='px-8 md:px-16 xl:px-48 relative pt-16 pb-16 my-8'>
+      <div className='grid grid-cols-2 gap-12'>
+        <div className='col-span-2 lg:col-span-1'>
+          <h2 className='text-2xl lg:text-4xl font-medium'>{heading}</h2>
+          <WysiwygContent
+            content={content}
+            className='font-light text-lg mt-4'
+          />
         </div>
-      </section>
-
-      {/* FULLSCREEN MODAL */}
-      {isOpen && (
-        <div
-          className='fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-6'
-          onClick={() => setIsOpen(false)}
-        >
-          <div className='relative w-full h-full max-w-6xl max-h-[90vh]'>
-            <Image
-              src={previewImage}
-              alt={previewAlt}
-              fill
-              className='object-contain'
-            />
-          </div>
-
-          {/* Close Button */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className='absolute top-6 right-6 text-white text-3xl'
-          >
-            ✕
-          </button>
+        <div className='col-span-2 lg:col-span-1'>
+          <div
+            className='video'
+            dangerouslySetInnerHTML={{ __html: previewVideo }}
+          />
         </div>
-      )}
-    </>
+      </div>
+    </section>
   );
 }

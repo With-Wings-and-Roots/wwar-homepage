@@ -31,7 +31,7 @@ const TimelinesPageWrapper = ({ lang, timelineCountries, data }) => {
       <WhatYouWillFindSection
         heading={data?.acf?.what_you_will_find_heading}
         content={data?.acf?.text}
-        previewImage={data?.acf?.image}
+        previewVideo={data?.acf?.image}
       />
       <LearnTimelines data={data.acf} />
       <HowToUseSection

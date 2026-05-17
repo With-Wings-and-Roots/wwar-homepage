@@ -110,7 +110,7 @@ export default Page;
  * NO POSTS, NO TIMELINE EVENTS, NO STORIES CHILDREN
  */
 export async function generateStaticParams() {
-  const languages = ['en', 'de'];
+  const languages = ['en', 'de', 'ed'];
   let paths = [];
 
   for (const lang of languages) {
