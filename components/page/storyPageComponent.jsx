@@ -102,7 +102,9 @@ const StoryPageComponent = ({
 
                     <div className='h-px opacity-10 w-full bg-wwr_rich_black mb-8 mt-10'></div>
 
-                    {story.acf?.closed_captions && <ClosedCaption />}
+                    {story.acf?.closed_captions && (
+                      <ClosedCaption language={lang} />
+                    )}
                     {/* Social Share Buttons */}
                     <SocialShareIcons lang={lang} />
                   </div>

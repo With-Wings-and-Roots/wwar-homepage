@@ -72,7 +72,7 @@ const StoryCard = ({
               {parse(title)}
             </span>
           </div>
-          <div className='text-base sm:text-2xl md:text-xl lg:text-2xl relative flex'>
+          <div className='text-base sm:text-2xl md:text-xl lg:text-2xl relative z-10 flex'>
             <div className='font-medium'>{personName} </div>
             {personName && city && <span>{`,\u00A0`}</span>}
             <div>{city}</div>
