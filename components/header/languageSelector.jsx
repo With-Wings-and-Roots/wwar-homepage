@@ -1,22 +1,32 @@
 'use client';
+import { createLocalLink } from '@/utilities/links';
 import { useState } from 'react';
 
-const LanguageSelector = ({ lang }) => {
+const LanguageSelector = ({ lang, translations }) => {
   const [hovered, setHovered] = useState(false);
-  let languages = null;
-  if (lang == 'en') {
-    languages = [
-      { code: 'en', label: 'English', href: '/en' },
-      { code: 'de', label: 'German', href: '/de' },
-      { code: 'ed', label: 'Easy German', href: '/ed' },
-    ];
-  } else {
-    languages = [
-      { code: 'en', label: 'Englisch', href: '/en' },
-      { code: 'de', label: 'Deutsch', href: '/de' },
-      { code: 'ed', label: 'Einfache Sprache (dt)', href: '/ed' },
-    ];
-  }
+
+  const labels =
+    lang === 'en'
+      ? { en: 'English', de: 'German', ed: 'Easy German' }
+      : { en: 'Englisch', de: 'Deutsch', ed: 'Einfache Sprache (dt)' };
+
+  const languages = [
+    {
+      code: 'en',
+      label: labels.en,
+      href: createLocalLink(translations?.en ?? '/en'),
+    },
+    {
+      code: 'de',
+      label: labels.de,
+      href: createLocalLink(translations?.de ?? '/de'),
+    },
+    {
+      code: 'ed',
+      label: labels.ed,
+      href: createLocalLink(translations?.ed ?? '/ed'),
+    },
+  ];
 
   return (
     <div
@@ -24,14 +34,10 @@ const LanguageSelector = ({ lang }) => {
       onMouseLeave={() => setHovered(false)}
       className='hover:text-wwr_white cursor-pointer relative border-2 border-wwr_rich_black hover:border-wwr_white transition-colors duration-300'
     >
-      {/* Main Language Button */}
-      <div
-        className={`px-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
-      >
+      <div className='px-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end'>
         Language
       </div>
 
-      {/* Dropdown Menu */}
       {hovered && (
         <div className='hidden md:block absolute top-full left-0 w-full z-10 pt-2'>
           <div className='text-wwr_white'>

@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { getFrontpageId, getPage } from '@/utilities/pages';
 import { createLocalLink } from '@/utilities/links';
 
-const Header = async ({ lang }) => {
+const Header = async ({ lang, translations }) => {
   const menuId = await getPrimaryMenuId(lang);
   const menuItems = await getMenuItems(menuId, lang);
   const frontpageId = await getFrontpageId(lang);
@@ -56,7 +56,7 @@ const Header = async ({ lang }) => {
           })}
 
           <li className='pb-2 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end'>
-            <LanguageSelector lang={lang} />
+            <LanguageSelector lang={lang} translations={translations} />
           </li>
         </ul>
       </div>

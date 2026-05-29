@@ -1,9 +1,6 @@
 import { getAllPages, getPage, getPageBySlug } from '@/utilities/pages';
 import { notFound } from 'next/navigation';
 
-import Footer from '@/components/footer/footer';
-import Header from '@/components/header/header';
-
 import DefaultTemplate from '@/components/templates/DefaultTemplate';
 import StoriesTemplate from '@/components/templates/StoriesTemplate';
 import AboutTemplate from '@/components/templates/AboutTemplate';
