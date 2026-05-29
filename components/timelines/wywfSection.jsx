@@ -6,6 +6,7 @@ import WysiwygContent from '../common/WysiwygContent';
 export default function WhatYouWillFindSection({
   heading,
   content,
+  description,
   previewVideo, // 👈 ANY URL (must already be embeddable)
 }) {
   return (
@@ -23,6 +24,7 @@ export default function WhatYouWillFindSection({
             className='video'
             dangerouslySetInnerHTML={{ __html: previewVideo }}
           />
+          {description && <p className='text-gray-600 mt-4'>{description}</p>}
         </div>
       </div>
     </section>
