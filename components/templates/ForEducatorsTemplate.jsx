@@ -8,10 +8,11 @@ import { getTeamMemberById } from '@/utilities/team';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import { fetchMediaFromId } from '@/utilities/media';
 import { createLocalLink } from '@/utilities/links';
+import WorkshopQuotes from '../workshops/WorkshopQuotes';
+import gfx_quote from '@/public/quote-black.svg';
 
 const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
   const acf = data?.acf || {};
-  
 
   const featuredWorkshopIds = acf?.featured_workshops || [];
 
@@ -318,14 +319,47 @@ const formattedTeams= await Promise.all(
         </section>
       )}
 
-      {/* OUTCOMES */}
-      <section className='px-8 md:px-16 xl:px-48'>
-        <h2 className='text-3xl font-medium mb-4'>Outcomes</h2>
-        <WysiwygContent
-          className='font-light'
-          content={acf?.outcomes}
-        />
-      </section>
+    <section className="px-8 md:px-16 xl:px-48 py-20">
+  <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-stretch">
+
+    {/* LEFT — OUTCOMES */}
+    <div className="xl:col-span-7">
+      <h2 className="text-[36px] md:text-[42px] font-medium mb-6">
+        {lang === 'en' ? 'Outcomes' : 'Ergebnisse'}
+      </h2>
+
+      <div className="font-light text-[18px] leading-[1.55] space-y-[12px]">
+        <WysiwygContent content={acf?.outcomes} />
+      </div>
+    </div>
+
+    {/* RIGHT — QUOTES (MATCH WORKSHOPS STYLE) */}
+    <div className="xl:col-span-5">
+      <div className="bg-wwr_yellow_orange min-h-[360px] xl:min-h-[500px] relative xl:-mt-[40px]">
+
+        {/* QUOTE ICON */}
+        <div className="flex p-6">
+          <Image
+            src={gfx_quote}
+            alt="quote"
+            width={48}
+            height={48}
+            className="ml-auto !w-[26px] !h-[26px] xl:!w-[48px] xl:!h-[48px]"
+          />
+        </div>
+
+        {/* QUOTES */}
+        <div className="p-6 pt-0 text-right xl:text-lg font-light">
+          <div className="relative">
+            <WorkshopQuotes quotes={acf?.intro_quotes} />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
 
      <section className='px-8 md:px-16 xl:px-48 py-16'>
   <h2 className='text-3xl font-medium mb-6'>
