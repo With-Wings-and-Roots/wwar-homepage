@@ -11,10 +11,11 @@ import { createLocalLink } from '@/utilities/links';
 
 const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
   const acf = data?.acf || {};
+  
 
   const featuredWorkshopIds = acf?.featured_workshops || [];
 
-  const featuredWorkshops = await Promise.all(
+  const featuredWorkshops1 = await Promise.all(
     featuredWorkshopIds.map(async (id) => {
       const res = await getWorkshopById(id, lang);
       const workshop = res || null;
@@ -32,118 +33,160 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
       };
     })
   ).then((res) => res.filter(Boolean));
+  const featuredWorkshops = [...featuredWorkshops1, ...featuredWorkshops1, ...featuredWorkshops1]
 
-  const allTeamMemberIds = acf?.team_members || [];
-  const allPersons = (
-    await Promise.all(
-      allTeamMemberIds.map(async (id) => {
-        try {
-          const res = await getTeamMemberById(id, lang);
-          const member = res || null;
+ const team = acf?.team || [];
 
-          if (!member) return null;
+const relatedTeams = await Promise.all(
+  team.map(async (team) => {
+    const members = Array.isArray(team.team_member)
+      ? (
+          await Promise.all(
+            team.team_member.map((id) =>
+              getTeamMemberById(id, lang).catch(() => null)
+            )
+          )
+        ).filter(Boolean)
+      : [];
 
-          // 🔥 fetch image if exists (ACF field assumed)
-          const mediaId = member?.acf?.profile_icon || member?.acf?.image;
+    return {
+      team_title: team.role,
+      related_members: members,
+    };
+  })
+);
 
-          let media = null;
+const formattedTeams= await Promise.all(
+  relatedTeams.map(async (team) => {
+    const member = team.related_members?.[0] || null;
 
-          if (mediaId) {
-            try {
-              media = await fetchMediaFromId(mediaId);
-            } catch (e) {
-              media = null;
-            }
-          }
+    // ✅ fetch image directly from profile_icon ID
+    let mediaUrl = null;
 
-          return {
-            ...member,
-            media, // 👈 attached image here
-          };
-        } catch (e) {
-          return null;
-        }
-      })
-    )
-  ).filter(Boolean);
+    const imageId = member?.acf?.profile_icon;
+
+    if (imageId) {
+      const media = await fetchMediaFromId(imageId);
+      mediaUrl = media?.source_url || null;
+    }
+
+    return {
+      team_title: team.team_title.replace(/\r\n/g, ' ').trim(),
+      member,
+      mediaUrl,
+    };
+  })
+);
+
   return (
     <div className='flex flex-col gap-24 -mt-20 mb-20'>
       {/* HERO */}
-      <section className='relative w-full h-[80vh]'>
-        {acf.intro_header_image && (
-          <Image
-            src={acf.intro_header_image}
-            alt='Educators'
-            fill
-            className='object-cover'
-          />
-        )}
+      <section className="relative w-full">
 
-        <div className='absolute inset-0 bg-black/60 flex items-end px-8 md:px-16 xl:px-48 pb-10 text-white'>
-          <div className='max-w-2xl'>
-            <h1 className='text-4xl md:text-6xl font-bold'>For Educators</h1>
+  <div className="max-w-[1180px] mx-auto pt-[72px] px-8 md:px-16 xl:px-0 grid md:grid-cols-2 gap-12 items-center">
 
-            <div
-              className='mt-4 text-lg font-light'
-              dangerouslySetInnerHTML={{ __html: acf.intro_text }}
-            />
+    {/* TEXT */}
+    <div className="max-w-[560px]">
+      
+      <h1 className="text-[52px] leading-[1.1] font-bold">
+{data.title.rendered}      </h1>
 
-            <div className='mt-6 flex gap-4 flex-wrap'>
-              {acf?.ctas?.map((cta, i) => (
-                <a
-                  key={i}
-                  href={cta?.primary_ctas?.url}
-                  className='bg-wwr_yellow_orange text-black px-5 py-2 rounded-lg'
-                >
-                  {cta?.primary_ctas?.title}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="mt-4 text-[19px] leading-[1.5] max-w-[560px]">
+        <WysiwygContent content={acf.intro_text} />
+      </div>
+
+      <div className="mt-6 flex gap-4 flex-wrap">
+        {acf?.ctas?.map((cta, i) => (
+          <a
+            key={i}
+            href={cta?.primary_ctas?.url}
+            className="h-[50px] px-[24px] flex items-center bg-wwr_yellow_orange rounded-md"
+          >
+            {cta?.primary_ctas?.title}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* IMAGE (keeps visual weight, not full bleed) */}
+    <div className="relative h-[520px] w-full rounded-[20px] overflow-hidden">
+      {acf.intro_header_image && (
+        <Image
+          src={acf.intro_header_image}
+          alt="Educators"
+          fill
+          className="object-cover"
+          priority
+        />
+      )}
+    </div>
+
+  </div>
+
+</section>
+ {/* CONNECTED LEARNING */}
+      <section className='px-8 md:px-16 xl:px-48 '>
+
+        <div
+          className='font-light max-w-3xl '
+          dangerouslySetInnerHTML={{
+            __html: acf.connected_learning_text,
+          }}
+        />
       </section>
 
       {/* WHAT WE OFFER */}
-      <section className='px-8 md:px-16 xl:px-48'>
-        <h2 className='text-3xl font-medium mb-10'>What We Offer</h2>
+      <section className="max-w-[1180px] mx-auto py-[80px] px-8 md:px-16 xl:px-0">
 
-        <div className='grid md:grid-cols-2 gap-12'>
-          {acf.what_we_offer?.map((item, i) => (
-            <div key={i} className='flex gap-4 items-start'>
-              {/* ICON */}
-              {item.icon && (
-                <div className='w-16 h-16 relative flex-shrink-0'>
-                  <Image
-                    src={item.icon}
-                    alt='icon'
-                    fill
-                    className='object-cover rounded-md'
-                  />
-                </div>
-              )}
+  <h2 className="text-[36px] font-medium mb-10">
+{  lang === 'en' ? 'What We Offer' : 'Was wir anbieten'
+}  </h2>
 
-              {/* CONTENT */}
-              <div>
-                <div
+  <div className="grid md:grid-cols-3 gap-6">
+
+    {acf.what_we_offer?.map((item, i) => (
+      <a
+        key={i}
+        href={item.link?.url}
+        className="group block rounded-[16px] overflow-hidden bg-white hover:shadow-lg transition"
+      >
+
+        {/* IMAGE */}
+        <div className="relative h-[230px]">
+          {item.icon && (
+            <Image
+              src={item.icon}
+              alt=""
+              fill
+              className="object-cover group-hover:scale-105 transition duration-300"
+            />
+          )}
+        </div>
+
+        {/* CONTENT */}
+        <div className="p-[24px]">
+
+          <h3 className="text-[22px] font-medium mb-2">
+            {item.title || "Untitled"}
+          </h3>
+
+          <div
                   className='font-light'
                   dangerouslySetInnerHTML={{
                     __html: item.description || '',
                   }}
                 />
+          <span className="mt-4 inline-block text-wwr_teal text-[16px]">
+            Explore →
+          </span>
 
-                {item.link?.url && (
-                  <a
-                    href={item.link.url}
-                    className='text-wwr_teal mt-2 inline-block'
-                  >
-                    {item.link.title || 'Learn more →'}
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
-      </section>
+
+      </a>
+    ))}
+
+  </div>
+</section>
 
       {/* STATS */}
       <section className=''>
@@ -170,46 +213,58 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
           {acf.featured_heading}
         </h2>
 
-        <div className='grid md:grid-cols-3 gap-10'>
-          {featuredWorkshops?.map((w) => (
-            <Link
-              key={w.id}
-              href={createLocalLink(`/${lang}/workshops/${w.slug}`)}
-              className='group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300'
-            >
-              {/* IMAGE */}
-              <div className='relative w-full h-56 overflow-hidden'>
-                {w?.image?.source_url && (
-                  <Image
-                    src={w.image.source_url}
-                    alt={w.title?.rendered || ''}
-                    fill
-                    className='object-cover group-hover:scale-105 transition-transform duration-500'
-                  />
-                )}
-              </div>
+        <div className='grid md:grid-cols-12 gap-10'>
 
-              {/* CONTENT */}
-              <div className='p-6 flex flex-col gap-3'>
-                <h3 className='text-xl font-semibold leading-snug'>
-                  {w.title?.rendered}
-                </h3>
+  {/* LARGE FEATURED CARD */}
+  {featuredWorkshops?.[0] && (
+    <Link
+      key={featuredWorkshops[0].id}
+      href={createLocalLink(`/${lang}/workshops/${featuredWorkshops[0].slug}`)}
+      className='md:col-span-7 group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition'
+    >
+      <div className='relative w-full h-[360px]'>
+        {featuredWorkshops[0]?.image?.source_url && (
+          <Image
+            src={featuredWorkshops[0].image.source_url}
+            alt={featuredWorkshops[0].title?.rendered || ''}
+            fill
+            className='object-cover group-hover:scale-105 transition'
+          />
+        )}
+      </div>
 
-                <div className='text-sm text-gray-600 line-clamp-3'>
-                  <WysiwygContent
-                    content={w.acf?.description || w.acf?.overview}
-                  />
-                </div>
-
-                <div className='mt-auto pt-4'>
-                  <span className='text-wwr_teal font-medium group-hover:underline'>
-                    View Workshop →
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+      <div className='p-6'>
+        <h3 className='text-2xl font-semibold'>
+          {featuredWorkshops[0].title?.rendered}
+        </h3>
+        <div className='text-sm text-gray-600 mt-2 line-clamp-3'>
+          <WysiwygContent
+            content={featuredWorkshops[0].acf?.description}
+          />
         </div>
+      </div>
+    </Link>
+  )}
+
+  {/* RIGHT SIDE STACK */}
+  <div className='md:col-span-5 flex flex-col gap-5 py-5'>
+<h1 className='text-sm font-medium text-gray-800'>
+  {lang === 'en' ? 'Related Links' : 'Verwandte Links'}
+</h1>
+  {featuredWorkshops?.slice(1, 3).map((w) => (
+    <Link
+      key={w.id}
+      href={createLocalLink(`/${lang}/workshops/${w.slug}`)}
+      className='group flex items-start gap-3 py-2 border-b border-black/10 last:border-b-0'
+    >
+      <h3 className='text-lg md:text-xl font-medium text-gray-800 group-hover:text-wwr_teal group-hover:underline underline-offset-4 transition leading-snug'>
+        {w.title?.rendered}
+      </h3>
+    </Link>
+  ))}
+
+</div>
+</div>
         {/* CTA */}
         <div className='mt-12 flex justify-center'>
           <a
@@ -222,12 +277,16 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
       </section>
 
       {/* GALLERY */}
-      {acf.gallery?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48'>
-          <VisualStrip acf={acf} lang={lang} />
+      {acf?.gallery?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 py-16'>
+          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+            {lang === 'en' ? `Moments of Learning` : 'Momente des Lernens'}
+          </h2>
+          <div className='w-full md:w-[70%] mx-auto'>
+            <VisualStrip acf={acf} lang={lang} />
+          </div>
         </section>
       )}
-
       {/* HOW IT WORKS */}
       {acf.steps?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-16 bg-white'>
@@ -262,75 +321,103 @@ const ForEducatorsTemplate = async ({ data, lang = 'en' }) => {
       {/* OUTCOMES */}
       <section className='px-8 md:px-16 xl:px-48'>
         <h2 className='text-3xl font-medium mb-4'>Outcomes</h2>
-        <div
+        <WysiwygContent
           className='font-light'
-          dangerouslySetInnerHTML={{ __html: acf.outcomes }}
+          content={acf?.outcomes}
         />
       </section>
 
-      <section className='px-8 md:px-16 xl:px-48 py-16'>
-        <h2 className='text-3xl font-medium mb-6'>{acf.resources_heading}</h2>
+     <section className='px-8 md:px-16 xl:px-48 py-16'>
+  <h2 className='text-3xl font-medium mb-6'>
+    {acf.resources_heading}
+  </h2>
 
-        <div className='grid md:grid-cols-4 gap-6 mt-10'>
-          {(acf.resouces || []).map((item, i) => (
-            <Link
-              key={i}
-              href={createLocalLink(item.page_link)}
-              className='group bg-yellow-50 border border-yellow-200 rounded-xl overflow-hidden hover:shadow-lg transition'
-            >
-              {/* IMAGE */}
-              <div className='relative w-full h-40'>
+  <div className='grid md:grid-cols-3 gap-6 mt-10'>
+    {(acf.resouces || []).map((item, i) => {
+      const href = createLocalLink(item.page_link || '');
+
+      const slug = item.page_link
+        ? new URL(item.page_link).pathname.split('/').filter(Boolean).pop()
+        : '';
+
+      return (
+        <Link key={i} href={href}>
+          <div className='bg-wwr_yellow_orange rounded-lg overflow-hidden shadow-sm hover:shadow-md transition group'>
+
+            {/* IMAGE */}
+            <div className='relative w-full h-40 overflow-hidden'>
+
+              {item.icon && (
                 <Image
                   src={item.icon}
                   alt=''
                   fill
-                  className='object-cover group-hover:scale-105 transition duration-300'
+                  className='object-cover group-hover:scale-105 transition duration-500'
                 />
-              </div>
+              )}
 
-              {/* CONTENT */}
-              <div className='p-4'>
-                <p className='text-sm font-light text-black/80'>
-                  {item.description}
-                </p>
+              {/* IMAGE OVERLAY ONLY */}
+              <div className='absolute inset-0 bg-black/20 group-hover:bg-black/30 transition' />
 
-                <div className='mt-4 text-wwr_teal text-sm font-medium'>
-                  Explore →
+              {/* BADGE */}
+              {slug && (
+                <div className='absolute top-3 left-3 z-10 text-[10px] uppercase tracking-widest text-wwr_yellow_orange bg-black/70 px-2 py-1 rounded'>
+                  {slug}
                 </div>
+              )}
+            </div>
+
+            {/* TEXT (MATCH FILM STYLE FEEL) */}
+            <div className='p-4'>
+
+              <p className='text-lg text-black font-medium leading-relaxed line-clamp-2'>
+                {item.description}
+              </p>
+
+              <div className='mt-3 text-wwr_teal text-sm font-medium'>
+                Explore →
               </div>
-            </Link>
-          ))}
-        </div>
-      </section>
 
-      {/* CONNECTED LEARNING */}
-      <section className='px-8 md:px-16 xl:px-48 '>
-        <h2 className='text-3xl font-medium mb-4'>Connected Learning</h2>
+            </div>
 
-        <div
-          className='font-light max-w-3xl '
-          dangerouslySetInnerHTML={{
-            __html: acf.connected_learning_text,
-          }}
-        />
-      </section>
+          </div>
+        </Link>
+      );
+    })}
+  </div>
+</section>
+     
 
       {/* TEAM */}
-      <section className='px-8 md:px-16 xl:px-48'>
-        <h2 className='text-3xl font-medium mb-8'>{acf.trainer_heading}</h2>
+     <section className='px-8 md:px-16 xl:px-48'>
+  <h2 className='text-3xl font-medium mb-8'>
+    {acf.trainer_heading}
+  </h2>
 
-        <div className='flex flex-wrap gap-8'>
-          {acf.team_members?.map((id) => (
-            <Team
-              key={id}
-              member={allPersons.find((p) => p.id === id)}
-              mediaUrl={allPersons.find((p) => p.id === id)?.media?.source_url}
-              baseLink={`/${lang}/team/`}
-            />
-          ))}
-        </div>
-      </section>
+  {formattedTeams.length > 0 && (
+     
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-10'>
+        {formattedTeams.map((teamItem, i) => {
+          const member = teamItem.member;
+          const mediaUrl = teamItem.mediaUrl;
 
+          return (
+            <div key={i} className='flex flex-col items-center'>
+              <Team
+                member={member}
+                mediaUrl={mediaUrl}
+                baseLink={`/${lang}/team/`}
+              />
+
+              <p className='font-light text-lg mt-3 text-center'>
+                {teamItem.team_title}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+  )}
+</section>
       {/* FINAL CTA */}
       <section className=' px-8 md:px-16 xl:px-48'>
         <a
