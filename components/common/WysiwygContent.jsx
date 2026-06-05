@@ -3,6 +3,30 @@
 import { createLocalLink } from '@/utilities/links';
 import { useState } from 'react';
 
+/**
+ * Clean WordPress output safely:
+ * - removes shortcode captions
+ * - removes Gutenberg figcaptions
+ * - ensures proper spacing after images
+ */
+const normalizeWordPressHTML = (html) => {
+  if (!html) return html;
+
+  return html
+    // Classic WP captions
+    .replace(/\[caption[^\]]*\]/g, '')
+    .replace(/\[\/caption\]/g, '')
+
+    // Gutenberg captions
+    .replace(/<figcaption[^>]*>.*?<\/figcaption>/gis, '')
+
+    // FORCE block separation after images (fix "one line" issue)
+    .replace(/(<img[^>]*>)/g, '$1\n');
+};
+
+/**
+ * Fix internal links
+ */
 const processLinks = (html) => {
   if (!html) return html;
 
@@ -22,15 +46,27 @@ const WysiwygContent = ({ content, className = '', ...otherProps }) => {
 
   const [beforeMore, afterMore] = content.split('<!--more-->');
 
-  const processedBefore = processLinks(beforeMore);
-  const processedAfter = processLinks(afterMore);
+  // 1. CLEAN WP OUTPUT
+  const cleanBefore = normalizeWordPressHTML(beforeMore);
+  const cleanAfter = normalizeWordPressHTML(afterMore);
+
+  // 2. PROCESS LINKS
+  const processedBefore = processLinks(cleanBefore);
+  const processedAfter = processLinks(cleanAfter);
 
   return (
     <div
-      className={`WysiwygContent ${className} [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5`}
+      className={`WysiwygContent ${className}
+        [&_ol]:list-decimal [&_ol]:pl-5
+        [&_ul]:list-disc [&_ul]:pl-5
+        [&_img]:block [&_img]:mb-4
+        [&_p]:mb-4`}
       {...otherProps}
     >
+      {/* MAIN CONTENT */}
       <div dangerouslySetInnerHTML={{ __html: processedBefore }} />
+
+      {/* READ MORE */}
       {afterMore && (
         <div>
           {expanded && (

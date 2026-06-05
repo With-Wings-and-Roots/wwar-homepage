@@ -43,7 +43,7 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
   const relatedStories = await Promise.all(
     (acf?.related_stories || []).map(async (id) => {
       const post = await getStoryById(id);
-      return normalizePost(post, 'stories');
+      return normalizePost(post, 'story');
     })
   );
 
@@ -79,7 +79,7 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
   }
 
   return (
-    <div className='flex flex-col gap-24 -mt-20 mb-20'>
+    <div className='flex flex-col gap-24 -mt-20'>
       {/* 🔵 BACKGROUND SAME AS FILM */}
       <div className='fixed inset-0 -z-10'>
         <Image
@@ -110,41 +110,77 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
               }}
             />
 
-            <p className='mt-2 text-lg font-light'>
-              {acf.duration} • {acf.format_details}
-            </p>
-
-            {acf.description && (
-              <p className='mt-4 text-lg'>{acf.description}</p>
-            )}
+           
           </div>
         </div>
       </section>
+      {/* TITLE + INTRO + DETAILS */}
+<section className="px-8 md:px-16 xl:px-48 py-16 ">
+  <div className="grid md:grid-cols-12 gap-[48px]">
+    
+    {/* LEFT: Title + Intro */}
+    <div className="md:col-span-7">
+    
 
-      {/* 2️⃣ ABOUT / OVERVIEW */}
-      <section className='px-8 md:px-16 xl:px-48'>
-        <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
-          {lang === 'en' ? 'About the Workshop' : 'Über den Workshop'}
-        </h2>
-
-        <WysiwygContent className='text-lg font-light' content={acf.overview} />
-
-        <div className='grid md:grid-cols-2 gap-6 mt-6 text-sm'>
-          <p>
-            <strong>Duration:</strong> {acf.duration}
-          </p>
-          <p>
-            <strong>Format:</strong> {acf.format_details}
-          </p>
-          <p>
-            <strong>Audience:</strong> {acf.age_range}
-          </p>
-          <p>
-            <strong>Location:</strong> {acf.location_availability}
-          </p>
+      {acf.overview && (
+        <div className="mt-6 max-w-[680px] text-[18px] leading-[1.55] text-black/90">
+          <WysiwygContent content={acf.overview} />
         </div>
-      </section>
+      )}
+    </div>
 
+    {/* RIGHT: Workshop Details Card */}
+<div className="md:col-span-5">
+  <div className="p-8 bg-wwr_yellow_orange flex flex-col lg:hover:scale-105 transition-all rounded-[8px] space-y-5">
+
+    <h3 className="font-bold text-lg lg:text-2xl">
+      Workshop Details
+    </h3>
+
+    {/* Duration */}
+    {acf.duration && (
+      <p>
+        <span className="font-bold">Duration:</span> {acf.duration}
+      </p>
+    )}
+
+    {/* Audience */}
+    {acf.age_range && (
+      <p>
+        <span className="font-bold">Audience:</span> {acf.age_range}
+      </p>
+    )}
+
+    {/* Format */}
+    {acf.format_details && (
+      <p>
+        <span className="font-bold">Format:</span> {acf.format_details}
+      </p>
+    )}
+
+    {/* Location */}
+    {acf.location_availability && (
+      <p>
+        <span className="font-bold">Location:</span>{" "}
+        {acf.location_availability}
+      </p>
+    )}
+
+    {/* CTA */}
+    {acf.link?.url && (
+      <a
+        href={acf.link.url}
+        className="mt-4 inline-flex justify-center bg-black text-white px-5 py-3 rounded-[8px] text-[14px] uppercase hover:opacity-90 transition"
+      >
+        Book this Workshop
+      </a>
+    )}
+
+  </div>
+</div>
+
+  </div>
+</section>
       {/* 3️⃣ WHAT HAPPENS */}
 
       {acf?.content?.length > 0 && (
@@ -191,8 +227,7 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
             {/* RIGHT — Content */}
             <div>
               <p className='text-sm uppercase tracking-wide text-wwr_teal mb-2'>
-                Featured Film
-              </p>
+{lang==='en' ? 'Film Used in This Workshop' : 'Película utilizada en este taller'}              </p>
 
               <h2
                 className='text-2xl md:text-4xl font-semibold mb-3'
@@ -242,7 +277,7 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
       {acf.workshop_component?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>
           <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
-            Workshop Components
+            {lang === 'en' ? 'Workshop Components' : 'Componentes del taller'}
           </h2>
 
           <div className='space-y-10'>
@@ -268,9 +303,10 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
                       {comp.title}
                     </h3>
 
-                    <p className='text-base md:text-lg text-gray-700 leading-relaxed mb-4'>
-                      {comp.description}
-                    </p>
+                    <WysiwygContent
+                      className='text-base md:text-lg text-gray-700 leading-relaxed mb-4'
+                      content={comp.description}
+                    />
 
                     {/* Optional Link */}
                     {comp.link?.url && (
@@ -362,7 +398,7 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
       )}
       {/* 5️⃣ TESTIMONIALS (FILM STYLE) */}
       {acf.testimonials?.length > 0 && (
-        <section className='bg-wwr_black text-white py-16 px-8 md:px-16 xl:px-48'>
+        <section className='text-black py-16 px-8 md:px-16 xl:px-48'>
           <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
             Testimonials
           </h2>
@@ -383,16 +419,19 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
         </section>
       )}
 
-      {/* 6️⃣ GALLERY */}
-      <section className='px-8 md:px-16 xl:px-48'>
-        <h2 className='text-2xl lg:text-4xl font-medium mb-6'>Gallery</h2>
-
-        <VisualStrip acf={acf} lang={lang} />
-      </section>
+      {acf?.gallery?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 py-16'>
+          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+            {lang === 'en' ? `Moments of Learning` : 'Momente des Lernens'}
+          </h2>
+          <div className='w-full md:w-[70%] mx-auto'>
+            <VisualStrip acf={acf} lang={lang} />
+          </div>
+        </section>)}
 
       {/* 7️⃣ CTA (STRONG LIKE FILM PAGE) */}
       {acf.link?.url && (
-        <section className='px-8 md:px-16 xl:px-48'>
+        <section className='px-8 md:px-16 xl:px-48 bg-wwr_teal py-20 text-white '>
           <h2 className='text-3xl font-medium mb-4'>
             {acf.heading || 'Book this Workshop'}
           </h2>
