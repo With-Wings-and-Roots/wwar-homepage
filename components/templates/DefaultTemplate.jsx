@@ -31,6 +31,8 @@ const DefaultTemplate = ({ data, params }) => {
           }}
           className='text-3xl md:text-6xl font-normal text-center'
         />
+      {params.slugs[0] === 'contact' && <ContactForm />}
+
         {data.acf?.text?.length > 0 && (
           <WysiwygContent
             content={data.acf?.text}
@@ -38,7 +40,6 @@ const DefaultTemplate = ({ data, params }) => {
           />
         )}
       </div>
-      {params.slugs[0] === 'contact' && <ContactForm />}
     </div>
   );
 };

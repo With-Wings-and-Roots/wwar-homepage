@@ -54,7 +54,7 @@ export default function ContactForm() {
   return (
     <div className='max-w-xl mx-auto space-y-6'>
       {/* Heading */}
-      <h2 className='text-3xl font-semibold text-center mb-6'>Contact Us</h2>
+      <h2 className='text-3xl font-medium text-center my-6'>Reach out to Us by filling this form</h2>
       <p className='font-light text-lg mb-4 text-center'>
         Let us know how we can help you!
       </p>
