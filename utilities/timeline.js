@@ -139,3 +139,37 @@ export async function fetchTimelinesByIds(ids = [], lang = 'en') {
     return [];
   }
 }
+export const getTimelineSlugsWithCountry = async (lang = 'en') => {
+  const baseUrl = process.env.NEXT_PUBLIC_CMS_URL;
+
+  // 1. Get all timeline events (ONLY slug + timeline ID)
+  const events = await fetchAllData(
+    `${baseUrl}/wp-json/wp/v2/timeline_event?lang=${lang}&per_page=100&_fields=slug,timeline`
+  );
+
+  // 2. Get all countries (to map ID → slug)
+  const countries = await fetchAllData(
+    `${baseUrl}/wp-json/wp/v2/timeline?lang=${lang}&per_page=100&_fields=id,slug`
+  );
+
+  // 3. Build lookup map: countryId → slug
+  const countryMap = {};
+  for (const country of countries) {
+    countryMap[country.id] = country.slug;
+  }
+
+  // 4. Map events → attach country slug
+  const result = events.map((event) => {
+    const timelineId = Array.isArray(event.timeline)
+      ? event.timeline[0]
+      : event.timeline;
+
+    return {
+      slug: event.slug,
+      countrySlug: countryMap[timelineId] || null,
+      timelineId,
+    };
+  });
+
+  return result;
+};
