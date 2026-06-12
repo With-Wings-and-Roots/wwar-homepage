@@ -9,7 +9,7 @@ export const getPrimaryMenuId = async (lang = 'en') => {
     }
   );
   const data = await res.json();
-  return data.primary;
+  return data;
 };
 
 export const getMenuItems = async (id, lang = 'en') => {

@@ -7,8 +7,8 @@ import { createLocalLink, isExternalLink } from '@/utilities/links';
 import CopyrightAndTerms from '@/components/footer/copyrightAndTerms';
 
 const Footer = async ({ lang }) => {
-  const menuId = await getPrimaryMenuId(lang);
-  const menuItems = await getMenuItems(menuId, lang);
+  const menuIds = await getPrimaryMenuId(lang);
+  const menuItems = await getMenuItems(menuIds?.primary, lang);
   const footerData = await getPageSettings(lang);
 
   // Media, Content, Education, Take part, About
