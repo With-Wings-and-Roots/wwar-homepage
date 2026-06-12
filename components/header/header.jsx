@@ -43,8 +43,8 @@ const secondaryMenuConfig = [
   return (
     <li key={index}>
       <a
-        href={item.url}
-className={`flex items-center gap-2 px-2 py-1 text-white ${config.color} hover:opacity-80 transition text-outline-thin`}      >
+        href={createLocalLink(item.url)}
+className={`flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transition text-outline-thin`}      >
         <Icon className="text-sm" />
         {item.title}
       </a>

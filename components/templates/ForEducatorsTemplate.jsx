@@ -289,35 +289,60 @@ const formattedTeams= await Promise.all(
         </section>
       )}
       {/* HOW IT WORKS */}
-      {acf.steps?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 py-16 bg-white'>
-          <h2 className='text-3xl font-medium mb-12 text-center'>
-            How It Works
-          </h2>
+{/* ── 6. HOW IT WORKS ─────────────────────────────────────────────────────── */}
+{acf.steps?.length > 0 && (
+  <section className='py-20 px-6 md:px-12 bg-white'>
+    <div className='max-w-[1180px] mx-auto'>
+      <h2 className='text-3xl font-semibold mb-10 text-center'>How It Works</h2>
 
-          <div className='grid md:grid-cols-3 gap-10'>
-            {acf.steps.map((step, i) => (
-              <div
-                key={i}
-                className='relative bg-wwr_yellow_orange/10 p-8 rounded-2xl hover:shadow-md transition'
-              >
-                {/* STEP NUMBER */}
-                <div className='absolute -top-4 -left-4 w-10 h-10 rounded-full bg-wwr_yellow_orange text-black flex items-center justify-center font-bold shadow'>
-                  {i + 1}
-                </div>
-
-                {/* TITLE */}
-                <h3 className='text-xl font-semibold mb-3'>{step.heading}</h3>
-
-                {/* DESCRIPTION */}
-                <p className='text-sm font-light leading-relaxed text-gray-700'>
-                  {step.description}
-                </p>
-              </div>
-            ))}
+      <div className='grid md:grid-cols-4 gap-6'>
+        {[
+          {
+            title: 'Share Your Needs',
+            body: 'Tell us about your students, goals, timeline, and learning context.',
+            gradient: 'linear-gradient(135deg, #3A6F73 0%, #2F5D61 100%)',
+          },
+          {
+            title: 'We Design Together',
+            body: 'We recommend workshops, films, timelines, and resources tailored to your setting.',
+            gradient: 'linear-gradient(135deg, #3A6F73 0%, #284E52 100%)',
+          },
+          {
+            title: 'Facilitate the Experience',
+            body: 'We lead interactive workshops, screenings, and dialogue-based learning experiences.',
+            gradient: 'linear-gradient(135deg, #355F63 0%, #24484B 100%)',
+          },
+          {
+            title: 'Continue the Learning',
+            body: 'Participants can continue exploring films, archives, timelines, and educational resources afterward.',
+            gradient: 'linear-gradient(135deg, #2F5D61 0%, #203F42 100%)',
+          },
+        ].map((step, i) => (
+          <div
+            key={i}
+            className='relative p-7 rounded-[18px] min-h-[260px] flex flex-col justify-between'
+            style={{ background: step.gradient }}
+          >
+            <span
+              className='text-[44px] font-bold text-white leading-none'
+              style={{ opacity: 0.4 }}
+            >
+              {i + 1}
+            </span>
+            <div>
+              <h3 className='text-[22px] font-semibold text-white leading-snug mb-3'>
+                {step.title}
+              </h3>
+              <p className='text-[15px] text-white/80 leading-[1.5]'>
+                {step.body}
+              </p>
+            </div>
           </div>
-        </section>
-      )}
+        ))}
+      </div>
+    </div>
+  </section>
+)}
 
     <section className="px-8 md:px-16 xl:px-48 py-20">
   <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 items-stretch">
