@@ -8,7 +8,7 @@ import { getPrimaryMenuId, getMenuItems } from '@/utilities/menu';
 import Link from 'next/link';
 import { getFrontpageId, getPage } from '@/utilities/pages';
 import { createLocalLink } from '@/utilities/links';
-import { FaChalkboardTeacher, FaGift, FaEnvelope } from 'react-icons/fa';
+import { FaCalendarCheck, FaGift, FaEnvelope } from 'react-icons/fa';
 
 const Header = async ({ lang }) => {
   const menuIds = await getPrimaryMenuId(lang);
@@ -25,7 +25,7 @@ const Header = async ({ lang }) => {
 
   });
 const secondaryMenuConfig = [
-  { color: 'bg-wwr_teal', icon: FaChalkboardTeacher },
+  { color: 'bg-wwr_teal', icon: FaCalendarCheck },
   { color: 'bg-wwr_gray_storm', icon: FaGift },
   { color:'bg-wwr_majorelle_blue', icon: FaEnvelope },
 ];
@@ -50,7 +50,10 @@ className={`flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transi
       </a>
     </li>
   );
-})}
+})}<li className='flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transition text-outline-thin'>
+            <LanguageSelector lang={lang} />
+          </li>
+
   </ul>
 </div>
 
@@ -85,9 +88,7 @@ className={`flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transi
             );
           })}
 
-          <li className='pb-2 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end'>
-            <LanguageSelector lang={lang} />
-          </li>
+          
         </ul>
       </div>
     </div>

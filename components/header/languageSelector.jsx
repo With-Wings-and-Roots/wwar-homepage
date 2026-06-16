@@ -22,11 +22,11 @@ const LanguageSelector = ({ lang }) => {
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className='hover:text-wwr_white cursor-pointer relative border-2 border-wwr_rich_black hover:border-wwr_white transition-colors duration-300'
+      className='hover:text-wwr_white cursor-pointer relative border-2 border-white hover:border-wwr_white transition-colors duration-300'
     >
       {/* Main Language Button */}
       <div
-        className={`px-2 lg:px-3 relative z-20 bg-wwr_yellow_orange h-full flex items-end`}
+        className={`px-2 lg:px-3 relative z-20  h-full flex items-end`}
       >
         Language
       </div>

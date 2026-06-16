@@ -250,7 +250,7 @@ const formattedTeams= await Promise.all(
   {/* RIGHT SIDE STACK */}
   <div className='md:col-span-5 flex flex-col gap-5 py-5'>
 <h1 className='text-sm font-medium text-gray-800'>
-  {lang === 'en' ? 'Related Links' : 'Verwandte Links'}
+  {lang === 'en' ? 'Other Workshops' : 'Weitere Workshops'}
 </h1>
   {featuredWorkshops?.slice(1, 3).map((w) => (
     <Link
