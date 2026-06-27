@@ -10,7 +10,7 @@ import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
-import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
+import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 
 import { getPageSettings } from '@/utilities/pageSettings';
@@ -82,6 +82,10 @@ const Page = async ({ params }) => {
     case 'page_films.php':
       template = <AllFilmsTemplate data={pageData} params={params} />;
       break;
+
+    case 'page_ourwork.php':
+        template = <OurWorkTemplate data={pageData} params={params} />;
+        break;
 
     default:
       template = <DefaultTemplate data={pageData} params={params} />;
