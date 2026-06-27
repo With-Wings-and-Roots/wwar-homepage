@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import {
   getAllProjectAreas,
   getProjectAreaBySlug,
-  getProjectById,
+  getAllProjects
 } from '@/utilities/projects';
 import { fetchMediaFromId } from '@/utilities/media';
 import ProjectsArchive from '../projects/ProjectsArchive';
@@ -14,19 +14,7 @@ const AllProjectsTemplate = async ({ data, subSlugs, lang = 'en' }) => {
   const projectAreaSlug = subSlugs?.[0] || '';
   let projectArea = [];
 
-  // Fetch projects in the specific area
-  const projectsIds = data?.acf?.projects || [];
-  const projects = projectsIds.length
-    ? (
-        await Promise.all(
-          projectsIds.map(async (id) => {
-            const project = await getProjectById(id, lang).catch(() => null);
-            // Ensure it's a single object, not an array
-            return Array.isArray(project) ? project[0] : project;
-          })
-        )
-      ).filter(Boolean)
-    : [];
+  const projects = await getAllProjects(lang);
 
   if (projectAreaSlug !== 'all' && projectAreaSlug !== '') {
     projectArea = await getProjectAreaBySlug(projectAreaSlug, lang);
