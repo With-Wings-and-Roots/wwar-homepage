@@ -9,7 +9,7 @@ import WorkshopsTemplate from '@/components/templates/WorkshopsTemplate';
 import TakePartTemplate from '@/components/templates/TakePartTemplate';
 import DonateTemplate from '@/components/templates/DonateTemplate';
 import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
-import ProjectsTemplate from '@/components/templates/ProjectsTemplate';
+import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 
@@ -77,7 +77,7 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_projects.php':
-      template = <ProjectsTemplate data={pageData} />;
+      template = <AllProjectsTemplate data={pageData} subSlugs={[]} lang={lang} />;
       break;
     case 'page_films.php':
       template = <AllFilmsTemplate data={pageData} params={params} />;
