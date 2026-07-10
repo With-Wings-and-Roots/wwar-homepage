@@ -8,25 +8,58 @@ import { getPrimaryMenuId, getMenuItems } from '@/utilities/menu';
 import Link from 'next/link';
 import { getFrontpageId, getPage } from '@/utilities/pages';
 import { createLocalLink } from '@/utilities/links';
+import { FaCalendarCheck, FaGift, FaEnvelope } from 'react-icons/fa';
 
-const Header = async ({ lang, translations }) => {
-  const menuId = await getPrimaryMenuId(lang);
-  const menuItems = await getMenuItems(menuId, lang);
+const Header = async ({ lang , translations}) => {
+  const menuIds = await getPrimaryMenuId(lang);
+  const mainMenuId = menuIds?.primary;
+  const secondaryMenuId = menuIds?.footer;
+  const menuItems = await getMenuItems(mainMenuId, lang);
+  const secondaryMenuItems = await getMenuItems(secondaryMenuId, lang);
   const frontpageId = await getFrontpageId(lang);
   const frontpageData = await getPage(lang, frontpageId);
 
   // Media, Content, Education, Take part, About
   const topLevelMenuItems = menuItems.filter((item) => {
     return ['0', ''].includes(item.menu_item_parent);
-  });
 
+  });
+const secondaryMenuConfig = [
+  { color: 'bg-wwr_teal', icon: FaCalendarCheck },
+  { color: 'bg-wwr_gray_storm', icon: FaGift },
+  { color:'bg-wwr_majorelle_blue', icon: FaEnvelope },
+];
   return (
     <div
       className='fixed top-0 left-0 z-[200] bg-wwr_yellow_orange w-screen max-w-full text-base'
       id='header'
     >
+      <div className="relative top-0 right-0 z-[300] w-full flex justify-end bg-black">
+  <ul className="global_header_width flex  text-white text-[11px]  justify-end uppercase tracking-wide">
+  {secondaryMenuItems?.map((item, index) => {
+  const config = secondaryMenuConfig[index] || secondaryMenuConfig[0];
+  const Icon = config.icon;
+
+  return (
+    <li key={index}>
+      <a
+        href={createLocalLink(item.url)}
+className={`flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transition text-outline-thin`}      >
+        <Icon className="text-sm" />
+        {item.title}
+      </a>
+    </li>
+  );
+})}<li className='flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transition text-outline-thin'>
+            <LanguageSelector lang={lang} translations={translations} />
+          </li>
+
+  </ul>
+</div>
+
       <TopSpace />
       <div className='global_header_width flex justify-between items-stretch relative'>
+        
         <Link
           href={createLocalLink(frontpageData.link)}
           className={`flex items-end min-h-full`}
@@ -55,9 +88,7 @@ const Header = async ({ lang, translations }) => {
             );
           })}
 
-          <li className='pb-2 pl-3 relative z-30 bg-wwr_yellow_orange h-full flex items-end'>
-            <LanguageSelector lang={lang} translations={translations} />
-          </li>
+          
         </ul>
       </div>
     </div>

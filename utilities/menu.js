@@ -3,12 +3,13 @@ export const getPrimaryMenuId = async (lang = 'en') => {
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wwarrest/v1/menu?lang=${lang}`,
     {
       next: {
-        revalidate: 3600,
+        revalidate: 0,
+        cache: 'no-store',
       },
     }
   );
   const data = await res.json();
-  return data.primary;
+  return data;
 };
 
 export const getMenuItems = async (id, lang = 'en') => {
