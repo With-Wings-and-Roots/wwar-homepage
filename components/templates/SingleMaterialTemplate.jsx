@@ -299,13 +299,14 @@ const SingleMaterialTemplate = async ({
                 <ul className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6'>
                   {teamItem.related_members.map((member) => {
                     const mediaUrl = allMedia?.find(
-                      (media) => media.id === member?.acf?.profile_icon
+                      (media) => media.id === member?.member?.acf?.profile_icon
                     )?.source_url;
-                    const openFullProfile = member?.acf?.team?.includes(913); // ID of "Full Team" team;
+                    const openFullProfile = member?.member?.acf?.team?.includes(913); // ID of "Full Team" team;
                     return (
                       <Team
-                        member={member}
+                        member={member.member}
                         mediaUrl={mediaUrl}
+                        role={member?.specific_role || ''}
                         baseLink={`/${lang}/team/`}
                       ></Team>
                     );

@@ -6,6 +6,8 @@ import { notFound } from 'next/navigation';
 import { getProjectBySlug } from '@/utilities/projects';
 import RelatedEvents from '../publicEvents/relatedEvents';
 import RelatedBlogs from '../blogs/relatedBlogs';
+import RelatedProjects from '../projects/relatedProjects';
+import RelatedFilms from '../films/relatedFilms';
 import VisualStrip from '../projects/visualStrip';
 import WysiwygContent from '../common/WysiwygContent';
 import { getTeamMemberById } from '@/utilities/team';
@@ -141,6 +143,30 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           </div>
         </section>
       )}
+      {/* ================= RELATED FILMS ================= */}
+{acf?.related_films?.length > 0 && (
+  <RelatedFilms
+    relatedFilmIds={acf.related_films}
+    lang={lang}
+    heading={
+      lang === 'en'
+        ? 'Related Films'
+        : 'Verwandte Filme'
+    }
+  />
+)}
+      {/* ================= RELATED PROJECTS ================= */}
+{acf?.related_projects?.length > 0 && (
+  <RelatedProjects
+    relatedProjectIds={acf.related_projects}
+    lang={lang}
+    heading={
+      lang === 'en'
+        ? 'Related Projects'
+        : 'Verwandte Projekte'
+    }
+  />
+)}
 
       {/* ================= RELATED BLOGS ================= */}
       {acf?.related_blogs?.length > 0 && (

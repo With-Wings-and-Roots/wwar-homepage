@@ -20,10 +20,15 @@ const normalizeWordPressHTML = (html) => {
     // Gutenberg captions
     .replace(/<figcaption[^>]*>.*?<\/figcaption>/gis, '')
 
-    // FORCE block separation after images (fix "one line" issue)
+    // Convert WordPress paragraph breaks between inline spans
+    .replace(
+      /(<span[^>]*>.*?<\/span>)\s*\n\s*(<span[^>]*>)/gis,
+      '$1</p><p>$2'
+    )
+
+    // FORCE block separation after images
     .replace(/(<img[^>]*>)/g, '$1\n');
 };
-
 /**
  * Fix internal links
  */

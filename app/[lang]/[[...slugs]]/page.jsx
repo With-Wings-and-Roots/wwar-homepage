@@ -370,24 +370,39 @@ const Page = async ({ params, searchParams }) => {
         }
 
         const team = material[0]?.acf?.team || [];
-        const relatedTeams = await Promise.all(
-          team.map(async (team) => {
-            const members = Array.isArray(team.related_memebers)
-              ? (
-                  await Promise.all(
-                    team.related_memebers.map((id) =>
-                      getTeamMemberById(id, params.lang).catch(() => null)
-                    )
-                  )
-                ).filter(Boolean)
-              : [];
 
-            return {
-              team_title: team.team_title,
-              related_members: members,
-            };
-          })
-        );
+const relatedTeams = await Promise.all(
+  team.map(async (teamItem) => {
+    const members = Array.isArray(teamItem.related_memebers)
+      ? (
+          await Promise.all(
+            teamItem.related_memebers.map(async (item) => {
+              const memberId = item?.member?.[0];
+
+              if (!memberId) return null;
+
+              const member = await getTeamMemberById(
+                memberId,
+                params.lang
+              ).catch(() => null);
+
+              if (!member) return null;
+
+              return {
+                member,
+                specific_role: item.specific_role,
+              };
+            })
+          )
+        ).filter(Boolean)
+      : [];
+
+    return {
+      team_title: teamItem.team_title,
+      related_members: members,
+    };
+  })
+);
 
         [allMediaDe, allMediaEd, allMediaEn, topics, allPersons] =
           await Promise.all([
@@ -399,7 +414,7 @@ const Page = async ({ params, searchParams }) => {
           ]);
         allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
-          <SingleMaterialTemplate
+        <SingleMaterialTemplate
             subSlugs={subSlugs}
             lang={params.lang}
             data={pageData}

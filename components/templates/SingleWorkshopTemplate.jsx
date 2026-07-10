@@ -7,6 +7,8 @@ import { getFilmById } from '@/utilities/films';
 import { createLocalLink } from '@/utilities/links';
 import { getWorkshopTypeById } from '@/utilities/workshops';
 import { resolveRelatedContent } from '@/utilities/general';
+import WorkshopQuotes from '../workshops/WorkshopQuotes';
+import gfx_quote from '@/public/quote-black.svg';
 import { getStoryById } from '@/utilities/stories';
 import { getMaterialById } from '@/utilities/materials';
 import { getProjectById } from '@/utilities/projects';
@@ -181,32 +183,78 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
 
   </div>
 </section>
-      {/* 3️⃣ WHAT HAPPENS */}
+      {/* 3️⃣ WHAT HAPPENS + TESTIMONIALS */}
+{acf?.content?.length > 0 && (
+  <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
+    <div className='grid xl:grid-cols-12 gap-12'>
 
-      {acf?.content?.length > 0 && (
-        <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
-          <div className='max-w-5xl mx-auto space-y-24'>
-            {acf.content.map((item, i) => (
-              <div key={i} className='grid grid-cols-1 md:grid-cols-2 '>
-                {/* LEFT — Heading */}
-                <div className='md:col-span-1'>
-                  <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
-                    {item.c_heading}
-                  </h2>
-                </div>
+      {/* LEFT — WHAT HAPPENS */}
+      <div className='xl:col-span-7'>
+        <div className='max-w-5xl mx-auto space-y-24'>
+          {acf.content.map((item, i) => (
+            <div key={i}>
+              
+              <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+                {item.c_heading}
+              </h2>
 
-                {/* RIGHT — Rich Text */}
-                <div className='md:col-span-2'>
-                  <WysiwygContent
-                    className='font-light text-lg mb-2'
-                    content={item.c_text}
-                  />
+              <WysiwygContent
+                className='font-light text-lg leading-relaxed'
+                content={item.c_text}
+              />
+
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+      {/* RIGHT — TESTIMONIAL QUOTES */}
+      {acf.testimonials?.length > 0 && (
+        <div className='xl:col-span-5'>
+
+          <div className='bg-wwr_yellow_orange min-h-[360px] xl:min-h-[500px] relative xl:-mt-[40px]'>
+
+            {/* QUOTE ICON */}
+            <div className='flex p-6'>
+              <Image
+                src={gfx_quote}
+                alt='quote'
+                width={48}
+                height={48}
+                className='ml-auto !w-[26px] !h-[26px] xl:!w-[48px] xl:!h-[48px]'
+              />
+            </div>
+
+
+            {/* QUOTES */}
+            <div className='p-6 pt-0 text-right xl:text-lg font-light'>
+              
+              {acf.testimonials.map((t, i) => (
+                <div key={i} className='mb-8 last:mb-0'>
+
+                  <p className='italic'>
+                    “{t.quote}”
+                  </p>
+
+                  <p className='mt-3 font-medium text-sm'>
+                    — {t.name}
+                    {t.role && `, ${t.role}`}
+                  </p>
+
                 </div>
-              </div>
-            ))}
+              ))}
+
+            </div>
+
           </div>
-        </section>
+
+        </div>
       )}
+
+    </div>
+  </section>
+)}
 
       {/* Featured Film */}
       {featuredFilm?.slug && (
@@ -393,28 +441,6 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
                 </Link>
               );
             })}
-          </div>
-        </section>
-      )}
-      {/* 5️⃣ TESTIMONIALS (FILM STYLE) */}
-      {acf.testimonials?.length > 0 && (
-        <section className='text-black py-16 px-8 md:px-16 xl:px-48'>
-          <h2 className='text-2xl lg:text-4xl font-medium mb-8'>
-            Testimonials
-          </h2>
-
-          <div className='grid md:grid-cols-2 gap-8'>
-            {acf.testimonials.map((t, i) => (
-              <div
-                key={i}
-                className='bg-wwr_yellow_orange text-black p-6 rounded-lg'
-              >
-                <p className='text-lg mb-2'>“{t.quote}”</p>
-                <span className='text-sm font-semibold'>
-                  — {t.name}, {t.role}
-                </span>
-              </div>
-            ))}
           </div>
         </section>
       )}

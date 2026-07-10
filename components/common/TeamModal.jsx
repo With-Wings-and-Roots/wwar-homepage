@@ -23,7 +23,7 @@ const socialIcons = {
   linkedin: LinkedinIcon,
 };
 
-const Team = ({ member, mediaUrl, baseLink }) => {
+const Team = ({ member, mediaUrl, role, baseLink }) => {
   if (!member) return null;
   const { title, acf } = member;
   const { city, email, position, description, socials } = acf;
@@ -156,7 +156,7 @@ const Team = ({ member, mediaUrl, baseLink }) => {
 
                 <div className='mt-12 md:mt-0'>
                   <div className='font-thin md:text-lg lg:text-xl'>
-                    {parse(description)}
+                    {parse(role || '')}
                   </div>
                 </div>
               </div>

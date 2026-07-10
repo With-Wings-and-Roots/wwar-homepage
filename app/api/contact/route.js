@@ -23,12 +23,6 @@ export async function POST(req) {
     // 🎯 Route email based on type
     let recipient = 'info@withwingsandroots.com';
 
-    if (type === 'film') {
-      recipient = 'christina@withwingsandroots.com';
-    } else if (type === 'timeline') {
-      recipient = 'olga@withwingsandroots.com';
-    }
-
     // ✅ Email content
     const emailData = {
       sender: {
