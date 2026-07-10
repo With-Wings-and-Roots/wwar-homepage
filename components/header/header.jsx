@@ -10,7 +10,7 @@ import { getFrontpageId, getPage } from '@/utilities/pages';
 import { createLocalLink } from '@/utilities/links';
 import { FaCalendarCheck, FaGift, FaEnvelope } from 'react-icons/fa';
 
-const Header = async ({ lang }) => {
+const Header = async ({ lang , translations}) => {
   const menuIds = await getPrimaryMenuId(lang);
   const mainMenuId = menuIds?.primary;
   const secondaryMenuId = menuIds?.footer;
@@ -51,7 +51,7 @@ className={`flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transi
     </li>
   );
 })}<li className='flex items-center gap-2 px-2 py-1 text-white hover:opacity-80 transition text-outline-thin'>
-            <LanguageSelector lang={lang} />
+            <LanguageSelector lang={lang} translations={translations} />
           </li>
 
   </ul>

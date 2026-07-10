@@ -1,4 +1,4 @@
-import { getAllPages, getFrontpageId, getPage } from '@/utilities/pages';
+import { getAllPages, getFrontpageId, getPage, getTranslations } from '@/utilities/pages';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
@@ -119,11 +119,17 @@ const Page = async ({ params, searchParams }) => {
     timelineTopics,
     filmProductionTypes,
     AllFilms;
+        let translations = null;
+
 
   // get page
   let template;
   if (pageObj) {
     const pageData = await getPage(params.lang, pageObj.id);
+    if (pageData) {
+      translations = await getTranslations(params.lang, pageData.id);
+    }
+  
     switch (pageObj.template) {
       case 'page_stories.php':
         [
@@ -562,7 +568,7 @@ const relatedTeams = await Promise.all(
       pageSettings?.google_analytics_id?.length > 0 ? (
         <GoogleAnalytics gaId={pageSettings.google_analytics_id} />
       ) : null}
-      <Header lang={params.lang} />
+      <Header lang={params.lang} translations={translations} />
       <NewsletterFlyout lang={params.lang} />
 
       {template}
