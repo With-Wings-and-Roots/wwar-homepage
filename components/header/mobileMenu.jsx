@@ -12,7 +12,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import MobileLanguageSelector from './mobileLanguageSelector';
 
-const MobileMenu = ({ topLevelMenuItems, menuItems, lang }) => {
+const MobileMenu = ({ topLevelMenuItems, menuItems, lang, translations }) => {
   const dispatch = useDispatch();
 
   const mobileMenuOpen = useSelector(
@@ -92,7 +92,7 @@ const MobileMenu = ({ topLevelMenuItems, menuItems, lang }) => {
               );
             })}
             <div className='absolute bottom-10 right-10 z-[201] flex'>
-              <MobileLanguageSelector lang={lang} />
+              <MobileLanguageSelector lang={lang} translations={translations} />
             </div>
           </motion.div>
         )}
