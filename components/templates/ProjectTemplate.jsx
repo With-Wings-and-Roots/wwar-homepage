@@ -49,7 +49,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           )}
         </div>
       </section>
-
       {/* ================= INTRO ================= */}
       {acf?.intro?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 pt-20'>
@@ -96,7 +95,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           ))}
         </section>
       )}
-
       {acf?.call_to_action?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-20'>
           <div className='flex flex-wrap gap-4'>
@@ -113,21 +111,20 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           </div>
         </section>
       )}
-
       {/* ================= VISUAL STRIP ================= */}
-     
       {acf?.gallery?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-16'>
           <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
-            {lang === 'en' ? `Moments from ${title.rendered}` : `Momente aus ${title.rendered}`}
+            {lang === 'en'
+              ? `Moments from ${title.rendered}`
+              : `Momente aus ${title.rendered}`}
           </h2>
           <div className='w-full md:w-[70%] mx-auto'>
             <VisualStrip acf={acf} lang={lang} />
           </div>
         </section>
-      )}s
-
-      {/* ================= OUR APPROACH ================= */}
+      )}
+      s{/* ================= OUR APPROACH ================= */}
       {acf?.our_approach?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-32 bg-[#f7f7f7]'>
           <div className='max-w-5xl mx-auto space-y-24'>
@@ -150,35 +147,25 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
         </section>
       )}
       {/* ================= RELATED FILMS ================= */}
-{acf?.related_films?.length > 0 && (
-  <RelatedFilms
-    relatedFilmIds={acf.related_films}
-    lang={lang}
-    heading={
-      lang === 'en'
-        ? 'Related Films'
-        : 'Verwandte Filme'
-    }
-  />
-)}
+      {acf?.related_films?.length > 0 && (
+        <RelatedFilms
+          relatedFilmIds={acf.related_films}
+          lang={lang}
+          heading={lang === 'en' ? 'Related Films' : 'Verwandte Filme'}
+        />
+      )}
       {/* ================= RELATED PROJECTS ================= */}
-{acf?.related_projects?.length > 0 && (
-  <RelatedProjects
-    relatedProjectIds={acf.related_projects}
-    lang={lang}
-    heading={
-      lang === 'en'
-        ? 'Related Projects'
-        : 'Verwandte Projekte'
-    }
-  />
-)}
-
+      {acf?.related_projects?.length > 0 && (
+        <RelatedProjects
+          relatedProjectIds={acf.related_projects}
+          lang={lang}
+          heading={lang === 'en' ? 'Related Projects' : 'Verwandte Projekte'}
+        />
+      )}
       {/* ================= RELATED BLOGS ================= */}
       {acf?.related_blogs?.length > 0 && (
         <RelatedBlogs relatedBlogIds={acf.related_blogs} lang={lang} />
       )}
-
       {/* ================= RELATED EVENTS ================= */}
       {acf?.related_events?.length > 0 && (
         <RelatedEvents
@@ -192,7 +179,6 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
         />
       )}
       {/* ================= MATERIALS GRID ================= */}
-
       <RelatedMaterials
         relatedMaterialIds={acf.related_materials}
         lang={lang}
@@ -227,8 +213,10 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
             {acf?.funders?.map(async (f, i) => {
               const funder = await getTeamMemberById(f.team_member);
-              const role = f?.role
-              const media = await fetchMediaFromId(funder.acf?.profile_icon);
+              const role = f?.role;
+              const media = funder.acf?.profile_icon
+                ? await fetchMediaFromId(funder.acf.profile_icon)
+                : null;
               return (
                 <Link
                   key={i}
