@@ -2,8 +2,12 @@ import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import ContactForm from '../common/contactForm';
+import SocialLinks from '../common/SocialLinks';
+import { getPageSettings } from '@/utilities/pageSettings';
 
-const DefaultTemplate = ({ data, params }) => {
+const DefaultTemplate = async ({ data, params }) => {
+  const footerData = await getPageSettings(params.lang);
+
   return (
     <div
       className='px-8 md:px-16 xl:px-48 pb-16 relative'
@@ -31,7 +35,7 @@ const DefaultTemplate = ({ data, params }) => {
           }}
           className='text-3xl md:text-6xl font-normal text-center'
         />
-      {params.slugs[0] === 'contact' && <ContactForm />}
+        {params.slugs[0] === 'contact' && <ContactForm />}
 
         {data.acf?.text?.length > 0 && (
           <WysiwygContent
@@ -39,6 +43,7 @@ const DefaultTemplate = ({ data, params }) => {
             className='text-lg md:text-xl mt-16 font-light'
           />
         )}
+        {params.slugs[0] === 'contact' && <SocialLinks footer={footerData} />}
       </div>
     </div>
   );
