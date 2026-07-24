@@ -20,7 +20,7 @@ const StoriesPageWrapper = ({
     <>
       <ThemeExplorer lang={language} />{' '}
       <div className='px-8 md:px-16 xl:px-48'>
-        <StoriesPageConstainer
+        <StoriesPageContainer
           stories={stories}
           allMedia={allMedia}
           allPersons={allPersons}
