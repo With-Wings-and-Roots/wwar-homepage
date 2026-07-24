@@ -224,12 +224,12 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                   href={funder.acf?.socials?.[0]?.link || '#'}
                 >
                   {media && (
-                    <div className='relative w-32 h-32'>
+                    <div className='relative w-32 h-32 rounded-full' >
                       <Image
                         src={media.source_url || media.url}
                         alt={funder.title.rendered}
                         fill
-                        className='object-contain'
+                        className='object-cover rounded-full'
                       />
                     </div>
                   )}
