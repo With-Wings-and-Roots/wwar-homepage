@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import { Fragment } from 'react';
 import {
   createHashString,
   createLocalLink,

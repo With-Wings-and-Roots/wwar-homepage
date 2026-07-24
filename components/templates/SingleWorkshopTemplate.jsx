@@ -8,6 +8,7 @@ import { createLocalLink } from '@/utilities/links';
 import { getWorkshopTypeById } from '@/utilities/workshops';
 import { resolveRelatedContent } from '@/utilities/general';
 import WorkshopQuotes from '../workshops/WorkshopQuotes';
+import {getTeamMemberById} from '@/utilities/team';
 import gfx_quote from '@/public/quote-black.svg';
 import { getStoryById } from '@/utilities/stories';
 import { getMaterialById } from '@/utilities/materials';
@@ -454,6 +455,44 @@ const SingleWorkshopTemplate = async ({ workshop, lang = 'en' }) => {
             <VisualStrip acf={acf} lang={lang} />
           </div>
         </section>)}
+
+         {acf?.team?.length > 0 && (
+        <section className='px-8 md:px-16 xl:px-48 py-20'>
+          <h2
+            className='text-3xl md:text-5xl font-light mb-12'
+            dangerouslySetInnerHTML={{ __html: acf?.team_heading }}
+          />
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
+            {acf?.team?.map(async (t, i) => {
+              const teamMember = await getTeamMemberById(t.team_member);
+              const role = t?.team_member_role || teamMember.acf?.role;
+              const media = await fetchMediaFromId(teamMember.acf?.profile_icon);
+              return (
+                <Link
+                  key={i}
+                  className='flex flex-col items-center text-center gap-4'
+                  href={teamMember.acf?.socials?.[0]?.link || '#'}
+                >
+                  {media && (
+                    <div className='relative w-32 h-32'>
+                      <Image
+                        src={media.source_url || media.url}
+                        alt={teamMember.title.rendered}
+                        fill
+                        className='object-contain'
+                      />
+                    </div>
+                  )}
+                  <span className='text-lg font-medium'>
+                    {teamMember.title.rendered}
+                  </span>
+                  <p className='text-gray-600'>{role}</p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* 7️⃣ CTA (STRONG LIKE FILM PAGE) */}
       {acf.link?.url && (

@@ -115,11 +115,17 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
       )}
 
       {/* ================= VISUAL STRIP ================= */}
-      {(acf?.gallery?.length > 0 || acf?.related_videos?.length > 0) && (
+     
+      {acf?.gallery?.length > 0 && (
         <section className='px-8 md:px-16 xl:px-48 py-16'>
-          <VisualStrip acf={acf} />
+          <h2 className='text-2xl lg:text-4xl font-medium mb-6'>
+            {lang === 'en' ? `Moments from ${title.rendered}` : `Momente aus ${title.rendered}`}
+          </h2>
+          <div className='w-full md:w-[70%] mx-auto'>
+            <VisualStrip acf={acf} lang={lang} />
+          </div>
         </section>
-      )}
+      )}s
 
       {/* ================= OUR APPROACH ================= */}
       {acf?.our_approach?.length > 0 && (
@@ -219,8 +225,9 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
             dangerouslySetInnerHTML={{ __html: acf?.funders_heading }}
           />
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
-            {acf?.funders?.map(async (funderId, i) => {
-              const funder = await getTeamMemberById(funderId);
+            {acf?.funders?.map(async (f, i) => {
+              const funder = await getTeamMemberById(f.team_member);
+              const role = f?.role
               const media = await fetchMediaFromId(funder.acf?.profile_icon);
               return (
                 <Link
@@ -241,6 +248,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                   <span className='text-lg font-medium'>
                     {funder.title.rendered}
                   </span>
+                  <p className='text-gray-600'>{role}</p>
                 </Link>
               );
             })}

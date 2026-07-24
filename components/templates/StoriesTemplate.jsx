@@ -108,22 +108,6 @@ const StoriesTemplate = ({
         >
           {ctaData?.title}
         </Link>
-        <Link
-          href='#special-collections'
-          className='
-      self-start
-    px-6 py-3
-    uppercase text-md tracking-wide
-    transition-all
-    bg-wwr_yellow_orange text-black
-    hover:text-white
-    rounded-lg
-    '
-        >
-          {params?.lang === 'en'
-            ? 'Explore Special Collections'
-            : 'Sondersammlungen entdecken'}
-        </Link>
       </div>
       {subSlugs?.length > 0 &&
         !!stories?.find((s) => s.slug === subSlugs[0]) && (
