@@ -193,9 +193,12 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
             dangerouslySetInnerHTML={{ __html: acf?.funders_heading }}
           />
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 items-center'>
-            {acf?.funders?.map(async (funderId, i) => {
-              const funder = await getTeamMemberById(funderId);
-              const media = await fetchMediaFromId(funder.acf?.profile_icon);
+            {acf?.funders?.map(async (f, i) => {
+              const funder = await getTeamMemberById(f.team_member);
+              const role = f?.role;
+              const media = funder.acf?.profile_icon
+                ? await fetchMediaFromId(funder.acf.profile_icon)
+                : null;
               return (
                 <Link
                   key={i}
@@ -203,7 +206,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                   href={funder.acf?.socials?.[0]?.link || '#'}
                 >
                   {media && (
-                    <div className='relative w-32 h-32'>
+                    <div className='relative w-32 h-32 rounded-full overflow-hidden'>
                       <Image
                         src={media.source_url || media.url}
                         alt={funder.title.rendered}
@@ -215,6 +218,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                   <span className='text-lg font-medium'>
                     {funder.title.rendered}
                   </span>
+                  <p className='text-gray-600'>{role}</p>
                 </Link>
               );
             })}
