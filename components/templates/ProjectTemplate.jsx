@@ -211,7 +211,7 @@ const ProjectSingleTemplate = async ({ subSlugs, lang }) => {
                         src={media.source_url || media.url}
                         alt={funder.title.rendered}
                         fill
-                        className='object-contain'
+                        className='object-cover'
                       />
                     </div>
                   )}
