@@ -40,7 +40,7 @@ const SingleCollectionButton = ({ collection, isActive }) => {
           isActive
             ? 'bg-wwr_teal_hovered text-wwr_white'
             : 'bg-wwr_teal hover:bg-wwr_teal_hovered text-white hover:text-wwr_white'
-        } text-sm lg:text-xl w-max px-3 py-1.5 lg:py-3 rounded-lg hover:cursor-pointer transition-all duration-300 font-extralight`}
+        } text-base lg:text-lg w-max px-3 py-1.5 lg:py-3 rounded-lg hover:cursor-pointer transition-all duration-300 font-extralight`}
       >
         {parse(collection.name)}
       </div>

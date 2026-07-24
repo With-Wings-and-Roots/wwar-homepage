@@ -1,7 +1,6 @@
 'use client';
 import StoriesPageContainer from '@/components/stories/StoriesPageContainer';
-import UmbrellaCards from './UmbrellaCards';
-
+import ThemeExplorer from '@/components/stories/UmbrellaCards';
 const StoriesPageWrapper = ({
   lang,
   stories,
@@ -19,9 +18,9 @@ const StoriesPageWrapper = ({
   const language = lang || 'en';
   return (
     <>
-      <UmbrellaCards lang={language} />
+      <ThemeExplorer lang={language} />{' '}
       <div className='px-8 md:px-16 xl:px-48'>
-        <StoriesPageContainer
+        <StoriesPageConstainer
           stories={stories}
           allMedia={allMedia}
           allPersons={allPersons}

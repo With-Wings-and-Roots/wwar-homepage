@@ -11,7 +11,6 @@ import { createLocalLink } from '@/utilities/links';
 import Link from 'next/link';
 import { collectionsAdded } from '@/store/collections';
 import { citiesAdded } from '@/store/cities';
-import CollectionsChips from './CollectionTabs';
 import { storySelected } from '@/store/selectedStory';
 import Image from 'next/image';
 
@@ -122,18 +121,6 @@ const StoriesPageContainer = ({
           </Link>
         )}
       </div>
-
-      {collections?.length > 0 && (
-        <div className='my-16' id='special-collections'>
-          <h2 className='text-2xl md:text-3xl font-light mt-16 py-10'>
-            {lang === 'en'
-              ? 'Explore Special Collections'
-              : 'Entdecken Sie spezielle Sammlungen'}
-          </h2>
-
-          <CollectionsChips lang={lang} />
-        </div>
-      )}
     </>
   );
 };
