@@ -97,8 +97,8 @@ const TimelinesWrapper = ({
         <h1 className='text-3xl md:text-5xl font-light mb-4 mt-10'>
           {`${countryData?.name} ${
             lang === 'en'
-              ? 'Immigration History Timeline'
-              : 'Zeitstrahl der Einwanderungsgeschichte'
+              ? 'Timeline of Migration, Citizenship, and Belonging'
+              : 'Zeitleiste der Migration, Rechte und Zugehörigkei'
           }`}
         </h1>
         <p className='text-gray-700 mb-6'>{countryData?.description}</p>

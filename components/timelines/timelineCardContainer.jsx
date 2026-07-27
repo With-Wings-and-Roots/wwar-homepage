@@ -104,7 +104,7 @@ const TimelineCardContainer = ({
       <div className='px-8 md:px-16 xl:px-48 mb-4 text-lg lg:text-xl font-medium text-wwr_rich_black'>
         {lang === 'en'
           ? 'Search timelines or filter by topics / timeline eras'
-          : 'Zeitstrahlen durchsuchen oder nach Themen / Epochen filtern'}
+          : 'Zeitleisten durchsuchen oder nach Themen / Epochen filtern'}
       </div>
 
       <ErasTabs lang={lang} allStoriesCount={allTimelines.length} />
