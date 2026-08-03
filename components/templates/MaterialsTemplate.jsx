@@ -12,6 +12,7 @@ const MaterialsTemplate = ({
   collections,
   languages,
   params,
+  title = 'Posts'
 }) => {
   const headerImage = data?.acf?.header_image || null;
   const visibleMaterials = materials.filter((material) => {
@@ -34,11 +35,14 @@ const MaterialsTemplate = ({
         />
 
         <div className='text-lg font-light  mt-6'>
-          <h1 className='text-3xl md:text-6xl font-bold mb-6'>
-            {data?.title?.rendered || data?.acf?.title}
-          </h1>
+          <h1
+            className='text-3xl md:text-6xl font-bold mb-6'
+            dangerouslySetInnerHTML={{
+              __html: data?.title?.rendered || data?.acf?.title,
+            }}
+          ></h1>
 
-          <WysiwygContent content={data?.acf?.intro} />
+          <WysiwygContent content={data?.acf?.intro || data?.acf?.intro_text} />
         </div>
 
         <MaterialsWrapper
@@ -47,6 +51,7 @@ const MaterialsTemplate = ({
           topics={topics}
           collections={collections}
           languages={languages}
+          title={title}
           params={params}
         />
       </div>

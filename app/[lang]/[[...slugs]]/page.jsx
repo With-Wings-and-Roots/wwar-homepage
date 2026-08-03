@@ -1,4 +1,9 @@
-import { getAllPages, getFrontpageId, getPage, getTranslations } from '@/utilities/pages';
+import {
+  getAllPages,
+  getFrontpageId,
+  getPage,
+  getTranslations,
+} from '@/utilities/pages';
 import { notFound } from 'next/navigation';
 import Footer from '@/components/footer/footer';
 import Header from '@/components/header/header';
@@ -30,13 +35,14 @@ import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
-import { getAllPosts } from '@/utilities/posts';
+import { getAllPosts, getBlogFormats, getBlogMedium, getBlogTopics } from '@/utilities/posts';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
 import { fetchAllCollections } from '@/utilities/collections';
 import SingleMaterialTemplate from '@/components/templates/SingleMaterialTemplate';
+import IdeasAndConversationTemplate from '@/components/templates/IdeasAndConversationTemplate';
 import {
   getAllLanguages,
   getAllMaterials,
@@ -118,9 +124,9 @@ const Page = async ({ params, searchParams }) => {
     timelineEras,
     timelineTopics,
     filmProductionTypes,
+    posts,
     AllFilms;
-        let translations = null;
-
+  let translations = null;
 
   // get page
   let template;
@@ -129,7 +135,7 @@ const Page = async ({ params, searchParams }) => {
     if (pageData) {
       translations = await getTranslations(params.lang, pageData.id);
     }
-  
+
     switch (pageObj.template) {
       case 'page_stories.php':
         [
@@ -362,6 +368,45 @@ const Page = async ({ params, searchParams }) => {
             collections={collections}
             languages={languages}
             params={searchParams}
+            title={'materials'}
+          />
+        );
+        break;
+      case 'page_ideas.php':
+         [posts, topics, collections, languages] = await Promise.all([
+          getAllPosts(params.lang, 'posts'),
+          getBlogTopics(params.lang),
+          getBlogFormats(params.lang),
+          getBlogMedium(params.lang),
+        ]);
+        template = (
+          <MaterialsTemplate
+            data={pageData}
+            lang={params.lang}
+            materials={posts}
+            topics={topics}
+            collections={collections}
+            languages={languages}
+            params={searchParams}
+          />
+        );
+        break;
+      case 'page_updates.php':
+       [posts, topics, collections, languages] = await Promise.all([
+          getAllPosts(params.lang, 'posts'),
+          getBlogTopics(params.lang),
+          getBlogFormats(params.lang),
+          getBlogMedium(params.lang),
+        ]);
+        template = (
+          <MaterialsTemplate
+            data={pageData}
+            lang={params.lang}
+            materials={posts}
+            topics={topics}
+            collections={collections}
+            languages={languages}
+            params={searchParams}
           />
         );
         break;
@@ -377,38 +422,38 @@ const Page = async ({ params, searchParams }) => {
 
         const team = material[0]?.acf?.team || [];
 
-const relatedTeams = await Promise.all(
-  team.map(async (teamItem) => {
-    const members = Array.isArray(teamItem.related_memebers)
-      ? (
-          await Promise.all(
-            teamItem.related_memebers.map(async (item) => {
-              const memberId = item?.member?.[0];
+        const relatedTeams = await Promise.all(
+          team.map(async (teamItem) => {
+            const members = Array.isArray(teamItem.related_memebers)
+              ? (
+                  await Promise.all(
+                    teamItem.related_memebers.map(async (item) => {
+                      const memberId = item?.member?.[0];
 
-              if (!memberId) return null;
+                      if (!memberId) return null;
 
-              const member = await getTeamMemberById(
-                memberId,
-                params.lang
-              ).catch(() => null);
+                      const member = await getTeamMemberById(
+                        memberId,
+                        params.lang
+                      ).catch(() => null);
 
-              if (!member) return null;
+                      if (!member) return null;
 
-              return {
-                member,
-                specific_role: item.specific_role,
-              };
-            })
-          )
-        ).filter(Boolean)
-      : [];
+                      return {
+                        member,
+                        specific_role: item.specific_role,
+                      };
+                    })
+                  )
+                ).filter(Boolean)
+              : [];
 
-    return {
-      team_title: teamItem.team_title,
-      related_members: members,
-    };
-  })
-);
+            return {
+              team_title: teamItem.team_title,
+              related_members: members,
+            };
+          })
+        );
 
         [allMediaDe, allMediaEd, allMediaEn, topics, allPersons] =
           await Promise.all([
@@ -420,7 +465,7 @@ const relatedTeams = await Promise.all(
           ]);
         allMedia = [...allMediaDe, ...allMediaEn, ...allMediaEd];
         template = (
-        <SingleMaterialTemplate
+          <SingleMaterialTemplate
             subSlugs={subSlugs}
             lang={params.lang}
             data={pageData}

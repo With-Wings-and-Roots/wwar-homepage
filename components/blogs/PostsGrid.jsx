@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import MaterialGridCard from './MaterialGridCard';
+import MaterialGridCard from '../materials/MaterialGridCard';
 import TabsDropdown from '../stories/Tabs';
-import CollectionsDropdown from './CollectionDropdown';
-import LanguagesDropdown from './LanguagesDropdown';
+import CollectionsDropdown from '../materials/CollectionDropdown';
+import LanguagesDropdown from '../materials/LanguagesDropdown';
 
-const MaterialsGrid = ({ materials, lang = 'en' }) => {
+const PostsGrid = ({ materials, lang = 'en' }) => {
   // Redux selectors
   const activeTopic = useSelector((state) => state.entities.topics.activeTopic);
   const activeCollection = useSelector(
@@ -84,8 +84,8 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
     <div className='mt-16'>
       <div className='mb-4 text-lg lg:text-xl font-medium text-wwr_rich_black'>
         {lang === 'en'
-          ? 'Search Materials or filter by Materials Collection / format'
-          : 'Zeitstrahle durchsuchen oder nach Materialsammlung / Format filtern'}
+          ? 'Search Posts or filter by Post Topic / Format'
+          : 'Posts durchsuchen oder nach Post-Thema / Format filtern'}
       </div>
 
       {/* Filters (Aligned like Stories) */}
@@ -94,7 +94,7 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
           <div className='flex h-12 border-2 border-wwr_rich_black rounded-lg'>
             <input
               className='px-3 py-1 border-0 w-full focus:outline-none rounded-lg'
-              placeholder={lang === 'en' ? 'Search materials' : 'Rechercher'}
+              placeholder={lang === 'en' ? 'Search posts' : 'Rechercher'}
               type='text'
               onChange={handleInput}
             />
@@ -121,21 +121,21 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
           <TabsDropdown
             lang={lang}
             isFeature={false}
-            cptName={lang === 'en' ? 'All Materials' : 'Alle Materialien'}
-            heading={lang === 'en' ? 'Select a format' : 'Wähle ein Format'}
+            cptName={lang === 'en' ? 'All Posts' : 'Alle Beiträge'}
+            heading={lang === 'en' ? 'Select a Topic' : 'Wähle ein Thema'}
           />
         </div>
 
         {/* Collections */}
         <div className='col-span-2 sm:col-span-1 w-full'>
-          <CollectionsDropdown lang={lang} />
+          <CollectionsDropdown lang={lang} heading={lang === 'en' ? 'Select a Format' : 'Wähle ein Format'} />
         </div>
         {/* Languages */}
         <div className='col-span-2 sm:col-span-1 w-full'>
           <LanguagesDropdown
             lang={lang}
             cptName={
-              lang === 'en' ? 'Select a Language' : 'Wählen Sie eine Sprache'
+              lang === 'en' ? 'Select a Medium' : 'Wählen Sie einen Medium'
             }
           />
         </div>
@@ -148,11 +148,11 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
       <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((material, index) => (
-            <MaterialGridCard key={index} material={material} title={'materials'} />
+            <MaterialGridCard key={index} material={material} title={'posts'}/>
           ))
         ) : (
           <p className='col-span-full text-gray-500 text-center'>
-            {lang === 'en' ? 'No materials found.' : 'Aucun matériau trouvé.'}
+            {lang === 'en' ? 'No posts found.' : 'Aucun post trouvé.'}
           </p>
         )}
       </div>
@@ -160,4 +160,4 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
   );
 };
 
-export default MaterialsGrid;
+export default PostsGrid;

@@ -33,3 +33,39 @@ export async function getPostById(id, lang, post_type) {
 
   return await res.json();
 }
+export async function getBlogTopics(lang) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/blog-topic?lang=${lang}`,
+    {
+      next: { revalidate: 0, cache: 'no-store' },
+    }
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return await res.json();
+}
+export async function getBlogFormats(lang) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/format?lang=${lang}`,
+    {   
+    next: { revalidate: 0, cache: 'no-store' },
+    }
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return await res.json();
+}
+export async function getBlogMedium(lang) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/medium?lang=${lang}`,
+    {   
+    next: { revalidate: 0, cache: 'no-store' },
+    }
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return await res.json();
+}
