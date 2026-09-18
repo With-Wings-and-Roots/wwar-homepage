@@ -6,6 +6,8 @@ import MaterialGridCard from './MaterialGridCard';
 import TabsDropdown from '../stories/Tabs';
 import CollectionsDropdown from './CollectionDropdown';
 import LanguagesDropdown from './LanguagesDropdown';
+import { FiGrid, FiList } from 'react-icons/fi';
+import MaterialListCard from './MaterialListCard';
 
 const MaterialsGrid = ({ materials, lang = 'en' }) => {
   // Redux selectors
@@ -18,7 +20,7 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
   );
 
   const [filteredMaterials, setFilteredMaterials] = useState(materials);
-
+  const [viewMode, setViewMode] = useState('grid');
   /**
    * SEARCH
    */
@@ -87,7 +89,6 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
           ? 'Search Materials or filter by Materials Collection / format'
           : 'Zeitstrahle durchsuchen oder nach Materialsammlung / Format filtern'}
       </div>
-
       {/* Filters (Aligned like Stories) */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 items-center'>
         <div className='col-span-2 sm:col-span-1 w-full'>
@@ -143,19 +144,64 @@ const MaterialsGrid = ({ materials, lang = 'en' }) => {
         {/* Empty column to match Stories layout */}
         <div className='hidden md:block'></div>
       </div>
-
       {/* Materials Grid */}
-      <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
-        {filteredMaterials.length > 0 ? (
-          filteredMaterials.map((material, index) => (
-            <MaterialGridCard key={index} material={material} title={'materials'} />
-          ))
-        ) : (
-          <p className='col-span-full text-gray-500 text-center'>
-            {lang === 'en' ? 'No materials found.' : 'Aucun matériau trouvé.'}
-          </p>
-        )}
+      {/* View Toggle */}
+      <div className='flex justify-end mb-8'>
+        <div className='flex gap-3'>
+          <button
+            onClick={() => setViewMode('grid')}
+            className={`p-2 rounded transition ${
+              viewMode === 'grid'
+                ? 'bg-wwr_yellow_orange text-black'
+                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+            }`}
+          >
+            <FiGrid size={20} />
+          </button>
+
+          <button
+            onClick={() => setViewMode('list')}
+            className={`p-2 rounded transition ${
+              viewMode === 'list'
+                ? 'bg-wwr_yellow_orange text-black'
+                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+            }`}
+          >
+            <FiList size={20} />
+          </button>
+        </div>
       </div>
+      {filteredMaterials.length > 0 ? (
+        <div
+          className={`grid gap-8 ${
+            viewMode === 'grid'
+              ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+              : 'grid-cols-1'
+          }`}
+        >
+          {filteredMaterials.map((material, index) =>
+            viewMode === 'grid' ? (
+              <MaterialGridCard
+                key={material.id || index}
+                index={index}
+                material={material}
+                title='materials'
+              />
+            ) : (
+              <MaterialListCard
+                key={material.id || index}
+                index={index}
+                material={material}
+                title='materials'
+              />
+            )
+          )}
+        </div>
+      ) : (
+        <p className='text-center text-gray-500'>
+          {lang === 'en' ? 'No materials found.' : 'Aucun matériau trouvé.'}
+        </p>
+      )}
     </div>
   );
 };

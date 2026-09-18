@@ -35,7 +35,13 @@ import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import PartnersTemplate from '@/components/templates/PartnersTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
-import { getAllPosts, getBlogFormats, getBlogMedium, getBlogTopics } from '@/utilities/posts';
+import {
+  getAllPosts,
+  getBlogFormats,
+  getBlogMedium,
+  getBlogTopics,
+  getAllTags,
+} from '@/utilities/posts';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
@@ -125,6 +131,7 @@ const Page = async ({ params, searchParams }) => {
     timelineTopics,
     filmProductionTypes,
     posts,
+    tags,
     AllFilms;
   let translations = null;
 
@@ -373,12 +380,24 @@ const Page = async ({ params, searchParams }) => {
         );
         break;
       case 'page_ideas.php':
-         [posts, topics, collections, languages] = await Promise.all([
+        const selectedFormatsForIdeasPage =
+          pageData?.acf?.selected_format || [];
+
+        [posts, topics, collections, languages, tags] = await Promise.all([
           getAllPosts(params.lang, 'posts'),
           getBlogTopics(params.lang),
           getBlogFormats(params.lang),
           getBlogMedium(params.lang),
+          getAllTags(params.lang),
         ]);
+        collections = collections.filter((format) =>
+          selectedFormatsForIdeasPage.includes(format.id)
+        );
+        posts = posts.filter((post) => {
+          const postFormats = post?.acf?.format || [];
+
+          return postFormats.some((id) => selectedFormatsForIdeasPage.includes(id));
+        });
         template = (
           <MaterialsTemplate
             data={pageData}
@@ -387,17 +406,28 @@ const Page = async ({ params, searchParams }) => {
             topics={topics}
             collections={collections}
             languages={languages}
+            tags={tags}
             params={searchParams}
           />
         );
         break;
       case 'page_updates.php':
-       [posts, topics, collections, languages] = await Promise.all([
+        const selectedFormats = pageData?.acf?.selected_format || [];
+
+        [posts, topics, collections, languages] = await Promise.all([
           getAllPosts(params.lang, 'posts'),
           getBlogTopics(params.lang),
           getBlogFormats(params.lang),
           getBlogMedium(params.lang),
         ]);
+        collections = collections.filter((format) =>
+          selectedFormats.includes(format.id)
+        );
+        posts = posts.filter((post) => {
+          const postFormats = post?.acf?.format || [];
+
+          return postFormats.some((id) => selectedFormats.includes(id));
+        });
         template = (
           <MaterialsTemplate
             data={pageData}

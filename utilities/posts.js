@@ -48,8 +48,8 @@ export async function getBlogTopics(lang) {
 export async function getBlogFormats(lang) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/format?lang=${lang}`,
-    {   
-    next: { revalidate: 0, cache: 'no-store' },
+    {
+      next: { revalidate: 0, cache: 'no-store' },
     }
   );
   if (!res.ok) {
@@ -60,12 +60,61 @@ export async function getBlogFormats(lang) {
 export async function getBlogMedium(lang) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/medium?lang=${lang}`,
-    {   
-    next: { revalidate: 0, cache: 'no-store' },
+    {
+      next: { revalidate: 0, cache: 'no-store' },
     }
   );
   if (!res.ok) {
     return null;
   }
   return await res.json();
+}
+export async function getBlogFormatById(id, lang) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/format/${id}?lang=${lang}`,
+    {
+      next: { revalidate: 0, cache: 'no-store' },
+    }
+  );
+  if (!res.ok) {
+    return null;
+  }
+  return await res.json();
+}
+export async function getAllTags(lang) {
+  const perPage = 100;
+  let page = 1;
+  let allTags = [];
+
+  while (true) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_CMS_URL}/wp-json/wp/v2/tags?lang=${lang}&per_page=${perPage}&page=${page}`,
+      {
+        next: { revalidate: 0 },
+        cache: 'no-store',
+      }
+    );
+
+    if (!res.ok) {
+      // WordPress returns 400 when the requested page doesn't exist
+      if (page > 1 && res.status === 400) {
+        break;
+      }
+
+      return null;
+    }
+
+    const tags = await res.json();
+
+    allTags = [...allTags, ...tags];
+
+    // If fewer than 100 came back, this was the last page
+    if (tags.length < perPage) {
+      break;
+    }
+
+    page++;
+  }
+
+  return allTags;
 }

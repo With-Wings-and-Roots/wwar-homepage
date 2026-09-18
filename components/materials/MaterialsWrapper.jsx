@@ -13,7 +13,8 @@ const MaterialsWrapper = ({
   collections,
   languages,
   params,
-  title 
+  title,
+  tags
 }) => {
   const dispatch = useDispatch();
   // Dispatch topics
@@ -64,6 +65,7 @@ const MaterialsWrapper = ({
           collections={collections}
           languages={languages}
           title={title}
+          tags={tags}s
         />
       )}
       {title !== 'Posts' && (

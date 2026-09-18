@@ -6,16 +6,16 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { createLocalLink } from '@/utilities/links';
 import { fetchMediaFromId } from '@/utilities/media';
+import { getBlogFormatById } from '@/utilities/posts';
 import WysiwygContent from '../common/WysiwygContent';
 
-const MaterialGridCard = ({ key, material, title }) => {
+const MaterialGridCard = ({ index, material, title }) => {
   const cardTitle = material?.title?.rendered ?? '';
   const text = material?.acf?.text ?? '';
 
   const isPost = title?.toLowerCase() === 'posts';
   const link = isPost ? `/blog/${material?.slug}` : material?.link || '#';
 
-  // Use featured image for posts, imagevideo for everything else
   const media = isPost
     ? material?.featured_media
     : material?.acf?.imagevideo?.[0];
@@ -24,10 +24,12 @@ const MaterialGridCard = ({ key, material, title }) => {
   const isVideo = !isPost && media?.acf_fc_layout === 'video';
 
   const [imageData, setImageData] = useState(null);
+  const [blogFormat, setBlogFormat] = useState(null);
 
   useEffect(() => {
-    const loadImage = async () => {
+    const loadData = async () => {
       try {
+        // Get featured image
         if (isPost && material?.featured_media) {
           const img = await fetchMediaFromId(material.featured_media);
           setImageData(img);
@@ -35,23 +37,36 @@ const MaterialGridCard = ({ key, material, title }) => {
           const img = await fetchMediaFromId(media.image);
           setImageData(img);
         }
+
+        // Get blog format
+        if (isPost && material?.acf?.format) {
+          const formatData = await getBlogFormatById(material.acf.format);
+
+          setBlogFormat(Array.isArray(formatData) ? formatData[0] : formatData);
+        }
       } catch (error) {
-        console.error('Failed to load image:', error);
+        console.error('Failed to load material data:', error);
       }
     };
 
-    loadImage();
+    loadData();
   }, [isPost, isImage, media, material]);
 
   return (
     <Link
       href={createLocalLink(link)}
-      key={key}
+      key={index}
       className='group block h-full focus:outline-none rounded-lg overflow-hidden'
     >
       <div className='bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
         {/* Media */}
         <div className='relative aspect-[4/3] overflow-hidden'>
+          {/* FORMAT BADGE */}
+          {isPost && blogFormat && (
+            <div className='absolute top-3 left-3 z-10 text-[10px] uppercase tracking-widest text-wwr_yellow_orange bg-black/70 px-2 py-1 rounded'>
+              {blogFormat?.name || blogFormat?.title?.rendered}
+            </div>
+          )}
           {isImage && imageData && (
             <Image
               src={imageData.source_url}
@@ -78,12 +93,13 @@ const MaterialGridCard = ({ key, material, title }) => {
         {/* Content */}
         <div className='flex flex-col justify-between p-6 border border-black/10 flex-grow'>
           <h3
-            className='text-xl  font-light leading-snug'
+            className='text-xl font-light leading-snug'
             dangerouslySetInnerHTML={{ __html: cardTitle }}
           />
 
           <WysiwygContent content={text} className='text-sm line-clamp-2' />
-          <div className='mt-1 text-sm '>
+
+          <div className='mt-1 text-sm'>
             {format(material.date, 'yyyy-MM-dd')}
           </div>
 

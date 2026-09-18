@@ -18,6 +18,7 @@ const Buttons = ({ buttons }) => {
         buttons.map(async (btn) => {
           const target = btn?.target?.[0];
           const resolvedUrl = await resolveButtonTargetUrl(btn);
+          console.log('Resolved button:', btn, 'Resolved URL:', resolvedUrl, 'Layout:', target?.acf_fc_layout);
 
           return {
             ...btn,
@@ -61,7 +62,7 @@ const Buttons = ({ buttons }) => {
             href={btn.resolvedUrl}
             target={openInNewTab ? '_blank' : '_self'}
             rel={openInNewTab ? 'noopener noreferrer' : undefined}
-            className='bg-wwr_yellow_orange text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+            className='bg-wwr_yellow_orange rounded-lg text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
           >
             {btn.label}
           </Link>

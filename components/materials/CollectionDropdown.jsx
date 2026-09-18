@@ -7,6 +7,7 @@ import { activatedTopic } from '@/store/topics';
 import { setActiveCurriculum } from '@/store/curriculam';
 import { setActiveUmbrella } from '@/store/umbrella';
 import { storySelected } from '@/store/selectedStory';
+import { setActiveCity } from '@/store/cities';
 
 const CollectionsDropdown = ({ heading = 'Select a collection' }) => {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ const CollectionsDropdown = ({ heading = 'Select a collection' }) => {
       })
     );
     dispatch(setActiveUmbrella(null));
+    dispatch(setActiveCity(null));
 
     setOpen(false);
 
