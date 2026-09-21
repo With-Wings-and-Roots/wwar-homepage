@@ -6,6 +6,7 @@ import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 import { getFilmBySlug } from '@/utilities/films';
 import { getTimelineEvent } from '@/utilities/timeline';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
+import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
 
 export const dynamicParams = true;
 
@@ -43,6 +44,10 @@ const Page = async ({ params }) => {
           film={film}
         />
       );
+      break;
+    }
+    case 'page_storytellers.php': {
+      template = <StorytellersTemplate data={pageData} params={params} />;
       break;
     }
     case 'page_timelines.php': {

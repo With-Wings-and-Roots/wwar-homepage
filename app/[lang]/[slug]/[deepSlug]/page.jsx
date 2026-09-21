@@ -5,6 +5,7 @@ import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import ProjectTemplate from '@/components/templates/ProjectTemplate';
+import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
 import { getFrontpageId, getPage, getPageBySlug } from '@/utilities/pages';
 import {
   getTimelineCountries,
@@ -113,12 +114,18 @@ const Page = async ({ params }) => {
       break;
     }
     case 'page_projects.php': {
-      template = <AllProjectsTemplate data={pageData} subSlugs={deepSlugs} lang={lang} />;
+      template = (
+        <AllProjectsTemplate data={pageData} subSlugs={deepSlugs} lang={lang} />
+      );
+      break;
+    }
+    case 'page_storytellers.php': {
+      template = <StorytellersTemplate data={pageData} params={params} />;
       break;
     }
     case 'page_project.php':
-        template = <ProjectTemplate subSlugs={deepSlugs} lang={params.lang} />;
-        break;
+      template = <ProjectTemplate subSlugs={deepSlugs} lang={params.lang} />;
+      break;
     default: {
       notFound();
     }

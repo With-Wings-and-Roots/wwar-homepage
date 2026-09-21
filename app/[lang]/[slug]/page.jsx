@@ -12,6 +12,7 @@ import MaterialsTemplate from '@/components/templates/MaterialsTemplate';
 import AllProjectsTemplate from '@/components/templates/AllProjectsTemplate';
 import OurWorkTemplate from '@/components/templates/OurWorkTemplate';
 import BlogTemplate from '@/components/templates/BlogTemplate';
+import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
 
 import { getPageSettings } from '@/utilities/pageSettings';
 import { GoogleAnalytics } from '@next/third-parties/google';
@@ -77,16 +78,20 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_projects.php':
-      template = <AllProjectsTemplate data={pageData} subSlugs={[]} lang={lang} />;
+      template = (
+        <AllProjectsTemplate data={pageData} subSlugs={[]} lang={lang} />
+      );
       break;
     case 'page_films.php':
       template = <AllFilmsTemplate data={pageData} params={params} />;
       break;
 
     case 'page_ourwork.php':
-        template = <OurWorkTemplate data={pageData} params={params} />;
-        break;
-
+      template = <OurWorkTemplate data={pageData} params={params} />;
+      break;
+    case 'page_storytellers.php':
+      template = <StorytellersTemplate data={pageData} params={params} />;
+      break;
     default:
       template = <DefaultTemplate data={pageData} params={params} />;
       break;

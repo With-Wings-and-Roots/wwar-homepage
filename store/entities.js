@@ -13,6 +13,10 @@ import rangeSliderReducer from './rangeSlider';
 import timelineReducer from './timeline';
 import timelinesReducer from './timelines';
 import timelineErasReducer from './timelineEras';
+import umbrellaReducer from './umbrella';
+import collectionsReducer from './collections';
+import curriculamReducer from './curriculam';
+import citiesReducer from './cities';
 
 export default combineReducers({
   darkMode: darkModeReducer,
@@ -27,4 +31,8 @@ export default combineReducers({
   timeline: timelineReducer,
   timelines: timelinesReducer,
   timelineEras: timelineErasReducer,
+  umbrella: umbrellaReducer,
+  collections: collectionsReducer,
+  curriculam: curriculamReducer,
+  cities: citiesReducer,
 });
