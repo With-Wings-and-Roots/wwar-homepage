@@ -83,7 +83,9 @@ const Page = async ({ params }) => {
       );
       break;
     case 'page_films.php':
-      template = <AllFilmsTemplate data={pageData} params={params} />;
+      template = (
+        <AllFilmsTemplate data={pageData} params={params} lang={lang} />
+      );
       break;
 
     case 'page_ourwork.php':

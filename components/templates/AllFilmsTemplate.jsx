@@ -24,11 +24,11 @@ const AllFilmsTemplate = async ({ data, lang = 'en' }) => {
 
   // Fetch featured media
   let featuredMedia = null;
-  if (featuredFilm?.acf?.hero_image) {
-    if (typeof featuredFilm.acf.hero_image === 'number') {
-      featuredMedia = await fetchMediaFromId(featuredFilm.acf.hero_image);
+  if (featuredFilm?.acf?.poster_image) {
+    if (typeof featuredFilm.acf.poster_image === 'number') {
+      featuredMedia = await fetchMediaFromId(featuredFilm.acf.poster_image);
     } else {
-      featuredMedia = featuredFilm.acf.hero_image;
+      featuredMedia = featuredFilm.acf.poster_image;
     }
   }
   const visibleFilms = films.filter((film) => {
@@ -89,7 +89,7 @@ const AllFilmsTemplate = async ({ data, lang = 'en' }) => {
 
           <div className='text-center max-w-2xl mx-auto'>
             <p className='text-sm uppercase tracking-wide text-wwr_teal text-center mb-3'>
-              Featured Film
+             {lang === 'en' ? 'Featured Film' : 'Vorgestellter Film'}
             </p>
 
             <h2 className='text-2xl md:text-3xl font-semibold'>

@@ -15,9 +15,7 @@ const FilmsClientWrapper = ({
   filmTypes = [],
   lang = 'en',
 }) => {
-  const [activeType, setActiveType] = useState(
-    filmProductionTypes.length > 0 ? filmProductionTypes[0].id : null
-  );
+  const [activeType, setActiveType] = useState(null);
   const [activeLanguage, setActiveLanguage] = useState(null);
   const [activeFilmType, setActiveFilmType] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
