@@ -11,7 +11,7 @@ import {
 } from '@/store/collections';
 import { citiesAdded } from '@/store/cities';
 
-import PostsGrid from './PostsGrid';
+import PostsGrid from './postsGrid';
 
 const PostsWrapper = ({
   posts = [],
