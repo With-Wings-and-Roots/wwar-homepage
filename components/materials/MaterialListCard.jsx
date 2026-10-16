@@ -14,7 +14,6 @@ const MaterialListCard = ({ index, material, title, params }) => {
   const text = material?.acf?.text ?? '';
 
   const isPost = title?.toLowerCase() === 'posts';
-  console.log('MaterialListCard material:', params);
 
   const link = isPost
     ? `/blog/${material?.slug}`

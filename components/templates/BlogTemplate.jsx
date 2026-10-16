@@ -18,7 +18,7 @@ import { createLocalLink } from '@/utilities/links';
 import ImageMedia from '@/components/common/ImageMedia';
 import WysiwygContent from '@/components/common/WysiwygContent';
 import Sidebar from '@/components/timelineEvent/sidebar';
-import PostsWrapper from '@/components/blogs/PostsWrapper';
+import PostsWrapper from '@/components/blogs/postsWrapper';
 
 const BlogTemplate = async ({ params, data }) => {
   const selectedFormats = (data?.acf?.selected_format || []).map(Number);
@@ -49,7 +49,6 @@ const BlogTemplate = async ({ params, data }) => {
 
     return postFormats.some((id) => selectedFormats.includes(id));
   });
-  console.log('BlogTemplate posts:', posts);
 
   // Individual blog post page
   let blogPost = null;
