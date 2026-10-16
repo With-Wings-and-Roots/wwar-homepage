@@ -3,39 +3,71 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { format } from 'date-fns';
 import { createLocalLink } from '@/utilities/links';
 import { fetchMediaFromId } from '@/utilities/media';
+import { getBlogFormatById } from '@/utilities/posts';
 import WysiwygContent from '../common/WysiwygContent';
 
-const MaterialGridCard = ({ material }) => {
-  const title = material?.title?.rendered ?? '';
-  const media = material?.acf?.imagevideo?.[0];
+const MaterialGridCard = ({ index, material, title, params }) => {
+  const cardTitle = material?.title?.rendered ?? '';
   const text = material?.acf?.text ?? '';
+  const slug = params?.slug || 'blog';
 
-  const isImage = media?.acf_fc_layout === 'image';
-  const isVideo = media?.acf_fc_layout === 'video';
+  const isPost = title?.toLowerCase() === 'posts';
+  const link = isPost ? `/${slug}/${material?.slug}` : material?.link || '#';
+
+  const media = isPost
+    ? material?.featured_media
+    : material?.acf?.imagevideo?.[0];
+
+  const isImage = isPost || media?.acf_fc_layout === 'image';
+  const isVideo = !isPost && media?.acf_fc_layout === 'video';
 
   const [imageData, setImageData] = useState(null);
+  const [blogFormat, setBlogFormat] = useState(null);
 
   useEffect(() => {
-    const loadImage = async () => {
-      if (isImage && media?.image) {
-        const img = await fetchMediaFromId(media.image);
-        setImageData(img);
+    const loadData = async () => {
+      try {
+        // Get featured image
+        if (isPost && material?.featured_media) {
+          const img = await fetchMediaFromId(material.featured_media);
+          setImageData(img);
+        } else if (!isPost && isImage && media?.image) {
+          const img = await fetchMediaFromId(media.image);
+          setImageData(img);
+        }
+
+        // Get blog format
+        if (isPost && material?.acf?.format) {
+          const formatData = await getBlogFormatById(material.acf.format);
+
+          setBlogFormat(Array.isArray(formatData) ? formatData[0] : formatData);
+        }
+      } catch (error) {
+        console.error('Failed to load material data:', error);
       }
     };
 
-    loadImage();
-  }, [isImage, media]);
+    loadData();
+  }, [isPost, isImage, media, material]);
 
   return (
     <Link
-      href={createLocalLink(material?.link)}
-      className='group block h-full focus:outline-none rounded-lg overflow-hidden '
+      href={createLocalLink(link)}
+      key={index}
+      className='group block h-full focus:outline-none rounded-lg overflow-hidden'
     >
       <div className='bg-wwr_yellow_orange flex flex-col h-full overflow-hidden'>
         {/* Media */}
         <div className='relative aspect-[4/3] overflow-hidden'>
+          {/* FORMAT BADGE */}
+          {isPost && blogFormat && (
+            <div className='absolute top-3 left-3 z-10 text-[10px] uppercase tracking-widest text-wwr_yellow_orange bg-black/70 px-2 py-1 rounded'>
+              {blogFormat?.name || blogFormat?.title?.rendered}
+            </div>
+          )}
           {isImage && imageData && (
             <Image
               src={imageData.source_url}
@@ -48,7 +80,7 @@ const MaterialGridCard = ({ material }) => {
 
           {isVideo && (
             <iframe
-              src={`https://player.vimeo.com/video/${media.video
+              src={`https://player.vimeo.com/video/${media?.video
                 ?.split('/')
                 .pop()}`}
               className='w-full h-full'
@@ -62,13 +94,18 @@ const MaterialGridCard = ({ material }) => {
         {/* Content */}
         <div className='flex flex-col justify-between p-6 border border-black/10 flex-grow'>
           <h3
-            className='text-xl md:text-2xl font-light leading-snug'
-            dangerouslySetInnerHTML={{ __html: title }}
+            className='text-xl font-light leading-snug'
+            dangerouslySetInnerHTML={{ __html: cardTitle }}
           />
+
           <WysiwygContent content={text} className='text-sm line-clamp-2' />
 
+          <div className='mt-1 text-sm'>
+            {format(material.date, 'yyyy-MM-dd')}
+          </div>
+
           <span className='mt-6 inline-flex items-center gap-2 text-sm uppercase tracking-wide font-medium text-black group-hover:text-white transition-colors'>
-            View material
+            {isPost ? 'Read more' : 'View material'}
             <span className='block h-px w-6 bg-current' />
           </span>
         </div>

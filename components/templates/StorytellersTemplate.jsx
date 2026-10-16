@@ -21,7 +21,6 @@ const StorytellersTemplate = async ({
   lang = 'en',
   params,
 }) => {
-  console.log('params in StorytellersTemplate:', params);
 
   const currentLang = params?.lang || lang;
 

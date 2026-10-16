@@ -52,6 +52,7 @@ const TabsDropdown = ({
   }, []);
 
   const handleSelect = (slug) => {
+    console.log('Selected topic slug:', slug);
     let selectedTopicId = null;
     let selectedTopicObj = null;
 
@@ -60,7 +61,7 @@ const TabsDropdown = ({
         allTopics.allTopics.find((topic) => topic.slug === slug) || null;
       selectedTopicId = selectedTopicObj?.id || null;
     }
-
+console.log('Selected topic object:', selectedTopicObj,selectedTopicId);
     dispatch(
       storySelected({
         selection: slug,

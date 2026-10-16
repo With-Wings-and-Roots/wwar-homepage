@@ -21,6 +21,7 @@ import { getTeamMemberById, getTeamMemberBySlug } from '@/utilities/team';
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 import { getFilmBySlug } from '@/utilities/films';
 import TimelineLandingTemplate from '@/components/templates/TimelineLandingTemplate';
+import AllBlogsTemplate from '@/components/templates/AllBlogsTemplate';
 
 export const dynamicParams = true;
 
@@ -86,9 +87,18 @@ const Page = async ({ params }) => {
     case 'page_blog.php': {
       const post = await getPostBySlug(params.lang, lastSlug, 'posts');
       if (!post) return notFound();
-      template = <BlogTemplate data={pageData} params={params} />;
+      template = <AllBlogsTemplate data={pageData} params={params} />;
       break;
     }
+
+    case 'page_ideas.php':
+      template = <BlogTemplate data={pageData} params={params} />;
+      break;
+
+    case 'page_updates.php':
+      template = <BlogTemplate data={pageData} params={params} />;
+      break;
+
     case 'page_home.php': {
       template = (
         <HomeTemplate

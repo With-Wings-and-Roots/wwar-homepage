@@ -20,6 +20,7 @@ import TeamsTemplate from '@/components/templates/TeamsTemplate';
 import AllFilmsTemplate from '@/components/templates/AllFilmsTemplate';
 import NewsletterFlyout from '@/components/common/NewsletterFlyout';
 import TimelineLandingTemplate from '@/components/templates/TimelineLandingTemplate';
+import AllBlogsTemplate from '@/components/templates/AllBlogsTemplate';
 
 export const revalidate = 600;
 export const dynamicParams = false;
@@ -50,6 +51,14 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_blog.php':
+      template = <AllBlogsTemplate data={pageData} params={params} />;
+      break;
+
+    case 'page_ideas.php':
+      template = <BlogTemplate data={pageData} params={params} />;
+      break;
+    
+    case 'page_updates.php':
       template = <BlogTemplate data={pageData} params={params} />;
       break;
 

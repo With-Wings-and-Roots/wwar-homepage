@@ -92,8 +92,6 @@ const ProjectsTemplate = ({ data }) => {
           </div>
         );
       default:
-        // console.log('no matching type found');
-        // console.log(block);
         break;
     }
   };
