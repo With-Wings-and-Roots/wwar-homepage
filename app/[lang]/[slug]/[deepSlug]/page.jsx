@@ -20,8 +20,10 @@ import { getPostBySlug } from '@/utilities/posts';
 import { getTeamMemberById, getTeamMemberBySlug } from '@/utilities/team';
 import SingleFilmTemplate from '@/components/templates/SingleFilmTemplate';
 import { getFilmBySlug } from '@/utilities/films';
+import {getMaterialBySlug} from '@/utilities/materials';
 import TimelineLandingTemplate from '@/components/templates/TimelineLandingTemplate';
 import AllBlogsTemplate from '@/components/templates/AllBlogsTemplate';
+import SingleMaterialTemplate from '@/components/templates/SingleMaterialTemplate';
 
 export const dynamicParams = true;
 
@@ -120,6 +122,14 @@ const Page = async ({ params }) => {
       if (lastSlug && !film) return notFound();
       template = (
         <SingleFilmTemplate data={pageData} params={params} film={film} />
+      );
+      break;
+    }
+     case 'page_material.php': {
+      const material = await getMaterialBySlug(lastSlug, params.lang);
+      if (lastSlug && !material) return notFound();
+      template = (
+        <SingleMaterialTemplate data={pageData} params={params} material={material} />
       );
       break;
     }

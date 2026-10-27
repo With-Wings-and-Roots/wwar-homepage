@@ -17,7 +17,7 @@ const CurriculumPathways = ({ lang, curriculumData, baseLink }) => {
           return (
             <Link
               key={i}
-              href={baseLink ? baseLink : '#'}
+              href={createLocalLink(curriculum.material_page_link?.url)}
               className='
                 group
                 cursor-pointer

@@ -1,46 +1,78 @@
-import { createLocalLink } from '@/utilities/links';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import DownloadModal from './DownloadModal';
+import { resolveButtonTargetUrl } from '@/utilities/resolveButtonTarget';
 
 const Buttons = ({ buttons }) => {
-  const getUrlFromButtonTarget = (btn) => {
-    if (btn.target[0]?.file && btn.target[0].file.url) {
-      return btn.target[0].file.url;
-    } else if (btn.target[0]?.link) {
-      return btn.target[0].link;
-    } else if (btn.target[0]?.page) {
-      return createLocalLink(btn.target[0].page);
-    } else if (btn.target[0]?.email) {
-      return `mailto:${btn.target[0].email}`;
-    }
-    return '#';
-  };
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [resolvedButtons, setResolvedButtons] = useState([]);
 
-  const shouldOpenInNewTab = (btn) => {
-    if (btn.target[0]?.file && btn.target[0].file.url) {
-      return true;
-    } else if (btn.target[0]?.link) {
-      return true;
-    } else if (btn.target[0]?.page) {
-      return false;
-    }
-    return false;
-  };
+  useEffect(() => {
+    const resolveButtons = async () => {
+      if (!Array.isArray(buttons)) return;
+
+      const resolved = await Promise.all(
+        buttons.map(async (btn) => {
+          const target = btn?.target?.[0];
+          const resolvedUrl = await resolveButtonTargetUrl(btn);
+
+          return {
+            ...btn,
+            resolvedUrl,
+            layout: target?.acf_fc_layout,
+          };
+        })
+      );
+
+      setResolvedButtons(resolved);
+    };
+
+    resolveButtons();
+  }, [buttons]);
 
   return (
     <>
-      {Array.isArray(buttons)
-        ? buttons?.map((btn, bI) => (
-            <Link
-              key={bI}
-              href={getUrlFromButtonTarget(btn)}
-              target={shouldOpenInNewTab(btn) ? '_blank' : '_self'}
-              rel={shouldOpenInNewTab(btn) ? 'noopener noreferrer' : ''}
-              className='bg-wwr_yellow_orange text-sm lg:text-lg  font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+      {resolvedButtons.map((btn, index) => {
+        // DOWNLOAD → modal button
+        if (btn.layout === 'download') {
+          return (
+            <button
+              key={index}
+              onClick={() => {
+                setSelectedFile(btn);
+                setOpenModal(true);
+              }}
+              className='bg-wwr_yellow_orange text-sm rounded-lg lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
             >
               {btn.label}
-            </Link>
-          ))
-        : null}
+            </button>
+          );
+        }
+
+        // EVERYTHING ELSE → link
+        const openInNewTab = btn.layout === 'external_link';
+
+        return (
+          <Link
+            key={index}
+            href={btn.resolvedUrl}
+            target={openInNewTab ? '_blank' : '_self'}
+            rel={openInNewTab ? 'noopener noreferrer' : undefined}
+            className='bg-wwr_yellow_orange rounded-lg text-sm lg:text-lg font-normal px-5 py-2 hover:text-white transition-all uppercase inline-flex'
+          >
+            {btn.label}
+          </Link>
+        );
+      })}
+
+      <DownloadModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        selectedFile={selectedFile}
+      />
     </>
   );
 };

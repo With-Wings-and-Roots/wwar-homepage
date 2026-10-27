@@ -7,17 +7,22 @@ import { getFilmBySlug } from '@/utilities/films';
 import { getTimelineEvent } from '@/utilities/timeline';
 import TimelinesTemplate from '@/components/templates/TimelinesTemplate';
 import StorytellersTemplate from '@/components/templates/StorytellersTemplate';
+import { getMaterialBySlug } from '@/utilities/materials';
+import SingleMaterialTemplate from '@/components/templates/SingleMaterialTemplate';
 
 export const dynamicParams = true;
 
 const Page = async ({ params }) => {
-  const { lang, slug } = params;
+
+  const { lang, slug, deepSlug } = params;
   const relatedSlugRaw = params.relatedPosts;
 
   const relatedSlug = Array.isArray(relatedSlugRaw)
     ? relatedSlugRaw[0]
     : relatedSlugRaw || null;
-  if (relatedSlugRaw?.length > 1) return notFound();
+  if (relatedSlugRaw?.length > 1 && relatedSlugRaw[0] !== 'story') {
+    return notFound();
+  }
   const baseSlug = slug;
   let pageData;
 
@@ -29,12 +34,10 @@ const Page = async ({ params }) => {
     pageData = await getPageBySlug(lang, slug);
     if (!pageData) return notFound();
   }
-  const lastSlug = params.deepSlug;
-
   let template;
   switch (pageData.template) {
     case 'page_films.php': {
-      const film = await getFilmBySlug(lastSlug, params.lang);
+      const film = await getFilmBySlug(deepSlug, params.lang);
       if (lastSlug && !film) return notFound();
       template = (
         <SingleFilmTemplate
@@ -54,6 +57,18 @@ const Page = async ({ params }) => {
       const event = await getTimelineEvent(relatedSlug, params.lang);
       if (relatedSlug && !event) return notFound();
       template = <TimelinesTemplate data={pageData} params={params} />;
+      break;
+    }
+    case 'page_material.php': {
+      const material = await getMaterialBySlug(deepSlug, params.lang);
+      if (deepSlug && !material) return notFound();
+      template = (
+        <SingleMaterialTemplate
+          data={pageData}
+          params={params}
+          material={material}
+        />
+      );
       break;
     }
     default: {

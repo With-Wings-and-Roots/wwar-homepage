@@ -66,7 +66,7 @@ const StoriesPageContainer = ({
         lang={lang}
         exploreArchiveText={exploreArchiveText}
       />
-      <div className=' bg-wwr_offwhite text-black py-20'>
+      <div className='text-black py-20'>
         <div className='flex flex-col lg:flex-row items-start gap-12'>
           {/* Text + CTA */}
           <div className='lg:w-1/2 '>
@@ -108,7 +108,7 @@ const StoriesPageContainer = ({
       />
 
       {/* CTA Button */}
-      <div className='flex flex-wrap gap-6 '>
+      <div className='flex flex-wrap gap-6 mb-20 '>
         {materialCtaData?.url && (
           <Link
             href={createLocalLink(materialCtaData.url)}

@@ -83,7 +83,7 @@ const Page = async ({ params }) => {
       break;
 
     case 'page_materials.php':
-      template = <MaterialsTemplate data={pageData} />;
+      template = <MaterialsTemplate data={pageData}  params={params}/>;
       break;
 
     case 'page_projects.php':

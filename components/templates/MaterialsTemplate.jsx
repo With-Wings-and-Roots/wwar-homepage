@@ -1,102 +1,93 @@
 import Image from 'next/image';
 import gfx_bg_orange from '@/public/bg_orange.png';
 import WysiwygContent from '@/components/common/WysiwygContent';
-import { createHashString, createLocalLink } from '@/utilities/links';
-import Link from 'next/link';
-import { Fragment } from 'react';
-import Buttons from '@/components/common/Buttons';
+import MaterialsWrapper from '../materials/MaterialsWrapper';
+import { fetchMediaFromId } from '@/utilities/media';
+import {
+  getAllLanguages,
+  getAllMaterials,
+  getMaterialBySlug,
+  getMaterialCollections,
+  getMaterialTypes,
+} from '@/utilities/materials';
 
-const MaterialsTemplate = ({ data }) => {
-  const renderImageVideo = (obj) => {
-    if (obj.acf_fc_layout === 'image') {
-      return (
-        <Image
-          src={obj?.image?.url}
-          alt={obj?.image?.alt}
-          width={obj?.image?.width}
-          height={obj?.image?.height}
-          className={
-            obj?.image?.width / obj?.image?.height > 1
-              ? '!w-[80%] xl:!w-[470px] !h-auto'
-              : '!w-[50%] !h-auto xl:!h-[440px] xl:!w-auto'
-          }
-        />
-      );
-    } else if (obj.acf_fc_layout === 'video') {
-      return (
-        <div
-          dangerouslySetInnerHTML={{ __html: obj?.video }}
-          className='video !w-[80%] xl:!w-[470px]'
-        />
-      );
+const MaterialsTemplate = async ({ data, lang = 'en', params, tags }) => {
+  const [materials, topics, collections, languages] = await Promise.all([
+    getAllMaterials(params.lang),
+    getMaterialTypes(params.lang),
+    getMaterialCollections(params.lang),
+    getAllLanguages(params.lang),
+  ]);
+
+  const headerImageId = data?.acf?.header_image || data?.featured_media || null;
+
+  const headerImage = headerImageId
+    ? await fetchMediaFromId(headerImageId)
+    : null;
+
+  const headerImageUrl = headerImage?.source_url;
+
+  const visibleMaterials = materials.filter((material) => {
+    const hide = material?.acf?.hide_from_archive;
+
+    if (Array.isArray(hide)) {
+      return !hide.includes('yes');
     }
 
-    return null;
-  };
-
-  const renderSection = (entry, key) => (
-    <div
-      className='flex flex-col items-center xl:items-start xl:flex-row border-t border-t-gray-200 mt-12 pt-10'
-      key={key}
-      id={createHashString(entry.title)?.replace('#', '')}
-    >
-      <div className='w-full xl:w-auto xl:mr-8 shrink-0'>
-        <div className='w-full flex justify-center xl:w-auto'>
-          {renderImageVideo(entry.imagevideo[0])}
-        </div>
-        {entry?.buttons_position === 'left' && (
-          <div className='mt-4 xl:mt-6 flex items-center xl:items-start flex-col gap-4'>
-            <Buttons buttons={entry?.buttons} />
-          </div>
-        )}
-      </div>
-      <div className='mt-6 xl:mt-0'>
-        <h1
-          dangerouslySetInnerHTML={{ __html: entry?.title }}
-          className='text-xl xl:text-3xl'
-        />
-        <WysiwygContent
-          content={entry?.text}
-          className='mt-2 md:text-lg font-light'
-        />
-        {entry?.buttons_position === 'right' && (
-          <div className='mt-4 flex flex-col items-center xl:flex-row gap-4'>
-            <Buttons buttons={entry?.buttons} />
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    return hide !== 'yes';
+  });
 
   return (
-    <div
-      className='px-8 md:px-16 xl:px-48 py-16 relative'
-      style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
-    >
-      <Image
-        src={gfx_bg_orange}
-        alt=''
-        className='fixed left-0 top-0 w-screen h-screen object-cover object-center -z-10 opacity-10'
-      />
-      <h1
-        dangerouslySetInnerHTML={{ __html: data.title?.rendered }}
-        className='text-3xl md:text-6xl font-light text-center'
-      />
-      <div className='text-center text-lg font-light xl:px-16'>
-        {data.acf?.entries?.map((entry, eI) => (
-          <Fragment key={eI}>
-            <a
-              href={createHashString(entry.title)}
-              className='hover:text-wwr_yellow_orange_hovered transition-all'
-            >
-              {entry.title}
-            </a>
-            {eI < data.acf?.entries?.length - 1 && <>{' | '}</>}
-          </Fragment>
-        ))}
+    <>
+      <div className='relative'>
+        <Image
+          src={gfx_bg_orange}
+          alt=''
+          className='fixed left-0 top-0 w-screen h-screen object-cover -z-10 opacity-10'
+        />
+
+        {/* HEADER IMAGE */}
+        {headerImageUrl && (
+          <div className='relative w-full h-[90vh]'>
+            <Image
+              src={headerImageUrl}
+              alt={data?.title?.rendered || ''}
+              fill
+              priority
+              className='object-cover'
+              sizes='100vw'
+            />
+          </div>
+        )}
+
+        {/* CONTENT */}
+        <div className='px-8 md:px-16 xl:px-48 py-16'>
+          <div className='text-lg font-light mt-6'>
+            <h1
+              className='text-3xl md:text-6xl font-bold mb-6'
+              dangerouslySetInnerHTML={{
+                __html: data?.title?.rendered || data?.acf?.title,
+              }}
+            />
+
+            <WysiwygContent
+              content={data?.acf?.intro || data?.acf?.intro_text}
+            />
+          </div>
+
+          <MaterialsWrapper
+            materials={visibleMaterials}
+            lang={lang}
+            topics={topics}
+            collections={collections}
+            languages={languages}
+            title={'Materials'}
+            params={params}
+            tags={tags}
+          />
+        </div>
       </div>
-      {data.acf?.entries?.map((ent, eI) => renderSection(ent, eI))}
-    </div>
+    </>
   );
 };
 

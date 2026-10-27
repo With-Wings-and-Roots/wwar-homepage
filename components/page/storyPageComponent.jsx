@@ -49,10 +49,10 @@ const StoryPageComponent = ({
       : stories[storyIndex - 1].slug;
 
   const relatedStories = (story?.acf?.related_stories || []).map((id) =>
-    stories.find((s) => s.id === id)
+    stories?.find((s) => s.id === id)
   );
   const relatedEvents = (story?.acf?.related_events || []).map((id) =>
-    allEvents.find((e) => e.id === id)
+    allEvents?.find((e) => e.id === id)
   );
 
   return (

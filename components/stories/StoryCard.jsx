@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import parse from 'html-react-parser';
 import { createLocalLink } from '@/utilities/links';
-import { usePathname } from 'next/navigation';
 import { getHexForColorString } from '@/utilities/color';
 
 const StoryCard = ({
@@ -17,6 +16,7 @@ const StoryCard = ({
   mediaUrl,
   hoverZoom,
   baseLink,
+  isFeatured = true,
 }) => {
   const [hovered, setHovered] = useState(false);
 
@@ -25,7 +25,7 @@ const StoryCard = ({
       <div
         className={`${
           hoverZoom ? 'hover:scale-105 ' : ' '
-        } relative aspect-square cursor-pointer transition-all duration-500 w-full px-4 py-4 md:px-5 md:py-6 font-light text-wwr_white overflow-hidden`}
+        } relative aspect-square cursor-pointer transition-all duration-500 rounded-lg w-full px-4 py-4 md:px-5 md:py-6 font-light text-wwr_white overflow-hidden`}
       >
         <div className={`absolute left-0 top-0 h-full w-full`}>
           <Image
@@ -44,10 +44,27 @@ const StoryCard = ({
           className='absolute left-0 top-0 w-full h-full opacity-40'
           style={{
             background: `linear-gradient(to bottom, transparent 0%, ${getHexForColorString(
-              color
+              'black'
             )} 100%)`,
           }}
         ></div>
+
+        {isFeatured && (
+          <div
+            className='absolute top-4 right-4 z-40 flex items-center justify-center w-8 h-8 rounded-full'
+            style={{ backgroundColor: getHexForColorString('yellow') }}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='currentColor'
+              className='w-5 h-5 text-wwr_white'
+            >
+              <path d='M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.6L12 2z' />
+            </svg>
+          </div>
+        )}
+
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
@@ -72,7 +89,7 @@ const StoryCard = ({
               {parse(title)}
             </span>
           </div>
-          <div className='text-base sm:text-2xl md:text-xl lg:text-2xl relative z-10 flex'>
+          <div className='text-base sm:text-2xl md:text-xl lg:text-2xl relative flex'>
             <div className='font-medium'>{personName} </div>
             {personName && city && <span>{`,\u00A0`}</span>}
             <div>{city}</div>
