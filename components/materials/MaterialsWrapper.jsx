@@ -5,7 +5,6 @@ import { topicsAdded } from '@/store/topics';
 import { collectionsAdded, setActiveCollection } from '@/store/collections';
 import { citiesAdded } from '@/store/cities';
 import MaterialsGrid from './MaterialsGrid';
-import PostsGrid from '../blogs/PostsGrid';
 const MaterialsWrapper = ({
   materials,
   lang = 'en',
