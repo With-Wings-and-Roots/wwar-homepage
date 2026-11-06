@@ -69,7 +69,6 @@ const normalizeRelatedContent = async (item) => {
 
   // Get featured image from WordPress REST API.
   let featuredImage = null;
-  console.log('Full Post:', fullPost);
   const featuredMediaId =
     fullPost.featured_media ||
     fullPost.acf?.banner ||
@@ -144,7 +143,6 @@ const BlogTemplate = async ({ params, data }) => {
 
     const acf = blogPost.acf || {};
 
-    console.log('Blog ACF:', acf);
 
     // --------------------------------------------------
     // RELATED CONTENT
