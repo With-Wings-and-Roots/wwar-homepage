@@ -472,9 +472,18 @@ const AllFilmsTemplate = async ({ data, lang = 'en' }) => {
         <section className='mb-20'>
           {/* Plain heading - no brush background */}
           <h2 className='text-3xl md:text-4xl font-bold mb-8'>
-            {lang === 'en' ? 'Workshop Films' : 'Workshop-Filme'}
-          </h2>
+            <span className='relative inline-block px-2 py-1 z-0'>
+              <span
+                className='absolute inset-x-0 top-[55%] -translate-y-1/2 h-[65%] bg-[#F4B942] -rotate-1 -z-10'
+                style={{
+                  clipPath:
+                    'polygon(2% 18%, 96% 5%, 100% 72%, 5% 100%, 0% 75%)',
+                }}
+              />
 
+              {lang === 'en' ? 'Workshop Films' : 'Workshop-Filme'}
+            </span>
+          </h2>
           {/* Collection Groups */}
           {workshopCollections.map((collection) => (
             <div key={collection.id} className='mb-16'>

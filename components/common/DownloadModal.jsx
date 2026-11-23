@@ -29,7 +29,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
       return;
     }
 
-    try {
+    try { 
       setLoading(true);
 
       const res = await fetch('/api/send-email', {
@@ -44,7 +44,7 @@ const DownloadModal = ({ open, onClose, selectedFile }) => {
           html: `
             Hello ${fName},<br/><br/>
             The requested item can be accessed here:<br/>
-            <a href="${selectedFile?.target[0]?.file?.url}" target="_blank">${selectedFile?.label}</a><br/><br/>
+            <a href="${selectedFile?.resolvedUrl}" target="_blank">${selectedFile?.label}</a><br/><br/>
             Best regards,<br/>
             With Wings and Roots
           `,
