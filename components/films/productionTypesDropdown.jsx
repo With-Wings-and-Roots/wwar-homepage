@@ -55,9 +55,7 @@ const ProductionTypesDropdown = ({
             min-w-[200px]
           '
         >
-          <span className='truncate block'>
-            {!selectedOption ? heading : selectedOption.label}
-          </span>
+          <span className='truncate block' dangerouslySetInnerHTML={{ __html: !selectedOption ? heading : selectedOption.label }}></span>
           <span className='ml-2 shrink-0'>▼</span>
         </button>
 
@@ -84,8 +82,8 @@ const ProductionTypesDropdown = ({
                         : 'hover:bg-wwr_yellow_orange hover:text-wwr_rich_black text-wwr_rich_black'
                     }
                   `}
+                  dangerouslySetInnerHTML={{ __html: opt.label }}
                 >
-                  {opt.label}
                 </div>
               );
             })}
